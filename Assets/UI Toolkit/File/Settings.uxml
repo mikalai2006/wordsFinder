@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/File/Base.uss?fileID=7433441132597879392&amp;guid=47ab2fccdf66be0488c7b62162e81d51&amp;type=3#Base" />
+    <ui:VisualElement name="AsideBlok" class="font" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; left: 0; right: 0; justify-content: space-between; flex-direction: row;">
+        <ui:Button text="#exit" display-tooltip-when-elided="true" name="ExitBtn" class="button" />
+        <ui:Button text="#menu" display-tooltip-when-elided="true" name="MenuBtn" class="button" />
+    </ui:VisualElement>
+    <ui:VisualElement name="MenuBlok" class="font" style="background-color: rgba(0, 0, 0, 0); position: absolute; left: 0; top: 0; right: 0; bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; display: flex; flex-grow: 1;">
+        <ui:VisualElement class="b-rounded" style="background-color: rgb(255, 255, 255); align-items: stretch; max-width: 600px; align-self: center; flex-grow: 0; width: 80%;">
+            <ui:VisualElement name="Menu" style="background-color: rgba(0, 0, 0, 0); padding-left: 20px; padding-right: 20px; padding-top: 20px; padding-bottom: 20px;">
+                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); margin-bottom: 20px;">
+                    <ui:Slider picking-mode="Ignore" label="#volumeEffect" value="0.2" high-value="1" name="VolumeEffect" />
+                </ui:VisualElement>
+                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); padding-bottom: 20px;">
+                    <ui:Slider picking-mode="Ignore" label="#volumeMusic" value="0.2" high-value="1" name="VolumeMusic" />
+                </ui:VisualElement>
+                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0);">
+                    <ui:DropdownField label="#language" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Language" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement style="margin-left: 20px; margin-right: 20px; margin-top: 20px; margin-bottom: 20px; flex-direction: row; justify-content: space-between;">
+                <ui:Button text="#tostartmenu" display-tooltip-when-elided="true" name="ToStartMenuBtn" class="button" />
+                <ui:Button text="#close" display-tooltip-when-elided="true" name="CloseMenuBtn" class="button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

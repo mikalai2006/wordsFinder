@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/File/Base.uss?fileID=7433441132597879392&amp;guid=47ab2fccdf66be0488c7b62162e81d51&amp;type=3#Base" />
+    <ui:VisualElement name="MenuBlok" class="font" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+        <ui:VisualElement style="align-items: center; justify-content: center; flex-grow: 1;">
+            <ui:Button text="#newgame" display-tooltip-when-elided="true" name="NewGameBtn" class="button" />
+            <ui:Button text="#loadgame" display-tooltip-when-elided="true" name="LoadGameBtn" class="button" />
+            <ui:Button text="#exit" display-tooltip-when-elided="true" name="ExitBtn" class="button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,24 @@
+<script type="text/javascript" async>
+  const logFileText = async (file) => {
+    const response = await fetch(file);
+    const text = await response.text();
+
+    console.log("type text = ", typeof text);
+
+    var allWords = text.split("\r\n");
+
+    var jsonDataWords = [];
+    allWords.forEach((word) => {
+      if (word.split("").indexOf("-") > 0 || jsonDataWords.indexOf(word) > 0) {
+      } else {
+        jsonDataWords.push(word);
+      }
+    });
+
+    console.log(jsonDataWords);
+
+    return text;
+  };
+
+  logFileText("rawdata.txt");
+</script>

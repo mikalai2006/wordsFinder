@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa4eac3b3b754c4b9882d35a741e84c, type: 3}
+  m_Name: GameSetting
+  m_EditorClassIdentifier: 
+  Audio: {fileID: 11400000, guid: 8f34d19db11906f4b8a97ad95ea85df1, type: 2}
+  PrefabSymbol: {fileID: 4659619465145067762, guid: e7419d168977efa48a744d43a95bae4e, type: 3}
+  colorSymbol: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
+  colorChooseSymbol: {r: 1, g: 0.79322517, b: 0, a: 1}
+  colorWordSymbol: {r: 1, g: 1, b: 1, a: 1}
+  colorWordSymbolNo: {r: 1, g: 0.5896226, b: 0.5896226, a: 1}
+  colorWordSymbolYes: {r: 0.28146136, g: 0.5188679, b: 0.28146136, a: 1}
+  bgChar: {fileID: 21300000, guid: f1673280693d7c44e8bd3c76791edf2d, type: 3}
+  GameLevels: {fileID: 11400000, guid: f8787c3f713e9bf4e8780012bfc1b68d, type: 2}
+  lineWidth: 0.1
+  radius: 2
