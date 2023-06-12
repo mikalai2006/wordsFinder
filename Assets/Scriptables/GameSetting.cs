@@ -20,4 +20,8 @@ public class GameSetting : ScriptableObject
   [Range(0.1f, 1f)] public float lineWidth;
   [Range(0.5f, 3f)] public float radius;
 
+  [Space(5)]
+  [Header("Events")]
+  [Range(10, 1000)] public int timeDelayOverChar;
+
 }

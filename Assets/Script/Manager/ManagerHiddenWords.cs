@@ -195,7 +195,7 @@ public class ManagerHiddenWords : MonoBehaviour
   {
     if (!listChoosedGameObjects.Contains(charGameObject))
     {
-      AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSetting.Audio.addChar);
+      AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addChar);
       _lineManager.AddPoint(charGameObject.transform.position);
       listChoosedGameObjects.Add(charGameObject);
       _lineManager.DrawLine();
@@ -207,7 +207,7 @@ public class ManagerHiddenWords : MonoBehaviour
       var preLastSymbol = listChoosedGameObjects.ElementAt(preLastIndex);
       if (preLastSymbol == charGameObject)
       {
-        AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSetting.Audio.removeChar);
+        AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.removeChar);
         listChoosedGameObjects.Remove(lastSymbol);
         _lineManager.RemovePoint(lastSymbol.transform.position);
         lastSymbol.GetComponent<SymbolMB>().ResetObject();

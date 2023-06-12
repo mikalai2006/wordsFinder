@@ -65,7 +65,7 @@ public class WordMB : MonoBehaviour
 
       listTasks.Add(currentCharMB.CheckYes(needHiddenChar));
     }
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSetting.Audio.yesWord);
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.yesWord);
     await UniTask.WhenAll(listTasks);
   }
   public async UniTask YesPotentialWord(Colba colba)
@@ -77,7 +77,7 @@ public class WordMB : MonoBehaviour
 
       listTasks.Add(currentCharMB.CheckPotentialYes(colba.gameObject, i * (50 + i * 10)));
     }
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSetting.Audio.yesWord);
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.yesWord);
     await UniTask.WhenAll(listTasks);
   }
 
@@ -94,7 +94,7 @@ public class WordMB : MonoBehaviour
       // await currentCharMB.CheckNo();
       listTasks.Add(currentCharMB.CheckNo());
     }
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSetting.Audio.noWord);
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.noWord);
     await UniTask.WhenAll(listTasks);
   }
 
@@ -135,7 +135,7 @@ public class WordMB : MonoBehaviour
 
       listTasks.Add(currentCharMB.CheckExist(needHiddenChar));
     }
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSetting.Audio.yesWord);
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.yesWord);
     await UniTask.WhenAll(listTasks);
   }
 }

@@ -8,7 +8,7 @@ using Loader;
 public class GameManager : StaticInstance<GameManager>
 {
   public AppInfoContainer AppInfo;
-  public GameSetting GameSetting;
+  public GameSetting GameSettings;
   public AudioManager audioManager;
   public DataManager DataManager;
   public static event Action<GameState> OnBeforeStateChanged;

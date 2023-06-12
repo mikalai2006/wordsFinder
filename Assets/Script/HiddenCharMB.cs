@@ -14,7 +14,7 @@ public class HiddenCharMB : MonoBehaviour
 
   public void Awake()
   {
-    _gameSetting = GameManager.Instance.GameSetting;
+    _gameSetting = GameManager.Instance.GameSettings;
     SetDefault();
   }
 

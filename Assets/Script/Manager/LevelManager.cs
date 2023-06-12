@@ -14,7 +14,7 @@ public class LevelManager : Singleton<LevelManager>
   protected override void Awake()
   {
     base.Awake();
-    _gameSetting = GameManager.Instance.GameSetting;
+    _gameSetting = GameManager.Instance.GameSettings;
     _symbols = new();
   }
 
@@ -51,7 +51,7 @@ public class LevelManager : Singleton<LevelManager>
 
   public void CreateSymbols()
   {
-    float baseRadius = GameManager.Instance.GameSetting.radius;
+    float baseRadius = GameManager.Instance.GameSettings.radius;
     var countCharGO = ManagerHiddenWords.wordSymbol.ToArray();
     float radius = baseRadius + (countCharGO.Length / 2) * 0.1f;
     for (int i = 0; i < countCharGO.Length; ++i)

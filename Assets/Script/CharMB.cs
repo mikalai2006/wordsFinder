@@ -15,7 +15,7 @@ public class CharMB : MonoBehaviour
 
   public void Start()
   {
-    _gameSetting = GameManager.Instance.GameSetting;
+    _gameSetting = GameManager.Instance.GameSettings;
     _initPosition = gameObject.transform.position;
     SetDefault();
   }

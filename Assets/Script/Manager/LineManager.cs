@@ -9,7 +9,7 @@ public class LineManager : MonoBehaviour
 
   private void Awake()
   {
-    _gameSetting = GameManager.Instance.GameSetting;
+    _gameSetting = GameManager.Instance.GameSettings;
   }
 
   public void ResetLine()

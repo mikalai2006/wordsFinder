@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00cd07d439803f74480c70d38d21cec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameSetting: {fileID: 11400000, guid: 3ed9298ad7c339d4c8436891370ed992, type: 2}
+  GameSettings: {fileID: 11400000, guid: 3ed9298ad7c339d4c8436891370ed992, type: 2}
   audioManager: {fileID: 1869053859}
   DataManager: {fileID: 1877038003}
   Words:

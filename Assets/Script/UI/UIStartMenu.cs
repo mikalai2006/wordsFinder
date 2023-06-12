@@ -42,7 +42,7 @@ public class UIStartMenu : UILocaleBase
   {
     _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
 
-    GameSetting = GameManager.Instance.GameSetting;
+    GameSetting = GameManager.Instance.GameSettings;
 
     _exitButton = _menu.Q<Button>("ExitBtn");
     _exitButton.clickable.clicked += () =>

@@ -25,7 +25,7 @@ public class UISettings : UILocaleBase
     _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
     _menu.style.display = DisplayStyle.None;
 
-    GameSetting = GameManager.Instance.GameSetting;
+    GameSetting = GameManager.Instance.GameSettings;
 
     _exitButton = _aside.Q<Button>("ExitBtn");
     _openMenuButton = _aside.Q<Button>("MenuBtn");
