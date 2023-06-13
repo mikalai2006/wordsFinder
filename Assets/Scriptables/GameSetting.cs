@@ -4,7 +4,7 @@ using UnityEngine;
 public class GameSetting : ScriptableObject
 {
   public GameAudio Audio;
-  public GameObject PrefabSymbol;
+  public SymbolMB PrefabSymbol;
   public Color colorSymbol;
   public Color colorChooseSymbol;
   public Color colorWordSymbol;
@@ -17,6 +17,7 @@ public class GameSetting : ScriptableObject
 
   [Space(5)]
   [Header("Visual")]
+  public Color bgColor;
   [Range(0.1f, 1f)] public float lineWidth;
   [Range(0.5f, 3f)] public float radius;
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class HiddenWordMB : MonoBehaviour
@@ -58,6 +59,16 @@ public class HiddenWordMB : MonoBehaviour
     {
       StartCoroutine(charObj.ShowChar());
     }
+  }
+
+  public async UniTask FocusOpenWord()
+  {
+    List<UniTask> tasks = new();
+    foreach (var charObj in Chars)
+    {
+      tasks.Add(charObj.FocusOpenChar());
+    }
+    await UniTask.WhenAll(tasks);
   }
 
   public void Init(ManagerHiddenWords managerHiddenWords)

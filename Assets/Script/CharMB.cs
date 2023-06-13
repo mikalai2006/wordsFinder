@@ -49,14 +49,14 @@ public class CharMB : MonoBehaviour
     SetDefault();
   }
 
-  public async UniTask CheckPotentialYes(GameObject colba, int delay)
+  public async UniTask CheckPotentialYes(Colba colba, int delay)
   {
     _image.color = _gameSetting.colorChooseSymbol;
     await UniTask.Delay(delay);
 
     Vector3 initialScale = transform.localScale;
     Vector3 initialPosition = transform.position;
-    Vector3 upScale = new Vector3(1.5f, 1.5f, 0);
+    Vector3 upScale = new Vector3(0.5f, 0.5f, 0);
 
     float elapsedTime = 0f;
     float duration = .5f;
@@ -65,13 +65,13 @@ public class CharMB : MonoBehaviour
     while (elapsedTime < duration)
     {
       // The center of the arc
-      Vector3 center = (initialPosition + colba.transform.position) * 0.5F;
+      Vector3 center = (initialPosition + colba.gameObject.transform.position) * 0.5F;
 
       // move the center a bit downwards to make the arc vertical
       center -= new Vector3(0, 1, 0);
       // Interpolate over the arc relative to center
       Vector3 riseRelCenter = initialPosition - center;
-      Vector3 setRelCenter = colba.transform.position - center;
+      Vector3 setRelCenter = colba.gameObject.transform.position - center;
 
       float progress = (Time.time - startTime) / duration; //elapsedTime / duration;
       transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
@@ -81,8 +81,9 @@ public class CharMB : MonoBehaviour
       elapsedTime += Time.deltaTime;
     }
     transform.localScale = initialScale;
-
     SetDefault();
+
+    await colba.AddChar();
   }
 
   public async UniTask CheckNo()

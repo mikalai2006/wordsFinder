@@ -52,7 +52,7 @@ public class WordMB : MonoBehaviour
     }
   }
 
-  public async UniTask YesWord(HiddenWordMB hiddenWordMB)
+  public async UniTask openWord(HiddenWordMB hiddenWordMB)
   {
     List<UniTask> listTasks = new();
     for (int i = 0; i < _charsGameObject.Count; i++)
@@ -65,19 +65,37 @@ public class WordMB : MonoBehaviour
 
       listTasks.Add(currentCharMB.CheckYes(needHiddenChar));
     }
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.yesWord);
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.openWord);
     await UniTask.WhenAll(listTasks);
   }
-  public async UniTask YesPotentialWord(Colba colba)
+
+  public async UniTask ExistHiddenWord(HiddenWordMB hiddenWordMB)
+  {
+    List<UniTask> listTasks = new();
+    listTasks.Add(hiddenWordMB.FocusOpenWord());
+    for (int i = 0; i < _charsGameObject.Count; i++)
+    {
+      var currentCharMB = _charsGameObject.ElementAt(i);
+
+      var needHiddenChar = hiddenWordMB.Chars.Find(t => t.charTextValue == currentCharMB.charTextValue);
+
+      if (needHiddenChar == null) continue;
+
+      listTasks.Add(currentCharMB.CheckExist(needHiddenChar));
+    }
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.existWord);
+    await UniTask.WhenAll(listTasks);
+  }
+
+  public async UniTask OpenPotentialWord(Colba colba)
   {
     List<UniTask> listTasks = new();
     for (int i = 0; i < _charsGameObject.Count; i++)
     {
       var currentCharMB = _charsGameObject.ElementAt(i);
 
-      listTasks.Add(currentCharMB.CheckPotentialYes(colba.gameObject, i * (50 + i * 10)));
+      listTasks.Add(currentCharMB.CheckPotentialYes(colba, i * (50 + i * 10)));
     }
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.yesWord);
     await UniTask.WhenAll(listTasks);
   }
 
@@ -122,20 +140,4 @@ public class WordMB : MonoBehaviour
     transform.localPosition = initialPosition;
   }
 
-  public async UniTask ExistPotentialWord(HiddenWordMB hiddenWordMB)
-  {
-    List<UniTask> listTasks = new();
-    for (int i = 0; i < _charsGameObject.Count; i++)
-    {
-      var currentCharMB = _charsGameObject.ElementAt(i);
-
-      var needHiddenChar = hiddenWordMB.Chars.Find(t => t.charTextValue == currentCharMB.charTextValue);
-
-      if (needHiddenChar == null) continue;
-
-      listTasks.Add(currentCharMB.CheckExist(needHiddenChar));
-    }
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.yesWord);
-    await UniTask.WhenAll(listTasks);
-  }
 }

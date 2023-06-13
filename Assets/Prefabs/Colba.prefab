@@ -129,3 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f946b5e7b831b7041842f96226ea1eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _transform: {fileID: 0}
+  _scale: {x: 0, y: 0, z: 0}
+  _position: {x: 0, y: 0, z: 0}
+  _sprite: {fileID: 5209205075132791558}

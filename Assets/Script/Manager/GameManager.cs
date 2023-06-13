@@ -49,6 +49,7 @@ public class GameManager : StaticInstance<GameManager>
     switch (newState)
     {
       case GameState.StartApp:
+        HandleStartApp();
         break;
       case GameState.CreateGame:
         HandleCreateGame();
@@ -74,6 +75,11 @@ public class GameManager : StaticInstance<GameManager>
     }
 
     OnAfterStateChanged?.Invoke(newState);
+  }
+
+  private void HandleStartApp()
+  {
+    Camera.main.backgroundColor = GameSettings.bgColor;
   }
 
   private async void HandleRunLevel()

@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -58,4 +60,24 @@ public class HiddenCharMB : MonoBehaviour
     yield return new WaitForSeconds(0.01f);
   }
 
+  public async UniTask FocusOpenChar()
+  {
+    var startScale = transform.localScale;
+
+    Vector3 initialScale = transform.localScale;
+    Vector3 upScale = new Vector3(1.2f, 1.2f, 0f);
+    var duration = .5f;
+    float elapsedTime = 0f;
+
+    while (elapsedTime < duration)
+    {
+      float progress = elapsedTime / duration;
+      transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
+      elapsedTime += Time.deltaTime;
+      await UniTask.Yield();
+    }
+    transform.localScale = initialScale;
+
+
+  }
 }

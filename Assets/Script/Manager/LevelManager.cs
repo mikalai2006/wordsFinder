@@ -9,7 +9,8 @@ public class LevelManager : Singleton<LevelManager>
   [Header("File Storage Config")]
   private GameSetting _gameSetting;
   public ManagerHiddenWords ManagerHiddenWords;
-  private List<GameObject> _symbols;
+  private List<SymbolMB> _symbols;
+  public List<SymbolMB> Symbols => _symbols;
   public GameObject SymbolsField;
   protected override void Awake()
   {
@@ -21,7 +22,7 @@ public class LevelManager : Singleton<LevelManager>
   public void LoadLevel()
   {
     LoadNeedWords();
-    CreateSymbols();
+    CreateSymbols(ManagerHiddenWords.wordSymbol);
   }
 
   public void LoadNeedWords()
@@ -34,7 +35,7 @@ public class LevelManager : Singleton<LevelManager>
   public void CreateLevel()
   {
     CreateNeedWords();
-    CreateSymbols();
+    CreateSymbols(ManagerHiddenWords.wordSymbol);
   }
 
   public void CreateNeedWords()
@@ -49,10 +50,10 @@ public class LevelManager : Singleton<LevelManager>
     ManagerHiddenWords.CreateWords(potentialWords);
   }
 
-  public void CreateSymbols()
+  public void CreateSymbols(string str)
   {
     float baseRadius = GameManager.Instance.GameSettings.radius;
-    var countCharGO = ManagerHiddenWords.wordSymbol.ToArray();
+    var countCharGO = str.ToArray();
     float radius = baseRadius + (countCharGO.Length / 2) * 0.1f;
     for (int i = 0; i < countCharGO.Length; ++i)
     {
@@ -65,9 +66,9 @@ public class LevelManager : Singleton<LevelManager>
          Quaternion.identity,
          SymbolsField.transform
      );
-      symbolGO.GetComponent<SymbolMB>().Init(countCharGO.ElementAt(i));
+      symbolGO.Init(countCharGO.ElementAt(i));
       var size = radius - ((radius - baseRadius) * baseRadius) - .3f;
-      symbolGO.GetComponent<SymbolMB>().SetSize(size);
+      symbolGO.SetSize(size);
       _symbols.Add(symbolGO);
     }
   }
@@ -90,4 +91,5 @@ public class LevelManager : Singleton<LevelManager>
 
     await UniTask.Yield();
   }
+
 }

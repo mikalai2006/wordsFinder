@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _charText: {fileID: 2200228406194896569}
+  charTextValue: 11885
   _image: {fileID: 8961268043096929419}
   _canvas: {fileID: 185824514355738359}
   tickPerSecond: 0

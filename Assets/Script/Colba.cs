@@ -8,6 +8,7 @@ public class Colba : MonoBehaviour
   [SerializeField] private Transform _transform;
   [SerializeField] private Vector3 _scale;
   [SerializeField] private Vector3 _position;
+  [SerializeField] private SpriteRenderer _sprite;
 
   private void Awake()
   {
@@ -18,9 +19,23 @@ public class Colba : MonoBehaviour
 
   public async UniTask AddChar()
   {
-    transform.localScale += new Vector3(0.1f, 0.1f, 0);
+    Vector3 initialScale = _scale;
+    Vector3 initialPosition = transform.position;
+    Vector3 upScale = new Vector3(1.5f, 1.5f, 0);
 
-    await UniTask.Delay(100);
+    float elapsedTime = 0f;
+    float duration = .2f;
+    float startTime = Time.time;
+
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addToColba);
+    while (elapsedTime < duration)
+    {
+      float progress = (Time.time - startTime) / duration;
+      transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
+      await UniTask.Yield();
+      elapsedTime += Time.deltaTime;
+    }
+
     SetDefault();
   }
 

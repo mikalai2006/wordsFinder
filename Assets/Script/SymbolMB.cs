@@ -1,10 +1,9 @@
-using System.Collections;
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-// using UnityEngine.InputSystem.Interactions;
 using UnityEngine.UI;
 
 public class SymbolMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -18,7 +17,6 @@ public class SymbolMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
   [SerializeField] private Collider2D _collider;
   [SerializeField] private Image _image;
   [SerializeField] private RectTransform _canvas;
-  private float timeOverChar = 0f;
   private CancellationTokenSource cancelTokenSource;
 
   private void OnEnable()
@@ -123,5 +121,23 @@ public class SymbolMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
   public void ResetObject()
   {
     _image.color = _gameSettings.colorSymbol;
+  }
+
+  public async UniTask SetPosition(Vector3 newPos)
+  {
+    Vector3 initialPosition = transform.position;
+
+    float elapsedTime = 0f;
+    float duration = .2f;
+    float startTime = Time.time;
+
+    while (elapsedTime < duration)
+    {
+      float progress = (Time.time - startTime) / duration;
+      transform.position = Vector3.Lerp(initialPosition, newPos, progress);
+      await UniTask.Yield();
+      elapsedTime += Time.deltaTime;
+    }
+    transform.position = newPos;
   }
 }

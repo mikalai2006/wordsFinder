@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: 1_GameLevel
   m_EditorClassIdentifier: 
   countWord: 5
-  maxCountChar: 20
+  maxCountChar: 10

@@ -36,6 +36,8 @@ public class UILoaderScreen : MonoBehaviour
   {
     try
     {
+      MenuApp.rootVisualElement.Q<VisualElement>("OverBG").style.backgroundColor
+        = new StyleColor(GameManager.Instance.GameSettings.bgColor);
       progressBarSection = MenuApp.rootVisualElement.Q<VisualElement>(NameProgressBarSection);
       progressBar = MenuApp.rootVisualElement.Q<VisualElement>(NameProgressBar);
       progressBarText = MenuApp.rootVisualElement.Q<Label>(NameProgressBarText);

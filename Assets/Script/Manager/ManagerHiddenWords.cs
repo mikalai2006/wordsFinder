@@ -79,11 +79,15 @@ public class ManagerHiddenWords : MonoBehaviour
 
   public void CreateWords(List<string> potentialWords)
   {
+#if UNITY_EDITOR
+    System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+    stopWatch.Start();
+#endif
     // get word by max length.
     wordSymbol = potentialWords
-    //   .GetRange(0, countWords)
       .OrderByDescending(s => s.Length)
       .First();
+    HashSet<string> arr2Set = new HashSet<string>(wordSymbol.Split(""));
 
     hiddenWords.Clear();
 
@@ -91,31 +95,30 @@ public class ManagerHiddenWords : MonoBehaviour
     var listWords = new List<string>();
     foreach (var word in potentialWords)
     {
-      if (
-        word.ToArray().Intersect(wordSymbol.ToArray()).Count() == word.Length
-        &&
-        !hiddenWords.ContainsKey(word)
-        )
+      var res = Helpers.IntersectWithRepetitons(wordSymbol, word);
+      if (res.Count() == word.Length)
       {
-        if (countAddWords < countHiddenWords)
         {
-          listWords.Add(word);
+          if (countAddWords < countHiddenWords)
+          {
+            listWords.Add(word);
+          }
+          countAddWords++;
+          PotentialWords.Add(word, 0);
         }
-        countAddWords++;
-        PotentialWords.Add(word, 0);
       }
-      // if (countAddWords >= countHiddenWords)
-      // {
-      //   break;
-      // }
     }
-
     listWords = listWords.OrderBy(t => -t.Length).ToList();
     foreach (var word in listWords)
     {
       var wordGameObject = CreateWord(word);
       hiddenWords.Add(word, wordGameObject);
     }
+#if UNITY_EDITOR
+    stopWatch.Stop();
+    System.TimeSpan timeTaken = stopWatch.Elapsed;
+    Debug.LogWarning($"Time Generation Step::: {timeTaken.ToString(@"m\:ss\.ffff")}");
+#endif
   }
 
   public void CheckWord(string word)
@@ -133,13 +136,13 @@ public class ManagerHiddenWords : MonoBehaviour
     {
       if (OpenHiddenWords.ContainsKey(choosedWord))
       {
-        // Debug.Log($"++++++ReFind potential word {choosedWord}");
-        await _wordMB.YesPotentialWord(colba);
+        // already open hidden word.
+        await _wordMB.ExistHiddenWord(hiddenWords[choosedWord]);
       }
       else
       {
-        // Debug.Log($"++++++ReFind word {choosedWord}");
-        await _wordMB.YesWord(hiddenWords[choosedWord]);
+        // open new hidden word.
+        await _wordMB.openWord(hiddenWords[choosedWord]);
         OpenHiddenWords.Add(choosedWord, 1);
       }
     }
@@ -147,13 +150,13 @@ public class ManagerHiddenWords : MonoBehaviour
     {
       if (OpenPotentialWords.ContainsKey(choosedWord))
       {
-        // Debug.Log($"++++++ReFind potential word {choosedWord}");
-        await _wordMB.YesPotentialWord(colba);
+        // already open allow word.
+        await _wordMB.OpenPotentialWord(colba);
       }
       else
       {
-        // Debug.Log($"++++++Find potential word {choosedWord}");
-        await _wordMB.YesPotentialWord(colba);
+        // open new allow word.
+        await _wordMB.OpenPotentialWord(colba);
         OpenPotentialWords.Add(choosedWord, 1);
       }
     }
@@ -162,6 +165,7 @@ public class ManagerHiddenWords : MonoBehaviour
       // Debug.Log($"------Not found {choosedWord}");
       await _wordMB.NoWord();
     }
+
     foreach (var obj in listChoosedGameObjects)
     {
       obj.GetComponent<SymbolMB>().ResetObject();
