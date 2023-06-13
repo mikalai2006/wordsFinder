@@ -5,8 +5,8 @@
         <ui:VisualElement name="OverBG" style="flex-grow: 1; background-color: rgb(173, 173, 173);" />
         <ui:VisualElement name="ProgressBarSection" class="progress-bar__section" style="font-size: 20px;">
             <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="ProgressBarText" class="text_big" />
-            <ui:VisualElement name="ProgressBarBox" class="progress-bar__box" style="background-color: rgba(14, 14, 14, 0.13);">
-                <ui:VisualElement name="ProgressBar" class="progress-bar" style="background-color: rgb(253, 253, 253);" />
+            <ui:VisualElement name="ProgressBarBox" class="progress-bar__box">
+                <ui:VisualElement name="ProgressBar" class="progress-bar" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

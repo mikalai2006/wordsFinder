@@ -11,6 +11,7 @@ public class GameManager : StaticInstance<GameManager>
   public GameSetting GameSettings;
   public AudioManager audioManager;
   public DataManager DataManager;
+  public StateManager StateManager;
   public static event Action<GameState> OnBeforeStateChanged;
   public static event Action<GameState> OnAfterStateChanged;
 
@@ -84,26 +85,27 @@ public class GameManager : StaticInstance<GameManager>
 
   private async void HandleRunLevel()
   {
-    await GameManager.Instance.AssetProvider.UnloadAdditiveScene(environment);
+    await AssetProvider.UnloadAdditiveScene(environment);
   }
   private async void HandleCloseLevel()
   {
-    await GameManager.Instance.AssetProvider.UnloadAdditiveScene(environment);
+    await AssetProvider.UnloadAdditiveScene(environment);
   }
   private async void HandleCreateGame()
   {
     var operations = new Queue<ILoadingOperation>();
     operations.Enqueue(new GameInitOperation());
-    await GameManager.Instance.LoadingScreenProvider.LoadAndDestroy(operations);
-    GameManager.Instance.LevelManager.CreateLevel();
+    await LoadingScreenProvider.LoadAndDestroy(operations);
+    LevelManager.CreateLevel();
   }
   private async void HandleLoadLevel()
   {
     var operations = new Queue<ILoadingOperation>();
     operations.Enqueue(new GameInitOperation());
-    await GameManager.Instance.LoadingScreenProvider.LoadAndDestroy(operations);
-    GameManager.Instance.DataManager.Load();
-    GameManager.Instance.LevelManager.LoadLevel();
+    await LoadingScreenProvider.LoadAndDestroy(operations);
+    var dataGame = DataManager.Load();
+    LevelManager.LoadLevel();
+    StateManager.LoadState(dataGame);
   }
 }
 

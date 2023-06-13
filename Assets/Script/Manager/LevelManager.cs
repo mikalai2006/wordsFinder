@@ -6,8 +6,8 @@ using Random = UnityEngine.Random;
 
 public class LevelManager : Singleton<LevelManager>
 {
+  private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   [Header("File Storage Config")]
-  private GameSetting _gameSetting;
   public ManagerHiddenWords ManagerHiddenWords;
   private List<SymbolMB> _symbols;
   public List<SymbolMB> Symbols => _symbols;
@@ -15,19 +15,18 @@ public class LevelManager : Singleton<LevelManager>
   protected override void Awake()
   {
     base.Awake();
-    _gameSetting = GameManager.Instance.GameSettings;
     _symbols = new();
   }
 
   public void LoadLevel()
   {
     LoadNeedWords();
-    CreateSymbols(ManagerHiddenWords.wordSymbol);
+    CreateSymbols(ManagerHiddenWords.WordForChars);
   }
 
   public void LoadNeedWords()
   {
-    var data = GameManager.Instance.DataManager.DataPlay;
+    var data = GameManager.Instance.DataManager.DataGame;
 
     ManagerHiddenWords.LoadWords(data);
   }
@@ -35,7 +34,8 @@ public class LevelManager : Singleton<LevelManager>
   public void CreateLevel()
   {
     CreateNeedWords();
-    CreateSymbols(ManagerHiddenWords.wordSymbol);
+    CreateSymbols(ManagerHiddenWords.WordForChars);
+    GameManager.Instance.DataManager.Save();
   }
 
   public void CreateNeedWords()

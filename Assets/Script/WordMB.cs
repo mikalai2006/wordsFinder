@@ -101,10 +101,10 @@ public class WordMB : MonoBehaviour
 
   public async UniTask NoWord()
   {
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.noWord);
     await NotFoundWord();
 
     List<UniTask> listTasks = new();
-
     for (int i = 0; i < _charsGameObject.Count; i++)
     {
       var currentCharMB = _charsGameObject.ElementAt(i);
@@ -112,7 +112,6 @@ public class WordMB : MonoBehaviour
       // await currentCharMB.CheckNo();
       listTasks.Add(currentCharMB.CheckNo());
     }
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.noWord);
     await UniTask.WhenAll(listTasks);
   }
 

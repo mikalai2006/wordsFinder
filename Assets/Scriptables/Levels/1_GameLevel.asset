@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
   m_Name: 1_GameLevel
   m_EditorClassIdentifier: 
-  countWord: 5
+  countWord: 3
   maxCountChar: 10

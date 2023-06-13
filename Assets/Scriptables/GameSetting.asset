@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Audio: {fileID: 11400000, guid: 8f34d19db11906f4b8a97ad95ea85df1, type: 2}
   PrefabSymbol: {fileID: 7149879278780047571, guid: e7419d168977efa48a744d43a95bae4e, type: 3}
-  colorSymbol: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
   colorChooseSymbol: {r: 1, g: 0.79322517, b: 0, a: 1}
   colorWordSymbol: {r: 1, g: 1, b: 1, a: 1}
   colorWordSymbolNo: {r: 1, g: 0.5896226, b: 0.5896226, a: 1}
   colorWordSymbolYes: {r: 0.28146136, g: 0.5188679, b: 0.28146136, a: 1}
   bgChar: {fileID: 21300000, guid: f1673280693d7c44e8bd3c76791edf2d, type: 3}
   GameLevels: {fileID: 11400000, guid: f8787c3f713e9bf4e8780012bfc1b68d, type: 2}
+  colorChar: {r: 0.23584908, g: 0.06868818, b: 0.0011124983, a: 1}
+  bgColorChar: {r: 0, g: 0, b: 0, a: 0}
   bgColor: {r: 0.36078432, g: 0.43529412, b: 0.15294118, a: 1}
   lineWidth: 0.15
   radius: 2

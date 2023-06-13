@@ -63,6 +63,10 @@ MonoBehaviour:
     m_Key: ok
     m_Metadata:
       m_Items: []
+  - m_Id: 587069316562944
+    m_Key: countword
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

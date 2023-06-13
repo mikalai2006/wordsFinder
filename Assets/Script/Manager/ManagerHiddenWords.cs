@@ -8,41 +8,43 @@ using UnityEngine;
 
 public class ManagerHiddenWords : MonoBehaviour
 {
+  // public static event Action OnChangeData;
+  private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   [SerializeField] private LineManager _lineManager;
   public Colba colba;
   [SerializeField] private WordMB _wordMB;
   [SerializeField] private HiddenWordMB _hiddenWordMB;
-  // public Dictionary<HiddenWordMB, bool> hiddenWordsMB;
   public SerializableDictionary<string, HiddenWordMB> hiddenWords = new SerializableDictionary<string, HiddenWordMB>();
-  //   [SerializeField] private int maxCountChars = 8;
-  public string wordSymbol;
-  public int countHiddenWords = 4;
+  private string _wordForChars;
+  public string WordForChars => _wordForChars;
   public Dictionary<string, int> PotentialWords;
   public Dictionary<string, int> OpenPotentialWords;
   public Dictionary<string, int> OpenHiddenWords;
-
   public List<SymbolMB> listChoosedGameObjects;
   public string choosedWord => string.Join("", listChoosedGameObjects.Select(t => t.GetComponent<SymbolMB>().charTextValue).ToList());
-
 
   private void Awake()
   {
 
     listChoosedGameObjects = new List<SymbolMB>();
 
-    // hiddenWordsMB = new Dictionary<HiddenWordMB, bool>();
-
     PotentialWords = new Dictionary<string, int>();
 
     OpenPotentialWords = new Dictionary<string, int>();
 
     OpenHiddenWords = new Dictionary<string, int>();
+
+    Shuffle.OnShuffleWord += SetWordForChars;
   }
 
-  public void LoadWords(DataPlay data)
+  private void OnDestroy()
   {
-    // get word by max length.
-    wordSymbol = data.wordSymbol;
+    Shuffle.OnShuffleWord -= SetWordForChars;
+  }
+
+  public void LoadWords(DataGame data)
+  {
+    SetWordForChars(data.wordForChars);
 
     hiddenWords.Clear();
 
@@ -61,6 +63,7 @@ public class ManagerHiddenWords : MonoBehaviour
         CheckWord(word);
       }
     }
+    // OnChangeData?.Invoke();
   }
   public HiddenWordMB CreateWord(string word)
   {
@@ -77,6 +80,16 @@ public class ManagerHiddenWords : MonoBehaviour
     return newObj;
   }
 
+  /// <summary>
+  /// Set word for radial word.
+  /// </summary>
+  /// <param name="word">Word</param>
+  public void SetWordForChars(string word)
+  {
+    // get word by max length.
+    _wordForChars = word;
+  }
+
   public void CreateWords(List<string> potentialWords)
   {
 #if UNITY_EDITOR
@@ -84,10 +97,12 @@ public class ManagerHiddenWords : MonoBehaviour
     stopWatch.Start();
 #endif
     // get word by max length.
-    wordSymbol = potentialWords
+    var wordSymbol = potentialWords
       .OrderByDescending(s => s.Length)
       .First();
-    HashSet<string> arr2Set = new HashSet<string>(wordSymbol.Split(""));
+    SetWordForChars(wordSymbol);
+
+    HashSet<string> arr2Set = new HashSet<string>(_wordForChars.Split(""));
 
     hiddenWords.Clear();
 
@@ -95,11 +110,11 @@ public class ManagerHiddenWords : MonoBehaviour
     var listWords = new List<string>();
     foreach (var word in potentialWords)
     {
-      var res = Helpers.IntersectWithRepetitons(wordSymbol, word);
+      var res = Helpers.IntersectWithRepetitons(_wordForChars, word);
       if (res.Count() == word.Length)
       {
         {
-          if (countAddWords < countHiddenWords)
+          if (countAddWords < _gameSetting.GameLevels.Levels[0].countWord)
           {
             listWords.Add(word);
           }
@@ -119,6 +134,7 @@ public class ManagerHiddenWords : MonoBehaviour
     System.TimeSpan timeTaken = stopWatch.Elapsed;
     Debug.LogWarning($"Time Generation Step::: {timeTaken.ToString(@"m\:ss\.ffff")}");
 #endif
+    // OnChangeData?.Invoke();
   }
 
   public void CheckWord(string word)
@@ -144,6 +160,7 @@ public class ManagerHiddenWords : MonoBehaviour
         // open new hidden word.
         await _wordMB.openWord(hiddenWords[choosedWord]);
         OpenHiddenWords.Add(choosedWord, 1);
+        GameManager.Instance.StateManager.AddWord();
       }
     }
     else if (PotentialWords.ContainsKey(choosedWord))
@@ -158,6 +175,7 @@ public class ManagerHiddenWords : MonoBehaviour
         // open new allow word.
         await _wordMB.OpenPotentialWord(colba);
         OpenPotentialWords.Add(choosedWord, 1);
+        GameManager.Instance.StateManager.AddWord();
       }
     }
     else
@@ -178,6 +196,7 @@ public class ManagerHiddenWords : MonoBehaviour
     {
       await NextLevel();
     }
+    // OnChangeData?.Invoke();
   }
 
   private async UniTask NextLevel()

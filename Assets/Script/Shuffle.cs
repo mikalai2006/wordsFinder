@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -6,6 +7,7 @@ using UnityEngine.EventSystems;
 
 public class Shuffle : MonoBehaviour, IPointerDownHandler
 {
+  public static event Action<string> OnShuffleWord;
   [SerializeField] private Transform _transform;
   [SerializeField] private Vector3 _scale;
   [SerializeField] private Vector3 _position;
@@ -47,21 +49,25 @@ public class Shuffle : MonoBehaviour, IPointerDownHandler
     var existChars = _levelManager.Symbols;
 
     // get all positions.
-    List<Vector3> existPositionsChars = new();
+    Dictionary<SymbolMB, char> existPositionsChars = new();
     for (int i = 0; i < existChars.Count; i++)
     {
-      existPositionsChars.Add(existChars[i].transform.position);
+      existPositionsChars.Add(existChars[i], existChars[i].charTextValue);
     }
-
     // shuffle positions.
-    existPositionsChars = existPositionsChars.OrderBy(t => Random.value).ToList();
+    existChars = existChars.OrderBy(t => UnityEngine.Random.value).ToList();
 
     // set new position.
     List<UniTask> tasks = new();
+    string newWord = "";
     for (int i = 0; i < existChars.Count; i++)
     {
-      tasks.Add(existChars[i].SetPosition(existPositionsChars[i]));
+      tasks.Add(existChars[i].SetPosition(existPositionsChars.ElementAt(i).Key.transform.position));
+      newWord += existChars.ElementAt(i).charTextValue;
     }
+    OnShuffleWord?.Invoke(newWord);
+
     await UniTask.WhenAll(tasks);
+    GameManager.Instance.DataManager.Save();
   }
 }

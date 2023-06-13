@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class Colba : MonoBehaviour
+public class TopSide : MonoBehaviour
 {
   [SerializeField] private Vector3 _scaleSprite;
   [SerializeField] private Vector3 _position;
   [SerializeField] private SpriteRenderer _sprite;
-  [SerializeField] private TMPro.TextMeshProUGUI _countChars;
-  [SerializeField] private TMPro.TextMeshProUGUI _countWords;
+  [SerializeField] private GameObject _indexObject;
+  [SerializeField] private TMPro.TextMeshProUGUI _rate;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
 
   private void Awake()
@@ -43,27 +43,13 @@ public class Colba : MonoBehaviour
       elapsedTime += Time.deltaTime;
     }
 
-    // var value = Convert.ToInt32(_text.text);
-    // value++;
-    // SetValue(value.ToString());
     SetDefault();
   }
 
-  public async void SetValue(DataState data)
+  public void SetValue(DataState data)
   {
-    var dataPlural = new Dictionary<string, int> {
-      {"count", data.countOpenWords},
-      {"count2", data.countAllowWords},
-    };
-    var arguments = new[] { dataPlural };
-    var textCountWords = await Helpers.GetLocalizedPluralString(
-        new UnityEngine.Localization.LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, "countword"),
-        arguments,
-        dataPlural
-        );
-
-    _countWords.text = textCountWords;
-    _countChars.text = data.countOpenChars.ToString();
+    Debug.Log($"TopSide setValue {data.rate}");
+    _rate.text = data.rate.ToString();
   }
 
   private void SetDefault()

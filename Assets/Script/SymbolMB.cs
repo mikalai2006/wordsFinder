@@ -35,7 +35,13 @@ public class SymbolMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
   private void Awake()
   {
     _camera = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<Camera>();
-    _image.color = _gameSettings.colorSymbol;
+    ResetObject();
+  }
+
+  public void ResetObject()
+  {
+    _image.color = _gameSettings.bgColorChar;
+    _charText.color = _gameSettings.colorChar;
   }
 
 
@@ -116,11 +122,6 @@ public class SymbolMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
   {
     _levelManager.ManagerHiddenWords.AddChoosedChar(this);
     _image.color = _gameSettings.colorChooseSymbol;
-  }
-
-  public void ResetObject()
-  {
-    _image.color = _gameSettings.colorSymbol;
   }
 
   public async UniTask SetPosition(Vector3 newPos)

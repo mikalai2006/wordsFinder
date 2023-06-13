@@ -8,7 +8,7 @@ public class CharMB : MonoBehaviour
 {
   [SerializeField] private TMPro.TextMeshProUGUI _charText;
   public char charTextValue;
-  private LevelManager _dataManager = LevelManager.Instance;
+  private LevelManager _levelManager => GameManager.Instance.LevelManager;
   [SerializeField] private Image _image;
   private GameSetting _gameSetting;
   private Vector3 _initPosition;

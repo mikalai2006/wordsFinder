@@ -116,6 +116,19 @@ public static class Helpers
       }
   }
 
+  public async static UniTask<string> GetLocalizedPluralString<T>(
+        LocalizedString localizedString,
+        Dictionary<string, T>[] args,
+        Dictionary<string, T> dictionary
+        )
+  {
+    if (localizedString.IsEmpty) return "NO_LANG";
+
+    localizedString.Arguments = args;
+    var t = localizedString.GetLocalizedStringAsync(dictionary);
+    await t.Task;
+    return t.Result;
+  }
 }
 
 // [System.Serializable]

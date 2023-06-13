@@ -1,8 +1,10 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
+  public static event Action<DataGame> OnLoadData;
   [Header("File Storage Config")]
   [SerializeField] private string fileNameGame;
   [SerializeField] private string fileNameMap;
@@ -10,8 +12,8 @@ public class DataManager : Singleton<DataManager>
 
   private FileDataHandler _fileDataHandler;
 
-  private DataPlay _dataPlay;
-  public DataPlay DataPlay { get { return _dataPlay; } }
+  private DataGame _dataGame;
+  public DataGame DataGame { get { return _dataGame; } }
 
   public void Init()
   {
@@ -21,30 +23,31 @@ public class DataManager : Singleton<DataManager>
 
   public void New()
   {
-    _dataPlay = new DataPlay();
+    _dataGame = new DataGame();
 
   }
 
-  public void Load()
+  public DataGame Load()
   {
 
-    _dataPlay = _fileDataHandler.LoadData();
-
+    _dataGame = _fileDataHandler.LoadData();
+    OnLoadData?.Invoke(_dataGame);
+    return _dataGame;
   }
 
   public void Save()
   {
     New();
     var levelManager = GameManager.Instance.LevelManager;
-    _dataPlay.Level = 1;
-    _dataPlay.potentialWords = levelManager.ManagerHiddenWords.PotentialWords.Keys.ToList();
-    _dataPlay.openHiddenWords = levelManager.ManagerHiddenWords.OpenHiddenWords.Keys.ToList();
-    _dataPlay.openPotentialWords = levelManager.ManagerHiddenWords.OpenPotentialWords.Keys.ToList();
-    _dataPlay.hiddenWords = levelManager.ManagerHiddenWords.hiddenWords.Keys.ToList();
-    _dataPlay.wordSymbol = levelManager.ManagerHiddenWords.wordSymbol;
+    _dataGame.Level = 1;
+    _dataGame.potentialWords = levelManager.ManagerHiddenWords.PotentialWords.Keys.ToList();
+    _dataGame.openHiddenWords = levelManager.ManagerHiddenWords.OpenHiddenWords.Keys.ToList();
+    _dataGame.openPotentialWords = levelManager.ManagerHiddenWords.OpenPotentialWords.Keys.ToList();
+    _dataGame.hiddenWords = levelManager.ManagerHiddenWords.hiddenWords.Keys.ToList();
+    _dataGame.wordForChars = levelManager.ManagerHiddenWords.WordForChars;
+    _dataGame.dataState = GameManager.Instance.StateManager.dataState;
 
-    _fileDataHandler.SaveData(_dataPlay);
-
+    _fileDataHandler.SaveData(_dataGame);
   }
 
 }

@@ -18,11 +18,11 @@ public class FileDataHandler
     this._nameFile = _fileName;
   }
 
-  public DataPlay LoadData()
+  public DataGame LoadData()
   {
     string fullPath = Path.Combine(_dataDirPath, _nameFile);
 
-    DataPlay loadedData = null;
+    DataGame loadedData = null;
 
     if (File.Exists(fullPath))
     {
@@ -38,7 +38,7 @@ public class FileDataHandler
           }
         }
 
-        loadedData = JsonUtility.FromJson<DataPlay>(dataToLoad);
+        loadedData = JsonUtility.FromJson<DataGame>(dataToLoad);
 
         if (_useEncryption)
         {
@@ -56,7 +56,7 @@ public class FileDataHandler
 
   }
 
-  public void SaveData(DataPlay data)
+  public void SaveData(DataGame data)
   {
     string fullPath = Path.Combine(_dataDirPath, _nameFile);
 
