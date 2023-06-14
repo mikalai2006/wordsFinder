@@ -57,6 +57,7 @@ public class HiddenCharMB : MonoBehaviour
     //   yield return new WaitForSeconds(0.01f);
     // }
     // gameObject.transform.localScale = new Vector3(-1, 1, 1);
+
     Open();
     await UniTask.Yield();
   }

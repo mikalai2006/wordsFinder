@@ -11,8 +11,10 @@ public class DataGame
   // public string wordForChars;
   public int rate;
   public List<DataLevel> Levels;
-  public string lastActiveLevelId;
   [System.NonSerialized] public DataLevel activeLevel;
+  public string lastActiveLevelId;
+  public string lastActiveWordId;
+
   // public DataState dataState;
 
   public DataGame()
@@ -44,7 +46,7 @@ public class DataLevel
   public string idWord;
   // public List<string> potentialWords;
   public List<string> openWords;
-  public List<string> hiddenWords;
+  // public List<string> hiddenWords;
   // public List<string> openHiddenWords;
   public string wordForChars;
   public int countWords;
@@ -53,7 +55,7 @@ public class DataLevel
   public DataLevel()
   {
     openWords = new();
-    hiddenWords = new();
+    // hiddenWords = new();
     // openHiddenWords = new();
   }
 }

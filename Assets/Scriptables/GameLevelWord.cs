@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
@@ -7,4 +8,5 @@ public class GameLevelWord : ScriptableObject
   public string title;
   public string word;
 
+  public List<string> hiddenWords;
 }

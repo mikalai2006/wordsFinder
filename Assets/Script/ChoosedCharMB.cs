@@ -58,6 +58,8 @@ public class ChoosedCharMB : MonoBehaviour
     }
     transform.localScale = initialScale;
     needHiddenChar.ShowChar().Forget();
+
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.openWord);
     // Vector3 initialScale = transform.localScale;
     // Vector3 upScale = new Vector3(0.4f, 0.4f, 0f);
     // var duration = .5f;
@@ -132,7 +134,7 @@ public class ChoosedCharMB : MonoBehaviour
     transform.localPosition = _initPosition;
   }
 
-  public async UniTask CheckExist(HiddenCharMB needHiddenChar)
+  public async UniTask CheckExist()
   {
     Vector3 initialScale = transform.localScale;
     Vector3 upScale = new Vector3(1.5f, 1.5f, 0f);
