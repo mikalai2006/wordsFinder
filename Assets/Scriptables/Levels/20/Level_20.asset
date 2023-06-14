@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
-  m_Name: 1_2_Word
+  m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
+  m_Name: Level_20
   m_EditorClassIdentifier: 
-  id: level.word.poiner
-  title: "\u043F\u0438\u043E\u043D\u0435\u0440"
-  word: "\u043F\u0438\u043E\u043D\u0435\u0440"
+  id: level.20
+  title: "\u0423\u0440\u043E\u0432\u0435\u043D\u044C 20"
+  words:
+  - {fileID: 11400000, guid: 73580916aea3a56449aa68b55a9b1195, type: 2}

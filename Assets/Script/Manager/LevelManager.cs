@@ -46,6 +46,8 @@ public class LevelManager : Singleton<LevelManager>
     stopWatch.Start();
 #endif
 
+
+
     GameManager.Instance.StateManager.SetActiveLevel(levelConfig, wordConfig);
 
     ManagerHiddenWords.Init(levelConfig, wordConfig);

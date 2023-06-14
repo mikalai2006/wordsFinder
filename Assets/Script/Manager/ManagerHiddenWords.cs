@@ -2,10 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class ManagerHiddenWords : MonoBehaviour
 {
   // public static event Action OnChangeData;
+  [SerializeField] private Tilemap _tilemap;
+  [SerializeField] private Grid _GridObject;
+  private GridHelper _gridHelper;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   [SerializeField] private LineManager _lineManager;
   public Colba colba;
@@ -43,6 +47,24 @@ public class ManagerHiddenWords : MonoBehaviour
   /// <param name="wordConfig">Config word</param>
   public void Init(GameLevel levelConfig, GameLevelWord wordConfig)
   {
+    // calculate count char of by words.
+    var sortedListHiddenWords = wordConfig.hiddenWords.OrderBy(t => t.Length);
+    int countChars = sortedListHiddenWords.OrderBy(t => t.Length).Select(t => t.Length).Sum();
+    countChars += sortedListHiddenWords.Count();
+    string wordWithMaxLength = sortedListHiddenWords.Last();
+    int maxLengthWord = wordWithMaxLength.Length;
+    if (maxLengthWord < 9) maxLengthWord = 9;
+    int minNeedRows = (int)System.Math.Ceiling((double)countChars / maxLengthWord);
+
+    var sizeGridXY = Mathf.Max(minNeedRows, maxLengthWord);
+    // Debug.Log($"Min col={wordWithMaxLength}| Need count rows={minNeedRows} | sizeGridXY={sizeGridXY}");
+    _gridHelper = new GridHelper(sizeGridXY, sizeGridXY);
+
+    // Set transform grid.
+    float scale = 9f / sizeGridXY;
+    // Debug.Log($"Scale grid ={scale}");
+    _GridObject.transform.localScale = new Vector3(scale, scale, 1);
+
     hiddenWords.Clear();
 
     var data = GameManager.Instance.StateManager.dataGame.activeLevel;
@@ -73,13 +95,13 @@ public class ManagerHiddenWords : MonoBehaviour
     var listWords = stateManager.ActiveWordConfig.hiddenWords;
 
     listWords = listWords.OrderBy(t => -t.Length).ToList();
-    foreach (var word in listWords)
+    for (int i = 0; i < listWords.Count; i++)
     {
-      var wordGameObject = CreateWord(word);
-      hiddenWords.Add(word, wordGameObject);
-      if (OpenWords.ContainsKey(word))
+      var wordGameObject = CreateWord(listWords[i], i);
+      hiddenWords.Add(listWords[i], wordGameObject);
+      if (OpenWords.ContainsKey(listWords[i]))
       {
-        CheckWord(word);
+        CheckWord(listWords[i]);
       }
     }
   }
@@ -120,17 +142,22 @@ public class ManagerHiddenWords : MonoBehaviour
     _wordForChars = word;
   }
 
-  public HiddenWordMB CreateWord(string word)
+  public HiddenWordMB CreateWord(string word, int index)
   {
+    // find node for spawn word.
+    var nodes = _gridHelper.FindNodeForSpawnWord(word, index);
+
     var newObj = GameObject.Instantiate(
           _hiddenWordMB,
-          transform.position,
+          nodes[0].position,
           Quaternion.identity,
-          transform
+          _tilemap.transform
         );
+    newObj.transform.localPosition = new Vector3(nodes[0].x, nodes[0].y);
     // hiddenWordsMB.Add(newObj, false);
     newObj.Init(this);
-    newObj.DrawWord(word);
+    newObj.DrawWord(word, nodes);
+    // node.SetOccupiedChar();
 
     return newObj;
   }

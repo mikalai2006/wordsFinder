@@ -217,6 +217,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 283346a19aa67d646966b7c833c382cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dataGame:
+    rate: 0
+    Levels: []
+    lastActiveLevelId: 
+    lastActiveWordId: 
+  ActiveLevelConfig: {fileID: 0}
+  ActiveWordConfig: {fileID: 0}
 --- !u!1 &516352404
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,7 +458,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

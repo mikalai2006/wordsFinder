@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
-  m_Name: 1_GameLevel
+  m_Name: Level_1
   m_EditorClassIdentifier: 
-  id: level.first
+  id: level.1
   title: "\u041F\u0440\u043E\u043B\u043E\u0433"
-  countWord: 10
-  maxCountChar: 10
   words:
+  - {fileID: 11400000, guid: 64f2c9bffa08632439ebd5707ab74469, type: 2}
+  - {fileID: 11400000, guid: f06347d129cf46d47a2158c14d11d17b, type: 2}
   - {fileID: 11400000, guid: b11b25ec96e23f04c94146c89136ec4c, type: 2}
-  - {fileID: 11400000, guid: e63d77b2bbef9e241b6e0e32333480ab, type: 2}
+  - {fileID: 11400000, guid: 80f083fc57846954e976cee12ad88ee2, type: 2}
+  - {fileID: 11400000, guid: 7c671e6cd1774374a971577bedfb310e, type: 2}

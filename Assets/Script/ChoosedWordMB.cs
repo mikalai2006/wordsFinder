@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChoosedWordMB : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class ChoosedWordMB : MonoBehaviour
     {
       var newChar = GameObject.Instantiate(
         charMB,
-        new Vector3(i, 0, 0),
+        new Vector3(0, 0, 0),
         Quaternion.identity,
         gameObject.transform
       );
@@ -34,8 +35,12 @@ public class ChoosedWordMB : MonoBehaviour
 
   public void DrawWord(string choosedWord)
   {
+    // calculate scale char gameObject.
+    var charScale = choosedWord.Length > 9 ? 9f / choosedWord.Length : 1f;
+    // Debug.Log($"charScale={charScale}::: {choosedWord}::: ");
+    gameObject.GetComponent<GridLayoutGroup>().cellSize = new Vector2(charScale, charScale);
     ResetWord();
-    gameObject.transform.localPosition = new Vector3(-choosedWord.Length / 2f + .5f, 0, 0);
+    // gameObject.transform.localPosition = new Vector3(-choosedWord.Length / 2f + .5f, 0, 0);
     for (int i = 0; i < choosedWord.Length; i++)
     {
       var currentChar = choosedWord.ElementAt(i);
@@ -43,6 +48,7 @@ public class ChoosedWordMB : MonoBehaviour
       _charsGameObject.Add(currentCharMB);
       currentCharMB.gameObject.SetActive(true);
       currentCharMB.SetValue(currentChar);
+      currentCharMB.SetSize(charScale);
     }
   }
 
@@ -126,6 +132,7 @@ public class ChoosedWordMB : MonoBehaviour
     foreach (var ch in _charsGameObject)
     {
       ch.gameObject.SetActive(false);
+      ch.SetDefault();
     }
     _charsGameObject.Clear();
   }

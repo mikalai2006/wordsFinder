@@ -5,7 +5,9 @@ using UnityEngine.UI;
 public class ChoosedCharMB : MonoBehaviour
 {
   [SerializeField] private TMPro.TextMeshProUGUI _charText;
-  public char charTextValue;
+  [SerializeField] public RectTransform RectTransform;
+
+  [HideInInspector] public char charTextValue;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   [SerializeField] private Image _image;
   private GameSetting _gameSetting;
@@ -22,6 +24,15 @@ public class ChoosedCharMB : MonoBehaviour
   {
     _charText.text = currentChar.ToString();
     charTextValue = currentChar;
+  }
+
+  public void SetSize(float size)
+  {
+    _charText.fontSize = size;
+    RectTransform.sizeDelta = new Vector2(size, size);
+    // Debug.Log($"change position ={(1 - size) * index}::: {index}");
+    // transform.position -= new Vector3(1 - size, 0);
+    // gameObject.transform.localPosition -= new Vector3(1 - size, 0);
   }
 
   public async UniTask CheckYes(HiddenCharMB needHiddenChar, int delay)
@@ -112,7 +123,8 @@ public class ChoosedCharMB : MonoBehaviour
       elapsedTime += Time.deltaTime;
     }
     transform.localScale = initialScale;
-    SetDefault();
+    // SetDefault();
+    // gameObject.SetActive(false);
 
     await colba.AddChar();
   }
@@ -126,12 +138,12 @@ public class ChoosedCharMB : MonoBehaviour
     SetDefault();
   }
 
-  private void SetDefault()
+  public void SetDefault()
   {
+    gameObject.SetActive(false);
     _image.color = _gameSetting.bgChoosedWord;
     _charText.color = _gameSetting.textChoosedWord;
-    gameObject.SetActive(false);
-    transform.localPosition = _initPosition;
+    transform.position = _initPosition;
   }
 
   public async UniTask CheckExist()

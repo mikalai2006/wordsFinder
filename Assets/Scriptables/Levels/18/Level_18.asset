@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
-  m_Name: 1_1_Word
+  m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
+  m_Name: Level_18
   m_EditorClassIdentifier: 
-  id: level.word.azbuka
-  title: "\u0430\u0437\u0431\u0443\u043A\u0430"
-  word: "\u0430\u0437\u0431\u0443\u043A\u0430"
+  id: level.18
+  title: "\u0423\u0440\u043E\u0432\u0435\u043D\u044C 18"
+  words:
+  - {fileID: 11400000, guid: 9c1bc8b1b4a66484598b0a5ddb4026fe, type: 2}

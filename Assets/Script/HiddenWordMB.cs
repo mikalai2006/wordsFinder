@@ -21,13 +21,13 @@ public class HiddenWordMB : MonoBehaviour
     Chars = new List<HiddenCharMB>();
   }
 
-  public void DrawWord(string word)
+  public void DrawWord(string word, List<GridNode> nodes)
   {
-    var _size = 0.6f;
-    gameObject.transform.localPosition = new Vector3(-3, _managerHiddenWords.hiddenWords.Count * _size, 0);
+    var _size = 1f;
+    // gameObject.transform.localPosition = new Vector3(-3, _managerHiddenWords.hiddenWords.Count * _size, 0);
 
     _word = word;
-    ResetWord();
+    // ResetWord();
     for (int i = 0; i < word.Length; i++)
     {
       var newChar = GameObject.Instantiate(
@@ -36,23 +36,25 @@ public class HiddenWordMB : MonoBehaviour
         Quaternion.identity,
         gameObject.transform
       );
-      newChar.transform.localPosition = new Vector3(i * _size, 0, 0);
+      newChar.transform.localPosition = new Vector3(i + .5f, 0 + .5f);
+      // newChar.transform.localPosition = new Vector3(i * _size, 0, 0);
       var currentChar = word.ElementAt(i);
       // var currentCharMB = Chars.ElementAt(i);
       newChar.gameObject.SetActive(true);
       newChar.SetValue(currentChar);
       newChar.SetSize(_size);
       Chars.Add(newChar);
+      nodes[i].SetOccupiedChar(newChar, this);
     }
   }
 
-  private void ResetWord()
-  {
-    // foreach (var ch in _chars)
-    // {
-    //   ch.gameObject.SetActive(false);
-    // }
-  }
+  // private void ResetWord()
+  // {
+  //   // foreach (var ch in _chars)
+  //   // {
+  //   //   ch.gameObject.SetActive(false);
+  //   // }
+  // }
   public void ShowWord()
   {
     foreach (var charObj in Chars)

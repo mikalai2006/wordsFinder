@@ -16,6 +16,9 @@ MonoBehaviour:
   PrefabSymbol: {fileID: 7149879278780047571, guid: e7419d168977efa48a744d43a95bae4e, type: 3}
   GameLevels:
   - {fileID: 11400000, guid: 24217bf6c33950a4dbe5303b70b57dbd, type: 2}
+  - {fileID: 11400000, guid: 18b5b81bbe7381b4eace039097ab4a9e, type: 2}
+  - {fileID: 11400000, guid: 2fa2acd237d62e7458c2486606a0cea6, type: 2}
+  - {fileID: 11400000, guid: 6a737ba3af0faa54cb26bef413c7f31a, type: 2}
   bgHiddenWord: {r: 0.26666668, g: 0.1137255, b: 0.04705883, a: 1}
   bgOpentHiddenWord: {r: 0.33333334, g: 0.6117647, b: 0.1254902, a: 1}
   textOpentHiddenWord: {r: 0.23529412, g: 0.07058824, b: 0, a: 1}
@@ -34,5 +37,5 @@ MonoBehaviour:
   bgColorChooseChar: {r: 0.9960785, g: 0.7254902, b: 0.1764706, a: 1}
   bgColor: {r: 0.36078432, g: 0.43529412, b: 0.15294118, a: 1}
   lineWidth: 0.15
-  radius: 2
+  radius: 2.5
   timeDelayOverChar: 150

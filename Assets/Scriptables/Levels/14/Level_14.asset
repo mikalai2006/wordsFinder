@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
+  m_Name: Level_14
+  m_EditorClassIdentifier: 
+  id: level.14
+  title: "\u0423\u0440\u043E\u0432\u0435\u043D\u044C 14"
+  words:
+  - {fileID: 11400000, guid: d672193eae9118941b10f5c13ac501a5, type: 2}
