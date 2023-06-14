@@ -1,24 +1,18 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class WordMB : MonoBehaviour
+public class ChoosedWordMB : MonoBehaviour
 {
-  [SerializeField] private CharMB charMB;
+  [SerializeField] private ChoosedCharMB charMB;
   private LevelManager _dataManager = LevelManager.Instance;
-  private List<CharMB> _chars;
-  private List<CharMB> _charsGameObject;
-  //   private InputManager _inputManager;
-  //   private Camera _camera;
-  //   [SerializeField] private Collider2D _collider;
+  private List<ChoosedCharMB> _chars;
+  private List<ChoosedCharMB> _charsGameObject;
 
   private void Awake()
   {
-    _chars = new List<CharMB>();
+    _chars = new List<ChoosedCharMB>();
     for (int i = 0; i < 20; i++)
     {
       var newChar = GameObject.Instantiate(
@@ -52,18 +46,18 @@ public class WordMB : MonoBehaviour
     }
   }
 
-  public async UniTask openWord(HiddenWordMB hiddenWordMB)
+  public async UniTask OpenHiddenWord(HiddenWordMB hiddenWordMB)
   {
     List<UniTask> listTasks = new();
     for (int i = 0; i < _charsGameObject.Count; i++)
     {
       var currentCharMB = _charsGameObject.ElementAt(i);
 
-      var needHiddenChar = hiddenWordMB.Chars.Find(t => t.charTextValue == currentCharMB.charTextValue);
+      var needHiddenChar = hiddenWordMB.Chars.ElementAt(i); //]Find(t => t.charTextValue == currentCharMB.charTextValue);
 
       if (needHiddenChar == null) continue;
 
-      listTasks.Add(currentCharMB.CheckYes(needHiddenChar));
+      listTasks.Add(currentCharMB.CheckYes(needHiddenChar, i * (100 / (i + 1) + i * 10)));
     }
     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.openWord);
     await UniTask.WhenAll(listTasks);
@@ -94,7 +88,7 @@ public class WordMB : MonoBehaviour
     {
       var currentCharMB = _charsGameObject.ElementAt(i);
 
-      listTasks.Add(currentCharMB.CheckPotentialYes(colba, i * (50 + i * 10)));
+      listTasks.Add(currentCharMB.OpenCharAllowWord(colba, i * (50 + i * 10)));
     }
     await UniTask.WhenAll(listTasks);
   }

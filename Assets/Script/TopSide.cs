@@ -46,7 +46,7 @@ public class TopSide : MonoBehaviour
     SetDefault();
   }
 
-  public void SetValue(DataState data)
+  public void SetValue(DataGame data)
   {
     Debug.Log($"TopSide setValue {data.rate}");
     _rate.text = data.rate.ToString();

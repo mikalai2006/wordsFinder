@@ -1,8 +1,6 @@
 using System;
 
 using Cysharp.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 
 namespace Loader
@@ -14,12 +12,10 @@ namespace Loader
 
       await LocalizationSettings.InitializationOperation;
 
-      // var t = new LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, "loading").GetLocalizedStringAsync();
-      // await t.Task;
       var t = await Helpers.GetLocaleString("loading");
       onSetNotify?.Invoke(t);
 
-      onProgress?.Invoke(0.1f);
+      onProgress?.Invoke(0.9f);
 
       var environment = await GameManager.Instance.AssetProvider.LoadAsset("UIMenuApp");
 
@@ -28,7 +24,7 @@ namespace Loader
 
       component.Init(environment);
 
-      onProgress?.Invoke(.9f);
+      onProgress?.Invoke(1f);
 
     }
   }

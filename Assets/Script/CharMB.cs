@@ -1,124 +1,144 @@
-using System;
-using System.Collections;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class CharMB : MonoBehaviour
+public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
   [SerializeField] private TMPro.TextMeshProUGUI _charText;
+  private InputManager _inputManager;
+  private Camera _camera;
   public char charTextValue;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
+  private GameSetting _gameSettings => GameManager.Instance.GameSettings;
+  [SerializeField] private Collider2D _collider;
   [SerializeField] private Image _image;
-  private GameSetting _gameSetting;
-  private Vector3 _initPosition;
+  [SerializeField] private RectTransform _canvas;
+  private CancellationTokenSource cancelTokenSource;
 
-  public void Start()
+  private void OnEnable()
   {
-    _gameSetting = GameManager.Instance.GameSettings;
-    _initPosition = gameObject.transform.position;
-    SetDefault();
+    _inputManager = new InputManager();
+    _inputManager.Click += OnClick;
+    _inputManager.Enable();
   }
 
-  public void SetValue(char currentChar)
+  private void OnDisable()
   {
-    _charText.text = currentChar.ToString();
-    charTextValue = currentChar;
+    _inputManager.Click -= OnClick;
+    _inputManager.Disable();
   }
 
-  public async UniTask CheckYes(HiddenCharMB needHiddenChar)
+  private void Awake()
   {
-    _image.color = _gameSetting.colorWordSymbolYes;
+    _camera = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<Camera>();
+    ResetObject();
+  }
 
-    Vector3 initialScale = transform.localScale;
-    Vector3 upScale = new Vector3(0.4f, 0.4f, 0f);
-    var duration = .5f;
-    float elapsedTime = 0f;
+  public void ResetObject()
+  {
+    _image.color = _gameSettings.bgColorChar;
+    _charText.color = _gameSettings.colorTextChar;
+  }
 
-    while (elapsedTime < duration)
+
+  public void Init(char symbol)
+  {
+    _charText.text = symbol.ToString();
+    charTextValue = symbol;
+  }
+
+  public void SetSize(float size)
+  {
+    _charText.fontSize = size;
+    _canvas.sizeDelta = new Vector2(size, size);
+  }
+
+  public async void OnClick(InputAction.CallbackContext context)
+  {
+    if (context.performed)
     {
-      // float progress = Mathf.PingPong(time, duration) / duration;
-      float progress = elapsedTime / duration;
-      transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
-      transform.position = Vector3.Lerp(transform.position, needHiddenChar.transform.position, progress);
-      elapsedTime += Time.deltaTime;
-      await UniTask.Yield();
-    }
-    transform.localScale = initialScale;
+      var rayHit = Physics2D.GetRayIntersection(_camera.ScreenPointToRay(_inputManager.clickPosition()));
+      if (!rayHit.collider) return;
 
-    SetDefault();
+      if (rayHit.collider.gameObject == gameObject)
+      {
+        var control = context.control.ToString().Split('/');
+        _inputManager.SetDragging(true);
+        if (control[1] == "Mouse")
+        {
+          cancelTokenSource = new CancellationTokenSource();
+          StartWaitDelay(cancelTokenSource.Token).Forget();
+        }
+      }
+    }
+    else if (context.canceled && _inputManager.Dragging)
+    {
+      _inputManager.SetDragging(false);
+      await _levelManager.ManagerHiddenWords.CheckChoosedWord();
+    }
   }
 
-  public async UniTask CheckPotentialYes(Colba colba, int delay)
+  public void OnPointerEnter(PointerEventData eventData)
   {
-    _image.color = _gameSetting.colorChooseSymbol;
-    await UniTask.Delay(delay);
+    if (_inputManager.Dragging)
+    {
+      cancelTokenSource = new CancellationTokenSource();
+      StartWaitDelay(cancelTokenSource.Token).Forget();
+    }
+  }
 
-    Vector3 initialScale = transform.localScale;
+  public void OnPointerExit(PointerEventData eventData)
+  {
+    if (_inputManager.Dragging)
+    {
+      StopWaitDelay();
+    }
+  }
+
+  private void StopWaitDelay()
+  {
+    cancelTokenSource.Cancel();
+    cancelTokenSource.Dispose();
+  }
+
+  public async UniTask StartWaitDelay(CancellationToken cancellationToken)
+  {
+    if (_levelManager.ManagerHiddenWords.listChoosedGameObjects.Count != 0)
+    {
+      await UniTask.Delay(_gameSettings.timeDelayOverChar, cancellationToken: cancellationToken);
+    }
+
+    if (!cancellationToken.IsCancellationRequested)
+    {
+      ChooseSymbol();
+    }
+  }
+
+  private void ChooseSymbol()
+  {
+    _levelManager.ManagerHiddenWords.AddChoosedChar(this);
+    _image.color = _gameSettings.bgColorChooseChar;
+    _charText.color = _gameSettings.colorTextChooseChar;
+  }
+
+  public async UniTask SetPosition(Vector3 newPos)
+  {
     Vector3 initialPosition = transform.position;
-    Vector3 upScale = new Vector3(0.5f, 0.5f, 0);
 
     float elapsedTime = 0f;
-    float duration = .5f;
+    float duration = .2f;
     float startTime = Time.time;
 
     while (elapsedTime < duration)
     {
-      // The center of the arc
-      Vector3 center = (initialPosition + colba.gameObject.transform.position) * 0.5F;
-
-      // move the center a bit downwards to make the arc vertical
-      center -= new Vector3(0, 1, 0);
-      // Interpolate over the arc relative to center
-      Vector3 riseRelCenter = initialPosition - center;
-      Vector3 setRelCenter = colba.gameObject.transform.position - center;
-
-      float progress = (Time.time - startTime) / duration; //elapsedTime / duration;
-      transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
-      transform.position = Vector3.Slerp(riseRelCenter, setRelCenter, progress);
-      transform.position += center;
+      float progress = (Time.time - startTime) / duration;
+      transform.position = Vector3.Lerp(initialPosition, newPos, progress);
       await UniTask.Yield();
       elapsedTime += Time.deltaTime;
     }
-    transform.localScale = initialScale;
-    SetDefault();
-
-    await colba.AddChar();
-  }
-
-  public async UniTask CheckNo()
-  {
-    _image.color = _gameSetting.colorWordSymbolNo;
-
-    await UniTask.Delay(300); // yield return new WaitForSeconds(.3f);
-
-    SetDefault();
-  }
-
-  private void SetDefault()
-  {
-    _image.color = _gameSetting.colorWordSymbol;
-    gameObject.SetActive(false);
-    transform.localPosition = _initPosition;
-  }
-
-  public async UniTask CheckExist(HiddenCharMB needHiddenChar)
-  {
-    Vector3 initialScale = transform.localScale;
-    Vector3 upScale = new Vector3(1.5f, 1.5f, 0f);
-    var duration = .5f;
-    float elapsedTime = 0f;
-
-    while (elapsedTime < duration)
-    {
-      // float progress = Mathf.PingPong(time, duration) / duration;
-      float progress = elapsedTime / duration;
-      transform.localScale = Vector3.Slerp(initialScale, upScale, progress);
-      elapsedTime += Time.deltaTime;
-      await UniTask.Yield();
-    }
-    transform.localScale = initialScale;
-
-    SetDefault();
+    transform.position = newPos;
   }
 }

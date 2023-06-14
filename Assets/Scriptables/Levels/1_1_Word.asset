@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
-  m_Name: GameLevels
+  m_Name: 1_1_Word
   m_EditorClassIdentifier: 
-  Levels:
-  - {fileID: 11400000, guid: 24217bf6c33950a4dbe5303b70b57dbd, type: 2}
+  id: level.word.azbuka
+  title: "\u0430\u0437\u0431\u0443\u043A\u0430"
+  word: "\u0430\u0437\u0431\u0443\u043A\u0430"

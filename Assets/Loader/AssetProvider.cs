@@ -58,13 +58,4 @@ public class AssetProvider : ILoadingOperation
     var op = Addressables.ReleaseInstance(obj);
     // await op.Task;
   }
-  //public async UniTask<IList<IResourceLocation>> LoadGroupByLabel(string label)
-  //{
-  //    var handle = Addressables.LoadResourceLocationsAsync(label);
-  //    var _cachedObject = await handle.Task;
-  //    if (_cachedObject.Count == 0)
-  //        throw new NullReferenceException($"Object of type IResourceLocation is null on " +
-  //                                         "attempt to load it from addressables");
-  //    return _cachedObject;
-  //}
 }

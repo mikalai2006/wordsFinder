@@ -27,7 +27,7 @@ namespace User
       _onProgress?.Invoke(0.1f);
       _appInfoContainer.UserInfo = await GetUserInfo(DeviceInfo.GetDeviceId());
 
-      _onProgress?.Invoke(.2f);
+      _onProgress?.Invoke(.4f);
     }
 
     private async UniTask<UserInfoContainer> GetUserInfo(string deviceId)

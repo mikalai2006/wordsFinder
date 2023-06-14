@@ -96,16 +96,15 @@ public class GameManager : StaticInstance<GameManager>
     var operations = new Queue<ILoadingOperation>();
     operations.Enqueue(new GameInitOperation());
     await LoadingScreenProvider.LoadAndDestroy(operations);
-    LevelManager.CreateLevel();
+    // LevelManager.CreateLevel();
   }
   private async void HandleLoadLevel()
   {
     var operations = new Queue<ILoadingOperation>();
     operations.Enqueue(new GameInitOperation());
     await LoadingScreenProvider.LoadAndDestroy(operations);
-    var dataGame = DataManager.Load();
-    LevelManager.LoadLevel();
-    StateManager.LoadState(dataGame);
+    //var dataGame = DataManager.Load();
+    // LevelManager.LoadLevel();
   }
 }
 

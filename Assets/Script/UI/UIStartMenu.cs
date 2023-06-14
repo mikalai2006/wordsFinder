@@ -19,12 +19,14 @@ public class UIStartMenu : UILocaleBase
   {
     UISettings.OnChangeLocale += ChangeLocale;
     GameManager.OnAfterStateChanged += AfterStateChanged;
+    LevelManager.OnInitLevel += HideMenu;
   }
 
   private void OnDestroy()
   {
     UISettings.OnChangeLocale -= ChangeLocale;
     GameManager.OnAfterStateChanged -= AfterStateChanged;
+    LevelManager.OnInitLevel -= HideMenu;
   }
 
   private void AfterStateChanged(GameState state)
@@ -65,10 +67,13 @@ public class UIStartMenu : UILocaleBase
     base.Localize(_uiDoc.rootVisualElement);
   }
 
-  private void ClickLoadGameButton()
+  private async void ClickLoadGameButton()
   {
-    _menu.style.display = DisplayStyle.None;
-    GameManager.Instance.ChangeState(GameState.LoadLevel);
+    // HideMenu();
+    // GameManager.Instance.ChangeState(GameState.LoadLevel);
+
+    var dialogWindow = new UILevelsOperation();
+    var result = await dialogWindow.ShowAndHide();
   }
 
   private void HideMenu()

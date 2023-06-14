@@ -13,6 +13,8 @@ public abstract class UILocaleBase : MonoBehaviour
   private VisualElement _box;
 
   private List<LocalizeObj> _elementList;
+  protected GameManager _gameManager => GameManager.Instance;
+  protected GameSetting _gameSettings => GameManager.Instance.GameSettings;
 
   public void Localize(VisualElement root = null)
   {

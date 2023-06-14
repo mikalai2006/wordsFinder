@@ -49,7 +49,7 @@ public class Shuffle : MonoBehaviour, IPointerDownHandler
     var existChars = _levelManager.Symbols;
 
     // get all positions.
-    Dictionary<SymbolMB, char> existPositionsChars = new();
+    Dictionary<CharMB, char> existPositionsChars = new();
     for (int i = 0; i < existChars.Count; i++)
     {
       existPositionsChars.Add(existChars[i], existChars[i].charTextValue);

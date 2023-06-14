@@ -2,53 +2,66 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-[Serializable]
-public struct DataState
-{
-  public int countOpenChars;
-  public int countOpenWords;
-  public int countAllowWords;
-  public int rate;
-
-}
 public class StateManager : MonoBehaviour
 {
-  public DataState dataState;
-  public static event Action<DataState> OnChangeState;
+  // public DataState dataState;
+  public DataGame dataGame;
+  public GameLevel ActiveLevelConfig;
+  public static event Action<DataGame> OnChangeState;
 
   public LevelManager _levelManager => GameManager.Instance.LevelManager;
 
   private void Awake()
   {
     // ManagerHiddenWords.OnChangeData += RefreshData;
-    // DataManager.OnLoadData += LoadState;
 
   }
 
   private void OnDestroy()
   {
-    // DataManager.OnLoadData -= LoadState;
     // ManagerHiddenWords.OnChangeData -= RefreshData;
   }
 
-  private void RefreshData()
+  public void RefreshData()
   {
-    dataState.countOpenWords = _levelManager.ManagerHiddenWords.OpenPotentialWords.Count;
-    dataState.countOpenChars = _levelManager.ManagerHiddenWords.OpenPotentialWords.Keys.Select(t => t.Length).Sum();
-    dataState.countAllowWords = _levelManager.ManagerHiddenWords.PotentialWords.Count;
+    dataGame.activeLevel.wordForChars = _levelManager.ManagerHiddenWords.WordForChars;
+    dataGame.activeLevel.openWords = _levelManager.ManagerHiddenWords.OpenPotentialWords.Keys.ToList();
+    // dataGame.activeLevel.openHiddenWords = _levelManager.ManagerHiddenWords.OpenHiddenWords.Keys.ToList();
+    dataGame.activeLevel.countWords = _levelManager.ManagerHiddenWords.PotentialWords.Count;
+    dataGame.activeLevel.hiddenWords = _levelManager.ManagerHiddenWords.hiddenWords.Keys.ToList();
+    dataGame.activeLevel.countOpenChars = _levelManager.ManagerHiddenWords.OpenPotentialWords.Select(t => t.Key.Length).Sum();
 
-    OnChangeState.Invoke(dataState);
+    OnChangeState.Invoke(dataGame);
   }
 
   public void AddWord()
   {
-    dataState.rate++;
+    dataGame.rate++;
     RefreshData();
+  }
+
+  public void SetActiveLevel(GameLevel levelConfig, GameLevelWord wordConfig)
+  {
+    ActiveLevelConfig = levelConfig;
+    dataGame.lastActiveLevelId = levelConfig.id;
+    if (dataGame.Levels.Find(t => t.id == levelConfig.id && t.idWord == wordConfig.id) == null)
+    {
+      dataGame.Levels.Add(new DataLevel()
+      {
+        id = levelConfig.id,
+        idWord = wordConfig.id
+      });
+    }
+    var indexActiveLevel = dataGame.Levels.FindIndex(t => t.id == levelConfig.id && t.idWord == wordConfig.id);
+    dataGame.activeLevel = dataGame.Levels.ElementAt(indexActiveLevel);
   }
 
   public void LoadState(DataGame data)
   {
-    dataState = data.dataState;
-    OnChangeState.Invoke(dataState);
+    if (data == null)
+    {
+      data = new DataGame();
+    }
+    dataGame = data;
   }
 }

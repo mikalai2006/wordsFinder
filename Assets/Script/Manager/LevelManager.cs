@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -6,11 +7,12 @@ using Random = UnityEngine.Random;
 
 public class LevelManager : Singleton<LevelManager>
 {
+  public static event Action OnInitLevel;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   [Header("File Storage Config")]
   public ManagerHiddenWords ManagerHiddenWords;
-  private List<SymbolMB> _symbols;
-  public List<SymbolMB> Symbols => _symbols;
+  private List<CharMB> _symbols;
+  public List<CharMB> Symbols => _symbols;
   public GameObject SymbolsField;
   protected override void Awake()
   {
@@ -18,39 +20,50 @@ public class LevelManager : Singleton<LevelManager>
     _symbols = new();
   }
 
-  public void LoadLevel()
-  {
-    LoadNeedWords();
-    CreateSymbols(ManagerHiddenWords.WordForChars);
-  }
+  //   public void LoadLevel(DataLevel data)
+  //   {
+  // #if UNITY_EDITOR
+  //     System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+  //     stopWatch.Start();
+  // #endif
 
-  public void LoadNeedWords()
-  {
-    var data = GameManager.Instance.DataManager.DataGame;
+  //     ManagerHiddenWords.LoadWords(data);
+  //     CreateSymbols(ManagerHiddenWords.WordForChars);
 
-    ManagerHiddenWords.LoadWords(data);
-  }
+  // #if UNITY_EDITOR
+  //     stopWatch.Stop();
+  //     System.TimeSpan timeTaken = stopWatch.Elapsed;
+  //     Debug.LogWarning($"Load Level by time {timeTaken.ToString(@"m\:ss\.ffff")}");
+  // #endif
+  //   }
 
-  public void CreateLevel()
+  public void InitLevel(GameLevel levelConfig, GameLevelWord wordConfig)
   {
-    CreateNeedWords();
-    CreateSymbols(ManagerHiddenWords.WordForChars);
+    OnInitLevel?.Invoke();
+
+#if UNITY_EDITOR
+    System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+    stopWatch.Start();
+#endif
+
+    GameManager.Instance.StateManager.SetActiveLevel(levelConfig, wordConfig);
+
+    ManagerHiddenWords.Init(levelConfig, wordConfig);
+
+    GameManager.Instance.StateManager.RefreshData();
+
+    CreateChars(ManagerHiddenWords.WordForChars);
+
     GameManager.Instance.DataManager.Save();
+
+#if UNITY_EDITOR
+    stopWatch.Stop();
+    System.TimeSpan timeTaken = stopWatch.Elapsed;
+    Debug.LogWarning($"Init Level by time {timeTaken.ToString(@"m\:ss\.ffff")}");
+#endif
   }
 
-  public void CreateNeedWords()
-  {
-    // find all allow words.
-    var potentialWords = GameManager.Instance.Words.data
-      .Where(t => t.Length <= _gameSetting.GameLevels.Levels[0].maxCountChar)
-      .OrderBy(t => Random.value)
-      .ToList();
-
-    // create hidden words.
-    ManagerHiddenWords.CreateWords(potentialWords);
-  }
-
-  public void CreateSymbols(string str)
+  public void CreateChars(string str)
   {
     float baseRadius = GameManager.Instance.GameSettings.radius;
     var countCharGO = str.ToArray();
@@ -87,7 +100,7 @@ public class LevelManager : Singleton<LevelManager>
 
     await ResetSymbols();
 
-    CreateLevel();
+    // CreateLevel();
 
     await UniTask.Yield();
   }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using User;
-// using Login;
 using Loader;
 
 public class StartApp : MonoBehaviour
@@ -17,9 +16,10 @@ public class StartApp : MonoBehaviour
     var loadingOperations = new Queue<ILoadingOperation>();
     loadingOperations.Enqueue(GameManager.Instance.AssetProvider);
     loadingOperations.Enqueue(new LoginOperation(appInfo));
+    loadingOperations.Enqueue(new LoadConfigOperation());
     loadingOperations.Enqueue(new UIAppOperation());
     GameManager.Instance.AppInfo = appInfo;
     await loadingProvider.LoadAndDestroy(loadingOperations);
-    GameManager.Instance.DataManager.Init();
+
   }
 }

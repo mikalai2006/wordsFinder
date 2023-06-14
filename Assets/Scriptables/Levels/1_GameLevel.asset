@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
   m_Name: 1_GameLevel
   m_EditorClassIdentifier: 
-  countWord: 3
+  id: level.first
+  title: "\u041F\u0440\u043E\u043B\u043E\u0433"
+  countWord: 10
   maxCountChar: 10
+  words:
+  - {fileID: 11400000, guid: b11b25ec96e23f04c94146c89136ec4c, type: 2}
+  - {fileID: 11400000, guid: e63d77b2bbef9e241b6e0e32333480ab, type: 2}

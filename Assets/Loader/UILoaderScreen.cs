@@ -78,7 +78,7 @@ public class UILoaderScreen : MonoBehaviour
 
     foreach (var operation in loadingOperations)
     {
-      ResetFill();
+      //ResetFill();
       // progressBarText.text = operation.Description;
 
       //Debug.Log($"Login {JsonUtility.ToJson(result)} ");
@@ -88,11 +88,11 @@ public class UILoaderScreen : MonoBehaviour
     progressBarSection.visible = false;
   }
 
-  private void ResetFill()
-  {
-    _targetProgress = 0f;
-    _progressFill = 0f;
-  }
+  // private void ResetFill()
+  // {
+  //   _targetProgress = 0f;
+  //   _progressFill = 0f;
+  // }
 
   private void OnProgress(float progress)
   {

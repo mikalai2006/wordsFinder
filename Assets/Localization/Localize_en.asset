@@ -72,6 +72,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 366247623133495314
+  - m_Id: 662165112651776
+    m_Localized: Load config game
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

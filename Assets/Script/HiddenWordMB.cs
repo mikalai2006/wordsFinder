@@ -57,7 +57,7 @@ public class HiddenWordMB : MonoBehaviour
   {
     foreach (var charObj in Chars)
     {
-      StartCoroutine(charObj.ShowChar());
+      charObj.ShowChar().Forget();
     }
   }
 

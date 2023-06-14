@@ -67,6 +67,10 @@ MonoBehaviour:
     m_Key: countword
     m_Metadata:
       m_Items: []
+  - m_Id: 662165112651776
+    m_Key: loadconfig
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

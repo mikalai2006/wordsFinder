@@ -1,10 +1,10 @@
 using System;
-using System.Linq;
+// using System.Linq;
 using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
-  public static event Action<DataGame> OnLoadData;
+  // public static event Action<DataGame> OnLoadData;
   [Header("File Storage Config")]
   [SerializeField] private string fileNameGame;
   [SerializeField] private string fileNameMap;
@@ -29,9 +29,8 @@ public class DataManager : Singleton<DataManager>
 
   public DataGame Load()
   {
-
     _dataGame = _fileDataHandler.LoadData();
-    OnLoadData?.Invoke(_dataGame);
+    // OnLoadData?.Invoke(_dataGame);
     return _dataGame;
   }
 
@@ -39,13 +38,14 @@ public class DataManager : Singleton<DataManager>
   {
     New();
     var levelManager = GameManager.Instance.LevelManager;
-    _dataGame.Level = 1;
-    _dataGame.potentialWords = levelManager.ManagerHiddenWords.PotentialWords.Keys.ToList();
-    _dataGame.openHiddenWords = levelManager.ManagerHiddenWords.OpenHiddenWords.Keys.ToList();
-    _dataGame.openPotentialWords = levelManager.ManagerHiddenWords.OpenPotentialWords.Keys.ToList();
-    _dataGame.hiddenWords = levelManager.ManagerHiddenWords.hiddenWords.Keys.ToList();
-    _dataGame.wordForChars = levelManager.ManagerHiddenWords.WordForChars;
-    _dataGame.dataState = GameManager.Instance.StateManager.dataState;
+    // _dataGame.Level = 1;
+    // _dataGame.potentialWords = levelManager.ManagerHiddenWords.PotentialWords.Keys.ToList();
+    // _dataGame.openHiddenWords = levelManager.ManagerHiddenWords.OpenHiddenWords.Keys.ToList();
+    // _dataGame.openPotentialWords = levelManager.ManagerHiddenWords.OpenPotentialWords.Keys.ToList();
+    // _dataGame.hiddenWords = levelManager.ManagerHiddenWords.hiddenWords.Keys.ToList();
+    // _dataGame.wordForChars = levelManager.ManagerHiddenWords.WordForChars;
+    // _dataGame.dataState = GameManager.Instance.StateManager.dataState;
+    _dataGame = GameManager.Instance.StateManager.dataGame;
 
     _fileDataHandler.SaveData(_dataGame);
   }

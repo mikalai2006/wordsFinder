@@ -49,11 +49,11 @@ public class Colba : MonoBehaviour
     SetDefault();
   }
 
-  public async void SetValue(DataState data)
+  public async void SetValue(DataGame data)
   {
     var dataPlural = new Dictionary<string, int> {
-      {"count", data.countOpenWords},
-      {"count2", data.countAllowWords},
+      {"count",  data.activeLevel.openWords.Count},
+      {"count2", data.activeLevel.countWords},
     };
     var arguments = new[] { dataPlural };
     var textCountWords = await Helpers.GetLocalizedPluralString(
@@ -63,7 +63,7 @@ public class Colba : MonoBehaviour
         );
 
     _countWords.text = textCountWords;
-    _countChars.text = data.countOpenChars.ToString();
+    _countChars.text = data.activeLevel.countOpenChars.ToString();
   }
 
   private void SetDefault()

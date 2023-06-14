@@ -32,17 +32,18 @@ public class HiddenCharMB : MonoBehaviour
   }
   private void SetDefault()
   {
-    _image.color = _gameSetting.colorWordSymbol;
-    _image.sprite = _gameSetting.bgChar;
+    _image.color = _gameSetting.bgHiddenWord;
+    _image.sprite = _gameSetting.bgImageHiddenWord;
     _charText.gameObject.SetActive(false);
   }
   public void Open()
   {
-    _image.color = _gameSetting.colorWordSymbolYes;
-    _image.sprite = _gameSetting.bgChar;
+    _image.color = _gameSetting.bgOpentHiddenWord;
+    _image.sprite = _gameSetting.bgImageHiddenWord;
+    _charText.color = _gameSetting.textOpentHiddenWord;
     _charText.gameObject.SetActive(true);
   }
-  public IEnumerator ShowChar()
+  public async UniTask ShowChar()
   {
     Vector3 initialScale = transform.localScale;
 
@@ -57,7 +58,7 @@ public class HiddenCharMB : MonoBehaviour
     // }
     // gameObject.transform.localScale = new Vector3(-1, 1, 1);
     Open();
-    yield return new WaitForSeconds(0.01f);
+    await UniTask.Yield();
   }
 
   public async UniTask FocusOpenChar()
