@@ -63,7 +63,7 @@ public class ChoosedWordMB : MonoBehaviour
 
       if (needHiddenChar == null) continue;
 
-      listTasks.Add(currentCharMB.CheckYes(needHiddenChar, i * (100 / (i + 1) + i * 10)));
+      listTasks.Add(currentCharMB.OpenHiddenChar(needHiddenChar, i * (50 + i * 10)));
     }
     await UniTask.WhenAll(listTasks);
   }

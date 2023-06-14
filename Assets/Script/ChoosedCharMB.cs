@@ -12,11 +12,13 @@ public class ChoosedCharMB : MonoBehaviour
   [SerializeField] private Image _image;
   private GameSetting _gameSetting;
   private Vector3 _initPosition;
+  private Vector3 _initScale;
 
   public void Start()
   {
     _gameSetting = GameManager.Instance.GameSettings;
     _initPosition = gameObject.transform.position;
+    _initScale = gameObject.transform.localScale;
     SetDefault();
   }
 
@@ -30,12 +32,9 @@ public class ChoosedCharMB : MonoBehaviour
   {
     _charText.fontSize = size;
     RectTransform.sizeDelta = new Vector2(size, size);
-    // Debug.Log($"change position ={(1 - size) * index}::: {index}");
-    // transform.position -= new Vector3(1 - size, 0);
-    // gameObject.transform.localPosition -= new Vector3(1 - size, 0);
   }
 
-  public async UniTask CheckYes(HiddenCharMB needHiddenChar, int delay)
+  public async UniTask OpenHiddenChar(HiddenCharMB needHiddenChar, int delay)
   {
     _image.color = _gameSetting.bgFindHiddenWord;
     _charText.color = _gameSetting.textFindHiddenWord;
@@ -67,27 +66,11 @@ public class ChoosedCharMB : MonoBehaviour
       await UniTask.Yield();
       elapsedTime += Time.deltaTime;
     }
-    transform.localScale = initialScale;
+    // transform.localScale = initialScale;
     needHiddenChar.ShowChar().Forget();
 
+    transform.localScale = new Vector3(0, 0, 0);
     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.openWord);
-    // Vector3 initialScale = transform.localScale;
-    // Vector3 upScale = new Vector3(0.4f, 0.4f, 0f);
-    // var duration = .5f;
-    // float elapsedTime = 0f;
-
-    // while (elapsedTime < duration)
-    // {
-    //   // float progress = Mathf.PingPong(time, duration) / duration;
-    //   float progress = elapsedTime / duration;
-    //   transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
-    //   transform.position = Vector3.Lerp(transform.position, needHiddenChar.transform.position, progress);
-    //   elapsedTime += Time.deltaTime;
-    //   await UniTask.Yield();
-    // }
-    // transform.localScale = initialScale;
-
-    SetDefault();
   }
 
   public async UniTask OpenCharAllowWord(Colba colba, int delay)
@@ -122,7 +105,7 @@ public class ChoosedCharMB : MonoBehaviour
       await UniTask.Yield();
       elapsedTime += Time.deltaTime;
     }
-    transform.localScale = initialScale;
+    transform.localScale = new Vector3(0, 0, 0);
     // SetDefault();
     // gameObject.SetActive(false);
 
@@ -133,7 +116,7 @@ public class ChoosedCharMB : MonoBehaviour
   {
     _image.color = _gameSetting.bgNotFoundWord;
 
-    await UniTask.Delay(300); // yield return new WaitForSeconds(.3f);
+    await UniTask.Delay(300);
 
     SetDefault();
   }
@@ -144,6 +127,7 @@ public class ChoosedCharMB : MonoBehaviour
     _image.color = _gameSetting.bgChoosedWord;
     _charText.color = _gameSetting.textChoosedWord;
     transform.position = _initPosition;
+    transform.localScale = _initScale;
   }
 
   public async UniTask CheckExist()

@@ -28,7 +28,7 @@ MonoBehaviour:
   bgFindAllowWord: {r: 1, g: 0.8039216, b: 0, a: 1}
   textFindAllowWord: {r: 0, g: 0, b: 0, a: 1}
   bgFindHiddenWord: {r: 0.33333334, g: 0.6117647, b: 0.1254902, a: 1}
-  textFindHiddenWord: {r: 0, g: 0, b: 0, a: 0}
+  textFindHiddenWord: {r: 0.23529412, g: 0.07058824, b: 0, a: 1}
   bgNotFoundWord: {r: 1, g: 0.5882353, b: 0.5882353, a: 1}
   textNotFoundWord: {r: 0, g: 0, b: 0, a: 0}
   colorTextChar: {r: 0.23529412, g: 0.07058824, b: 0, a: 1}
