@@ -21,6 +21,11 @@ public class GridNode
   public HiddenCharMB OccupiedChar;
   public HiddenWordMB Word;
 
+  public GridNode TopNode => _gridHelper.GetNode(x, y + 1);
+  public GridNode BottomNode => _gridHelper.GetNode(x, y - 1);
+  // public GridNode LeftNode => _gridHelper.GetNode(x - 1, y);
+  // public GridNode RightNode => _gridHelper.GetNode(x + 1, y);
+
   public GridNode(Grid<GridNode> grid, GridHelper gridHelper, int x, int y)
   {
     _grid = grid;
@@ -36,5 +41,6 @@ public class GridNode
     OccupiedChar = _occupiedChar;
     Word = _word;
     StateNode |= StateNode.Occupied;
+    _occupiedChar.OccupiedNode = this;
   }
 }

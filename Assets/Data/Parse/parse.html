@@ -30,15 +30,21 @@
 
     console.log("type text = ", typeof text);
 
-    var allWords = text.split("\r\n");
+    var allWords = text.split("\n");
 
-    var jsonDataWords = [];
+    const hashMap = new Map();
     allWords.forEach((word) => {
-      if (word.split("").indexOf("-") > 0 || jsonDataWords.indexOf(word) > 0) {
+      var w = word.replace(/['"]+/g, "").trim();
+      if (w.indexOf("-") > 0 || hashMap.has(w)) {
       } else {
-        jsonDataWords.push(word);
+        if (!hashMap.has(w)) {
+          hashMap.set(w, w);
+        }
       }
     });
+
+    var jsonDataWords = [...hashMap.keys()];
+    console.log(jsonDataWords);
 
     var allowWords = jsonDataWords.filter((t) => t.length < 20);
     var allowWordsObj = [];
@@ -48,7 +54,7 @@
         obj: charsCount(allowWords[i]),
       });
     }
-    // console.log(allowWordsObj);
+    console.log(allowWordsObj);
 
     let arrayWords = [];
     for (let i = 0; i < allowWordsObj.length; i++) {
@@ -80,11 +86,9 @@
     var arrayWords2 = arrayWords.sort(compare);
     console.log(arrayWords2);
 
-    console.log(jsonDataWords);
-
     console.timeEnd();
     return text;
   };
 
-  logFileText("rawdata.txt");
+  logFileText("rawdata.csv");
 </script>

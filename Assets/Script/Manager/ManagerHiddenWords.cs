@@ -9,7 +9,7 @@ public class ManagerHiddenWords : MonoBehaviour
   // public static event Action OnChangeData;
   [SerializeField] private Tilemap _tilemap;
   [SerializeField] private Grid _GridObject;
-  private GridHelper _gridHelper;
+  public GridHelper GridHelper { get; private set; }
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   [SerializeField] private LineManager _lineManager;
   public Colba colba;
@@ -58,7 +58,7 @@ public class ManagerHiddenWords : MonoBehaviour
 
     var sizeGridXY = Mathf.Max(minNeedRows, maxLengthWord);
     // Debug.Log($"Min col={wordWithMaxLength}| Need count rows={minNeedRows} | sizeGridXY={sizeGridXY}");
-    _gridHelper = new GridHelper(sizeGridXY, sizeGridXY);
+    GridHelper = new GridHelper(sizeGridXY, sizeGridXY);
 
     // Set transform grid.
     float scale = 9f / sizeGridXY;
@@ -145,7 +145,7 @@ public class ManagerHiddenWords : MonoBehaviour
   public HiddenWordMB CreateWord(string word, int index)
   {
     // find node for spawn word.
-    var nodes = _gridHelper.FindNodeForSpawnWord(word, index);
+    var nodes = GridHelper.FindNodeForSpawnWord(word, index);
 
     var newObj = GameObject.Instantiate(
           _hiddenWordMB,

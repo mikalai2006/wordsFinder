@@ -71,6 +71,13 @@ public class ChoosedCharMB : MonoBehaviour
 
     transform.localScale = new Vector3(0, 0, 0);
     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.openWord);
+
+    // open equals chars.
+    var equalsCharNodes = GameManager.Instance.LevelManager.ManagerHiddenWords.GridHelper.FindNeighboursNodesOfByEqualChar(needHiddenChar.OccupiedNode);
+    foreach (var equalCharNode in equalsCharNodes)
+    {
+      equalCharNode.OccupiedChar.ShowChar().Forget();
+    }
   }
 
   public async UniTask OpenCharAllowWord(Colba colba, int delay)

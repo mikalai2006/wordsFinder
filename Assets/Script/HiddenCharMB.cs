@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +11,7 @@ public class HiddenCharMB : MonoBehaviour
   [SerializeField] private RectTransform _canvas;
   private GameSetting _gameSetting;
   public float tickPerSecond;
+  public GridNode OccupiedNode;
 
   public void Awake()
   {

@@ -74,4 +74,28 @@ public class GridHelper
 
     return result;
   }
+
+  public List<GridNode> FindNeighboursNodesOfByEqualChar(GridNode startNode)
+  {
+    List<GridNode> result = new();
+
+    if (
+        startNode.TopNode != null
+        && startNode.TopNode.OccupiedChar != null
+        && startNode.OccupiedChar.charTextValue == startNode.TopNode.OccupiedChar.charTextValue
+      )
+    {
+      result.Add(startNode.TopNode);
+    }
+    if (
+        startNode.BottomNode != null
+        && startNode.BottomNode.OccupiedChar != null
+        && startNode.OccupiedChar.charTextValue == startNode.BottomNode.OccupiedChar.charTextValue
+      )
+    {
+      result.Add(startNode.BottomNode);
+    }
+
+    return result;
+  }
 }
