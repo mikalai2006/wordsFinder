@@ -46,7 +46,7 @@ public class DataLevel
   public string idWord;
   // public List<string> potentialWords;
   public List<string> openWords;
-  // public List<string> hiddenWords;
+  public List<string> hiddenWords;
   // public List<string> openHiddenWords;
   public string wordForChars;
   public int countWords;
@@ -55,7 +55,7 @@ public class DataLevel
   public DataLevel()
   {
     openWords = new();
-    // hiddenWords = new();
+    hiddenWords = new();
     // openHiddenWords = new();
   }
 }

@@ -47,24 +47,6 @@ public class ManagerHiddenWords : MonoBehaviour
   /// <param name="wordConfig">Config word</param>
   public void Init(GameLevel levelConfig, GameLevelWord wordConfig)
   {
-    // calculate count char of by words.
-    var sortedListHiddenWords = wordConfig.hiddenWords.OrderBy(t => t.Length);
-    int countChars = sortedListHiddenWords.OrderBy(t => t.Length).Select(t => t.Length).Sum();
-    countChars += sortedListHiddenWords.Count();
-    string wordWithMaxLength = sortedListHiddenWords.Last();
-    int maxLengthWord = wordWithMaxLength.Length;
-    if (maxLengthWord < 9) maxLengthWord = 9;
-    int minNeedRows = (int)System.Math.Ceiling((double)countChars / maxLengthWord);
-
-    var sizeGridXY = Mathf.Max(minNeedRows, maxLengthWord);
-    // Debug.Log($"Min col={wordWithMaxLength}| Need count rows={minNeedRows} | sizeGridXY={sizeGridXY}");
-    GridHelper = new GridHelper(sizeGridXY, sizeGridXY);
-
-    // Set transform grid.
-    float scale = 9f / sizeGridXY;
-    // Debug.Log($"Scale grid ={scale}");
-    _GridObject.transform.localScale = new Vector3(scale, scale, 1);
-
     hiddenWords.Clear();
 
     var data = GameManager.Instance.StateManager.dataGame.activeLevel;
@@ -82,23 +64,35 @@ public class ManagerHiddenWords : MonoBehaviour
 
     CreateAllowWords();
 
-    CreateHiddenWords();
+    List<string> _hiddenWords = new();
+    if (!string.IsNullOrEmpty(data.wordForChars))
+    {
+      _hiddenWords = data.hiddenWords;
+    }
+    else
+    {
+      _hiddenWords = CreateHiddenWords();
+    }
 
+    SetScaleChars(_hiddenWords);
+
+    CreateGameObjectHiddenWords(_hiddenWords);
     // OnChangeData?.Invoke();
   }
 
-  public void CreateHiddenWords()
+  public void CreateGameObjectHiddenWords(List<string> words)
   {
     hiddenWords.Clear();
 
-    var stateManager = GameManager.Instance.StateManager;
-    var listWords = stateManager.ActiveWordConfig.hiddenWords;
+    // var stateManager = GameManager.Instance.StateManager;
+    // var listWords = stateManager.ActiveWordConfig.hiddenWords;
 
-    listWords = listWords.OrderBy(t => -t.Length).ToList();
+    var listWords = words.OrderBy(t => -t.Length).ToList();
     for (int i = 0; i < listWords.Count; i++)
     {
       var wordGameObject = CreateWord(listWords[i], i);
-      hiddenWords.Add(listWords[i], wordGameObject);
+      // hiddenWords.Add(listWords[i], wordGameObject);
+      hiddenWords[listWords[i]] = wordGameObject;
       if (OpenWords.ContainsKey(listWords[i]))
       {
         CheckWord(listWords[i]);
@@ -112,6 +106,29 @@ public class ManagerHiddenWords : MonoBehaviour
     {
       hiddenWords[word].ShowWord();
     }
+  }
+
+  public List<string> CreateHiddenWords()
+  {
+    List<string> hiddenWords = new();
+    var stateManager = GameManager.Instance.StateManager;
+
+    int countChar = 0;
+    foreach (var word in AllowWords)
+    {
+      if (countChar > stateManager.ActiveWordConfig.maxCountHiddenChar) break;
+      if (OpenWords.ContainsKey(word.Key)) continue;
+
+      var newCountChar = countChar + word.Key.Length;
+      if (newCountChar < stateManager.ActiveWordConfig.maxCountHiddenChar)
+      {
+        hiddenWords.Add(word.Key);
+        countChar += word.Key.Length;
+      }
+    }
+
+    // Debug.Log($"Add {AllowWords.Count} potential words");
+    return hiddenWords;
   }
 
   public void CreateAllowWords()
@@ -209,11 +226,36 @@ public class ManagerHiddenWords : MonoBehaviour
     _lineManager.ResetLine();
     listChoosedGameObjects.Clear();
     GameManager.Instance.DataManager.Save();
-    if (OpenWords.Keys.Intersect(hiddenWords.Keys).Count() == hiddenWords.Count())
+
+    bool isEndLevel = OpenWords.Count == AllowWords.Count;
+    bool isOpenAllHiddenWords = OpenWords.Keys.Intersect(hiddenWords.Keys).Count() == hiddenWords.Count();
+    if (isEndLevel)
     {
-      await NextLevel();
+      Debug.Log("Next level");
+      // await NextLevel();
+    }
+    else if (isOpenAllHiddenWords)
+    {
+      Debug.Log("Refresh hiddenWords");
+      RefreshHiddenWords();
     }
     // OnChangeData?.Invoke();
+  }
+
+  private void RefreshHiddenWords()
+  {
+    foreach (var wordItem in hiddenWords)
+    {
+      GameObject.Destroy(wordItem.Value.gameObject);
+    }
+
+    hiddenWords.Clear();
+
+    var _hiddenWords = CreateHiddenWords();
+
+    SetScaleChars(_hiddenWords);
+
+    CreateGameObjectHiddenWords(_hiddenWords);
   }
 
   private async UniTask NextLevel()
@@ -221,12 +263,6 @@ public class ManagerHiddenWords : MonoBehaviour
     AllowWords.Clear();
     // OpenHiddenWords.Clear();
     OpenWords.Clear();
-
-    foreach (var wordItem in hiddenWords)
-    {
-      GameObject.Destroy(wordItem.Value.gameObject);
-    }
-    hiddenWords.Clear();
 
     await GameManager.Instance.LevelManager.NextLevel();
   }
@@ -255,5 +291,30 @@ public class ManagerHiddenWords : MonoBehaviour
       }
     }
     _choosedWordMB.DrawWord(choosedWord);
+  }
+
+  private void SetScaleChars(List<string> _hiddenWords)
+  {
+    var stateManager = GameManager.Instance.StateManager;
+
+    // calculate count char of by words.
+    var sortedListHiddenWords = _hiddenWords.OrderBy(t => t.Length);
+    int countChars = sortedListHiddenWords.OrderBy(t => t.Length).Select(t => t.Length).Sum();
+    countChars += sortedListHiddenWords.Count();
+    string wordWithMaxLength = sortedListHiddenWords.Last();
+    int maxLengthWord = wordWithMaxLength.Length;
+    if (maxLengthWord < 9) maxLengthWord = 9;
+    int minNeedRows = (int)System.Math.Ceiling((double)countChars / maxLengthWord);
+    if (maxLengthWord > 20) maxLengthWord -= (int)(stateManager.ActiveWordConfig.maxCountHiddenChar * .01f);
+
+    var sizeGridXY = Mathf.Max(minNeedRows, maxLengthWord);
+    Debug.Log($"countWord={sortedListHiddenWords.Count()}, countChars ={countChars}, maxLengthWord={maxLengthWord}");
+    Debug.Log($"word max length={wordWithMaxLength}, Need count rows={minNeedRows}, sizeGridXY={sizeGridXY}");
+    GridHelper = new GridHelper(sizeGridXY, sizeGridXY);
+    // Set transform grid.
+    float scale = 9f / sizeGridXY;
+    // Debug.Log($"Scale grid ={scale}");
+    _GridObject.transform.localScale = new Vector3(scale, scale, 1);
+
   }
 }

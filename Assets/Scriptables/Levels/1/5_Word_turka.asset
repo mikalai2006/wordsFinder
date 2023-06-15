@@ -15,6 +15,7 @@ MonoBehaviour:
   id: level.word.turka
   title: "\u0442\u0443\u0440\u043A\u0430"
   word: "\u0442\u0443\u0440\u043A\u0430"
+  maxCountHiddenChar: 5
   hiddenWords:
   - "\u0430\u043A\u0440"
   - "\u0430\u043A\u0442"

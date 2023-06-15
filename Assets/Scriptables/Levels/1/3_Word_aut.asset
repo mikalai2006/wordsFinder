@@ -15,6 +15,7 @@ MonoBehaviour:
   id: level.word.aut
   title: "\u0430\u0443\u0442"
   word: "\u0430\u0443\u0442"
+  maxCountHiddenChar: 5
   hiddenWords:
   - "\u0430\u0442"
   - "\u0430\u0443"

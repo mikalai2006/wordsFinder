@@ -29,7 +29,7 @@ public class StateManager : MonoBehaviour
     dataGame.activeLevel.openWords = _levelManager.ManagerHiddenWords.OpenWords.Keys.ToList();
     // dataGame.activeLevel.openHiddenWords = _levelManager.ManagerHiddenWords.OpenHiddenWords.Keys.ToList();
     dataGame.activeLevel.countWords = _levelManager.ManagerHiddenWords.AllowWords.Count;
-    // dataGame.activeLevel.hiddenWords = _levelManager.ManagerHiddenWords.hiddenWords.Keys.ToList();
+    dataGame.activeLevel.hiddenWords = _levelManager.ManagerHiddenWords.hiddenWords.Keys.ToList();
     dataGame.activeLevel.countOpenChars = _levelManager.ManagerHiddenWords.OpenWords.Select(t => t.Key.Length).Sum();
 
     OnChangeState.Invoke(dataGame);
