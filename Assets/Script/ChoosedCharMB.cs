@@ -36,8 +36,8 @@ public class ChoosedCharMB : MonoBehaviour
 
   public async UniTask OpenHiddenChar(HiddenCharMB needHiddenChar, int delay)
   {
-    _image.color = _gameSetting.bgFindHiddenWord;
-    _charText.color = _gameSetting.textFindHiddenWord;
+    _image.color = _gameSetting.Theme.bgFindHiddenWord;
+    _charText.color = _gameSetting.Theme.textFindHiddenWord;
     await UniTask.Delay(delay);
 
     Vector3 initialScale = transform.localScale;
@@ -71,19 +71,12 @@ public class ChoosedCharMB : MonoBehaviour
 
     transform.localScale = new Vector3(0, 0, 0);
     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.openWord);
-
-    // open equals chars.
-    var equalsCharNodes = GameManager.Instance.LevelManager.ManagerHiddenWords.GridHelper.FindNeighboursNodesOfByEqualChar(needHiddenChar.OccupiedNode);
-    foreach (var equalCharNode in equalsCharNodes)
-    {
-      equalCharNode.OccupiedChar.ShowChar().Forget();
-    }
   }
 
   public async UniTask OpenCharAllowWord(Colba colba, int delay)
   {
-    _image.color = _gameSetting.bgFindAllowWord;
-    _charText.color = _gameSetting.textFindAllowWord;
+    _image.color = _gameSetting.Theme.bgFindAllowWord;
+    _charText.color = _gameSetting.Theme.textFindAllowWord;
     await UniTask.Delay(delay);
 
     Vector3 initialScale = transform.localScale;
@@ -121,7 +114,8 @@ public class ChoosedCharMB : MonoBehaviour
 
   public async UniTask CheckNo()
   {
-    _image.color = _gameSetting.bgNotFoundWord;
+    _image.color = _gameSetting.Theme.bgNotFoundWord;
+    _charText.color = _gameSetting.Theme.textNotFoundWord;
 
     await UniTask.Delay(300);
 
@@ -131,8 +125,8 @@ public class ChoosedCharMB : MonoBehaviour
   public void SetDefault()
   {
     gameObject.SetActive(false);
-    _image.color = _gameSetting.bgChoosedWord;
-    _charText.color = _gameSetting.textChoosedWord;
+    _image.color = _gameSetting.Theme.bgChoosedWord;
+    _charText.color = _gameSetting.Theme.textChoosedWord;
     transform.position = _initPosition;
     transform.localScale = _initScale;
   }

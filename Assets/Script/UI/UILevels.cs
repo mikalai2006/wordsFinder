@@ -10,9 +10,11 @@ public class UILevels : UILocaleBase
 {
   [SerializeField] private UIDocument _uiDoc;
   [SerializeField] private VisualTreeAsset LevelBlok;
+  [SerializeField] private VisualTreeAsset LevelSection;
   [SerializeField] private VisualElement _root;
   private GameObject _enviromnment;
   [SerializeField] private ScrollView _listLevels;
+  // [SerializeField] private ScrollView _listCompletedLevels;
   private TaskCompletionSource<DataResultLevelDialog> _processCompletionSource;
   private DataResultLevelDialog _result;
 
@@ -31,11 +33,16 @@ public class UILevels : UILocaleBase
   public virtual void Start()
   {
     _root = _uiDoc.rootVisualElement;
+    _root.Q<VisualElement>("LevelsBlokWrapper").style.backgroundColor = new StyleColor(_gameSettings.Theme.bgColor);
 
     var exitBtn = _root.Q<Button>("ExitBtn");
     exitBtn.clickable.clicked += () => ClickClose();
 
     _listLevels = _root.Q<ScrollView>("ListLevels");
+    _listLevels.Clear();
+
+    // _listCompletedLevels = _root.Q<ScrollView>("ListCompletedLevels");
+    // _listCompletedLevels.Clear();
 
     FillLevels();
 
@@ -47,30 +54,105 @@ public class UILevels : UILocaleBase
     _root.style.display = DisplayStyle.None;
   }
 
-  private void FillLevels()
+  private async void FillLevels()
   {
+    var dataGame = _gameManager.DataManager.DataGame;
     foreach (var level in _gameSettings.GameLevels)
     {
-      _listLevels.Add(new Label() { text = level.title });
+      var section = LevelSection.Instantiate();
+      section.Q<Label>("Name").text = level.title;
+      var sectionListWords = section.Q<VisualElement>("ListWords");
+      sectionListWords.Clear();
+
       for (int i = 0; i < level.words.Count; i++)
       {
         var currentWord = level.words[i];
+        var levelData = dataGame != null
+          ? dataGame.Levels.Find(t => t.id == level.id && t.idWord == currentWord.id)
+          : null;
+        var userRate = dataGame != null
+          ? dataGame.rate
+          : 0;
         var levelBlok = LevelBlok.Instantiate();
-        levelBlok.Q<Label>("Name").text = currentWord.word;
-        levelBlok.Q<Button>("GoBtn").clickable.clicked += () =>
+
+        var btnGo = levelBlok.Q<Button>("GoBtn");
+        btnGo.clickable.clicked += () =>
         {
           InitLevel(level, currentWord);
         };
-        _listLevels.Add(levelBlok);
+        var success = levelBlok.Q<VisualElement>("Success");
+        success.style.display = DisplayStyle.None;
+        var lockElement = levelBlok.Q<VisualElement>("Lock");
+        lockElement.style.display = DisplayStyle.None;
+        var description = levelBlok.Q<Label>("Description");
+        var progressBlok = levelBlok.Q<VisualElement>("ProgressBarBox");
+        levelBlok.Q<Label>("Name").text = currentWord.word;
+
+        if (levelData == null || levelData.openWords.Count == 0)
+        {
+          if (level.minRate <= userRate)
+          {
+            btnGo.text = await Helpers.GetLocaleString("start");
+            lockElement.style.display = DisplayStyle.None;
+          }
+          else
+          {
+            btnGo.style.display = DisplayStyle.None;
+            lockElement.style.display = DisplayStyle.Flex;
+          }
+          description.style.display = DisplayStyle.None;
+          progressBlok.style.display = DisplayStyle.None;
+        }
+        else
+        {
+          var dataPlural = new Dictionary<string, int> {
+            {"count",  levelData.openWords.Count},
+            {"count2", levelData.countWords},
+          };
+          var arguments = new[] { dataPlural };
+          var textCountWords = await Helpers.GetLocalizedPluralString(
+              new UnityEngine.Localization.LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, "foundcountword"),
+              arguments,
+              dataPlural
+              );
+          description.text = string.Format(
+            "{0}",
+            textCountWords
+            );
+
+          var procentOpen = levelData.openWords.Count * 100 / levelData.countWords;
+          var progressBar = levelBlok.Q<VisualElement>("ProgressBar");
+          progressBar.style.width
+            = new StyleLength(new Length(procentOpen, LengthUnit.Percent));
+          if (levelData.openWords.Count == levelData.countWords)
+          {
+            progressBlok.style.display = DisplayStyle.None;
+            btnGo.style.display = DisplayStyle.None;
+            success.style.display = DisplayStyle.Flex;
+            description.text = await Helpers.GetLocaleString("сompleted");
+          }
+
+          btnGo.text = await Helpers.GetLocaleString("continue");
+        }
+
+        sectionListWords.Add(levelBlok);
       }
+
+      _listLevels.Add(section);
     }
   }
 
   private async void InitLevel(GameLevel levelConfig, GameLevelWord wordConfig)
   {
-    var operations = new Queue<ILoadingOperation>();
-    operations.Enqueue(new GameInitOperation());
-    await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
+    if (!_gameManager.environment.Scene.IsValid())
+    {
+      // _gameManager.ChangeState(GameState.CloseLevel);
+
+      var operations = new Queue<ILoadingOperation>();
+      operations.Enqueue(new GameInitOperation());
+      await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
+    }
+    ClickClose();
     _gameManager.LevelManager.InitLevel(levelConfig, wordConfig);
   }
 
@@ -80,10 +162,10 @@ public class UILevels : UILocaleBase
     _processCompletionSource.SetResult(_result);
   }
 
-  public void Init(GameObject environment)
-  {
-    _enviromnment = environment;
-  }
+  // public void Init(GameObject environment)
+  // {
+  //   _enviromnment = environment;
+  // }
 
   public async UniTask<DataResultLevelDialog> ProcessAction()
   {

@@ -15,7 +15,8 @@ MonoBehaviour:
   id: level.word.naperstok
   title: "\u043D\u0430\u043F\u0435\u0440\u0441\u0442\u043E\u043A"
   word: "\u043D\u0430\u043F\u0435\u0440\u0441\u0442\u043E\u043A"
-  maxCountHiddenChar: 5
+  maxCountHiddenChar: 50
+  sizeGrid: {x: 9, y: 9}
   hiddenWords:
   - "\u0430\u043F\u043E\u0440\u0442"
   - "\u043A\u0430\u043F\u043E\u0442"

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,6 @@ public class HiddenCharMB : MonoBehaviour
   [SerializeField] private Image _image;
   [SerializeField] private RectTransform _canvas;
   private GameSetting _gameSetting;
-  public float tickPerSecond;
   public GridNode OccupiedNode;
 
   public void Awake()
@@ -26,21 +26,22 @@ public class HiddenCharMB : MonoBehaviour
   }
   public void SetSize(float size)
   {
-    _charText.fontSize = size;
+    // _charText.fontSize = size;
     _canvas.sizeDelta = new Vector2(size, size);
   }
   private void SetDefault()
   {
-    _image.color = _gameSetting.bgHiddenWord;
-    _image.sprite = _gameSetting.bgImageHiddenWord;
+    _image.color = _gameSetting.Theme.bgHiddenWord;
+    _image.sprite = _gameSetting.Theme.bgImageHiddenWord;
     _charText.gameObject.SetActive(false);
   }
   public void Open()
   {
-    _image.color = _gameSetting.bgOpentHiddenWord;
-    _image.sprite = _gameSetting.bgImageHiddenWord;
-    _charText.color = _gameSetting.textOpentHiddenWord;
+    _image.color = _gameSetting.Theme.bgOpentHiddenWord;
+    _image.sprite = _gameSetting.Theme.bgImageHiddenWord;
+    _charText.color = _gameSetting.Theme.textOpentHiddenWord;
     _charText.gameObject.SetActive(true);
+    OccupiedNode.SetOpen();
   }
   public async UniTask ShowChar()
   {
@@ -58,8 +59,42 @@ public class HiddenCharMB : MonoBehaviour
     // gameObject.transform.localScale = new Vector3(-1, 1, 1);
 
     Open();
+    await OpenNeighbours();
     await UniTask.Yield();
   }
+  public async UniTask ShowCharAsNei()
+  {
+    Vector3 initialScale = transform.localScale;
+
+    // for (float i = 0f; i < 180f; i += 10f)
+    // {
+    //   transform.rotation = Quaternion.Euler(0f, i, 0f);
+    //   if (i == 90f)
+    //   {
+    //     _image.color = _gameSetting.colorWordSymbolYes;
+    //   }
+    //   yield return new WaitForSeconds(0.01f);
+    // }
+    // gameObject.transform.localScale = new Vector3(-1, 1, 1);
+
+    Open();
+    _image.color = _gameSetting.Theme.bgOpenNeiHiddenWord;
+    _charText.color = _gameSetting.Theme.textOpenNeiHiddenWord;
+    await OpenNeighbours();
+    await UniTask.Yield();
+  }
+
+  public async UniTask OpenNeighbours()
+  {
+    // open equals chars.
+    List<GridNode> equalsCharNodes = GameManager.Instance.LevelManager.ManagerHiddenWords.GridHelper.FindNeighboursNodesOfByEqualChar(OccupiedNode);
+    foreach (var equalCharNode in equalsCharNodes)
+    {
+      await equalCharNode.OccupiedChar.ShowCharAsNei();
+    }
+    // await UniTask.Yield();
+  }
+
 
   public async UniTask FocusOpenChar()
   {
@@ -81,4 +116,11 @@ public class HiddenCharMB : MonoBehaviour
 
 
   }
+
+#if UNITY_EDITOR
+  public override string ToString()
+  {
+    return "HiddenCharMB::: [text=" + charTextValue + "] \n";
+  }
+#endif
 }

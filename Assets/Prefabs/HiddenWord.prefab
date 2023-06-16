@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -43,4 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67cda1b3e3099484da8f59071d400263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charMB: {fileID: -4907577547573946638, guid: d4434f18f2ac36b42ac100f577deee8d, type: 3}
+  charMB: {fileID: -68520545409468448, guid: acf1a1a20e1c9b2499c8e2705f455f58, type: 3}
+  Chars: []
+  _word: 

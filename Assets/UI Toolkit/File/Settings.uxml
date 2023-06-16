@@ -1,11 +1,21 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/File/Base.uss?fileID=7433441132597879392&amp;guid=47ab2fccdf66be0488c7b62162e81d51&amp;type=3#Base" />
-    <ui:VisualElement name="AsideBlok" class="font" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; left: 0; right: 0; justify-content: space-between; flex-direction: row;">
-        <ui:Button text="#exit" display-tooltip-when-elided="true" name="ExitBtn" class="button" />
-        <ui:Button text="#menu" display-tooltip-when-elided="true" name="MenuBtn" class="button" />
+    <ui:VisualElement name="AsideBlok" class="font" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; left: 0; right: 0; align-items: center; top: 10px;">
+        <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center; justify-content: space-between; max-width: 400px; width: 380px;">
+            <ui:Button display-tooltip-when-elided="true" name="MenuBtn" class="button_circle">
+                <ui:VisualElement style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/cog-svgrepo-com%20(1).png?fileID=2800000&amp;guid=24a74d9f23b82bf4bbb3eaf4ebe2121c&amp;type=3#cog-svgrepo-com (1)&apos;);" />
+            </ui:Button>
+            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
+            <ui:Button display-tooltip-when-elided="true" name="LevelsBtn" class="button_circle">
+                <ui:VisualElement style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/list-svgrepo-com.png?fileID=2800000&amp;guid=db5b3507e381548428b796e782ae6b48&amp;type=3#list-svgrepo-com&apos;);" />
+            </ui:Button>
+            <ui:Button display-tooltip-when-elided="true" name="ExitBtn" class="button_circle" style="display: none;">
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/CloseBtn.png?fileID=2800000&amp;guid=fed0e04364b7a4141bf1d3c1abf03fff&amp;type=3#CloseBtn&apos;); -unity-background-scale-mode: scale-and-crop;" />
+            </ui:Button>
+        </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="MenuBlok" class="font" style="background-color: rgba(0, 0, 0, 0); position: absolute; left: 0; top: 0; right: 0; bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; display: flex; flex-grow: 1;">
-        <ui:VisualElement class="b-rounded" style="background-color: rgb(255, 255, 255); align-items: stretch; max-width: 600px; align-self: center; flex-grow: 0; width: 80%;">
+    <ui:VisualElement name="MenuBlok" class="font" style="background-color: rgba(0, 0, 0, 0.71); position: absolute; left: 0; top: 0; right: 0; bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; display: none; flex-grow: 1;">
+        <ui:VisualElement name="MenuBlokWrapper" class="b-rounded" style="background-color: rgb(255, 255, 255); align-items: stretch; max-width: 600px; align-self: center; flex-grow: 0; width: 80%;">
             <ui:VisualElement name="Menu" style="background-color: rgba(0, 0, 0, 0); padding-left: 20px; padding-right: 20px; padding-top: 20px; padding-bottom: 20px;">
                 <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); margin-bottom: 20px;">
                     <ui:Slider picking-mode="Ignore" label="#volumeEffect" value="0.2" high-value="1" name="VolumeEffect" />

@@ -15,34 +15,15 @@ MonoBehaviour:
   Audio: {fileID: 11400000, guid: 8f34d19db11906f4b8a97ad95ea85df1, type: 2}
   PrefabSymbol: {fileID: 7149879278780047571, guid: e7419d168977efa48a744d43a95bae4e, type: 3}
   GameLevels:
+  - {fileID: 11400000, guid: 287c22df795b8244bb0592650f71e420, type: 2}
   - {fileID: 11400000, guid: 24217bf6c33950a4dbe5303b70b57dbd, type: 2}
+  - {fileID: 11400000, guid: b8ee68503628c9047a2db1df4f0c4432, type: 2}
+  - {fileID: 11400000, guid: 23b4aae7792c1aa42a317f33d6498958, type: 2}
+  - {fileID: 11400000, guid: 0ef99475dfdb4ff419fde769e74b9ed6, type: 2}
   - {fileID: 11400000, guid: 18b5b81bbe7381b4eace039097ab4a9e, type: 2}
   - {fileID: 11400000, guid: 2fa2acd237d62e7458c2486606a0cea6, type: 2}
   - {fileID: 11400000, guid: 6a737ba3af0faa54cb26bef413c7f31a, type: 2}
-  - {fileID: 11400000, guid: 6a737ba3af0faa54cb26bef413c7f31a, type: 2}
-  - {fileID: 11400000, guid: 6a737ba3af0faa54cb26bef413c7f31a, type: 2}
-  - {fileID: 11400000, guid: 6a737ba3af0faa54cb26bef413c7f31a, type: 2}
-  - {fileID: 11400000, guid: 6a737ba3af0faa54cb26bef413c7f31a, type: 2}
-  - {fileID: 11400000, guid: 6a737ba3af0faa54cb26bef413c7f31a, type: 2}
-  - {fileID: 11400000, guid: 6a737ba3af0faa54cb26bef413c7f31a, type: 2}
-  - {fileID: 11400000, guid: 6a737ba3af0faa54cb26bef413c7f31a, type: 2}
-  bgHiddenWord: {r: 0.1764706, g: 0.21176472, b: 0.07450981, a: 1}
-  bgOpentHiddenWord: {r: 0.4901961, g: 0.6156863, b: 0.21960786, a: 1}
-  textOpentHiddenWord: {r: 0.23529412, g: 0.07058824, b: 0, a: 1}
-  bgImageHiddenWord: {fileID: 21300000, guid: 81bc87243f22f9747bf7cbd46d867efe, type: 3}
-  bgChoosedWord: {r: 1, g: 1, b: 1, a: 1}
-  textChoosedWord: {r: 0.23529412, g: 0.07058824, b: 0, a: 1}
-  bgFindAllowWord: {r: 1, g: 0.8039216, b: 0, a: 1}
-  textFindAllowWord: {r: 0, g: 0, b: 0, a: 1}
-  bgFindHiddenWord: {r: 0.33333334, g: 0.6117647, b: 0.1254902, a: 1}
-  textFindHiddenWord: {r: 0.23529412, g: 0.07058824, b: 0, a: 1}
-  bgNotFoundWord: {r: 1, g: 0.5882353, b: 0.5882353, a: 1}
-  textNotFoundWord: {r: 0, g: 0, b: 0, a: 0}
-  colorTextChar: {r: 0.23529412, g: 0.07058824, b: 0, a: 1}
-  bgColorChar: {r: 0, g: 0, b: 0, a: 0}
-  colorTextChooseChar: {r: 0.23529412, g: 0.07058824, b: 0, a: 1}
-  bgColorChooseChar: {r: 0.9960785, g: 0.7254902, b: 0.1764706, a: 1}
-  bgColor: {r: 0.36078432, g: 0.43529412, b: 0.15294118, a: 1}
+  Theme: {fileID: 11400000, guid: 08e6c1ceee25b7842a70dbb8dedd1c81, type: 2}
   lineWidth: 0.15
   radius: 2.5
-  timeDelayOverChar: 100
+  timeDelayOverChar: 50

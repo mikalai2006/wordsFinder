@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -22,6 +23,7 @@ public class ManagerHiddenWords : MonoBehaviour
   public Dictionary<string, int> OpenWords;
   public List<CharMB> listChoosedGameObjects;
   public string choosedWord => string.Join("", listChoosedGameObjects.Select(t => t.GetComponent<CharMB>().charTextValue).ToList());
+
 
   private void Awake()
   {
@@ -78,6 +80,8 @@ public class ManagerHiddenWords : MonoBehaviour
 
     CreateGameObjectHiddenWords(_hiddenWords);
     // OnChangeData?.Invoke();
+
+    OpenNeighbours().Forget();
   }
 
   public void CreateGameObjectHiddenWords(List<string> words)
@@ -87,7 +91,7 @@ public class ManagerHiddenWords : MonoBehaviour
     // var stateManager = GameManager.Instance.StateManager;
     // var listWords = stateManager.ActiveWordConfig.hiddenWords;
 
-    var listWords = words.OrderBy(t => -t.Length).ToList();
+    var listWords = words; //.OrderBy(t => -t.Length).ToList();
     for (int i = 0; i < listWords.Count; i++)
     {
       var wordGameObject = CreateWord(listWords[i], i);
@@ -232,7 +236,7 @@ public class ManagerHiddenWords : MonoBehaviour
     if (isEndLevel)
     {
       Debug.Log("Next level");
-      // await NextLevel();
+      await NextLevel();
     }
     else if (isOpenAllHiddenWords)
     {
@@ -241,6 +245,7 @@ public class ManagerHiddenWords : MonoBehaviour
     }
     // OnChangeData?.Invoke();
   }
+
 
   private void RefreshHiddenWords()
   {
@@ -258,6 +263,7 @@ public class ManagerHiddenWords : MonoBehaviour
     CreateGameObjectHiddenWords(_hiddenWords);
   }
 
+
   private async UniTask NextLevel()
   {
     AllowWords.Clear();
@@ -265,6 +271,18 @@ public class ManagerHiddenWords : MonoBehaviour
     OpenWords.Clear();
 
     await GameManager.Instance.LevelManager.NextLevel();
+  }
+
+
+  public async UniTask OpenNeighbours()
+  {
+    // open equals chars.
+    List<GridNode> equalsCharNodes = GameManager.Instance.LevelManager.ManagerHiddenWords.GridHelper.FindEqualsHiddenNeighbours();
+    Debug.Log($"equalsCharNodes count={equalsCharNodes.Count}");
+    foreach (var equalCharNode in equalsCharNodes)
+    {
+      await equalCharNode.OccupiedChar.ShowChar();
+    }
   }
 
   public void AddChoosedChar(CharMB charGameObject)
@@ -295,26 +313,48 @@ public class ManagerHiddenWords : MonoBehaviour
 
   private void SetScaleChars(List<string> _hiddenWords)
   {
+    var defaultGridSize = 9;
+    var defaultCountChars = System.Math.Pow(defaultGridSize, 2);
     var stateManager = GameManager.Instance.StateManager;
 
     // calculate count char of by words.
-    var sortedListHiddenWords = _hiddenWords.OrderBy(t => t.Length);
-    int countChars = sortedListHiddenWords.OrderBy(t => t.Length).Select(t => t.Length).Sum();
-    countChars += sortedListHiddenWords.Count();
-    string wordWithMaxLength = sortedListHiddenWords.Last();
-    int maxLengthWord = wordWithMaxLength.Length;
-    if (maxLengthWord < 9) maxLengthWord = 9;
-    int minNeedRows = (int)System.Math.Ceiling((double)countChars / maxLengthWord);
-    if (maxLengthWord > 20) maxLengthWord -= (int)(stateManager.ActiveWordConfig.maxCountHiddenChar * .01f);
+    // var sortedListHiddenWords = _hiddenWords.OrderBy(t => t.Length);
+    // int countChars = sortedListHiddenWords.OrderBy(t => t.Length).Select(t => t.Length).Sum();
+    // countChars += sortedListHiddenWords.Count();
+    // string wordWithMaxLength = sortedListHiddenWords.Last();
+    // int maxLengthWord = wordWithMaxLength.Length;
+    // if (maxLengthWord < defaultGridSize) maxLengthWord = defaultGridSize;
+    // int minNeedRows = (int)System.Math.Ceiling((double)countChars / maxLengthWord);
 
-    var sizeGridXY = Mathf.Max(minNeedRows, maxLengthWord);
-    Debug.Log($"countWord={sortedListHiddenWords.Count()}, countChars ={countChars}, maxLengthWord={maxLengthWord}");
-    Debug.Log($"word max length={wordWithMaxLength}, Need count rows={minNeedRows}, sizeGridXY={sizeGridXY}");
+    var sizeGridXY = defaultGridSize;
+
+    if (stateManager.ActiveWordConfig.maxCountHiddenChar > defaultCountChars)
+    {
+      sizeGridXY = System.Convert.ToInt32(System.MathF.Ceiling((float)System.Math.Sqrt(stateManager.ActiveWordConfig.maxCountHiddenChar)));
+      sizeGridXY += 2;
+    }
+
+    // Debug.Log($"countWord={sortedListHiddenWords.Count()}, countChars ={countChars}, maxLengthWord={maxLengthWord}");
+    // Debug.Log($"word max length={wordWithMaxLength}, Need count rows={minNeedRows}, sizeGridXY={sizeGridXY}");
     GridHelper = new GridHelper(sizeGridXY, sizeGridXY);
     // Set transform grid.
-    float scale = 9f / sizeGridXY;
+    float scale = (float)defaultGridSize / sizeGridXY;
     // Debug.Log($"Scale grid ={scale}");
     _GridObject.transform.localScale = new Vector3(scale, scale, 1);
 
+  }
+
+  public void Reset()
+  {
+    foreach (var wordItem in hiddenWords)
+    {
+      GameObject.Destroy(wordItem.Value.gameObject);
+    }
+
+    hiddenWords.Clear();
+
+    AllowWords.Clear();
+    // OpenHiddenWords.Clear();
+    OpenWords.Clear();
   }
 }

@@ -85,10 +85,21 @@ public class UIStartMenu : UILocaleBase
     _menu.style.display = DisplayStyle.Flex;
   }
 
-  private void ClickNewGameButton()
+  private async void ClickNewGameButton()
   {
     _menu.style.display = DisplayStyle.None;
-    GameManager.Instance.ChangeState(GameState.CreateGame);
+    // GameManager.Instance.ChangeState(GameState.CreateGame);
+    var operations = new Queue<ILoadingOperation>();
+    operations.Enqueue(new GameInitOperation());
+    await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
+
+    var activeLastLevel = _gameSettings.GameLevels
+      .Find(t => t.id == _gameManager.DataManager.DataGame.lastActiveLevelId);
+    var activeLastLevelWord = activeLastLevel
+      .words
+      .Find(t => t.id == _gameManager.DataManager.DataGame.lastActiveWordId);
+
+    _gameManager.LevelManager.InitLevel(activeLastLevel, activeLastLevelWord);
   }
 
   private void ClickExitButton()

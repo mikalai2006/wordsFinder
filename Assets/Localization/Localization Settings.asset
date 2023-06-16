@@ -23,7 +23,8 @@ MonoBehaviour:
   m_StringDatabase:
     rid: 366247590280560659
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 366247688578269188
   m_ProjectLocaleIdentifier:
     m_Code: ru
   m_PreloadBehavior: 1
@@ -196,3 +197,15 @@ MonoBehaviour:
         - default
         - d
         - 
+    - rid: 366247688578269188
+      type: {class: AppInfo, ns: UnityEngine.Localization.Platform.Android, asm: Unity.Localization}
+      data:
+        m_DisplayName:
+          m_TableReference:
+            m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+          m_TableEntryReference:
+            m_KeyId: 1596861162094592
+            m_Key: 
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []

@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volumeEffect: 0.34
   volumeMusic: 1
-  addChar: {fileID: 8300000, guid: c392cff168f7a6645b80c3b04be37b19, type: 3}
+  addChar: {fileID: 8300000, guid: 5cca643be75e1bd4cbf7ab29fbbcc845, type: 3}
   removeChar: {fileID: 8300000, guid: 1dd75992c9de51e4b9e76019d839de6a, type: 3}
   openWord: {fileID: 8300000, guid: 82bc95f33a916684197380bd76461aef, type: 3}
   existWord: {fileID: 8300000, guid: 961dc83f132b8f54f8f2afcb2352133b, type: 3}
-  noWord: {fileID: 8300000, guid: 0345d2e79bc863148b49403e802cbb9f, type: 3}
+  noWord: {fileID: 8300000, guid: 78c7cb6706183df4d862823b10cc2107, type: 3}
   bgMusic: {fileID: 8300000, guid: 12fae5d63a15f6a479fca51e20b5abc0, type: 3}
   addToColba: {fileID: 8300000, guid: 82bc95f33a916684197380bd76461aef, type: 3}

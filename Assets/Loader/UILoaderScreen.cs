@@ -10,7 +10,7 @@ using Cysharp.Threading.Tasks;
 public class UILoaderScreen : MonoBehaviour
 {
   [SerializeField] private UIDocument _uiDoc;
-  public UIDocument MenuApp => _uiDoc;
+  public UIDocument Root => _uiDoc;
 
   // Event called when Play Button is clicked.
   public UnityAction OnShowNewGame;
@@ -36,11 +36,11 @@ public class UILoaderScreen : MonoBehaviour
   {
     try
     {
-      MenuApp.rootVisualElement.Q<VisualElement>("OverBG").style.backgroundColor
-        = new StyleColor(GameManager.Instance.GameSettings.bgColor);
-      progressBarSection = MenuApp.rootVisualElement.Q<VisualElement>(NameProgressBarSection);
-      progressBar = MenuApp.rootVisualElement.Q<VisualElement>(NameProgressBar);
-      progressBarText = MenuApp.rootVisualElement.Q<Label>(NameProgressBarText);
+      Root.rootVisualElement.Q<VisualElement>("OverBG").style.backgroundColor
+        = new StyleColor(GameManager.Instance.GameSettings.Theme.bgColor);
+      progressBarSection = Root.rootVisualElement.Q<VisualElement>(NameProgressBarSection);
+      progressBar = Root.rootVisualElement.Q<VisualElement>(NameProgressBar);
+      progressBarText = Root.rootVisualElement.Q<Label>(NameProgressBarText);
       SetProgressValue(0);
       //buttonsSection = MenuApp.rootVisualElement.Q<VisualElement>("ButtonsSection");
 

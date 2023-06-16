@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
-using Loader;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UIGame : UILocaleBase
 {
   [SerializeField] private UIDocument _uiDoc;
-  private Button _colba;
-  private Button _shuffle;
+  private Button _shuffleButton;
   private GameSetting GameSetting;
   [SerializeField] private AudioManager _audioManager => GameManager.Instance.audioManager;
 
@@ -27,12 +22,11 @@ public class UIGame : UILocaleBase
   {
     GameSetting = GameManager.Instance.GameSettings;
 
-    _colba = _uiDoc.rootVisualElement.Q<Button>("Colba");
-
-    _shuffle = _uiDoc.rootVisualElement.Q<Button>("Shuffle");
-    _shuffle.clickable.clicked += () =>
+    _shuffleButton = _uiDoc.rootVisualElement.Q<Button>("ShuffleBtn");
+    _shuffleButton.clickable.clicked += () =>
     {
-      ClickShuffle();
+      GameManager.Instance.LevelManager.ShuffleChars();
+      // _audioManager.PlayClipEffect();
     };
 
     base.Localize(_uiDoc.rootVisualElement);

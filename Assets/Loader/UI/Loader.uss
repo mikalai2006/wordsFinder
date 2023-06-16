@@ -2,31 +2,29 @@
     flex-grow: 1;
     width: 69%;
     max-width: 100%;
-    background-image: url('project://database/Assets/Sprites/load.png?fileID=21300000&guid=938c1b506d7e8454db5eee3052c3293f&type=3#load');
-    -unity-background-scale-mode: scale-and-crop;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    margin-left: 1px;
-    margin-right: 1px;
-    margin-top: 1px;
-    margin-bottom: 1px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 .progress-bar__box {
     width: 50%;
     height: 20px;
     position: relative;
-    background-color: rgb(94, 45, 25);
+    background-color: rgba(0, 0, 0, 0.22);
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-    border-left-width: 4px;
-    border-right-width: 4px;
-    border-top-width: 4px;
-    border-bottom-width: 4px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);

@@ -23,6 +23,7 @@ public class GameManager : StaticInstance<GameManager>
   public LevelManager LevelManager { get; internal set; }
 
   public SceneInstance environment;
+  public InputManager InputManager;
 
   void Start()
   {
@@ -33,6 +34,7 @@ public class GameManager : StaticInstance<GameManager>
     // #endif
 
     ChangeState(GameState.StartApp);
+    InputManager = new();
   }
 
   public void Init()
@@ -80,7 +82,7 @@ public class GameManager : StaticInstance<GameManager>
 
   private void HandleStartApp()
   {
-    Camera.main.backgroundColor = GameSettings.bgColor;
+    Camera.main.backgroundColor = GameSettings.Theme.bgColor;
   }
 
   private async void HandleRunLevel()

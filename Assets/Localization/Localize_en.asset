@@ -19,10 +19,6 @@ MonoBehaviour:
     m_Items:
     - rid: 366247623133495314
   m_TableData:
-  - m_Id: 4164341104640
-    m_Localized: Menu
-    m_Metadata:
-      m_Items: []
   - m_Id: 4188194111488
     m_Localized: Exit
     m_Metadata:
@@ -76,10 +72,35 @@ MonoBehaviour:
     m_Localized: Load config game
     m_Metadata:
       m_Items: []
+  - m_Id: 1550790163595264
+    m_Localized: Start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1563663732473856
+    m_Localized: Found {count} {count:word|words} of {count2}
+    m_Metadata:
+      m_Items:
+      - rid: 366247623133495314
+  - m_Id: 1568783467708416
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1569602485256192
+    m_Localized: Not start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1584892828876800
+    m_Localized: "\u0421ompleted"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1596861162094592
+    m_Localized: Words Finder
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 366247623133495314
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 008012baef150200
+        m_Entries: 008012baef150200008052d5248e0500

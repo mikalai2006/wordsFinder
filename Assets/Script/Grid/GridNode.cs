@@ -5,6 +5,7 @@ public enum StateNode
   Disable = 1 << 0,
   Empty = 1 << 1,
   Occupied = 1 << 2,
+  Open = 1 << 3,
 }
 
 
@@ -19,7 +20,7 @@ public class GridNode
   public int countVacantRight;
 
   public HiddenCharMB OccupiedChar;
-  public HiddenWordMB Word;
+  public HiddenWordMB OccupiedWord;
 
   public GridNode TopNode => _gridHelper.GetNode(x, y + 1);
   public GridNode BottomNode => _gridHelper.GetNode(x, y - 1);
@@ -39,8 +40,24 @@ public class GridNode
   public void SetOccupiedChar(HiddenCharMB _occupiedChar, HiddenWordMB _word)
   {
     OccupiedChar = _occupiedChar;
-    Word = _word;
+    OccupiedWord = _word;
     StateNode |= StateNode.Occupied;
     _occupiedChar.OccupiedNode = this;
   }
+  public void SetOpen()
+  {
+    StateNode |= StateNode.Open;
+  }
+
+
+#if UNITY_EDITOR
+  public override string ToString()
+  {
+    return "GridNode:::" +
+        "[x" + position.x + ",y" + position.y + "] \n" +
+        "OccupiedUnit=" + OccupiedChar?.ToString() + ",\n" +
+        "GuestedUnit=" + OccupiedWord?.ToString() + ",\n" +
+        "StateNode=" + System.Convert.ToString((int)StateNode, 2) + ",\n";
+  }
+#endif
 }

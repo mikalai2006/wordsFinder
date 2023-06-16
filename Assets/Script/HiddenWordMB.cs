@@ -60,8 +60,11 @@ public class HiddenWordMB : MonoBehaviour
     foreach (var charObj in Chars)
     {
       charObj.ShowChar().Forget();
+      // OpenNeighbours(charObj).Forget();
     }
   }
+
+
 
   public async UniTask FocusOpenWord()
   {

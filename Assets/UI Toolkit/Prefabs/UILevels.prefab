@@ -50,6 +50,7 @@ MonoBehaviour:
       m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
   _uiDoc: {fileID: 5673986032027992047}
   LevelBlok: {fileID: 9197481963319205126, guid: 4da1a5ed5aab6e34a9a63a7d001a06bd, type: 3}
+  LevelSection: {fileID: 9197481963319205126, guid: c0b3145af63afb547a7278c9d0b553af, type: 3}
 --- !u!1 &3567842030085119868
 GameObject:
   m_ObjectHideFlags: 0

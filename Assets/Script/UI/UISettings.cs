@@ -14,6 +14,7 @@ public class UISettings : UILocaleBase
   private Button _exitButton;
   private Button _openMenuButton;
   private Button _closeMenuButton;
+  private Button _LevelsButton;
   private Button _toMenuAppButton;
   private GameSetting GameSetting;
   [SerializeField] private AudioManager _audioManager => GameManager.Instance.audioManager;
@@ -24,13 +25,19 @@ public class UISettings : UILocaleBase
     _aside = _uiDoc.rootVisualElement.Q<VisualElement>("AsideBlok");
     _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
     _menu.style.display = DisplayStyle.None;
+    _menu.Q<VisualElement>("MenuBlokWrapper").style.backgroundColor = new StyleColor(_gameSettings.Theme.bgColor);
+
 
     GameSetting = GameManager.Instance.GameSettings;
 
     _exitButton = _aside.Q<Button>("ExitBtn");
     _openMenuButton = _aside.Q<Button>("MenuBtn");
     _closeMenuButton = _menu.Q<Button>("CloseMenuBtn");
-
+    _LevelsButton = _aside.Q<Button>("LevelsBtn");
+    _LevelsButton.clickable.clicked += () =>
+    {
+      ClickOpenListLevels();
+    };
     _exitButton.clickable.clicked += () =>
     {
       ClickExitButton();
@@ -55,6 +62,14 @@ public class UISettings : UILocaleBase
     base.Localize(_uiDoc.rootVisualElement);
   }
 
+  private async void ClickOpenListLevels()
+  {
+    _gameManager.InputManager.Disable();
+    var dialogWindow = new UILevelsOperation();
+    var result = await dialogWindow.ShowAndHide();
+    _gameManager.InputManager.Enable();
+  }
+
   private void ShowMenu()
   {
     _menu.style.display = DisplayStyle.Flex;
@@ -72,11 +87,13 @@ public class UISettings : UILocaleBase
 
   private void ClickCloseMenuButton()
   {
+    _gameManager.InputManager.Enable();
     HideMenu();
   }
 
   private void ClickOpenMenuButton()
   {
+    _gameManager.InputManager.Disable();
     ShowMenu();
     CreateMenu();
   }

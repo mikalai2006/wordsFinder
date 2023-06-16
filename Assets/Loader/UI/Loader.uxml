@@ -6,7 +6,7 @@
         <ui:VisualElement name="ProgressBarSection" class="progress-bar__section" style="font-size: 20px;">
             <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="ProgressBarText" class="text_big" />
             <ui:VisualElement name="ProgressBarBox" class="progress-bar__box">
-                <ui:VisualElement name="ProgressBar" class="progress-bar" />
+                <ui:VisualElement name="ProgressBar" class="progress-bar" style="background-color: rgb(245, 242, 242);" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

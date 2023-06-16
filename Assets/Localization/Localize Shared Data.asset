@@ -15,10 +15,6 @@ MonoBehaviour:
   m_TableCollectionName: Localize
   m_TableCollectionNameGuidString: f5c9743175ccc03429548cfaca7a4395
   m_Entries:
-  - m_Id: 4164341104640
-    m_Key: menu
-    m_Metadata:
-      m_Items: []
   - m_Id: 4188194111488
     m_Key: exit
     m_Metadata:
@@ -69,6 +65,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 662165112651776
     m_Key: loadconfig
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1550790163595264
+    m_Key: start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1563663732473856
+    m_Key: foundcountword
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1568783467708416
+    m_Key: continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1569602485256192
+    m_Key: nostartlevel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1584892828876800
+    m_Key: "\u0441ompleted"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1596861162094592
+    m_Key: appname
     m_Metadata:
       m_Items: []
   m_Metadata:

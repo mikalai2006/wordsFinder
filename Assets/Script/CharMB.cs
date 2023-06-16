@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
   public char charTextValue;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   private GameSetting _gameSettings => GameManager.Instance.GameSettings;
-  [SerializeField] private Collider2D _collider;
+  [SerializeField] private BoxCollider2D _collider;
   [SerializeField] private Image _image;
   [SerializeField] private RectTransform _canvas;
   private CancellationTokenSource cancelTokenSource;
@@ -39,8 +40,9 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
   public void ResetObject()
   {
-    _image.color = _gameSettings.bgColorChar;
-    _charText.color = _gameSettings.colorTextChar;
+    if (_gameSettings.Theme.bgImageChar != null) _image.sprite = _gameSettings.Theme.bgImageChar;
+    _image.color = _gameSettings.Theme.bgColorChar;
+    _charText.color = _gameSettings.Theme.colorTextChar;
   }
 
 
@@ -54,6 +56,7 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
   {
     _charText.fontSize = size;
     _canvas.sizeDelta = new Vector2(size, size);
+    _collider.size = new Vector2(size, size);
   }
 
   public async void OnClick(InputAction.CallbackContext context)
@@ -87,6 +90,7 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
       cancelTokenSource = new CancellationTokenSource();
       StartWaitDelay(cancelTokenSource.Token).Forget();
+      // ClickedOnUi();
     }
   }
 
@@ -117,11 +121,29 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
   }
 
+  // public bool ClickedOnUi()
+  // {
+  //   PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+  //   eventDataCurrentPosition.position = _inputManager.clickPosition();
+  //   List<RaycastResult> results = new List<RaycastResult>();
+  //   EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+  //   foreach (var item in results)
+  //   {
+  //     Debug.Log($"item=>{item.gameObject.name}");
+  //     if (item.gameObject.name == "Panel Settings")
+  //     {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
+
   private void ChooseSymbol()
   {
     _levelManager.ManagerHiddenWords.AddChoosedChar(this);
-    _image.color = _gameSettings.bgColorChooseChar;
-    _charText.color = _gameSettings.colorTextChooseChar;
+    if (_gameSettings.Theme.bgImageCharChoose != null) _image.sprite = _gameSettings.Theme.bgImageCharChoose;
+    _image.color = _gameSettings.Theme.bgColorChooseChar;
+    _charText.color = _gameSettings.Theme.colorTextChooseChar;
   }
 
   public async UniTask SetPosition(Vector3 newPos)

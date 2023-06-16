@@ -44,6 +44,7 @@ public class DataLevel
 {
   public string id;
   public string idWord;
+  public int hint;
   // public List<string> potentialWords;
   public List<string> openWords;
   public List<string> hiddenWords;

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: level.1
   title: "\u041F\u0440\u043E\u043B\u043E\u0433"
+  minRate: 0
   words:
-  - {fileID: 11400000, guid: 64f2c9bffa08632439ebd5707ab74469, type: 2}
-  - {fileID: 11400000, guid: f06347d129cf46d47a2158c14d11d17b, type: 2}
-  - {fileID: 11400000, guid: b11b25ec96e23f04c94146c89136ec4c, type: 2}
-  - {fileID: 11400000, guid: 80f083fc57846954e976cee12ad88ee2, type: 2}
-  - {fileID: 11400000, guid: 7c671e6cd1774374a971577bedfb310e, type: 2}
+  - {fileID: 11400000, guid: d0c5141d061d31f42acde3a5e7d18b17, type: 2}
+  - {fileID: 11400000, guid: d2d6dc8549a99b0448578750c2b25b29, type: 2}
+  - {fileID: 11400000, guid: aa363dbc972d7c646a46098b89cc90d6, type: 2}
+  - {fileID: 11400000, guid: 59f240a0537ab4543836945fcd0fdbe5, type: 2}

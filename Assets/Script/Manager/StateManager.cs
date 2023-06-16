@@ -38,6 +38,10 @@ public class StateManager : MonoBehaviour
   public void AddWord()
   {
     dataGame.rate++;
+    if (_levelManager.ManagerHiddenWords.OpenWords.Keys.Count > 10)
+    {
+      dataGame.activeLevel.hint++;
+    }
     RefreshData();
   }
 

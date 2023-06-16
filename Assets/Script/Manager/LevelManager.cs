@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 public class LevelManager : Singleton<LevelManager>
 {
   public static event Action OnInitLevel;
+  private GameManager _gameManager => GameManager.Instance;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   [Header("File Storage Config")]
   public ManagerHiddenWords ManagerHiddenWords;
@@ -20,33 +21,23 @@ public class LevelManager : Singleton<LevelManager>
     _symbols = new();
   }
 
-  //   public void LoadLevel(DataLevel data)
-  //   {
-  // #if UNITY_EDITOR
-  //     System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
-  //     stopWatch.Start();
-  // #endif
+  private void ResetLevel()
+  {
+    ResetSymbols();
 
-  //     ManagerHiddenWords.LoadWords(data);
-  //     CreateSymbols(ManagerHiddenWords.WordForChars);
-
-  // #if UNITY_EDITOR
-  //     stopWatch.Stop();
-  //     System.TimeSpan timeTaken = stopWatch.Elapsed;
-  //     Debug.LogWarning($"Load Level by time {timeTaken.ToString(@"m\:ss\.ffff")}");
-  // #endif
-  //   }
+    ManagerHiddenWords.Reset();
+  }
 
   public void InitLevel(GameLevel levelConfig, GameLevelWord wordConfig)
   {
+    ResetLevel();
+
     OnInitLevel?.Invoke();
 
 #if UNITY_EDITOR
     System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
     stopWatch.Start();
 #endif
-
-
 
     GameManager.Instance.StateManager.SetActiveLevel(levelConfig, wordConfig);
 
@@ -67,6 +58,7 @@ public class LevelManager : Singleton<LevelManager>
 
   public void CreateChars(string str)
   {
+    Debug.Log($"str={str}");
     float baseRadius = GameManager.Instance.GameSettings.radius;
     var countCharGO = str.ToArray();
     float radius = baseRadius + (countCharGO.Length / 2) * 0.1f;
@@ -87,23 +79,76 @@ public class LevelManager : Singleton<LevelManager>
       _symbols.Add(symbolGO);
     }
   }
+  public async void ShuffleChars()
+  {
+    var existChars = Symbols;
 
-  private async UniTask ResetSymbols()
+    // get all positions.
+    Dictionary<CharMB, char> existPositionsChars = new();
+    for (int i = 0; i < existChars.Count; i++)
+    {
+      existPositionsChars.Add(existChars[i], existChars[i].charTextValue);
+    }
+    // shuffle positions.
+    existChars = existChars.OrderBy(t => UnityEngine.Random.value).ToList();
+
+    // set new position.
+    List<UniTask> tasks = new();
+    string newWord = "";
+    for (int i = 0; i < existChars.Count; i++)
+    {
+      tasks.Add(existChars[i].SetPosition(existPositionsChars.ElementAt(i).Key.transform.position));
+      newWord += existChars.ElementAt(i).charTextValue;
+    }
+
+    ManagerHiddenWords.SetWordForChars(newWord);
+
+    await UniTask.WhenAll(tasks);
+    GameManager.Instance.DataManager.Save();
+  }
+
+  private void ResetSymbols()
   {
     foreach (var symbol in _symbols)
     {
-      GameObject.Destroy(symbol);
+      GameObject.Destroy(symbol.gameObject);
     }
-    await UniTask.Yield();
+    _symbols.Clear();
+    // await UniTask.Yield();
   }
 
   public async UniTask NextLevel()
   {
 
-    await ResetSymbols();
+    // var indexActiveLevel = _gameSetting.GameLevels.FindIndex(t => t.id == _gameManager.StateManager.dataGame.lastActiveLevelId);
+    // var indexActiveWord = _gameSetting.GameLevels.ElementAt(indexActiveLevel).words
+    //   .FindIndex(t => t.id == _gameManager.StateManager.dataGame.lastActiveWordId);
+    // if (indexActiveWord >= _gameManager.StateManager.ActiveLevelConfig.words.Count - 1)
+    // {
+    //   if (indexActiveLevel >= _gameSetting.GameLevels.Count - 1)
+    //   {
 
-    // CreateLevel();
+    //   }
+    //   else
+    //   {
+    //     InitLevel(
+    //     _gameSetting.GameLevels.ElementAt(indexActiveLevel + 1),
+    //     _gameSetting.GameLevels.ElementAt(indexActiveLevel + 1).words.ElementAt(0)
+    //     );
+    //   }
+    // }
+    // else
+    // {
+    //   InitLevel(
+    //     _gameManager.StateManager.ActiveLevelConfig,
+    //     _gameManager.StateManager.ActiveLevelConfig.words.ElementAt(indexActiveWord + 1)
+    //     );
+    // }
 
+    _gameManager.InputManager.Disable();
+    var dialogWindow = new UILevelsOperation();
+    var result = await dialogWindow.ShowAndHide();
+    _gameManager.InputManager.Enable();
     await UniTask.Yield();
   }
 

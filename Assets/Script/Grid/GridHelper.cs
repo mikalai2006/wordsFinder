@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -75,26 +74,50 @@ public class GridHelper
     return result;
   }
 
-  public List<GridNode> FindNeighboursNodesOfByEqualChar(GridNode startNode)
+  public List<GridNode> FindEqualsHiddenNeighbours()
   {
     List<GridNode> result = new();
 
+    foreach (var node in GetAllGridNodes())
+    {
+      if (
+        node != null
+        && node.StateNode.HasFlag(StateNode.Occupied)
+        && node.StateNode.HasFlag(StateNode.Open)
+        )
+      {
+        var equalHiddenNei = FindNeighboursNodesOfByEqualChar(node);
+        result.AddRange(equalHiddenNei);
+      }
+    }
+
+    return result;
+  }
+
+  public List<GridNode> FindNeighboursNodesOfByEqualChar(GridNode startNode)
+  {
+    List<GridNode> result = new();
+    // Debug.Log($"FindNeighboursNodesOfByEqualChar::: {startNode.ToString()}");
     if (
         startNode.TopNode != null
+        && !startNode.TopNode.StateNode.HasFlag(StateNode.Open)
         && startNode.TopNode.OccupiedChar != null
         && startNode.OccupiedChar.charTextValue == startNode.TopNode.OccupiedChar.charTextValue
       )
     {
       result.Add(startNode.TopNode);
     }
+    // Debug.Log($"startNode.TopNode::: {startNode.TopNode.ToString()}");
     if (
         startNode.BottomNode != null
+        && !startNode.BottomNode.StateNode.HasFlag(StateNode.Open)
         && startNode.BottomNode.OccupiedChar != null
         && startNode.OccupiedChar.charTextValue == startNode.BottomNode.OccupiedChar.charTextValue
       )
     {
       result.Add(startNode.BottomNode);
     }
+    // Debug.Log($"startNode.BottomNode::: {startNode.TopNode.ToString()}");
 
     return result;
   }
