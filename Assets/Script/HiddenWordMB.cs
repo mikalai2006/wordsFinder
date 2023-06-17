@@ -23,11 +23,7 @@ public class HiddenWordMB : MonoBehaviour
 
   public void DrawWord(string word, List<GridNode> nodes)
   {
-    var _size = 1f;
-    // gameObject.transform.localPosition = new Vector3(-3, _managerHiddenWords.hiddenWords.Count * _size, 0);
-
     _word = word;
-    // ResetWord();
     for (int i = 0; i < word.Length; i++)
     {
       var newChar = GameObject.Instantiate(
@@ -42,24 +38,16 @@ public class HiddenWordMB : MonoBehaviour
       // var currentCharMB = Chars.ElementAt(i);
       newChar.gameObject.SetActive(true);
       newChar.SetValue(currentChar);
-      newChar.SetSize(_size);
       Chars.Add(newChar);
       nodes[i].SetOccupiedChar(newChar, this);
     }
   }
 
-  // private void ResetWord()
-  // {
-  //   // foreach (var ch in _chars)
-  //   // {
-  //   //   ch.gameObject.SetActive(false);
-  //   // }
-  // }
-  public void ShowWord()
+  public async UniTask ShowWord()
   {
     foreach (var charObj in Chars)
     {
-      charObj.ShowChar().Forget();
+      await charObj.ShowChar(false);
       // OpenNeighbours(charObj).Forget();
     }
   }

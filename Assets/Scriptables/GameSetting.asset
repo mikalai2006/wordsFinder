@@ -24,6 +24,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2fa2acd237d62e7458c2486606a0cea6, type: 2}
   - {fileID: 11400000, guid: 6a737ba3af0faa54cb26bef413c7f31a, type: 2}
   Theme: {fileID: 11400000, guid: 08e6c1ceee25b7842a70dbb8dedd1c81, type: 2}
+  PlayerSetting: {fileID: 11400000, guid: b57b9e953e14d084dbf1e284147084c7, type: 2}
   lineWidth: 0.15
   radius: 2.5
   timeDelayOverChar: 50
+  prefabParticleSystem: {fileID: 4370175670826504157, guid: 0d64c2d06fc2020488bed46426152725, type: 3}

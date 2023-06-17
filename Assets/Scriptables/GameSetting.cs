@@ -21,4 +21,8 @@ public class GameSetting : ScriptableObject
   [Header("Events")]
   [Range(10, 1000)] public int timeDelayOverChar;
 
+  [Space(5)]
+  [Header("Particle System")]
+  public ParticleSystem prefabParticleSystem;
+
 }

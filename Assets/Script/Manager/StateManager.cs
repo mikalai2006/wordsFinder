@@ -1,26 +1,34 @@
 using System;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
   // public DataState dataState;
+  public static event Action<DataGame> OnChangeState;
   public DataGame dataGame;
+  [SerializeField] public StatePerk statePerk;
   public GameLevel ActiveLevelConfig;
   public GameLevelWord ActiveWordConfig;
-  public static event Action<DataGame> OnChangeState;
 
   public LevelManager _levelManager => GameManager.Instance.LevelManager;
+  public GameManager _gameManager => GameManager.Instance;
 
   private void Awake()
   {
     // ManagerHiddenWords.OnChangeData += RefreshData;
-
+    SetDefaultPerk();
   }
 
   private void OnDestroy()
   {
     // ManagerHiddenWords.OnChangeData -= RefreshData;
+  }
+
+  private void SetDefaultPerk()
+  {
+    statePerk = new();
   }
 
   public void RefreshData()
@@ -38,12 +46,60 @@ public class StateManager : MonoBehaviour
   public void AddWord()
   {
     dataGame.rate++;
-    if (_levelManager.ManagerHiddenWords.OpenWords.Keys.Count > 10)
+    // if (_levelManager.ManagerHiddenWords.OpenWords.Keys.Count > 10)
+    // {
+    //   dataGame.activeLevel.hint++;
+    // }
+    RefreshData();
+  }
+
+
+  public void RunPerk(string word)
+  {
+    statePerk.countCharInOrder += word.Length;
+    statePerk.countWordInOrder += 1;
+    statePerk.countCharForBonus += word.Length;
+    statePerk.countCharForAddHint += word.Length;
+
+    statePerk.countNotFoundForClearCharBonus = 0;
+
+    // Add bonus index.
+    if (statePerk.countCharForBonus >= _gameManager.GameSettings.PlayerSetting.countCharForBonus)
     {
+      statePerk.countCharForBonus -= _gameManager.GameSettings.PlayerSetting.countCharForBonus;
+      dataGame.activeLevel.index++;
+    }
+
+    // Add hint.
+    if (statePerk.countCharForAddHint >= _gameManager.GameSettings.PlayerSetting.countCharForAddHint)
+    {
+      statePerk.countCharForAddHint -= _gameManager.GameSettings.PlayerSetting.countCharForAddHint;
       dataGame.activeLevel.hint++;
+    }
+
+    RefreshData();
+  }
+
+
+  public void DeRunPerk(string word)
+  {
+
+    if (word.Length > 1)
+    {
+      statePerk.countWordInOrder = 0;
+      statePerk.countCharInOrder = 0;
+      statePerk.countNotFoundForClearCharBonus++;
+    }
+
+    if (statePerk.countNotFoundForClearCharBonus == _gameManager.GameSettings.PlayerSetting.countNotFoundForClearCharBonus)
+    {
+      statePerk.countCharForBonus = 0;
+      statePerk.countCharForAddHint = 0;
+      statePerk.countNotFoundForClearCharBonus = 0;
     }
     RefreshData();
   }
+
 
   public void SetActiveLevel(GameLevel levelConfig, GameLevelWord wordConfig)
   {
@@ -62,6 +118,8 @@ public class StateManager : MonoBehaviour
     }
     var indexActiveLevel = dataGame.Levels.FindIndex(t => t.id == levelConfig.id && t.idWord == wordConfig.id);
     dataGame.activeLevel = dataGame.Levels.ElementAt(indexActiveLevel);
+
+    SetDefaultPerk();
   }
 
   public void LoadState(DataGame data)
@@ -72,4 +130,27 @@ public class StateManager : MonoBehaviour
     }
     dataGame = data;
   }
+
+  public DataGame GetData()
+  {
+    // RefreshData();
+    return dataGame;
+  }
+
+  public void UseHint()
+  {
+    dataGame.activeLevel.hint--;
+    RefreshData();
+  }
+}
+
+
+[System.Serializable]
+public struct StatePerk
+{
+  public int countCharInOrder;
+  public int countWordInOrder;
+  public int countCharForBonus;
+  public int countCharForAddHint;
+  public int countNotFoundForClearCharBonus;
 }

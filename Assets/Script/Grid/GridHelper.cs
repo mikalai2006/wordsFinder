@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -120,5 +121,13 @@ public class GridHelper
     // Debug.Log($"startNode.BottomNode::: {startNode.TopNode.ToString()}");
 
     return result;
+  }
+
+  public GridNode GetRandomNodeWithChar()
+  {
+    return GetAllGridNodes()
+      .Where(t => t.StateNode.HasFlag(StateNode.Occupied) && !t.StateNode.HasFlag(StateNode.Open))
+      .OrderBy(t => UnityEngine.Random.value)
+      .First();
   }
 }

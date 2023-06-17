@@ -45,7 +45,7 @@ public class DataManager : Singleton<DataManager>
     // _dataGame.hiddenWords = levelManager.ManagerHiddenWords.hiddenWords.Keys.ToList();
     // _dataGame.wordForChars = levelManager.ManagerHiddenWords.WordForChars;
     // _dataGame.dataState = GameManager.Instance.StateManager.dataState;
-    _dataGame = GameManager.Instance.StateManager.dataGame;
+    _dataGame = GameManager.Instance.StateManager.GetData();//.dataGame;
 
     _fileDataHandler.SaveData(_dataGame);
   }

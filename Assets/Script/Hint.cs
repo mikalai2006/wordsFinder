@@ -16,6 +16,7 @@ public class Hint : MonoBehaviour, IPointerDownHandler
   [SerializeField] private TMPro.TextMeshProUGUI _countHintText;
   [SerializeField] private Image _countHintImage;
   [SerializeField] private GameObject _countHintObject;
+  private StateManager _stateManager => GameManager.Instance.StateManager;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
 
   private void Awake()
@@ -64,8 +65,11 @@ public class Hint : MonoBehaviour, IPointerDownHandler
     transform.position = _position;
   }
 
-  public async void OnPointerDown(PointerEventData eventData)
+  public void OnPointerDown(PointerEventData eventData)
   {
+    var node = _levelManager.ManagerHiddenWords.GridHelper.GetRandomNodeWithChar();
+    node.OccupiedChar.ShowCharAsNei(true).Forget();
+    _stateManager.UseHint();
     // var existChars = _levelManager.Symbols;
 
     // // get all positions.

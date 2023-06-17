@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: level.5
   title: "\u0427\u0435\u0442\u044B\u0440\u0435 \u0441\u043B\u043E\u0432\u0430"
-  minRate: 150
+  minRate: 50
   words:
   - {fileID: 11400000, guid: b11b25ec96e23f04c94146c89136ec4c, type: 2}
   - {fileID: 11400000, guid: d654be88f4700c148b9f0d97473b5864, type: 2}

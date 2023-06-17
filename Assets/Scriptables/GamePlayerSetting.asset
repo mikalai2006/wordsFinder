@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
-  m_Name: Level_8
+  m_Script: {fileID: 11500000, guid: d29e9c36a54b19d42ad348789508b7ac, type: 3}
+  m_Name: GamePlayerSetting
   m_EditorClassIdentifier: 
-  id: level.8
-  title: "\u0423\u0440\u043E\u0432\u0435\u043D\u044C 8"
-  minRate: 75
-  words:
-  - {fileID: 11400000, guid: 80f083fc57846954e976cee12ad88ee2, type: 2}
+  countCharForAddHint: 10
+  countCharForBonus: 40
+  countNotFoundForClearCharBonus: 5

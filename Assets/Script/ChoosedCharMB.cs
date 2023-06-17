@@ -38,7 +38,7 @@ public class ChoosedCharMB : MonoBehaviour
   {
     _image.color = _gameSetting.Theme.bgFindHiddenWord;
     _charText.color = _gameSetting.Theme.textFindHiddenWord;
-    await UniTask.Delay(delay);
+    await UniTask.Delay(delay); // UniTask.Delay(delay, ignoreTimeScale: false);
 
     Vector3 initialScale = transform.localScale;
     Vector3 initialPosition = transform.position;
@@ -67,10 +67,10 @@ public class ChoosedCharMB : MonoBehaviour
       elapsedTime += Time.deltaTime;
     }
     // transform.localScale = initialScale;
-    needHiddenChar.ShowChar().Forget();
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.openWord);
+    await needHiddenChar.ShowChar(true); //.Forget();
 
     transform.localScale = new Vector3(0, 0, 0);
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.openWord);
   }
 
   public async UniTask OpenCharAllowWord(Colba colba, int delay)

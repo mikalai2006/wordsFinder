@@ -146,6 +146,7 @@ public class LevelManager : Singleton<LevelManager>
     // }
 
     _gameManager.InputManager.Disable();
+    GameManager.Instance.DataManager.Save();
     var dialogWindow = new UILevelsOperation();
     var result = await dialogWindow.ShowAndHide();
     _gameManager.InputManager.Enable();

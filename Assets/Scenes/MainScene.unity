@@ -222,6 +222,12 @@ MonoBehaviour:
     Levels: []
     lastActiveLevelId: 
     lastActiveWordId: 
+  statePerk:
+    countCharInOrder: 0
+    countWordInOrder: 0
+    countCharForBonus: 0
+    countCharForAddHint: 0
+    countNotFoundForClearCharBonus: 0
   ActiveLevelConfig: {fileID: 0}
   ActiveWordConfig: {fileID: 0}
 --- !u!1 &516352404

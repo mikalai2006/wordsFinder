@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: level.1
   title: "\u041F\u0440\u043E\u043B\u043E\u0433"
-  minRate: 50
+  minRate: 30
   words:
   - {fileID: 11400000, guid: 64f2c9bffa08632439ebd5707ab74469, type: 2}

@@ -12,6 +12,7 @@ public class Colba : MonoBehaviour
   [SerializeField] private TMPro.TextMeshProUGUI _countChars;
   [SerializeField] private TMPro.TextMeshProUGUI _countWords;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
+  private GameSetting _gameSetting => GameManager.Instance.GameSettings;
 
   private void Awake()
   {
@@ -23,6 +24,33 @@ public class Colba : MonoBehaviour
   {
     StateManager.OnChangeState -= SetValue;
   }
+
+  public void RunOpenEffect()
+  {
+    var _CachedSystem = GameObject.Instantiate(
+      _gameSetting.prefabParticleSystem,
+      transform.position,
+      Quaternion.identity
+    );
+
+    var main = _CachedSystem.main;
+    main.startSize = new ParticleSystem.MinMaxCurve(0.05f, _levelManager.ManagerHiddenWords.scaleGrid / 2);
+
+    var col = _CachedSystem.colorOverLifetime;
+    col.enabled = true;
+
+    Gradient grad = new Gradient();
+    grad.SetKeys(new GradientColorKey[] {
+      new GradientColorKey(_gameSetting.Theme.bgFindAllowWord, 1.0f),
+      new GradientColorKey(_gameSetting.Theme.bgHiddenWord, 0.0f)
+      }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
+    });
+
+    col.color = grad;
+    _CachedSystem.Play();
+    Destroy(_CachedSystem.gameObject, 2f);
+  }
+
 
   public async UniTask AddChar()
   {
@@ -42,7 +70,7 @@ public class Colba : MonoBehaviour
       await UniTask.Yield();
       elapsedTime += Time.deltaTime;
     }
-
+    RunOpenEffect();
     // var value = Convert.ToInt32(_text.text);
     // value++;
     // SetValue(value.ToString());
