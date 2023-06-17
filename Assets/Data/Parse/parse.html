@@ -35,7 +35,7 @@
     const hashMap = new Map();
     allWords.forEach((word) => {
       var w = word.replace(/['"]+/g, "").trim();
-      if (w.indexOf("-") > 0 || hashMap.has(w)) {
+      if (w.indexOf("-") > 0 || hashMap.has(w) || w.length <= 2) {
       } else {
         if (!hashMap.has(w)) {
           hashMap.set(w, w);

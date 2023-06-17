@@ -29,3 +29,14 @@ MonoBehaviour:
   radius: 2.5
   timeDelayOverChar: 50
   prefabParticleSystem: {fileID: 4370175670826504157, guid: 0d64c2d06fc2020488bed46426152725, type: 3}
+  coin: {fileID: 21300000, guid: db8b627e1c21e3d4288bf7f9ed9a07b1, type: 3}
+  star: {fileID: 21300000, guid: 9acb7af3c836f054793808cec7dac127, type: 3}
+  bomb: {fileID: 21300000, guid: 18c91ce829ef1104782b450e424a1947, type: 3}
+  shuffle: {fileID: 21300000, guid: 430bfd9bcbe976346ae4a660d7bd2672, type: 3}
+  spriteCog: {fileID: 21300000, guid: fe7f28583815e944993cdb808f259b29, type: 3}
+  spriteLevels: {fileID: 21300000, guid: eefc4220263b116478026e6ab657100d, type: 3}
+  spriteCheck: {fileID: 21300000, guid: cd2e47aeddd79274c9b36796431fd68b, type: 3}
+  hint: {fileID: 21300000, guid: 9093ed3c83657b946b62ce16e789e873, type: 3}
+  box: {fileID: 21300000, guid: b022bcd2c91c06f42b551216b5d6d74e, type: 3}
+  lighting: {fileID: 21300000, guid: 1e67ba6e994e09d4885c41c82114cd9d, type: 3}
+  spriteLock: {fileID: 21300000, guid: 61fe73d1904192a478b5230a1065dea6, type: 3}

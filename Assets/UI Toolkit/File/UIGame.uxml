@@ -3,7 +3,7 @@
     <ui:VisualElement name="FooterBlok" class="font" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; left: 0; right: 0; align-items: center; bottom: 30px;">
         <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center; justify-content: space-between; max-width: 340px; width: 340px;">
             <ui:Button display-tooltip-when-elided="true" name="ShuffleBtn" class="button_circle">
-                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/RefreshBtn.png?fileID=2800000&amp;guid=602a31a1943212b43bfdb8e6153bf570&amp;type=3#RefreshBtn&apos;); -unity-background-scale-mode: scale-and-crop;" />
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/BgChar2.png?fileID=2800000&amp;guid=81bc87243f22f9747bf7cbd46d867efe&amp;type=3#BgChar2&apos;); -unity-background-scale-mode: scale-and-crop;" />
             </ui:Button>
         </ui:VisualElement>
     </ui:VisualElement>

@@ -26,7 +26,8 @@ public class UISettings : UILocaleBase
     _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
     _menu.style.display = DisplayStyle.None;
     _menu.Q<VisualElement>("MenuBlokWrapper").style.backgroundColor = new StyleColor(_gameSettings.Theme.bgColor);
-
+    _aside.Q<VisualElement>("ImgCog").style.backgroundImage = new StyleBackground(_gameSettings.spriteCog);
+    _aside.Q<VisualElement>("ImgLevels").style.backgroundImage = new StyleBackground(_gameSettings.spriteLevels);
 
     GameSetting = GameManager.Instance.GameSettings;
 

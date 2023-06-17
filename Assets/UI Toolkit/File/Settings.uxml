@@ -3,14 +3,14 @@
     <ui:VisualElement name="AsideBlok" class="font" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; left: 0; right: 0; align-items: center; top: 10px;">
         <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center; justify-content: space-between; max-width: 400px; width: 380px;">
             <ui:Button display-tooltip-when-elided="true" name="MenuBtn" class="button_circle">
-                <ui:VisualElement style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/cog-svgrepo-com%20(1).png?fileID=2800000&amp;guid=24a74d9f23b82bf4bbb3eaf4ebe2121c&amp;type=3#cog-svgrepo-com (1)&apos;);" />
+                <ui:VisualElement name="ImgCog" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/128/Cog128.png?fileID=2800000&amp;guid=fe7f28583815e944993cdb808f259b29&amp;type=3#Cog128&apos;);" />
             </ui:Button>
             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
             <ui:Button display-tooltip-when-elided="true" name="LevelsBtn" class="button_circle">
-                <ui:VisualElement style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/list-svgrepo-com.png?fileID=2800000&amp;guid=db5b3507e381548428b796e782ae6b48&amp;type=3#list-svgrepo-com&apos;);" />
+                <ui:VisualElement name="ImgLevels" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/128/Levels128.png?fileID=2800000&amp;guid=eefc4220263b116478026e6ab657100d&amp;type=3#Levels128&apos;);" />
             </ui:Button>
             <ui:Button display-tooltip-when-elided="true" name="ExitBtn" class="button_circle" style="display: none;">
-                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/CloseBtn.png?fileID=2800000&amp;guid=fed0e04364b7a4141bf1d3c1abf03fff&amp;type=3#CloseBtn&apos;); -unity-background-scale-mode: scale-and-crop;" />
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/128/Close128.png?fileID=2800000&amp;guid=403f4819152989949a0b60620e8ee754&amp;type=3#Close128&apos;); -unity-background-scale-mode: scale-and-crop;" />
             </ui:Button>
         </ui:VisualElement>
     </ui:VisualElement>

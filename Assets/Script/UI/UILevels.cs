@@ -81,8 +81,10 @@ public class UILevels : UILocaleBase
           InitLevel(level, currentWord);
         };
         var success = levelBlok.Q<VisualElement>("Success");
+        success.style.backgroundImage = new StyleBackground(_gameSettings.spriteCheck);
         success.style.display = DisplayStyle.None;
         var lockElement = levelBlok.Q<VisualElement>("Lock");
+        lockElement.style.backgroundImage = new StyleBackground(_gameSettings.spriteLock);
         lockElement.style.display = DisplayStyle.None;
         var description = levelBlok.Q<Label>("Description");
         var progressBlok = levelBlok.Q<VisualElement>("ProgressBarBox");

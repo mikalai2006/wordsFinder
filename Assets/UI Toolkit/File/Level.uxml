@@ -8,9 +8,9 @@
                 <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="Description" class="p-0 m-0 text-xs text-secondary" />
             </ui:VisualElement>
             <ui:VisualElement>
-                <ui:VisualElement name="Success" class="icon" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/OkBtn.png?fileID=2800000&amp;guid=3cd98d31d572b2d40944864fd0a340e0&amp;type=3#OkBtn&apos;); -unity-background-image-tint-color: rgb(180, 140, 18);" />
+                <ui:VisualElement name="Success" class="icon" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/128/Ok128.png?fileID=2800000&amp;guid=cd2e47aeddd79274c9b36796431fd68b&amp;type=3#Ok128&apos;); -unity-background-image-tint-color: rgb(180, 140, 18);" />
                 <ui:Button text="go" display-tooltip-when-elided="true" name="GoBtn" class="button text-xs" />
-                <ui:VisualElement name="Lock" class="icon" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/lock.png?fileID=2800000&amp;guid=c9d5621243a2c594892a7cf1ede47eb6&amp;type=3#lock&apos;); -unity-background-image-tint-color: rgb(27, 36, 0);" />
+                <ui:VisualElement name="Lock" class="icon" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/128/Lock128.png?fileID=2800000&amp;guid=61fe73d1904192a478b5230a1065dea6&amp;type=3#Lock128&apos;); -unity-background-image-tint-color: rgb(27, 36, 0);" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement style="margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px;">

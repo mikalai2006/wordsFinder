@@ -6,6 +6,10 @@ public enum StateNode
   Empty = 1 << 1,
   Occupied = 1 << 2,
   Open = 1 << 3,
+  Coin = 1 << 4,
+  Char = 1 << 5,
+  Word = 1 << 6,
+  Hint = 1 << 7
 }
 
 

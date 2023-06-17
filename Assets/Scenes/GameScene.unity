@@ -353,8 +353,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3026542749025891058, guid: 6973d44ce5bbfe84b8adb3e4918bc98e, type: 3}
       propertyPath: m_Name
-      value: Colba (1)
+      value: Colba
       objectReference: {fileID: 0}
+    - target: {fileID: 5209205075132791558, guid: 6973d44ce5bbfe84b8adb3e4918bc98e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b022bcd2c91c06f42b551216b5d6d74e, type: 3}
     - target: {fileID: 8443228912123593149, guid: 6973d44ce5bbfe84b8adb3e4918bc98e, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -644,6 +648,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1847410320}
     m_Modifications:
+    - target: {fileID: 1450353871330549680, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 430bfd9bcbe976346ae4a660d7bd2672, type: 3}
     - target: {fileID: 1588579740537279072, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
       propertyPath: m_Name
       value: Shuffle
@@ -833,6 +841,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -1095,6 +1104,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7232804204690910807, guid: 969674252b132304b919d872459d31d1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9acb7af3c836f054793808cec7dac127, type: 3}
     - target: {fileID: 8194215783345081534, guid: 969674252b132304b919d872459d31d1, type: 3}
       propertyPath: m_Name
       value: TopSide
@@ -1310,7 +1323,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3026542749025891058, guid: 6973d44ce5bbfe84b8adb3e4918bc98e, type: 3}
       propertyPath: m_Name
-      value: Colba
+      value: Colba_
       objectReference: {fileID: 0}
     - target: {fileID: 3026542749025891058, guid: 6973d44ce5bbfe84b8adb3e4918bc98e, type: 3}
       propertyPath: m_Layer
@@ -1406,6 +1419,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1847410320}
     m_Modifications:
+    - target: {fileID: 1450353871330549680, guid: 28ab9ed93c2b1f44f98f5f00a3308007, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9093ed3c83657b946b62ce16e789e873, type: 3}
     - target: {fileID: 1588579740537279072, guid: 28ab9ed93c2b1f44f98f5f00a3308007, type: 3}
       propertyPath: m_Name
       value: Hint
@@ -1498,6 +1515,7 @@ MonoBehaviour:
     keys: []
     values: []
   listChoosedGameObjects: []
+  scaleGrid: 0
 --- !u!4 &1820847146
 Transform:
   m_ObjectHideFlags: 0
