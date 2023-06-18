@@ -15,17 +15,11 @@ public class LevelManager : Singleton<LevelManager>
   private List<CharMB> _symbols;
   public List<CharMB> Symbols => _symbols;
   public GameObject SymbolsField;
+  public TopSide topSide;
   protected override void Awake()
   {
     base.Awake();
     _symbols = new();
-  }
-
-  private void ResetLevel()
-  {
-    ResetSymbols();
-
-    ManagerHiddenWords.Reset();
   }
 
   public void InitLevel(GameLevel levelConfig, GameLevelWord wordConfig)
@@ -79,33 +73,33 @@ public class LevelManager : Singleton<LevelManager>
       _symbols.Add(symbolGO);
     }
   }
-  public async void ShuffleChars()
-  {
-    var existChars = Symbols;
+  // public async void ShuffleChars()
+  // {
+  //   var existChars = Symbols;
 
-    // get all positions.
-    Dictionary<CharMB, char> existPositionsChars = new();
-    for (int i = 0; i < existChars.Count; i++)
-    {
-      existPositionsChars.Add(existChars[i], existChars[i].charTextValue);
-    }
-    // shuffle positions.
-    existChars = existChars.OrderBy(t => UnityEngine.Random.value).ToList();
+  //   // get all positions.
+  //   Dictionary<CharMB, char> existPositionsChars = new();
+  //   for (int i = 0; i < existChars.Count; i++)
+  //   {
+  //     existPositionsChars.Add(existChars[i], existChars[i].charTextValue);
+  //   }
+  //   // shuffle positions.
+  //   existChars = existChars.OrderBy(t => UnityEngine.Random.value).ToList();
 
-    // set new position.
-    List<UniTask> tasks = new();
-    string newWord = "";
-    for (int i = 0; i < existChars.Count; i++)
-    {
-      tasks.Add(existChars[i].SetPosition(existPositionsChars.ElementAt(i).Key.transform.position));
-      newWord += existChars.ElementAt(i).charTextValue;
-    }
+  //   // set new position.
+  //   List<UniTask> tasks = new();
+  //   string newWord = "";
+  //   for (int i = 0; i < existChars.Count; i++)
+  //   {
+  //     tasks.Add(existChars[i].SetPosition(existPositionsChars.ElementAt(i).Key.transform.position));
+  //     newWord += existChars.ElementAt(i).charTextValue;
+  //   }
 
-    ManagerHiddenWords.SetWordForChars(newWord);
+  //   ManagerHiddenWords.SetWordForChars(newWord);
 
-    await UniTask.WhenAll(tasks);
-    GameManager.Instance.DataManager.Save();
-  }
+  //   await UniTask.WhenAll(tasks);
+  //   GameManager.Instance.DataManager.Save();
+  // }
 
   private void ResetSymbols()
   {
@@ -146,11 +140,17 @@ public class LevelManager : Singleton<LevelManager>
     // }
 
     _gameManager.InputManager.Disable();
-    GameManager.Instance.DataManager.Save();
     var dialogWindow = new UILevelsOperation();
     var result = await dialogWindow.ShowAndHide();
     _gameManager.InputManager.Enable();
     await UniTask.Yield();
+  }
+
+  private void ResetLevel()
+  {
+    ResetSymbols();
+
+    ManagerHiddenWords.Reset();
   }
 
 }

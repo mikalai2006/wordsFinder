@@ -21,12 +21,6 @@ public class DataManager : Singleton<DataManager>
 
   }
 
-  public void New()
-  {
-    _dataGame = new DataGame();
-
-  }
-
   public DataGame Load()
   {
     _dataGame = _fileDataHandler.LoadData();
@@ -36,15 +30,10 @@ public class DataManager : Singleton<DataManager>
 
   public void Save()
   {
-    New();
     var levelManager = GameManager.Instance.LevelManager;
-    // _dataGame.Level = 1;
-    // _dataGame.potentialWords = levelManager.ManagerHiddenWords.PotentialWords.Keys.ToList();
-    // _dataGame.openHiddenWords = levelManager.ManagerHiddenWords.OpenHiddenWords.Keys.ToList();
-    // _dataGame.openPotentialWords = levelManager.ManagerHiddenWords.OpenPotentialWords.Keys.ToList();
-    // _dataGame.hiddenWords = levelManager.ManagerHiddenWords.hiddenWords.Keys.ToList();
-    // _dataGame.wordForChars = levelManager.ManagerHiddenWords.WordForChars;
-    // _dataGame.dataState = GameManager.Instance.StateManager.dataState;
+
+    Debug.Log("Save");
+
     _dataGame = GameManager.Instance.StateManager.GetData();//.dataGame;
 
     _fileDataHandler.SaveData(_dataGame);

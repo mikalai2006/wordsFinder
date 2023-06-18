@@ -1,34 +1,41 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class Colba : MonoBehaviour
 {
-  [SerializeField] private Vector3 _scaleSprite;
-  [SerializeField] private Vector3 _position;
+  private Vector3 _initScale;
+  private Vector3 _initPosition;
   [SerializeField] private SpriteRenderer _sprite;
+  [SerializeField] private SpriteRenderer _spriteProgress;
   [SerializeField] private TMPro.TextMeshProUGUI _countChars;
   [SerializeField] private TMPro.TextMeshProUGUI _countWords;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
+  private GameManager _gameManager => GameManager.Instance;
+  private float progressBasePositionY = -1.4f;
 
   private void Awake()
   {
-    _scaleSprite = _sprite.transform.localScale;
-    _position = _sprite.transform.position;
+    _initScale = transform.localScale;
+    _initPosition = transform.position;
+    _sprite.sprite = _gameSetting.spriteStar;
     StateManager.OnChangeState += SetValue;
   }
+
   private void Destroy()
   {
     StateManager.OnChangeState -= SetValue;
   }
 
+
   public void RunOpenEffect()
   {
     var _CachedSystem = GameObject.Instantiate(
-      _gameSetting.prefabParticleSystem,
+      _gameSetting.Boom,
       transform.position,
       Quaternion.identity
     );
@@ -48,14 +55,41 @@ public class Colba : MonoBehaviour
 
     col.color = grad;
     _CachedSystem.Play();
-    Destroy(_CachedSystem.gameObject, 2f);
+    if (_CachedSystem.isPlaying || _CachedSystem.isStopped) Destroy(_CachedSystem.gameObject, 2f);
+  }
+
+
+  public void CreateStar()
+  {
+    var potentialGroup = _levelManager.ManagerHiddenWords.GridHelper
+      .GetGroupNodeChars()
+      // .OrderBy(t => UnityEngine.Random.value)
+      .FirstOrDefault();
+    if (potentialGroup.Value != null && potentialGroup.Value.Count > 0)
+    {
+      var node = potentialGroup.Value.First();
+      if (node != null)
+      {
+        var starEntity = _levelManager.ManagerHiddenWords.AddEntity(node.arrKey, TypeEntity.Star);
+        if (gameObject != null)
+        {
+          // node.StateNode |= StateNode.Entity;
+          _gameManager.StateManager.statePerk.needCreateStar -= 1;
+          starEntity.SetPosition(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position));
+        }
+        else
+        {
+          Debug.LogWarning($"Not found {name}");
+        }
+      }
+    }
   }
 
 
   public async UniTask AddChar()
   {
-    Vector3 initialScale = _scaleSprite;
-    Vector3 initialPosition = _position;
+    Vector3 initialScale = _initScale;
+    Vector3 initialPosition = _initPosition;
     Vector3 upScale = new Vector3(1.5f, 1.5f, 0);
 
     float elapsedTime = 0f;
@@ -66,7 +100,7 @@ public class Colba : MonoBehaviour
     while (elapsedTime < duration)
     {
       float progress = (Time.time - startTime) / duration;
-      _sprite.transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
+      transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
       await UniTask.Yield();
       elapsedTime += Time.deltaTime;
     }
@@ -75,10 +109,47 @@ public class Colba : MonoBehaviour
     // value++;
     // SetValue(value.ToString());
     SetDefault();
+    // ChangeValue();
   }
 
-  public async void SetValue(DataGame data)
+  // private void ChangeValue()
+  // {
+  //   var _stateManager = _gameManager.StateManager;
+  //   _stateManager.statePerk.countCharInOrder += 1;
+  //   // _stateManager.statePerk.countWordInOrder += 1;
+  //   _stateManager.statePerk.countCharForBonus += 1;
+  //   _stateManager.statePerk.countCharForAddHint += 1;
+  //   _stateManager.statePerk.countCharForAddCoin += 1;
+
+  //   _stateManager.statePerk.countErrorForNullBonus = 0;
+
+  //   // Add bonus index.
+  //   if (_stateManager.statePerk.countCharForBonus >= _gameManager.GameSettings.PlayerSetting.countCharForBonus)
+  //   {
+  //     _stateManager.statePerk.countCharForBonus -= _gameManager.GameSettings.PlayerSetting.countCharForBonus;
+  //     _stateManager.dataGame.activeLevel.index++;
+  //   }
+
+  //   // Add hint.
+  //   if (_stateManager.statePerk.countCharForAddHint >= _gameManager.GameSettings.PlayerSetting.countCharForAddHint)
+  //   {
+  //     _stateManager.statePerk.countCharForAddHint -= _gameManager.GameSettings.PlayerSetting.countCharForAddHint;
+  //     _stateManager.dataGame.activeLevel.hint++;
+  //   }
+
+  //   // Check add coin to grid.
+  //   if (_stateManager.statePerk.countCharForAddCoin >= _gameManager.GameSettings.PlayerSetting.countCharForCoin)
+  //   {
+  //     _stateManager.statePerk.countCharForAddCoin -= _gameManager.GameSettings.PlayerSetting.countCharForCoin;
+  //     CreateStar();
+  //   }
+
+  //   _stateManager.RefreshData();
+  // }
+
+  public async void SetValue(DataGame data, StatePerk statePerk)
   {
+    // View new data.
     var dataPlural = new Dictionary<string, int> {
       {"count",  data.activeLevel.openWords.Count},
       {"count2", data.activeLevel.countWords},
@@ -92,11 +163,30 @@ public class Colba : MonoBehaviour
 
     _countWords.text = textCountWords;
     _countChars.text = data.activeLevel.countOpenChars.ToString();
+
+    if (statePerk.needCreateStar > 0)
+    {
+      for (int i = 0; i < statePerk.needCreateStar; i++)
+      {
+        CreateStar();
+      }
+    }
+
+    SetValueProgressBar(data, statePerk);
   }
+
+
+  private void SetValueProgressBar(DataGame data, StatePerk statePerk)
+  {
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)statePerk.countCharForAddStar / _gameSetting.PlayerSetting.bonusCount.charStar;
+    _spriteProgress.transform.localPosition
+      = new Vector3(_spriteProgress.transform.localPosition.x, newPosition);
+  }
+
 
   private void SetDefault()
   {
-    _sprite.transform.localScale = _scaleSprite;
-    _sprite.transform.position = _position;
+    transform.localScale = _initScale;
+    transform.position = _initPosition;
   }
 }

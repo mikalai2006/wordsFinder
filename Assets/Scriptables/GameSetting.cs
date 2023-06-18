@@ -23,19 +23,25 @@ public class GameSetting : ScriptableObject
 
   [Space(5)]
   [Header("Particle System")]
-  public ParticleSystem prefabParticleSystem;
+  public ParticleSystem Boom;
+  public ParticleSystem BoomLarge;
 
   [Space(5)]
   [Header("Assets")]
-  public Sprite coin;
-  public Sprite star;
-  public Sprite bomb;
-  public Sprite shuffle;
+  public Sprite spriteCoin;
+  public Sprite spriteStar;
+  public Sprite spriteBomb;
+  public Sprite spriteShuffle;
   public Sprite spriteCog;
   public Sprite spriteLevels;
   public Sprite spriteCheck;
-  public Sprite hint;
-  public Sprite box;
-  public Sprite lighting;
+  public Sprite spriteHint;
+  public Sprite spriteBox;
+  public Sprite spriteLighting;
   public Sprite spriteLock;
+  public GameObject PrefabCoin;
+  public GameObject PrefabBomb;
+  public GameObject PrefabStar;
+  public GameObject PrefabLighting;
+  public Sprite spriteRate;
 }

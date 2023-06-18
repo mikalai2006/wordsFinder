@@ -37,7 +37,7 @@ public class HiddenWordMB : MonoBehaviour
       var currentChar = word.ElementAt(i);
       // var currentCharMB = Chars.ElementAt(i);
       newChar.gameObject.SetActive(true);
-      newChar.SetValue(currentChar);
+      newChar.SetChar(currentChar);
       Chars.Add(newChar);
       nodes[i].SetOccupiedChar(newChar, this);
     }

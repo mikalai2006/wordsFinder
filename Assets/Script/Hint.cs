@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -33,7 +31,7 @@ public class Hint : MonoBehaviour, IPointerDownHandler
     StateManager.OnChangeState -= SetValue;
   }
 
-  public void SetValue(DataGame data)
+  public void SetValue(DataGame data, StatePerk statePerk)
   {
     _countHintText.text = data.activeLevel.hint.ToString();
     if (data.activeLevel.hint > 0)
@@ -44,19 +42,7 @@ public class Hint : MonoBehaviour, IPointerDownHandler
     {
       _countHintObject.gameObject.SetActive(false);
     }
-    // Vector3 initialPosition = gameObj.transform.position;
-
-    // float elapsedTime = 0f;
-    // float duration = .2f;
-    // float startTime = Time.time;
-
-    // while (elapsedTime < duration)
-    // {
-    //   float progress = (Time.time - startTime) / duration;
-    //   gameObj.transform.position = Vector3.Lerp(initialPosition, newPos, progress);
-    //   await UniTask.Yield();
-    //   elapsedTime += Time.deltaTime;
-    // }
+    // TODO animation get hit.
   }
 
   private void SetDefault()
@@ -65,33 +51,37 @@ public class Hint : MonoBehaviour, IPointerDownHandler
     transform.position = _position;
   }
 
-  public void OnPointerDown(PointerEventData eventData)
+  public void RunHint()
   {
     var node = _levelManager.ManagerHiddenWords.GridHelper.GetRandomNodeWithChar();
-    node.OccupiedChar.ShowCharAsNei(true).Forget();
+    if (node != null)
+    {
+      node.OccupiedChar.ShowCharAsNei(true).Forget();
+      _levelManager.ManagerHiddenWords.AddOpenChar(node.OccupiedChar);
+      _stateManager.UseHint();
+    }
+  }
+
+  private void RunHintFrequentChar()
+  {
+    var nodes = _levelManager.ManagerHiddenWords.GridHelper.GetGroupNodeChars(); //.GetRandomNodeWithChar();
+    var nodesForShow = nodes.OrderBy(t => t.Value.Count).First().Value;
+    foreach (var node in nodesForShow)
+    {
+      node.OccupiedChar.ShowCharAsNei(true).Forget();
+      _levelManager.ManagerHiddenWords.AddOpenChar(node.OccupiedChar);
+    }
+
     _stateManager.UseHint();
-    // var existChars = _levelManager.Symbols;
+  }
 
-    // // get all positions.
-    // Dictionary<CharMB, char> existPositionsChars = new();
-    // for (int i = 0; i < existChars.Count; i++)
-    // {
-    //   existPositionsChars.Add(existChars[i], existChars[i].charTextValue);
-    // }
-    // // shuffle positions.
-    // existChars = existChars.OrderBy(t => UnityEngine.Random.value).ToList();
-
-    // // set new position.
-    // List<UniTask> tasks = new();
-    // string newWord = "";
-    // for (int i = 0; i < existChars.Count; i++)
-    // {
-    //   tasks.Add(existChars[i].SetPosition(existPositionsChars.ElementAt(i).Key.transform.position));
-    //   newWord += existChars.ElementAt(i).charTextValue;
-    // }
-    // OnShuffleWord?.Invoke(newWord);
-
-    // await UniTask.WhenAll(tasks);
-    // GameManager.Instance.DataManager.Save();
+  public void OnPointerDown(PointerEventData eventData)
+  {
+    if (_stateManager.dataGame.activeLevel.hint == 0)
+    {
+      // TODO Show dialog with info get hint by adsense.
+      return;
+    }
+    RunHint();
   }
 }

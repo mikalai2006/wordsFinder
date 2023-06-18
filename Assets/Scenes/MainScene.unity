@@ -219,6 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataGame:
     rate: 0
+    coins: 0
     Levels: []
     lastActiveLevelId: 
     lastActiveWordId: 
@@ -227,7 +228,11 @@ MonoBehaviour:
     countWordInOrder: 0
     countCharForBonus: 0
     countCharForAddHint: 0
-    countNotFoundForClearCharBonus: 0
+    countCharForAddCoin: 0
+    countCharForAddStar: 0
+    countErrorForNullBonus: 0
+    needCreateStar: 0
+    needCreateCoin: 0
   ActiveLevelConfig: {fileID: 0}
   ActiveWordConfig: {fileID: 0}
 --- !u!1 &516352404

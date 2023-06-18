@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29e9c36a54b19d42ad348789508b7ac, type: 3}
   m_Name: GamePlayerSetting
   m_EditorClassIdentifier: 
-  countCharForAddHint: 10
-  countCharForBonus: 40
-  countNotFoundForClearCharBonus: 5
+  bonusCount:
+    charHint: 15
+    charBonus: 40
+    errorClear: 3
+    charCoin: 3
+    charStar: 10

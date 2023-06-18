@@ -1,42 +1,21 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 [System.Serializable]
 public class DataGame
 {
-  // public int Level;
-  // public List<string> potentialWords;
-  // public List<string> openPotentialWords;
-  // public List<string> openHiddenWords;
-  // public List<string> hiddenWords;
-  // public string wordForChars;
   public int rate;
+  public int coins;
   public List<DataLevel> Levels;
   [System.NonSerialized] public DataLevel activeLevel;
   public string lastActiveLevelId;
   public string lastActiveWordId;
 
-  // public DataState dataState;
-
   public DataGame()
   {
-    // potentialWords = new();
-    // openHiddenWords = new();
-    // openPotentialWords = new();
-    // hiddenWords = new();
     Levels = new();
-    // dataState = new();
   }
 }
-
-
-// [System.Serializable]
-// public struct DataState
-// {
-//   public int countOpenChars;
-//   public int countOpenWords;
-//   public int countAllowWords;
-//   public int rate;
-// }
 
 
 [System.Serializable]
@@ -46,10 +25,10 @@ public class DataLevel
   public string idWord;
   public int hint;
   public float index;
-  // public List<string> potentialWords;
+  public SerializableDictionary<Vector2, string> openChars;
+  public SerializeEntity ent;
   public List<string> openWords;
   public List<string> hiddenWords;
-  // public List<string> openHiddenWords;
   public string wordForChars;
   public int countWords;
   public int countOpenChars;
@@ -58,6 +37,7 @@ public class DataLevel
   {
     openWords = new();
     hiddenWords = new();
-    // openHiddenWords = new();
+    openChars = new();
+    ent = new();
   }
 }

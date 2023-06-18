@@ -7,8 +7,9 @@ public class ChoosedCharMB : MonoBehaviour
   [SerializeField] private TMPro.TextMeshProUGUI _charText;
   [SerializeField] public RectTransform RectTransform;
 
-  [HideInInspector] public char charTextValue;
+  [HideInInspector] public char textChar;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
+  private StateManager _stateManager => GameManager.Instance.StateManager;
   [SerializeField] private Image _image;
   private GameSetting _gameSetting;
   private Vector3 _initPosition;
@@ -22,10 +23,10 @@ public class ChoosedCharMB : MonoBehaviour
     SetDefault();
   }
 
-  public void SetValue(char currentChar)
+  public void SetChar(char currentChar)
   {
     _charText.text = currentChar.ToString();
-    charTextValue = currentChar;
+    textChar = currentChar;
   }
 
   public void SetSize(float size)
@@ -34,7 +35,7 @@ public class ChoosedCharMB : MonoBehaviour
     RectTransform.sizeDelta = new Vector2(size, size);
   }
 
-  public async UniTask OpenHiddenChar(HiddenCharMB needHiddenChar, int delay)
+  public async UniTask OpenCharHiddenWord(HiddenCharMB needHiddenChar, int delay)
   {
     _image.color = _gameSetting.Theme.bgFindHiddenWord;
     _charText.color = _gameSetting.Theme.textFindHiddenWord;
@@ -110,6 +111,8 @@ public class ChoosedCharMB : MonoBehaviour
     // gameObject.SetActive(false);
 
     await colba.AddChar();
+
+    _stateManager.OpenCharAllowWord(textChar);
   }
 
   public async UniTask CheckNo()
@@ -130,7 +133,6 @@ public class ChoosedCharMB : MonoBehaviour
     transform.position = _initPosition;
     transform.localScale = _initScale;
   }
-
   public async UniTask CheckExist()
   {
     Vector3 initialScale = transform.localScale;
@@ -150,4 +152,8 @@ public class ChoosedCharMB : MonoBehaviour
 
     SetDefault();
   }
+
+
+
+
 }

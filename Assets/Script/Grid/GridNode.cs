@@ -6,10 +6,10 @@ public enum StateNode
   Empty = 1 << 1,
   Occupied = 1 << 2,
   Open = 1 << 3,
-  Coin = 1 << 4,
+  Entity = 1 << 4,
   Char = 1 << 5,
   Word = 1 << 6,
-  Hint = 1 << 7
+  Hint = 1 << 7,
 }
 
 
@@ -20,11 +20,13 @@ public class GridNode
   public StateNode StateNode = StateNode.Empty;
   GridHelper _gridHelper;
   Grid<GridNode> _grid;
+  public Vector2Int arrKey => new Vector2Int(x, y);
   public Vector2 position;
   public int countVacantRight;
 
   public HiddenCharMB OccupiedChar;
   public HiddenWordMB OccupiedWord;
+  public BaseEntity OccupiedEntity;
 
   public GridNode TopNode => _gridHelper.GetNode(x, y + 1);
   public GridNode BottomNode => _gridHelper.GetNode(x, y - 1);
@@ -53,6 +55,19 @@ public class GridNode
     StateNode |= StateNode.Open;
   }
 
+  public GridNode SetOccupiedEntity(BaseEntity _entity)
+  {
+    OccupiedEntity = _entity;
+    if (_entity == null)
+    {
+      StateNode &= ~StateNode.Entity;
+    }
+    else
+    {
+      StateNode |= StateNode.Entity;
+    }
+    return this;
+  }
 
 #if UNITY_EDITOR
   public override string ToString()
@@ -61,6 +76,7 @@ public class GridNode
         "[x" + position.x + ",y" + position.y + "] \n" +
         "OccupiedUnit=" + OccupiedChar?.ToString() + ",\n" +
         "GuestedUnit=" + OccupiedWord?.ToString() + ",\n" +
+        "Entity=" + OccupiedEntity?.ToString() + ",\n" +
         "StateNode=" + System.Convert.ToString((int)StateNode, 2) + ",\n";
   }
 #endif

@@ -8,6 +8,7 @@ public class ChoosedWordMB : MonoBehaviour
 {
   [SerializeField] private ChoosedCharMB charMB;
   private LevelManager _dataManager = LevelManager.Instance;
+  private GameManager _gameManager => GameManager.Instance;
   private List<ChoosedCharMB> _chars;
   private List<ChoosedCharMB> _charsGameObject;
 
@@ -47,7 +48,7 @@ public class ChoosedWordMB : MonoBehaviour
       var currentCharMB = _chars.ElementAt(i);
       _charsGameObject.Add(currentCharMB);
       currentCharMB.gameObject.SetActive(true);
-      currentCharMB.SetValue(currentChar);
+      currentCharMB.SetChar(currentChar);
       currentCharMB.SetSize(charScale);
     }
   }
@@ -63,9 +64,12 @@ public class ChoosedWordMB : MonoBehaviour
 
       if (needHiddenChar == null) continue;
 
-      listTasks.Add(currentCharMB.OpenHiddenChar(needHiddenChar, i * (50 + i * 10)));
+      needHiddenChar.OccupiedNode.StateNode |= StateNode.Open;
+
+      listTasks.Add(currentCharMB.OpenCharHiddenWord(needHiddenChar, i * (50 + i * 10)));
     }
     await UniTask.WhenAll(listTasks);
+    // _gameManager.StateManager.IncrementRate(1);
   }
 
   public async UniTask ExistHiddenWord(HiddenWordMB hiddenWordMB)
@@ -87,6 +91,7 @@ public class ChoosedWordMB : MonoBehaviour
     await UniTask.WhenAll(listTasks);
   }
 
+
   public async UniTask OpenAllowWord(Colba colba)
   {
     List<UniTask> listTasks = new();
@@ -97,7 +102,10 @@ public class ChoosedWordMB : MonoBehaviour
       listTasks.Add(currentCharMB.OpenCharAllowWord(colba, i * (50 + i * 10)));
     }
     await UniTask.WhenAll(listTasks);
+    // _gameManager.StateManager.IncrementRate(1);
   }
+
+
   public async UniTask ExistAllowWord()
   {
     List<UniTask> listTasks = new();

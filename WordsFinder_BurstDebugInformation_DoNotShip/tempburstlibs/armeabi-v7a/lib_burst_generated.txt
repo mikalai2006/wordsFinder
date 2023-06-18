@@ -8,8 +8,9 @@ Library: E:\unity\projects\WordsFinder\Temp\BurstOutput\tempburstlibs\armeabi-v7
 --float-precision=Standard
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=E:\unity\projects\WordsFinder\Temp\Burst
+--key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.2f1/Editor/Data/PlaybackEngines/AndroidPlayer
+--decode-folder=E:\unity\projects\WordsFinder\Library\Burst
 --output=E:\unity\projects\WordsFinder\Temp\BurstOutput\tempburstlibs\armeabi-v7a\lib_burst_generated
---pdb-search-paths=Temp/ManagedSymbols/
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Burst.BurstCompiler+BurstCompilerHelper, Unity.Burst, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::IsBurstEnabled()--8c2be93e18276203cbd918daa2748a10

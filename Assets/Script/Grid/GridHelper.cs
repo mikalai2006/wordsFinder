@@ -26,18 +26,49 @@ public class GridHelper
       {
         for (int y = 0; y < _grid.GetHeight(); y++)
         {
-          list.Add(_grid.GetGridObject(new Vector3Int(x, y)));
+          list.Add(_grid.GetGridObject(new Vector2Int(x, y)));
         }
       }
     }
     return list;
   }
 
+  public SerializableDictionary<char, List<GridNode>> GetGroupNodeChars()
+  {
+    var result = new SerializableDictionary<char, List<GridNode>>();
+    var allNodes = GetAllGridNodes()
+      .Where(t =>
+        t.StateNode.HasFlag(StateNode.Occupied)
+        && !t.StateNode.HasFlag(StateNode.Open)
+        && !t.StateNode.HasFlag(StateNode.Entity)
+        )
+      .ToList();
+
+    for (int i = 0; i < allNodes.Count; i++)
+    {
+      var charText = allNodes.ElementAt(i).OccupiedChar.charTextValue;
+      if (result.ContainsKey(charText))
+      {
+        result[charText].Add(allNodes.ElementAt(i));
+      }
+      else
+      {
+        result[charText] = new List<GridNode>() { allNodes.ElementAt(i) };
+      }
+    }
+    return result;
+  }
+
+
   public GridNode GetNode(int x, int y)
   {
-    return _grid.GetGridObject(new Vector3Int(x, y));
+    return _grid.GetGridObject(new Vector2Int(x, y));
   }
-  public GridNode GetNode(Vector3Int pos)
+  public GridNode GetNode(Vector2 pos)
+  {
+    return _grid.GetGridObject(new Vector2Int((int)pos.x, (int)pos.y));
+  }
+  public GridNode GetNode(Vector2Int pos)
   {
     return _grid.GetGridObject(pos);
   }
@@ -126,8 +157,12 @@ public class GridHelper
   public GridNode GetRandomNodeWithChar()
   {
     return GetAllGridNodes()
-      .Where(t => t.StateNode.HasFlag(StateNode.Occupied) && !t.StateNode.HasFlag(StateNode.Open))
+      .Where(t =>
+        t.StateNode.HasFlag(StateNode.Occupied)
+        && !t.StateNode.HasFlag(StateNode.Open)
+        && !t.StateNode.HasFlag(StateNode.Entity)
+      )
       .OrderBy(t => UnityEngine.Random.value)
-      .First();
+      .FirstOrDefault();
   }
 }

@@ -38,7 +38,7 @@ public class GameTheme : ScriptableObject
   [Space(5)]
   [Header("Game")]
   public Color bgColor;
+  public Color entityColor;
   public Color colorLine;
-
-
+  public Color entityActiveColor;
 }

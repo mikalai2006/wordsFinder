@@ -7,10 +7,11 @@ public class HiddenCharMB : MonoBehaviour
 {
   [SerializeField] private TMPro.TextMeshProUGUI _charText;
   public char charTextValue;
-  private LevelManager _levelManager = LevelManager.Instance;
+  private LevelManager _levelManager => LevelManager.Instance;
+  private StateManager _stateManager => GameManager.Instance.StateManager;
+  private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   [SerializeField] private Image _image;
   [SerializeField] private RectTransform _canvas;
-  private GameSetting _gameSetting;
   public GridNode OccupiedNode;
   // ParticleSystem system
   // {
@@ -25,11 +26,10 @@ public class HiddenCharMB : MonoBehaviour
 
   public void Awake()
   {
-    _gameSetting = GameManager.Instance.GameSettings;
     SetDefault();
   }
 
-  public void SetValue(char currentChar)
+  public void SetChar(char currentChar)
   {
     _charText.text = currentChar.ToString();
     charTextValue = currentChar;
@@ -55,18 +55,37 @@ public class HiddenCharMB : MonoBehaviour
   {
     if (runEffect) RunOpenEffect();
 
+    // Remove open char.
+    if (
+      _stateManager.dataGame.activeLevel.openChars.ContainsKey(OccupiedNode.arrKey)
+      &&
+      _levelManager.ManagerHiddenWords.OpenWords.ContainsKey(OccupiedNode.OccupiedWord._word)
+      )
+    {
+      _levelManager.ManagerHiddenWords.RemoveOpenChar(this);
+    }
+
     _image.color = _gameSetting.Theme.bgOpentHiddenWord;
     _image.sprite = _gameSetting.Theme.bgImageHiddenWord;
     _charText.color = _gameSetting.Theme.textOpentHiddenWord;
     _charText.gameObject.SetActive(true);
     OccupiedNode.SetOpen();
+
+    // Check exist entity of by node.
+    if (OccupiedNode.StateNode.HasFlag(StateNode.Entity))
+    {
+      OccupiedNode.OccupiedEntity.Run();
+    }
+
+    // Create coin.
+    if (runEffect) CreateCoin();
   }
 
 
   public void RunOpenEffect()
   {
     var _CachedSystem = GameObject.Instantiate(
-      _gameSetting.prefabParticleSystem,
+      _gameSetting.Boom,
       transform.position,
       Quaternion.identity
     );
@@ -128,9 +147,11 @@ public class HiddenCharMB : MonoBehaviour
     // }
     // gameObject.transform.localScale = new Vector3(-1, 1, 1);
 
+
+    if (runEffect) _stateManager.OpenCharHiddenWord(charTextValue);
     Open(runEffect);
-    await OpenNeighbours(runEffect);
-    // await UniTask.Yield();
+    // await OpenNeighbours(runEffect);
+    await UniTask.Yield();
   }
   public async UniTask ShowCharAsNei(bool runEffect)
   {
@@ -150,8 +171,8 @@ public class HiddenCharMB : MonoBehaviour
     Open(runEffect);
     _image.color = _gameSetting.Theme.bgOpenNeiHiddenWord;
     _charText.color = _gameSetting.Theme.textOpenNeiHiddenWord;
-    await OpenNeighbours(runEffect);
-    // await UniTask.Yield();
+    // await OpenNeighbours(runEffect);
+    await UniTask.Yield();
   }
 
   public async UniTask OpenNeighbours(bool runEffect)
@@ -183,9 +204,27 @@ public class HiddenCharMB : MonoBehaviour
       await UniTask.Yield();
     }
     transform.localScale = initialScale;
-
-
   }
+
+
+  public void CreateCoin()
+  {
+    if (_stateManager.statePerk.needCreateCoin > 0)
+    {
+      for (int i = 0; i < _stateManager.statePerk.needCreateCoin; i++)
+      {
+        var node = _levelManager.ManagerHiddenWords.GridHelper.GetRandomNodeWithChar();
+        if (node != null)
+        {
+          var coinEntity = _levelManager.ManagerHiddenWords.AddEntity(node.arrKey, TypeEntity.Coin);
+          _stateManager.statePerk.needCreateCoin -= 1;
+
+          coinEntity.SetPosition(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position));
+        }
+      }
+    }
+  }
+
 
 #if UNITY_EDITOR
   public override string ToString()

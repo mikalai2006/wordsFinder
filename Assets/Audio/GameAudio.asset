@@ -21,3 +21,4 @@ MonoBehaviour:
   noWord: {fileID: 8300000, guid: 78c7cb6706183df4d862823b10cc2107, type: 3}
   bgMusic: {fileID: 8300000, guid: 12fae5d63a15f6a479fca51e20b5abc0, type: 3}
   addToColba: {fileID: 8300000, guid: 82bc95f33a916684197380bd76461aef, type: 3}
+  addCoin: {fileID: 8300000, guid: d0b46ff8b8b20ad48a34379b7ca59dcc, type: 3}

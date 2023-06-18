@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ab369d9f7c175498a033c6688b4df2, type: 3}
   m_Name: Green
   m_EditorClassIdentifier: 
-  bgHiddenWord: {r: 0.1764706, g: 0.21176471, b: 0.07450981, a: 1}
-  bgOpentHiddenWord: {r: 0.49019608, g: 0.6156863, b: 0.21960784, a: 1}
-  textOpentHiddenWord: {r: 0.07058824, g: 0.09411765, b: 0, a: 1}
+  bgHiddenWord: {r: 0.2509804, g: 0.3137255, b: 0.15686275, a: 1}
+  bgOpentHiddenWord: {r: 0.3915272, g: 0.49056602, b: 0.242969, a: 1}
+  textOpentHiddenWord: {r: 0.17985049, g: 0.2264151, b: 0.11000357, a: 1}
   bgImageHiddenWord: {fileID: 21300000, guid: 81bc87243f22f9747bf7cbd46d867efe, type: 3}
-  bgOpenNeiHiddenWord: {r: 0.1764706, g: 0.21176471, b: 0.07450981, a: 1}
-  textOpenNeiHiddenWord: {r: 0.49019608, g: 0.6156863, b: 0.21960784, a: 0.42745098}
+  bgOpenNeiHiddenWord: {r: 0.2509804, g: 0.3137255, b: 0.15686275, a: 1}
+  textOpenNeiHiddenWord: {r: 0.342252, g: 0.4245283, b: 0.21426664, a: 1}
   bgChoosedWord: {r: 0.5620668, g: 0.6132076, b: 0.41941082, a: 1}
   textChoosedWord: {r: 0, g: 0, b: 0, a: 1}
   bgFindAllowWord: {r: 1, g: 0.7531516, b: 0, a: 1}
@@ -26,11 +26,13 @@ MonoBehaviour:
   textFindHiddenWord: {r: 0.07058824, g: 0.09411765, b: 0, a: 1}
   bgNotFoundWord: {r: 0.9245283, g: 0.5140829, b: 0.3794055, a: 1}
   textNotFoundWord: {r: 0.3584906, g: 0.08215409, b: 0.045656823, a: 1}
-  colorTextChar: {r: 0.09845627, g: 0.13207549, b: 0, a: 1}
+  colorTextChar: {r: 0.15138838, g: 0.1981132, b: 0.081301175, a: 1}
   bgColorChar: {r: 1, g: 1, b: 1, a: 0.05490196}
   colorTextChooseChar: {r: 0, g: 0, b: 0, a: 0.87058824}
   bgColorChooseChar: {r: 0.8679245, g: 0.6474248, b: 0, a: 0.87058824}
   bgImageChar: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgImageCharChoose: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
-  bgColor: {r: 0.36078432, g: 0.43529412, b: 0.15294118, a: 1}
+  bgColor: {r: 0.49803925, g: 0.53333336, b: 0.2509804, a: 1}
+  entityColor: {r: 1, g: 0.8608516, b: 0, a: 0.9019608}
   colorLine: {r: 1, g: 1, b: 1, a: 1}
+  entityActiveColor: {r: 1, g: 0.8901961, b: 0, a: 1}
