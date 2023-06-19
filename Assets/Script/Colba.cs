@@ -140,7 +140,7 @@ public class Colba : MonoBehaviour, IPointerDownHandler
       }
       else if (data.activeLevel.star != oldValue)
       {
-        HelpersAnimation.Pulse(_countStarObject, new Vector3(.5f, .5f, 0));
+        HelpersAnimation.Pulse(_countStarObject, new Vector3(.5f, .5f, 0), 1f);
       }
     }
     else if (oldValue != 0)

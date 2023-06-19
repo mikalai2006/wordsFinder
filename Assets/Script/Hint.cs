@@ -52,7 +52,7 @@ public class Hint : MonoBehaviour, IPointerDownHandler
       }
       else if (data.activeLevel.hint != oldValue)
       {
-        HelpersAnimation.Pulse(_countHintObject, new Vector3(.5f, .5f, 0));
+        HelpersAnimation.Pulse(_countHintObject, new Vector3(.5f, .5f, 0), 1f);
       }
     }
     else if (oldValue != 0)

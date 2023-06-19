@@ -170,6 +170,7 @@ public class ManagerHiddenWords : MonoBehaviour
       var item = OpenChars.ElementAt(i);
       var node = GridHelper.GetNode(item.Key);
       node.OccupiedChar.ShowCharAsNei(false).Forget();
+      node.SetHint();
     }
   }
 

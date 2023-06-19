@@ -197,11 +197,14 @@ public class StateManager : MonoBehaviour
       {
         id = levelConfig.id,
         idWord = wordConfig.id,
+        hint = levelConfig.countHint,
+        star = levelConfig.countStar
       });
+
     }
     var indexActiveLevel = dataGame.levels.FindIndex(t => t.id == levelConfig.id && t.idWord == wordConfig.id);
     dataGame.activeLevel = dataGame.levels.ElementAt(indexActiveLevel);
-    Debug.Log($"Set active level ={indexActiveLevel}| {dataGame.activeLevel.openChars.Count}");
+    // Debug.Log($"Set active level ={indexActiveLevel}| {dataGame.activeLevel.openChars.Count}");
 
     SetDefaultPerk();
   }
