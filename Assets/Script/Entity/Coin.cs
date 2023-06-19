@@ -18,6 +18,7 @@ public class Coin : BaseEntity
   {
     // base.SetColor(color);
     _spriteRenderer.color = color;
+    _spriteRenderer.sprite = _gameSetting.spriteCoin;
   }
 
   public void RunEffect()

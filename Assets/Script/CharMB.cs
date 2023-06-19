@@ -80,6 +80,7 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     else if (context.canceled && _inputManager.Dragging)
     {
       _inputManager.SetDragging(false);
+      await UniTask.Delay(100);
       await _levelManager.ManagerHiddenWords.CheckChoosedWord();
     }
   }
