@@ -218,22 +218,20 @@ public class StateManager : MonoBehaviour
     dataGame = data;
   }
 
-  // public DataGame GetData()
-  // {
-  //   ActuallityData();
+  public DataGame GetData()
+  {
+    // check completed level.
+    if (dataGame.activeLevel.openWords.Count >= dataGame.activeLevel.countWords)
+    {
+      if (!dataGame.sl.Contains(dataGame.activeLevel.id))
+      {
+        dataGame.sl.Add(dataGame.activeLevel.id);
+      }
+      dataGame.levels.Remove(dataGame.activeLevel);
+    }
 
-  //   // check completed level.
-  //   // if (dataGame.activeLevel.openWords.Count >= dataGame.activeLevel.countWords)
-  //   // {
-  //   //   if (!dataGame.sl.Contains(dataGame.activeLevel.id))
-  //   //   {
-  //   //     dataGame.sl.Add(dataGame.activeLevel.id);
-  //   //   }
-  //   //   dataGame.levels.Remove(dataGame.activeLevel);
-  //   // }
-
-  //   return dataGame;
-  // }
+    return dataGame;
+  }
 
   public void UseHint()
   {

@@ -444,12 +444,6 @@ public class ManagerHiddenWords : MonoBehaviour
 
   private async UniTask NextLevel()
   {
-
-
-    AllowWords.Clear();
-    // OpenHiddenWords.Clear();
-    OpenWords.Clear();
-
     _levelManager.ResetSymbols();
 
     Reset();
@@ -458,14 +452,18 @@ public class ManagerHiddenWords : MonoBehaviour
     await _levelManager.hint.Destroy();
 
     _stateManager.RefreshData();
-    // GameManager.Instance.DataManager.Save();
 
-    // var newObj = GameObject.Instantiate(
-    //       _gameSetting.PrefabStatLevel,
-    //       transform.position,
-    //       Quaternion.identity,
-    //       transform
-    //     );
+    // AllowWords.Clear();
+    // // OpenHiddenWords.Clear();
+    // OpenWords.Clear();
+    // // GameManager.Instance.DataManager.Save();
+
+    // // var newObj = GameObject.Instantiate(
+    // //       _gameSetting.PrefabStatLevel,
+    // //       transform.position,
+    // //       Quaternion.identity,
+    // //       transform
+    // //     );
 
 
     // await _levelManager.NextLevel();

@@ -37,7 +37,6 @@ public class DataManager : Singleton<DataManager>
     {
       cancelTokenSource.Cancel();
       cancelTokenSource.Dispose();
-      Debug.Log("Cancel saved!");
     }
     cancelTokenSource = new CancellationTokenSource();
     Saved(cancelTokenSource.Token).Forget();
@@ -51,7 +50,7 @@ public class DataManager : Singleton<DataManager>
     {
       var levelManager = _gameManager.LevelManager;
 
-      _dataGame = _gameManager.StateManager.dataGame;
+      _dataGame = _gameManager.StateManager.GetData(); //.dataGame;
 
       _fileDataHandler.SaveData(_dataGame);
 
