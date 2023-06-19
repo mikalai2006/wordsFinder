@@ -11,6 +11,16 @@ public class Coin : BaseEntity
     node.SetOccupiedEntity(this);
 
     _spriteRenderer.sprite = _gameSetting.spriteCoin;
+    _spriteBg.color = _gameSetting.Theme.bgColor;
+    SetColor(_gameSetting.Theme.entityColor);
+  }
+
+  public override void InitStandalone()
+  {
+    base.InitStandalone();
+
+    _spriteRenderer.sprite = _gameSetting.spriteCoin;
+    _spriteBg.color = _gameSetting.Theme.bgColor;
     SetColor(_gameSetting.Theme.entityColor);
   }
 

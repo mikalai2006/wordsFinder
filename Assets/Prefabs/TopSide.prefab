@@ -587,11 +587,11 @@ RectTransform:
   m_Father: {fileID: 1922425695533349352}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1.5, y: 0}
   m_SizeDelta: {x: 1, y: 1}
-  m_Pivot: {x: 1, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7667137537645203523
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -676,9 +676,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 291bba5da1452394ea095c57f156f21e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scaleSprite: {x: 0, y: 0, z: 0}
-  _position: {x: 0, y: 0, z: 0}
   _spriteRate: {fileID: 4512146248690993921}
   _rate: {fileID: 8400015452949626710}
-  _coins: {fileID: 5808277365564703603}
   _spriteCoin: {fileID: 4624554111501152261}
+  _coins: {fileID: 5808277365564703603}

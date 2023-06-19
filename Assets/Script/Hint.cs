@@ -156,14 +156,16 @@ public class Hint : MonoBehaviour, IPointerDownHandler
         transform.position,
         Quaternion.identity
       );
-      newObj.GetComponent<BaseEntity>().SetColor(_gameSetting.Theme.entityActiveColor);
+      var newEntity = newObj.GetComponent<BaseEntity>();
+      newEntity.InitStandalone();
+      newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
       var positionFrom = transform.position;
       var positionTo = _levelManager.topSide.spriteCoinPosition;
       Vector3[] waypoints = {
           positionFrom,
           positionFrom + new Vector3(1, 1),
           positionTo - new Vector3(1.5f, 2.5f),
-          positionTo - new Vector3(0.5f, 0),
+          positionTo,
         };
       await UniTask.Delay(150);
       iTween.MoveTo(newObj, iTween.Hash(

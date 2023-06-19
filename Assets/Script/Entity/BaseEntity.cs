@@ -13,6 +13,7 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   [SerializeField] protected Vector3 _scale;
   [SerializeField] protected Vector3 _position;
   [SerializeField] protected SpriteRenderer _spriteRenderer;
+  [SerializeField] protected SpriteRenderer _spriteBg;
   // [SerializeField] private TMPro.TextMeshProUGUI _countHintText;
   // [SerializeField] private Image _countHintImage;
   // [SerializeField] private GameObject _countHintObject;
@@ -39,6 +40,11 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   {
     transform.localPosition = _position = new Vector3(node.x, node.y) + new Vector3(.5f, .5f);
     OccupiedNode = node;
+    _scale = _transform.localScale;
+  }
+
+  public virtual void InitStandalone()
+  {
     _scale = _transform.localScale;
   }
 

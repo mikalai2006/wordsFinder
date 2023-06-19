@@ -15,5 +15,7 @@ MonoBehaviour:
   id: 0
   title: "\u041F\u0440\u043E\u043B\u043E\u0433"
   minRate: 0
+  countHint: 3
+  countStar: 3
   words:
   - {fileID: 11400000, guid: fa27780d9109a0f449b1bcd480f356e9, type: 2}
