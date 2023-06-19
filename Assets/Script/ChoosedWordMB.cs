@@ -92,14 +92,16 @@ public class ChoosedWordMB : MonoBehaviour
   }
 
 
-  public async UniTask OpenAllowWord(Colba colba)
+  public async UniTask OpenAllowWord()
   {
     List<UniTask> listTasks = new();
     for (int i = 0; i < _charsGameObject.Count; i++)
     {
       var currentCharMB = _charsGameObject.ElementAt(i);
 
-      listTasks.Add(currentCharMB.OpenCharAllowWord(colba, i * (50 + i * 10)));
+      listTasks.Add(currentCharMB.OpenCharAllowWord(i * (50 + i * 10)));
+      // await currentCharMB.OpenCharAllowWord();
+
     }
     await UniTask.WhenAll(listTasks);
     // _gameManager.StateManager.IncrementRate(1);

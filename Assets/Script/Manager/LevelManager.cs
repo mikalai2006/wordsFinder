@@ -16,6 +16,9 @@ public class LevelManager : Singleton<LevelManager>
   public List<CharMB> Symbols => _symbols;
   public GameObject SymbolsField;
   public TopSide topSide;
+  public Colba colba;
+  public Hint hint;
+  public Shuffle shuffle;
   protected override void Awake()
   {
     base.Awake();
@@ -41,7 +44,8 @@ public class LevelManager : Singleton<LevelManager>
 
     CreateChars(ManagerHiddenWords.WordForChars);
 
-    GameManager.Instance.DataManager.Save();
+    // GameManager.Instance.DataManager.Save();
+    GameManager.Instance.StateManager.RefreshData();
 
 #if UNITY_EDITOR
     stopWatch.Stop();
@@ -101,7 +105,7 @@ public class LevelManager : Singleton<LevelManager>
   //   GameManager.Instance.DataManager.Save();
   // }
 
-  private void ResetSymbols()
+  public void ResetSymbols()
   {
     foreach (var symbol in _symbols)
     {

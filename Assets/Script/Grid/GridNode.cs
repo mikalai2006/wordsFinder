@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 [System.Flags]
 public enum StateNode
@@ -68,6 +69,13 @@ public class GridNode
     }
     return this;
   }
+
+
+  public void SetHint()
+  {
+    StateNode |= StateNode.Hint;
+  }
+
 
 #if UNITY_EDITOR
   public override string ToString()

@@ -68,7 +68,7 @@ public class UILevels : UILocaleBase
       {
         var currentWord = level.words[i];
         var levelData = dataGame != null
-          ? dataGame.Levels.Find(t => t.id == level.id && t.idWord == currentWord.id)
+          ? dataGame.levels.Find(t => t.id == level.id && t.idWord == currentWord.id)
           : null;
         var userRate = dataGame != null
           ? dataGame.rate

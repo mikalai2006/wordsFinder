@@ -10,13 +10,19 @@ public class Coin : BaseEntity
 
     node.SetOccupiedEntity(this);
 
-    _spriteRenderer.color = _gameSetting.Theme.entityColor;
     _spriteRenderer.sprite = _gameSetting.spriteCoin;
+    SetColor(_gameSetting.Theme.entityColor);
+  }
+
+  public override void SetColor(Color color)
+  {
+    // base.SetColor(color);
+    _spriteRenderer.color = color;
   }
 
   public void RunEffect()
   {
-    _spriteRenderer.color = _gameSetting.Theme.entityActiveColor;
+    SetColor(_gameSetting.Theme.entityActiveColor);
     Vector3 positionTo = _levelManager.topSide.spriteCoinPosition;
     Vector3 positionFrom = _levelManager.ManagerHiddenWords.tilemap.CellToWorld(new Vector3Int(OccupiedNode.arrKey.x, OccupiedNode.arrKey.y));
     Vector3[] waypoints = {

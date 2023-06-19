@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9046839803938201802}
   - component: {fileID: 6533955455581275628}
   - component: {fileID: 2553519770229206425}
+  - component: {fileID: -385241560292667932}
   m_Layer: 0
   m_Name: ChoosedWord
   m_TagString: Untagged
@@ -75,3 +76,15 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!210 &-385241560292667932
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812384871533584535}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 2
+  m_SortAtRoot: 0

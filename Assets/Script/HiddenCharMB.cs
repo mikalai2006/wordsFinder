@@ -76,9 +76,6 @@ public class HiddenCharMB : MonoBehaviour
     {
       OccupiedNode.OccupiedEntity.Run();
     }
-
-    // Create coin.
-    if (runEffect) CreateCoin();
   }
 
 
@@ -136,44 +133,26 @@ public class HiddenCharMB : MonoBehaviour
   {
     Vector3 initialScale = transform.localScale;
 
-    // for (float i = 0f; i < 180f; i += 10f)
-    // {
-    //   transform.rotation = Quaternion.Euler(0f, i, 0f);
-    //   if (i == 90f)
-    //   {
-    //     _image.color = _gameSetting.colorWordSymbolYes;
-    //   }
-    //   yield return new WaitForSeconds(0.01f);
-    // }
-    // gameObject.transform.localScale = new Vector3(-1, 1, 1);
-
-
-    if (runEffect) _stateManager.OpenCharHiddenWord(charTextValue);
     Open(runEffect);
+
+    // Add coin.
+    if (runEffect && !OccupiedNode.StateNode.HasFlag(StateNode.Hint)) AddCoin();
+
     // await OpenNeighbours(runEffect);
     await UniTask.Yield();
   }
+
+
   public async UniTask ShowCharAsNei(bool runEffect)
   {
-    Vector3 initialScale = transform.localScale;
-
-    // for (float i = 0f; i < 180f; i += 10f)
-    // {
-    //   transform.rotation = Quaternion.Euler(0f, i, 0f);
-    //   if (i == 90f)
-    //   {
-    //     _image.color = _gameSetting.colorWordSymbolYes;
-    //   }
-    //   yield return new WaitForSeconds(0.01f);
-    // }
-    // gameObject.transform.localScale = new Vector3(-1, 1, 1);
-
     Open(runEffect);
+
     _image.color = _gameSetting.Theme.bgOpenNeiHiddenWord;
     _charText.color = _gameSetting.Theme.textOpenNeiHiddenWord;
     // await OpenNeighbours(runEffect);
     await UniTask.Yield();
   }
+
 
   public async UniTask OpenNeighbours(bool runEffect)
   {
@@ -207,24 +186,50 @@ public class HiddenCharMB : MonoBehaviour
   }
 
 
-  public void CreateCoin()
+  // public void CreateCoin()
+  // {
+  //   if (_stateManager.statePerk.needCreateCoin > 0)
+  //   {
+  //     for (int i = 0; i < _stateManager.statePerk.needCreateCoin; i++)
+  //     {
+  //       var node = _levelManager.ManagerHiddenWords.GridHelper.GetRandomNodeWithChar();
+  //       if (node != null)
+  //       {
+  //         var coinEntity = _levelManager.ManagerHiddenWords.AddEntity(node.arrKey, TypeEntity.Coin);
+  //         _stateManager.statePerk.needCreateCoin -= 1;
+
+  //         // coinEntity.SetPosition(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position));
+  //         coinEntity.SetPosition(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position));
+  //       }
+  //     }
+  //   }
+  // }
+
+  public void AddCoin()
   {
-    if (_stateManager.statePerk.needCreateCoin > 0)
-    {
-      for (int i = 0; i < _stateManager.statePerk.needCreateCoin; i++)
-      {
-        var node = _levelManager.ManagerHiddenWords.GridHelper.GetRandomNodeWithChar();
-        if (node != null)
-        {
-          var coinEntity = _levelManager.ManagerHiddenWords.AddEntity(node.arrKey, TypeEntity.Coin);
-          _stateManager.statePerk.needCreateCoin -= 1;
-
-          coinEntity.SetPosition(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position));
-        }
-      }
-    }
+    var nodePosition = new Vector3Int(OccupiedNode.x, OccupiedNode.y);
+    var position = _levelManager.ManagerHiddenWords.tilemap.CellToWorld(nodePosition);
+    var newObj = GameObject.Instantiate(
+      _gameSetting.PrefabCoin,
+      position,
+      Quaternion.identity
+    );
+    newObj.GetComponent<BaseEntity>().SetColor(_gameSetting.Theme.entityActiveColor);
+    var positionFrom = position;
+    var positionTo = _levelManager.topSide.spriteCoinPosition;
+    Vector3[] waypoints = {
+          positionFrom,
+          positionFrom + new Vector3(1, 1),
+          positionTo - new Vector3(1.5f, 2.5f),
+          positionTo - new Vector3(0.5f, 0),
+        };
+    iTween.MoveTo(newObj, iTween.Hash(
+      "path", waypoints,
+      "time", 2,
+      "easetype", iTween.EaseType.easeOutCubic,
+      "oncomplete", "OnCompleteEffect"
+      ));
   }
-
 
 #if UNITY_EDITOR
   public override string ToString()

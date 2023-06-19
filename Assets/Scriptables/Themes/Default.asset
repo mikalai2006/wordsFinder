@@ -33,6 +33,6 @@ MonoBehaviour:
   bgImageChar: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgImageCharChoose: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgColor: {r: 0.3137255, g: 0.47058827, b: 0.40784317, a: 1}
-  entityColor: {r: 0.32845318, g: 0.5754717, b: 0.5754717, a: 1}
+  entityColor: {r: 0.56580555, g: 0.5943396, b: 0.21586862, a: 1}
   colorLine: {r: 1, g: 1, b: 1, a: 1}
   entityActiveColor: {r: 1, g: 0.88915, b: 0, a: 1}

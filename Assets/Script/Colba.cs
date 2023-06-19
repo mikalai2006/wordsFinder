@@ -1,32 +1,41 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class Colba : MonoBehaviour
+public class Colba : MonoBehaviour, IPointerDownHandler
 {
   private Vector3 _initScale;
   private Vector3 _initPosition;
+  [SerializeField] private GameObject spritesObject;
   [SerializeField] private SpriteRenderer _sprite;
   [SerializeField] private SpriteRenderer _spriteProgress;
   [SerializeField] private TMPro.TextMeshProUGUI _countChars;
-  [SerializeField] private TMPro.TextMeshProUGUI _countWords;
+  [SerializeField] private GameObject _countStarObject;
+  [SerializeField] private TMPro.TextMeshProUGUI _countStarText;
+  [SerializeField] private Image _countStarImage;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
+  private StateManager _stateManager => GameManager.Instance.StateManager;
   private GameManager _gameManager => GameManager.Instance;
   private float progressBasePositionY = -1.4f;
 
   private void Awake()
   {
-    _initScale = transform.localScale;
-    _initPosition = transform.position;
+    _initScale = spritesObject.transform.localScale;
+    _initPosition = spritesObject.transform.position;
     _sprite.sprite = _gameSetting.spriteStar;
+
+
+    _countStarObject.gameObject.SetActive(false);
+    _countStarObject.transform.localScale = new Vector3(0, 0, 0);
+
     StateManager.OnChangeState += SetValue;
   }
 
-  private void Destroy()
+  private void OnDestroy()
   {
     StateManager.OnChangeState -= SetValue;
   }
@@ -59,8 +68,10 @@ public class Colba : MonoBehaviour
   }
 
 
-  public void CreateStar()
+  public void CreateStar(DataGame data, StatePerk statePerk)
   {
+    // if (data.activeLevel.star <= 0) return;
+
     var potentialGroup = _levelManager.ManagerHiddenWords.GridHelper
       .GetGroupNodeChars()
       // .OrderBy(t => UnityEngine.Random.value)
@@ -70,11 +81,11 @@ public class Colba : MonoBehaviour
       var node = potentialGroup.Value.First();
       if (node != null)
       {
+        // data.activeLevel.star -= 1;
         var starEntity = _levelManager.ManagerHiddenWords.AddEntity(node.arrKey, TypeEntity.Star);
         if (gameObject != null)
         {
           // node.StateNode |= StateNode.Entity;
-          _gameManager.StateManager.statePerk.needCreateStar -= 1;
           starEntity.SetPosition(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position));
         }
         else
@@ -100,80 +111,81 @@ public class Colba : MonoBehaviour
     while (elapsedTime < duration)
     {
       float progress = (Time.time - startTime) / duration;
-      transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
+      spritesObject.transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
       await UniTask.Yield();
       elapsedTime += Time.deltaTime;
     }
     RunOpenEffect();
-    // var value = Convert.ToInt32(_text.text);
-    // value++;
-    // SetValue(value.ToString());
+
     SetDefault();
-    // ChangeValue();
   }
 
-  // private void ChangeValue()
-  // {
-  //   var _stateManager = _gameManager.StateManager;
-  //   _stateManager.statePerk.countCharInOrder += 1;
-  //   // _stateManager.statePerk.countWordInOrder += 1;
-  //   _stateManager.statePerk.countCharForBonus += 1;
-  //   _stateManager.statePerk.countCharForAddHint += 1;
-  //   _stateManager.statePerk.countCharForAddCoin += 1;
-
-  //   _stateManager.statePerk.countErrorForNullBonus = 0;
-
-  //   // Add bonus index.
-  //   if (_stateManager.statePerk.countCharForBonus >= _gameManager.GameSettings.PlayerSetting.countCharForBonus)
-  //   {
-  //     _stateManager.statePerk.countCharForBonus -= _gameManager.GameSettings.PlayerSetting.countCharForBonus;
-  //     _stateManager.dataGame.activeLevel.index++;
-  //   }
-
-  //   // Add hint.
-  //   if (_stateManager.statePerk.countCharForAddHint >= _gameManager.GameSettings.PlayerSetting.countCharForAddHint)
-  //   {
-  //     _stateManager.statePerk.countCharForAddHint -= _gameManager.GameSettings.PlayerSetting.countCharForAddHint;
-  //     _stateManager.dataGame.activeLevel.hint++;
-  //   }
-
-  //   // Check add coin to grid.
-  //   if (_stateManager.statePerk.countCharForAddCoin >= _gameManager.GameSettings.PlayerSetting.countCharForCoin)
-  //   {
-  //     _stateManager.statePerk.countCharForAddCoin -= _gameManager.GameSettings.PlayerSetting.countCharForCoin;
-  //     CreateStar();
-  //   }
-
-  //   _stateManager.RefreshData();
-  // }
-
-  public async void SetValue(DataGame data, StatePerk statePerk)
+  public void SetValue(DataGame data, StatePerk statePerk)
   {
-    // View new data.
-    var dataPlural = new Dictionary<string, int> {
-      {"count",  data.activeLevel.openWords.Count},
-      {"count2", data.activeLevel.countWords},
-    };
-    var arguments = new[] { dataPlural };
-    var textCountWords = await Helpers.GetLocalizedPluralString(
-        new UnityEngine.Localization.LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, "countword"),
-        arguments,
-        dataPlural
-        );
+    // if (data.activeLevel.star > 0)
+    // {
+    //   for (int i = 0; i < data.activeLevel.star; i++)
+    //   {
+    //     CreateStar(data, statePerk);
+    //   }
+    // }
 
-    _countWords.text = textCountWords;
-    _countChars.text = data.activeLevel.countOpenChars.ToString();
-
-    if (statePerk.needCreateStar > 0)
+    int oldValue = int.Parse(_countStarText.text);
+    if (data.activeLevel.star > 0)
     {
-      for (int i = 0; i < statePerk.needCreateStar; i++)
+      if (!_countStarObject.activeInHierarchy)
       {
-        CreateStar();
+        _countStarObject.gameObject.SetActive(true);
+        Show();
+      }
+      else if (data.activeLevel.star != oldValue)
+      {
+        HelpersAnimation.Pulse(_countStarObject, new Vector3(.5f, .5f, 0));
       }
     }
+    else if (oldValue != 0)
+    {
+      // Hide();
+      _countStarObject.gameObject.SetActive(false);
+    }
+    _countStarText.text = data.activeLevel.star.ToString();
+    _countChars.text = string.Format(
+      "{0}--{1}",
+      data.activeLevel.countOpenChars,
+      statePerk.countCharForAddStar
+    );
+
+    // TODO animation get hit.
 
     SetValueProgressBar(data, statePerk);
   }
+
+  private void Show()
+  {
+    iTween.ScaleTo(_countStarObject, iTween.Hash(
+        "scale", new Vector3(1, 1, 1),
+        "time", 1,
+        "easetype", iTween.EaseType.easeOutBack
+        // "oncomplete", "CompetedShow",
+        // "oncompletetarget", gameObject
+        ));
+  }
+
+  // private void Hide()
+  // {
+  //   iTween.ScaleTo(_countStarObject, iTween.Hash(
+  //       "scale", new Vector3(0, 0, 0),
+  //       "time", 1,
+  //       "easetype", iTween.EaseType.easeOutQuad,
+  //       "oncomplete", "CompetedHide",
+  //       "oncompletetarget", gameObject
+  //       ));
+  // }
+
+  // private void CompetedHide()
+  // {
+  //   _countStarObject.gameObject.SetActive(false);
+  // }
 
 
   private void SetValueProgressBar(DataGame data, StatePerk statePerk)
@@ -184,9 +196,65 @@ public class Colba : MonoBehaviour
   }
 
 
+  public void OnPointerDown(PointerEventData eventData)
+  {
+    if (_stateManager.dataGame.activeLevel.star == 0)
+    {
+      // TODO Show dialog with info get hint by adsense.
+      return;
+    }
+    RunHint();
+  }
+
+
+  public void RunHint()
+  {
+    var node = _levelManager.ManagerHiddenWords.GridHelper.GetRandomNodeWithChar();
+    if (node != null)
+    {
+      node.OccupiedChar.ShowCharAsNei(true).Forget();
+      _levelManager.ManagerHiddenWords.AddOpenChar(node.OccupiedChar);
+      _stateManager.UseStar();
+      node.SetHint();
+    }
+  }
+
+
   private void SetDefault()
   {
-    transform.localScale = _initScale;
-    transform.position = _initPosition;
+    spritesObject.transform.localScale = _initScale;
+    spritesObject.transform.position = _initPosition;
+  }
+
+  public async UniTask Destroy()
+  {
+    var countNotUseHint = _stateManager.dataGame.activeLevel.star;
+
+    for (int i = 0; i < countNotUseHint; i++)
+    {
+      var newObj = GameObject.Instantiate(
+        _gameSetting.PrefabCoin,
+        transform.position,
+        Quaternion.identity
+      );
+      newObj.GetComponent<BaseEntity>().SetColor(_gameSetting.Theme.entityActiveColor);
+      var positionFrom = transform.position;
+      var positionTo = _levelManager.topSide.spriteCoinPosition;
+      Vector3[] waypoints = {
+          positionFrom,
+          positionFrom + new Vector3(1, 1),
+          positionTo - new Vector3(1.5f, 2.5f),
+          positionTo - new Vector3(0.5f, 0),
+        };
+      await UniTask.Delay(150);
+      iTween.MoveTo(newObj, iTween.Hash(
+        "path", waypoints,
+        "time", 2,
+        "easetype", iTween.EaseType.easeOutCubic,
+        "oncomplete", "OnCompleteEffect"
+        ));
+    }
+
+    gameObject.SetActive(false);
   }
 }

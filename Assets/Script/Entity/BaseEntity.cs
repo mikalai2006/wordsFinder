@@ -27,13 +27,13 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   {
     _transform = gameObject.transform;
 
-    StateManager.OnChangeState += SetValue;
+    // StateManager.OnChangeState += SetValue;
   }
 
-  protected virtual void OnDestroy()
-  {
-    StateManager.OnChangeState -= SetValue;
-  }
+  // protected virtual void OnDestroy()
+  // {
+  //   StateManager.OnChangeState -= SetValue;
+  // }
 
   public virtual void Init(GridNode node)
   {
@@ -42,19 +42,23 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
     _scale = _transform.localScale;
   }
 
-  public virtual void SetValue(DataGame data, StatePerk statePerk)
+  public virtual void SetColor(Color color)
   {
-    // _countHintText.text = data.activeLevel.hint.ToString();
-    // if (data.activeLevel.hint > 0)
-    // {
-    //   _countHintObject.gameObject.SetActive(true);
-    // }
-    // else
-    // {
-    //   _countHintObject.gameObject.SetActive(false);
-    // }
-    // TODO animation get hit.
   }
+
+  // public virtual void SetValue(DataGame data, StatePerk statePerk)
+  // {
+  //   // _countHintText.text = data.activeLevel.hint.ToString();
+  //   // if (data.activeLevel.hint > 0)
+  //   // {
+  //   //   _countHintObject.gameObject.SetActive(true);
+  //   // }
+  //   // else
+  //   // {
+  //   //   _countHintObject.gameObject.SetActive(false);
+  //   // }
+  //   // TODO animation get hit.
+  // }
 
   public virtual void SetPosition(Vector3 fromPos)
   {

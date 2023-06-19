@@ -106,7 +106,7 @@ public class GridHelper
     return result;
   }
 
-  public List<GridNode> FindEqualsHiddenNeighbours()
+  public List<GridNode> GetEqualsHiddenNeighbours()
   {
     List<GridNode> result = new();
 
@@ -165,4 +165,5 @@ public class GridHelper
       .OrderBy(t => UnityEngine.Random.value)
       .FirstOrDefault();
   }
+
 }

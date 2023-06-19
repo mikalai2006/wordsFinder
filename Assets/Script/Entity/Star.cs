@@ -96,7 +96,15 @@ public class Star : BaseEntity
 
     Debug.Log("TODO Run star");
 
-    _levelManager.ManagerHiddenWords.hint.RunHint();
+    var nodes = _levelManager.ManagerHiddenWords.GridHelper.GetEqualsHiddenNeighbours();
+    foreach (var node in nodes)
+    {
+      if (node != null)
+      {
+        node.OccupiedChar.ShowCharAsNei(true).Forget();
+        _levelManager.ManagerHiddenWords.AddOpenChar(node.OccupiedChar);
+      }
+    }
 
     Destroy(gameObject);
   }

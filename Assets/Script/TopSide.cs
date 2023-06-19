@@ -30,7 +30,7 @@ public class TopSide : MonoBehaviour
     _spriteRate.sprite = _gameManager.GameSettings.spriteRate;
     StateManager.OnChangeState += SetValue;
   }
-  private void Destroy()
+  private void OnDestroy()
   {
     StateManager.OnChangeState -= SetValue;
   }

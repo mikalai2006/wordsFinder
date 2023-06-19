@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,6 +14,8 @@ public class Shuffle : MonoBehaviour, IPointerDownHandler
   [SerializeField] private Vector3 _position;
   [SerializeField] private SpriteRenderer _sprite;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
+  private GameSetting _gameSetting => GameManager.Instance.GameSettings;
+  private StateManager _stateManager => GameManager.Instance.StateManager;
 
   private void Awake()
   {
@@ -68,6 +71,13 @@ public class Shuffle : MonoBehaviour, IPointerDownHandler
     OnShuffleWord?.Invoke(newWord);
 
     await UniTask.WhenAll(tasks);
-    GameManager.Instance.DataManager.Save();
+    // GameManager.Instance.DataManager.Save();
+    _stateManager.RefreshData();
+  }
+
+  public async UniTask Destroy()
+  {
+    gameObject.SetActive(false);
+    await UniTask.Yield();
   }
 }

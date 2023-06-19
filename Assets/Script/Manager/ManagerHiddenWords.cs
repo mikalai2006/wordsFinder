@@ -15,8 +15,7 @@ public class ManagerHiddenWords : MonoBehaviour
   private StateManager _stateManager => GameManager.Instance.StateManager;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   [SerializeField] private LineManager _lineManager;
-  public Colba colba;
-  public Hint hint;
+
   [SerializeField] private ChoosedWordMB _choosedWordMB;
   [SerializeField] private HiddenWordMB _hiddenWordMB;
   public SerializableDictionary<string, HiddenWordMB> HiddenWords = new SerializableDictionary<string, HiddenWordMB>();
@@ -57,6 +56,9 @@ public class ManagerHiddenWords : MonoBehaviour
   /// <param name="wordConfig">Config word</param>
   public void Init(GameLevel levelConfig, GameLevelWord wordConfig)
   {
+    _levelManager.shuffle.gameObject.SetActive(true);
+    _levelManager.colba.gameObject.SetActive(true);
+    _levelManager.hint.gameObject.SetActive(true);
     HiddenWords.Clear();
 
     var data = _stateManager.dataGame.activeLevel;
@@ -143,7 +145,8 @@ public class ManagerHiddenWords : MonoBehaviour
       Entities.Add(node.arrKey, typeEntity);
     }
 
-    GameManager.Instance.DataManager.Save();
+    // GameManager.Instance.DataManager.Save();
+    _stateManager.RefreshData();
 
     return newEntity;
   }
@@ -155,7 +158,9 @@ public class ManagerHiddenWords : MonoBehaviour
       Entities.Remove(entity.OccupiedNode.arrKey);
       entity.OccupiedNode.SetOccupiedEntity(null);
     }
-    GameManager.Instance.DataManager.Save();
+
+    // GameManager.Instance.DataManager.Save();
+    _stateManager.RefreshData();
   }
 
   public void OpenOpenedChars()
@@ -303,7 +308,7 @@ public class ManagerHiddenWords : MonoBehaviour
       {
         // open new allow word.
         OpenWords.Add(choosedWord, 1);
-        await _choosedWordMB.OpenAllowWord(colba);
+        await _choosedWordMB.OpenAllowWord();
         _stateManager.OpenAllowWord(choosedWord);
       }
     }
@@ -335,7 +340,8 @@ public class ManagerHiddenWords : MonoBehaviour
     }
     else
     {
-      GameManager.Instance.DataManager.Save();
+      // GameManager.Instance.DataManager.Save();
+      _stateManager.RefreshData();
     }
     // OnChangeData?.Invoke();
   }
@@ -414,6 +420,7 @@ public class ManagerHiddenWords : MonoBehaviour
   {
     Entities.Clear();
 
+    Helpers.DestroyChildren(tilemapEntities.transform);
     Helpers.DestroyChildren(tilemap.transform);
     // foreach (var wordItem in HiddenWords)
     // {
@@ -430,20 +437,35 @@ public class ManagerHiddenWords : MonoBehaviour
 
     // CreateEntities();
     _stateManager.RefreshData();
-    GameManager.Instance.DataManager.Save();
+    // GameManager.Instance.DataManager.Save();
   }
 
 
   private async UniTask NextLevel()
   {
 
-    GameManager.Instance.DataManager.Save();
 
     AllowWords.Clear();
     // OpenHiddenWords.Clear();
     OpenWords.Clear();
 
+    _levelManager.ResetSymbols();
+
     Reset();
+    await _levelManager.shuffle.Destroy();
+    await _levelManager.colba.Destroy();
+    await _levelManager.hint.Destroy();
+
+    _stateManager.RefreshData();
+    // GameManager.Instance.DataManager.Save();
+
+    // var newObj = GameObject.Instantiate(
+    //       _gameSetting.PrefabStatLevel,
+    //       transform.position,
+    //       Quaternion.identity,
+    //       transform
+    //     );
+
 
     // await _levelManager.NextLevel();
 
@@ -467,6 +489,7 @@ public class ManagerHiddenWords : MonoBehaviour
 
     Entities.Clear();
 
+    Helpers.DestroyChildren(tilemapEntities.transform);
     Helpers.DestroyChildren(tilemap.transform);
   }
 }

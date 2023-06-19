@@ -6,14 +6,16 @@ public class DataGame
 {
   public int rate;
   public int coins;
-  public List<DataLevel> Levels;
+  public List<DataLevel> levels;
+  public List<string> sl;
   [System.NonSerialized] public DataLevel activeLevel;
   public string lastActiveLevelId;
   public string lastActiveWordId;
 
   public DataGame()
   {
-    Levels = new();
+    levels = new();
+    sl = new();
   }
 }
 
@@ -24,6 +26,7 @@ public class DataLevel
   public string id;
   public string idWord;
   public int hint;
+  public int star;
   public float index;
   public SerializableDictionary<Vector2, string> openChars;
   public SerializeEntity ent;

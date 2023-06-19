@@ -72,12 +72,16 @@ public class ChoosedCharMB : MonoBehaviour
     await needHiddenChar.ShowChar(true); //.Forget();
 
     transform.localScale = new Vector3(0, 0, 0);
+    // _stateManager.OpenCharHiddenWord(textChar);
   }
 
-  public async UniTask OpenCharAllowWord(Colba colba, int delay)
+  public async UniTask OpenCharAllowWord(int delay)
   {
+    var targetToMove = _levelManager.colba;
+
     _image.color = _gameSetting.Theme.bgFindAllowWord;
     _charText.color = _gameSetting.Theme.textFindAllowWord;
+
     await UniTask.Delay(delay);
 
     Vector3 initialScale = transform.localScale;
@@ -91,13 +95,13 @@ public class ChoosedCharMB : MonoBehaviour
     while (elapsedTime < duration)
     {
       // The center of the arc
-      Vector3 center = (initialPosition + colba.gameObject.transform.position) * 0.5F;
+      Vector3 center = (initialPosition + targetToMove.gameObject.transform.position) * 0.5F;
 
       // move the center a bit downwards to make the arc vertical
       center -= new Vector3(0, 1, 0);
       // Interpolate over the arc relative to center
       Vector3 riseRelCenter = initialPosition - center;
-      Vector3 setRelCenter = colba.gameObject.transform.position - center;
+      Vector3 setRelCenter = targetToMove.gameObject.transform.position - center;
 
       float progress = (Time.time - startTime) / duration; //elapsedTime / duration;
       transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
@@ -106,11 +110,10 @@ public class ChoosedCharMB : MonoBehaviour
       await UniTask.Yield();
       elapsedTime += Time.deltaTime;
     }
-    transform.localScale = new Vector3(0, 0, 0);
-    // SetDefault();
-    // gameObject.SetActive(false);
 
-    await colba.AddChar();
+    transform.localScale = new Vector3(0, 0, 0);
+
+    await targetToMove.AddChar();
 
     _stateManager.OpenCharAllowWord(textChar);
   }

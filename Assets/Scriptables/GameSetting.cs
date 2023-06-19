@@ -6,6 +6,7 @@ public class GameSetting : ScriptableObject
 {
   public GameAudio Audio;
   public CharMB PrefabSymbol;
+  public StatLevel PrefabStatLevel;
   public List<GameLevel> GameLevels;
 
   public GameTheme Theme;
@@ -44,4 +45,8 @@ public class GameSetting : ScriptableObject
   public GameObject PrefabStar;
   public GameObject PrefabLighting;
   public Sprite spriteRate;
+
+  [Space(5)]
+  [Header("System")]
+  public int debounceTime;
 }
