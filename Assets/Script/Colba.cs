@@ -184,7 +184,7 @@ public class Colba : MonoBehaviour, IPointerDownHandler
 
   private void SetValueProgressBar(DataGame data, StatePerk statePerk)
   {
-    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)statePerk.countCharForAddStar / _gameSetting.PlayerSetting.bonusCount.charStar;
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)statePerk.countCharForAddStar / _gameManager.PlayerSetting.bonusCount.charStar;
     _spriteProgress.transform.localPosition
       = new Vector3(_spriteProgress.transform.localPosition.x, newPosition);
   }

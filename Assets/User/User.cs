@@ -4,7 +4,13 @@ namespace User
   public class AppInfoContainer
   {
     public UserInfoContainer UserInfo { get; set; }
+    public UserSettings userSettings { get; set; }
     //TODO config etc
+    public AppInfoContainer()
+    {
+      userSettings = new();
+    }
+
     public override string ToString()
     {
       return string.Format(
@@ -46,5 +52,15 @@ namespace User
   {
     public string AccessToken { get; set; }
     public string RefreshToken { get; set; }
+  }
+
+
+  [System.Serializable]
+  public class UserSettings
+  {
+    public string lang;
+    public float muv;
+    public float auv;
+    public int td;
   }
 }

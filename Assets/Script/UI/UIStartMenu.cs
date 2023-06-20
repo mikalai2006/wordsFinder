@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Loader;
@@ -7,9 +8,11 @@ using UnityEngine.UIElements;
 public class UIStartMenu : UILocaleBase
 {
   [SerializeField] private UIDocument _uiDoc;
+  [SerializeField] private VisualTreeAsset UserInfoDoc;
   private VisualElement _menu;
   private Button _exitButton;
   private Button _newGameButton;
+  private VisualElement _userInfoBlok;
   private Button _loadGameMenuButton;
   [SerializeField] private AudioManager _audioManager => GameManager.Instance.audioManager;
 
@@ -41,6 +44,7 @@ public class UIStartMenu : UILocaleBase
   public virtual void Start()
   {
     _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
+    _userInfoBlok = _uiDoc.rootVisualElement.Q<VisualElement>("UserInfoBlok");
 
     _exitButton = _menu.Q<Button>("ExitBtn");
     _exitButton.clickable.clicked += () =>
@@ -61,14 +65,50 @@ public class UIStartMenu : UILocaleBase
     };
 
     DrawMenu();
+    DrawUserInfoBlok();
 
     base.Localize(_uiDoc.rootVisualElement);
+  }
+
+  private async void DrawUserInfoBlok()
+  {
+    var dataState = _gameManager.StateManager.dataGame;
+    if (string.IsNullOrEmpty(dataState.idPlayerSetting)) return;
+    _userInfoBlok.Clear();
+
+
+    var blok = UserInfoDoc.Instantiate();
+    var progress = blok.Q<VisualElement>("ProgressBar");
+    var name = blok.Q<Label>("Name");
+    var status = blok.Q<Label>("Status");
+    var foundWords = blok.Q<Label>("FoundWords");
+
+    name.text = "Mikalai2006";
+    var percentFindWords = (dataState.rate * 100 / _gameManager.PlayerSetting.countFindWordsForUp);
+    progress.style.width = new StyleLength(new Length(percentFindWords, LengthUnit.Percent));
+
+    status.text = await Helpers.GetLocaledString(dataState.idPlayerSetting);
+
+    var dataPlural = new Dictionary<string, int> {
+        {"count",  dataState.rate},
+      };
+    var arguments = new[] { dataPlural };
+    var textCountWords = await Helpers.GetLocalizedPluralString(
+        new UnityEngine.Localization.LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, "foundwords"),
+        arguments,
+        dataPlural
+        );
+    foundWords.text = string.Format("{0}", textCountWords);
+
+    _userInfoBlok.Add(blok);
+    base.Localize(_userInfoBlok);
   }
 
   private void DrawMenu()
   {
     _newGameButton.style.display = DisplayStyle.None;
     _loadGameMenuButton.style.display = DisplayStyle.None;
+    _userInfoBlok.style.display = DisplayStyle.None;
     if (_gameManager.StateManager.dataGame.completeWords.Count == 0 && _gameManager.StateManager.dataGame.levels.Count == 0)
     {
       _newGameButton.style.display = DisplayStyle.Flex;
@@ -77,6 +117,7 @@ public class UIStartMenu : UILocaleBase
     // if (_gameManager.StateManager.dataGame.levels.Count != 0 || _gameManager.StateManager.dataGame.sl.Count != 0)
     {
       _loadGameMenuButton.style.display = DisplayStyle.Flex;
+      _userInfoBlok.style.display = DisplayStyle.Flex;
     }
   }
 
@@ -87,6 +128,7 @@ public class UIStartMenu : UILocaleBase
   private void ShowMenu()
   {
     DrawMenu();
+    DrawUserInfoBlok();
     _menu.style.display = DisplayStyle.Flex;
   }
 
@@ -130,5 +172,4 @@ public class UIStartMenu : UILocaleBase
   {
     base.Localize(_uiDoc.rootVisualElement);
   }
-
 }

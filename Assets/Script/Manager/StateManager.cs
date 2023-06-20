@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using User;
 
 public class StateManager : MonoBehaviour
 {
@@ -31,8 +32,28 @@ public class StateManager : MonoBehaviour
     statePerk = new();
   }
 
+  public void Init(DataGame data)
+  {
+    if (data == null || string.IsNullOrEmpty(data.idPlayerSetting))
+    {
+      var idPlayerSetting = _gameManager.GameSettings.PlayerSetting.ElementAt(0).idPlayerSetting;
+      data = new DataGame()
+      {
+        idPlayerSetting = idPlayerSetting,
+      };
+    }
+
+    dataGame = data;
+    _gameManager.PlayerSetting = _gameManager.GameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.idPlayerSetting);
+
+    // Load setting user.
+    _gameManager.AppInfo.userSettings = dataGame.userSettings;
+  }
+
   public void RefreshData()
   {
+    // Save setting user.
+    dataGame.userSettings = _gameManager.AppInfo.userSettings;
 
     dataGame.activeLevelWord.word = _levelManager.ManagerHiddenWords.WordForChars;
 
@@ -126,23 +147,23 @@ public class StateManager : MonoBehaviour
     statePerk.countCharForAddStar += 1;
 
     // Add bonus index.
-    if (statePerk.countCharForBonus >= _gameManager.GameSettings.PlayerSetting.bonusCount.charBonus)
+    if (statePerk.countCharForBonus >= _gameManager.PlayerSetting.bonusCount.charBonus)
     {
-      statePerk.countCharForBonus -= _gameManager.GameSettings.PlayerSetting.bonusCount.charBonus;
+      statePerk.countCharForBonus -= _gameManager.PlayerSetting.bonusCount.charBonus;
       dataGame.activeLevelWord.index++;
     }
 
     // Add hint.
-    if (statePerk.countCharForAddHint >= _gameManager.GameSettings.PlayerSetting.bonusCount.charHint)
+    if (statePerk.countCharForAddHint >= _gameManager.PlayerSetting.bonusCount.charHint)
     {
-      statePerk.countCharForAddHint -= _gameManager.GameSettings.PlayerSetting.bonusCount.charHint;
+      statePerk.countCharForAddHint -= _gameManager.PlayerSetting.bonusCount.charHint;
       dataGame.activeLevelWord.hint++;
     }
 
     // Check add star to grid.
-    if (statePerk.countCharForAddStar >= _gameManager.GameSettings.PlayerSetting.bonusCount.charStar)
+    if (statePerk.countCharForAddStar >= _gameManager.PlayerSetting.bonusCount.charStar)
     {
-      statePerk.countCharForAddStar -= _gameManager.GameSettings.PlayerSetting.bonusCount.charStar;
+      statePerk.countCharForAddStar -= _gameManager.PlayerSetting.bonusCount.charStar;
       dataGame.activeLevelWord.star++;
     }
 
@@ -154,9 +175,9 @@ public class StateManager : MonoBehaviour
     statePerk.countCharForAddCoin += 1;
 
     // Check add coin to grid.
-    if (statePerk.countCharForAddCoin >= _gameManager.GameSettings.PlayerSetting.bonusCount.charCoin)
+    if (statePerk.countCharForAddCoin >= _gameManager.PlayerSetting.bonusCount.charCoin)
     {
-      statePerk.countCharForAddCoin -= _gameManager.GameSettings.PlayerSetting.bonusCount.charCoin;
+      statePerk.countCharForAddCoin -= _gameManager.PlayerSetting.bonusCount.charCoin;
       statePerk.needCreateCoin++;
     }
 
@@ -171,7 +192,7 @@ public class StateManager : MonoBehaviour
       statePerk.countErrorForNullBonus++;
     }
 
-    if (statePerk.countErrorForNullBonus == _gameManager.GameSettings.PlayerSetting.bonusCount.errorClear)
+    if (statePerk.countErrorForNullBonus == _gameManager.PlayerSetting.bonusCount.errorClear)
     {
       statePerk.countWordInOrder = 0;
       statePerk.countCharInOrder = 0;
@@ -241,15 +262,6 @@ public class StateManager : MonoBehaviour
     // Debug.Log($"Set active level ={indexActiveLevel}| {dataGame.activeLevel.openChars.Count}");
 
     SetDefaultPerk();
-  }
-
-  public void Init(DataGame data)
-  {
-    if (data == null)
-    {
-      data = new DataGame();
-    }
-    dataGame = data;
   }
 
   public GameLevelWord GetConfigNextLevel()

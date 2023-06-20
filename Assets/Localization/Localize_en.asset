@@ -78,7 +78,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1563663732473856
     m_Localized: Found {count} {count:word|words} of {count2}. All may be  {count3}
-      {count:word|words}
+      {count3:word|words}
     m_Metadata:
       m_Items:
       - rid: 366247623133495314
@@ -106,10 +106,47 @@ MonoBehaviour:
     m_Localized: Increase advertising bonus
     m_Metadata:
       m_Items: []
+  - m_Id: 3187166948786176
+    m_Localized: Actual progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3189738174578688
+    m_Localized: senior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3189713814061056
+    m_Localized: major
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3189652749189120
+    m_Localized: junior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3189693752705024
+    m_Localized: middle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3189624831901696
+    m_Localized: begin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3195120322248704
+    m_Localized: Found {count} {count:word|words}
+    m_Metadata:
+      m_Items:
+      - rid: 366247623133495314
+  - m_Id: 3213003978866688
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3236358320717824
+    m_Localized: Time delay (ms)
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 366247623133495314
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 008012baef150200008052d5248e0500
+        m_Entries: 008012baef150200008052d5248e05000080d2ebf1590b00

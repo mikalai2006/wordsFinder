@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d29e9c36a54b19d42ad348789508b7ac, type: 3}
-  m_Name: GamePlayerSetting
+  m_Name: middle
   m_EditorClassIdentifier: 
+  idPlayerSetting: middle
+  countFindWordsForUp: 700
   bonusCount:
     charBonus: 40
     errorClear: 20

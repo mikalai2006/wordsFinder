@@ -69,7 +69,7 @@ public class StatLevel : MonoBehaviour
     // {
     //   ShowStarWrap();
     // });
-    transform.DOMove(new Vector3(0, 0, 0), 2f).SetEase(Ease.OutElastic).OnComplete(ShowStarWrap);
+    transform.DOMove(new Vector3(0, 0, 0), 1.5f).SetEase(Ease.OutElastic).OnComplete(ShowStarWrap);
     _levelManager.shuffle.Hide();
     _levelManager.stat.Hide();
 
@@ -91,13 +91,7 @@ public class StatLevel : MonoBehaviour
   {
     _initPositionColba = _levelManager.colba.gameObject.transform.position;
     var positionTo = _spriteStar.transform.position;
-    Vector3[] waypoints = {
-          _initPositionColba,
-          // _initPositionColba + new Vector3(1, 1),
-          // positionTo - new Vector3(1.5f, 1.5f),
-          positionTo,
-        };
-    _levelManager.colba.gameObject.transform.DOPath(waypoints, duration / 2, PathType.Linear);
+    _levelManager.colba.gameObject.transform.DOMove(positionTo, duration).SetEase(Ease.OutBounce);
 
     await UniTask.Delay((int)(duration * 500));
 
@@ -138,13 +132,14 @@ public class StatLevel : MonoBehaviour
   {
     _initPositionHint = _levelManager.hint.gameObject.transform.position;
     var positionTo = _spriteHint.transform.position;
-    Vector3[] waypoints = {
-          _initPositionHint,
-          // _initPositionHint + new Vector3(1, 1),
-          // positionTo - new Vector3(1.5f, 1.5f),
-          positionTo,
-        };
-    _levelManager.hint.gameObject.transform.DOPath(waypoints, duration / 2, PathType.Linear);
+    _levelManager.hint.gameObject.transform.DOMove(positionTo, duration).SetEase(Ease.OutBounce);
+    // Vector3[] waypoints = {
+    //       _initPositionHint,
+    //       // _initPositionHint + new Vector3(1, 1),
+    //       // positionTo - new Vector3(1.5f, 1.5f),
+    //       positionTo,
+    //     };
+    // _levelManager.hint.gameObject.transform.DOPath(waypoints, duration / 2, PathType.Linear);
 
     await UniTask.Delay((int)(duration * 500));
 

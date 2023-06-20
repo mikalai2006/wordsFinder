@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using User;
 
 [System.Serializable]
 public class DataGame
@@ -10,12 +11,16 @@ public class DataGame
   public List<string> completeWords;
   [System.NonSerialized] public DataLevel activeLevelWord;
   public string lastLevelWord;
+  public string idPlayerSetting;
+  public UserSettings userSettings;
+
   // public string lastWord;
 
   public DataGame()
   {
     levels = new();
     completeWords = new();
+    userSettings = new();
   }
 }
 

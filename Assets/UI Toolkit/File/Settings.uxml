@@ -1,27 +1,32 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/File/Base.uss?fileID=7433441132597879392&amp;guid=47ab2fccdf66be0488c7b62162e81d51&amp;type=3#Base" />
+    <Style src="project://database/Assets/UI%20Toolkit/File/Settings.uss?fileID=7433441132597879392&amp;guid=88dfc651dba86d4488abaaa61bc6b672&amp;type=3#Settings" />
     <ui:VisualElement name="AsideBlok" class="font" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; left: 0; right: 0; align-items: center; top: 10px;">
         <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center; justify-content: space-between; max-width: 400px; width: 380px;">
             <ui:Button display-tooltip-when-elided="true" name="MenuBtn" class="button_circle">
                 <ui:VisualElement name="ImgCog" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/128/Cog128.png?fileID=2800000&amp;guid=fe7f28583815e944993cdb808f259b29&amp;type=3#Cog128&apos;);" />
             </ui:Button>
             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
-            <ui:Button display-tooltip-when-elided="true" name="LevelsBtn" class="button_circle">
-                <ui:VisualElement name="ImgLevels" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/128/Levels128.png?fileID=2800000&amp;guid=eefc4220263b116478026e6ab657100d&amp;type=3#Levels128&apos;);" />
+            <ui:Button display-tooltip-when-elided="true" name="ShopBtn" class="button_circle">
+                <ui:VisualElement name="ImgShop" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/128/Shop128.png?fileID=2800000&amp;guid=1ab9b49f9f0ed954fbbc36f707b39d3e&amp;type=3#Shop128&apos;);" />
             </ui:Button>
             <ui:Button display-tooltip-when-elided="true" name="ExitBtn" class="button_circle" style="display: none;">
                 <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/128/Close128.png?fileID=2800000&amp;guid=403f4819152989949a0b60620e8ee754&amp;type=3#Close128&apos;); -unity-background-scale-mode: scale-and-crop;" />
             </ui:Button>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="MenuBlok" class="font" style="background-color: rgba(0, 0, 0, 0.71); position: absolute; left: 0; top: 0; right: 0; bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; display: none; flex-grow: 1;">
-        <ui:VisualElement name="MenuBlokWrapper" class="b-rounded" style="background-color: rgb(255, 255, 255); align-items: stretch; max-width: 600px; align-self: center; flex-grow: 0; width: 80%;">
+    <ui:VisualElement name="MenuBlok" class="font text-primary" style="background-color: rgba(0, 0, 0, 0.71); position: absolute; left: 2px; top: -3px; right: -1px; bottom: 5px; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; display: flex; flex-grow: 1;">
+        <ui:VisualElement name="MenuBlokWrapper" class="b-rounded" style="background-color: rgb(164, 164, 164); align-items: stretch; max-width: 600px; align-self: center; flex-grow: 0; width: 380px;">
+            <ui:Label tabindex="-1" text="#settings" display-tooltip-when-elided="true" class="p-2" style="-unity-font-style: bold; -unity-text-align: upper-center;" />
             <ui:VisualElement name="Menu" style="background-color: rgba(0, 0, 0, 0); padding-left: 20px; padding-right: 20px; padding-top: 20px; padding-bottom: 20px;">
                 <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); margin-bottom: 20px;">
                     <ui:Slider picking-mode="Ignore" label="#volumeEffect" value="0.2" high-value="1" name="VolumeEffect" />
                 </ui:VisualElement>
                 <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); padding-bottom: 20px;">
                     <ui:Slider picking-mode="Ignore" label="#volumeMusic" value="0.2" high-value="1" name="VolumeMusic" />
+                </ui:VisualElement>
+                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); padding-bottom: 20px;">
+                    <ui:SliderInt picking-mode="Ignore" label="#timedelay" value="50" high-value="500" name="TimeDelay" low-value="5" />
                 </ui:VisualElement>
                 <ui:VisualElement style="background-color: rgba(0, 0, 0, 0);">
                     <ui:DropdownField label="#language" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Language" />

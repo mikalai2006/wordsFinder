@@ -9,7 +9,7 @@ public class GameSetting : ScriptableObject
 
   public GameTheme Theme;
 
-  public GamePlayerSetting PlayerSetting;
+  public List<GamePlayerSetting> PlayerSetting;
 
   [Space(5)]
   [Header("Game")]
@@ -43,6 +43,8 @@ public class GameSetting : ScriptableObject
   public GameObject PrefabStar;
   public GameObject PrefabLighting;
   public Sprite spriteRate;
+  public Sprite spriteShop;
+  public Sprite spriteCart;
 
   [Space(5)]
   [Header("System")]

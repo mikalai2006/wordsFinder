@@ -20,6 +20,7 @@ public class Hint : MonoBehaviour, IPointerDownHandler
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   private StateManager _stateManager => GameManager.Instance.StateManager;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
+  private GameManager _gameManager => GameManager.Instance;
 
   private bool _statusShowCounter = false;
 
@@ -133,7 +134,7 @@ public class Hint : MonoBehaviour, IPointerDownHandler
 
   private void SetValueProgressBar(DataGame data, StatePerk statePerk)
   {
-    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)statePerk.countCharForAddHint / _gameSetting.PlayerSetting.bonusCount.charHint;
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)statePerk.countCharForAddHint / _gameManager.PlayerSetting.bonusCount.charHint;
     _spriteProgress.transform.localPosition
       = new Vector3(_spriteProgress.transform.localPosition.x, newPosition);
   }

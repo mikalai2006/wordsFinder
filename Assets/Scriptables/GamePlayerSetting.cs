@@ -3,6 +3,10 @@ using UnityEngine;
 [CreateAssetMenu]
 public class GamePlayerSetting : ScriptableObject
 {
+  public string idPlayerSetting;
+
+  public int countFindWordsForUp;
+
   [Space(5)]
   [Header("Player")]
   public BonusCount bonusCount;

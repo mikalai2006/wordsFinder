@@ -14,6 +14,7 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
   public char charTextValue;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   private GameSetting _gameSettings => GameManager.Instance.GameSettings;
+  private GameManager _gameManager => GameManager.Instance;
   [SerializeField] private BoxCollider2D _collider;
   [SerializeField] private Image _image;
   [SerializeField] private RectTransform _canvas;
@@ -113,7 +114,7 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
   {
     if (_levelManager.ManagerHiddenWords.listChoosedGameObjects.Count != 0)
     {
-      await UniTask.Delay(_gameSettings.timeDelayOverChar, cancellationToken: cancellationToken);
+      await UniTask.Delay(_gameManager.AppInfo.userSettings.td, cancellationToken: cancellationToken);
     }
 
     if (!cancellationToken.IsCancellationRequested)

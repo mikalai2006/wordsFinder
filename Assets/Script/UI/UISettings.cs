@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -27,14 +26,14 @@ public class UISettings : UILocaleBase
     _menu.style.display = DisplayStyle.None;
     _menu.Q<VisualElement>("MenuBlokWrapper").style.backgroundColor = new StyleColor(_gameSettings.Theme.bgColor);
     _aside.Q<VisualElement>("ImgCog").style.backgroundImage = new StyleBackground(_gameSettings.spriteCog);
-    _aside.Q<VisualElement>("ImgLevels").style.backgroundImage = new StyleBackground(_gameSettings.spriteLevels);
+    _aside.Q<VisualElement>("ImgShop").style.backgroundImage = new StyleBackground(_gameSettings.spriteShop);
 
     GameSetting = GameManager.Instance.GameSettings;
 
     _exitButton = _aside.Q<Button>("ExitBtn");
     _openMenuButton = _aside.Q<Button>("MenuBtn");
     _closeMenuButton = _menu.Q<Button>("CloseMenuBtn");
-    _LevelsButton = _aside.Q<Button>("LevelsBtn");
+    _LevelsButton = _aside.Q<Button>("ShopBtn");
     _LevelsButton.clickable.clicked += () =>
     {
       ClickOpenListLevels();
@@ -59,6 +58,10 @@ public class UISettings : UILocaleBase
     {
       ClickToStartMenuButton();
     };
+    if (_gameManager.LevelManager == null)
+    {
+      _toMenuAppButton.style.display = DisplayStyle.None;
+    }
 
     base.Localize(_uiDoc.rootVisualElement);
   }
@@ -74,6 +77,15 @@ public class UISettings : UILocaleBase
   private void ShowMenu()
   {
     _menu.style.display = DisplayStyle.Flex;
+
+    if (_gameManager.LevelManager == null)
+    {
+      _toMenuAppButton.style.display = DisplayStyle.None;
+    }
+    else
+    {
+      _toMenuAppButton.style.display = DisplayStyle.Flex;
+    }
   }
   private void HideMenu()
   {
@@ -101,21 +113,38 @@ public class UISettings : UILocaleBase
 
   private void CreateMenu()
   {
+    var userSettings = _gameManager.AppInfo.userSettings;
+
     var menuBlok = _menu.Q<VisualElement>("Menu");
     var sliderVolumeEffect = menuBlok.Q<Slider>("VolumeEffect");
-    sliderVolumeEffect.value = GameSetting.Audio.volumeEffect;
+    sliderVolumeEffect.value = userSettings == null
+      ? GameSetting.Audio.volumeEffect
+      : userSettings.auv;
+    _audioManager.EffectSource.volume = sliderVolumeEffect.value;
     sliderVolumeEffect.RegisterValueChangedCallback((ChangeEvent<float> evt) =>
     {
-      GameSetting.Audio.volumeEffect = evt.newValue;
-      _audioManager.EffectSource.volume = GameSetting.Audio.volumeEffect;
+      _audioManager.EffectSource.volume = evt.newValue;
+      userSettings.auv = evt.newValue;
     });
 
     var sliderVolumeMusic = menuBlok.Q<Slider>("VolumeMusic");
-    sliderVolumeMusic.value = GameSetting.Audio.volumeMusic;
+    sliderVolumeMusic.value = userSettings == null
+      ? GameSetting.Audio.volumeMusic
+      : userSettings.muv;
+    _audioManager.MusicSource.volume = sliderVolumeMusic.value;
     sliderVolumeMusic.RegisterValueChangedCallback((ChangeEvent<float> evt) =>
     {
-      GameSetting.Audio.volumeMusic = evt.newValue;
-      _audioManager.MusicSource.volume = GameSetting.Audio.volumeMusic;
+      _audioManager.MusicSource.volume = evt.newValue;
+      userSettings.muv = evt.newValue;
+    });
+
+    var sliderTimeDelay = menuBlok.Q<SliderInt>("TimeDelay");
+    sliderTimeDelay.value = userSettings == null
+      ? GameSetting.timeDelayOverChar
+      : userSettings.td;
+    sliderTimeDelay.RegisterValueChangedCallback((ChangeEvent<int> evt) =>
+    {
+      userSettings.td = evt.newValue;
     });
 
     var dropdownLanguage = menuBlok.Q<DropdownField>("Language");
@@ -135,11 +164,14 @@ public class UISettings : UILocaleBase
 
   private void ChooseLanguage(string nameLanguage)
   {
+    var userSettings = _gameManager.AppInfo.userSettings;
+
     // Debug.Log($"Choose lang={nameLanguage} | {selectedLocale} | {selectedLocale == nameLanguage}");
     int indexLocale = LocalizationSettings.AvailableLocales.Locales.FindIndex(t => t.name == nameLanguage);
     if (nameLanguage != LocalizationSettings.SelectedLocale.name && indexLocale != -1)
     {
       LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[indexLocale];
+      userSettings.lang = nameLanguage;
       base.Localize(_uiDoc.rootVisualElement);
     }
     OnChangeLocale?.Invoke();
