@@ -5,9 +5,16 @@ using UnityEngine;
 public class GameLevelWord : ScriptableObject
 {
   public string idLevelWord;
-  public string title;
   public string word;
-  public int maxCountHiddenChar;
 
-  public List<string> hiddenWords;
+  [Space(10)]
+  [Header("Bonus settings")]
+  public int minRate;
+  public int countHint;
+  public int countStar;
+
+  [Space(10)]
+  [Header("Word settings")]
+  public int maxCountHiddenChar;
+  public int maxNeedFindWords;
 }

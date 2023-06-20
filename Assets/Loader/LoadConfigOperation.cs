@@ -10,7 +10,7 @@ namespace Loader
     {
       onProgress?.Invoke(0.5f);
 
-      var t = await Helpers.GetLocaleString("loadconfig");
+      var t = await Helpers.GetLocaledString("loadconfig");
       onSetNotify?.Invoke(t);
 
 

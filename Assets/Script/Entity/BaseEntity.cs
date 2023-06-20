@@ -56,7 +56,7 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   }
 
   #region Effects
-  public virtual void CompleteEffect()
+  public virtual void AddCoins(int count = 1)
   {
 
   }

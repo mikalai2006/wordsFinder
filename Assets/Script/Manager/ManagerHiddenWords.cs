@@ -22,8 +22,10 @@ public class ManagerHiddenWords : MonoBehaviour
   public SerializableDictionary<string, HiddenWordMB> HiddenWords = new SerializableDictionary<string, HiddenWordMB>();
   private string _wordForChars;
   public string WordForChars => _wordForChars;
-  public Dictionary<string, int> AllowWords;
+  public Dictionary<string, int> NeedWords;
+  public Dictionary<string, int> AllowPotentialWords;
   public Dictionary<string, int> OpenWords;
+  public Dictionary<string, int> OpenNeedWords;
   public List<CharMB> listChoosedGameObjects;
   public string choosedWord => string.Join("", listChoosedGameObjects.Select(t => t.GetComponent<CharMB>().charTextValue).ToList());
 
@@ -36,11 +38,15 @@ public class ManagerHiddenWords : MonoBehaviour
   private void Awake()
   {
 
-    listChoosedGameObjects = new List<CharMB>();
+    listChoosedGameObjects = new();
 
-    AllowWords = new Dictionary<string, int>();
+    NeedWords = new();
 
-    OpenWords = new Dictionary<string, int>();
+    OpenWords = new();
+
+    AllowPotentialWords = new();
+
+    OpenNeedWords = new();
 
     Shuffle.OnShuffleWord += SetWordForChars;
   }
@@ -57,21 +63,22 @@ public class ManagerHiddenWords : MonoBehaviour
   /// <param name="wordConfig">Config word</param>
   public void Init() // GameLevel levelConfig, GameLevelWord wordConfig
   {
-    var levelConfig = _stateManager.ActiveLevelConfig;
     var wordConfig = _stateManager.ActiveWordConfig;
+    var word = wordConfig.word;
 
     _levelManager.shuffle.gameObject.SetActive(true);
     _levelManager.colba.gameObject.SetActive(true);
     _levelManager.hint.gameObject.SetActive(true);
     HiddenWords.Clear();
 
-    var data = _stateManager.dataGame.activeLevel;
+    var data = _stateManager.dataGame.activeLevelWord;
 
-    if (!string.IsNullOrEmpty(data.wordForChars))
+    if (!string.IsNullOrEmpty(data.word))
     {
-      SetWordForChars(data.wordForChars);
+      SetWordForChars(data.word);
 
       OpenWords = data.openWords.ToDictionary(t => t, t => 0);
+
       foreach (var item in data.openChars)
       {
         OpenChars.Add(item.Key, item.Value);
@@ -83,13 +90,13 @@ public class ManagerHiddenWords : MonoBehaviour
     }
     else
     {
-      SetWordForChars(wordConfig.word);
+      SetWordForChars(word);
     }
 
     CreateAllowWords();
 
     List<string> _hiddenWords = new();
-    if (!string.IsNullOrEmpty(data.wordForChars))
+    if (!string.IsNullOrEmpty(data.word))
     {
       _hiddenWords = data.hiddenWords;
     }
@@ -218,7 +225,7 @@ public class ManagerHiddenWords : MonoBehaviour
     List<string> hiddenWords = new();
 
     int countChar = 0;
-    foreach (var word in AllowWords)
+    foreach (var word in NeedWords)
     {
       if (countChar > _stateManager.ActiveWordConfig.maxCountHiddenChar) break;
       if (OpenWords.ContainsKey(word.Key)) continue;
@@ -238,19 +245,43 @@ public class ManagerHiddenWords : MonoBehaviour
   public void CreateAllowWords()
   {
     var potentialWords = _gameManager.Words.data
-      .Where(t => t.Length <= WordForChars.Length)
-      .OrderBy(t => UnityEngine.Random.value)
-      .ToList();
+        .Where(t => t.Length <= WordForChars.Length)
+        .OrderBy(t => Random.value)
+        .ToList();
+
+    var maxCountWords = _stateManager.ActiveWordConfig.maxNeedFindWords > potentialWords.Count
+      ? potentialWords.Count
+      : _stateManager.ActiveWordConfig.maxNeedFindWords;
+
+    var savedAllowWords = _stateManager.dataGame.activeLevelWord.allowWords;
 
     foreach (var word in potentialWords)
     {
       var res = Helpers.IntersectWithRepetitons(WordForChars, word);
+
       if (res.Count() == word.Length)
       {
-        AllowWords.Add(word, 0);
+        if (NeedWords.Count < maxCountWords && savedAllowWords == null)
+        {
+          NeedWords.Add(word, 0);
+        }
+        AllowPotentialWords.Add(word, 0);
       }
     }
-    // Debug.Log($"Add {AllowWords.Count} potential words");
+
+    if (savedAllowWords != null)
+    {
+      NeedWords = savedAllowWords.ToDictionary(t => t, t => 0);
+
+      foreach (var openWord in NeedWords)
+      {
+        if (OpenWords.ContainsKey(openWord.Key))
+        {
+          OpenNeedWords.Add(openWord.Key, 0);
+        }
+      }
+    }
+    // Debug.LogWarning($"Add {AllowWords.Count} potential words ({WordForChars}) [maxCountWords={maxCountWords}]");
   }
 
   /// <summary>
@@ -297,11 +328,12 @@ public class ManagerHiddenWords : MonoBehaviour
       {
         // open new hidden word.
         OpenWords.Add(choosedWord, 1);
+        OpenNeedWords.Add(choosedWord, 1);
         await _choosedWordMB.OpenHiddenWord(HiddenWords[choosedWord]);
         _stateManager.OpenHiddenWord(choosedWord);
       }
     }
-    else if (AllowWords.ContainsKey(choosedWord))
+    else if (AllowPotentialWords.ContainsKey(choosedWord))
     {
       if (OpenWords.ContainsKey(choosedWord))
       {
@@ -311,6 +343,10 @@ public class ManagerHiddenWords : MonoBehaviour
       }
       else
       {
+        if (NeedWords.ContainsKey(choosedWord))
+        {
+          OpenNeedWords.Add(choosedWord, 1);
+        }
         // open new allow word.
         OpenWords.Add(choosedWord, 1);
         await _choosedWordMB.OpenAllowWord();
@@ -331,10 +367,11 @@ public class ManagerHiddenWords : MonoBehaviour
     _lineManager.ResetLine();
     listChoosedGameObjects.Clear();
 
-    bool isEndLevel = OpenWords.Count == AllowWords.Count;
+    bool isOpenAllNeedWords = OpenNeedWords.Count == Mathf.Min(_stateManager.ActiveWordConfig.maxNeedFindWords, NeedWords.Count);// AllowWords.Count;
     bool isOpenAllHiddenWords = OpenWords.Keys.Intersect(HiddenWords.Keys).Count() == HiddenWords.Count();
-    if (isEndLevel)
+    if (isOpenAllNeedWords)
     {
+      await UniTask.Delay(500);
       Debug.Log("Next level");
       await NextLevel();
     }
@@ -457,16 +494,18 @@ public class ManagerHiddenWords : MonoBehaviour
     // // OpenHiddenWords.Clear();
     // OpenWords.Clear();
     // // GameManager.Instance.DataManager.Save();
+    _gameManager.InputManager.Disable();
     _stateManager.RefreshData();
     var result = await _levelManager.statLevel.Show();
     if (result.isOk)
     {
       // _gameManager.DataManager.Save();
       // Reset();
-      _stateManager.RemoveCompleteLevel();
-      _levelManager.InitLevel(_stateManager.ActiveLevelConfig, _stateManager.ActiveWordConfig);
+      var newConfigWord = _stateManager.GetConfigNextLevel();
+      _levelManager.InitLevel(newConfigWord);
       // await _levelManager.NextLevel();
     }
+    _gameManager.InputManager.Enable();
   }
 
 
@@ -481,13 +520,17 @@ public class ManagerHiddenWords : MonoBehaviour
 
     HiddenWords.Clear();
 
-    AllowWords.Clear();
+    NeedWords.Clear();
 
     OpenWords.Clear();
 
     OpenChars.Clear();
 
     Entities.Clear();
+
+    AllowPotentialWords.Clear();
+
+    OpenNeedWords.Clear();
 
     Helpers.DestroyChildren(tilemapEntities.transform);
     Helpers.DestroyChildren(tilemap.transform);

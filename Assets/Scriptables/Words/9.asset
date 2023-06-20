@@ -10,16 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
-  m_Name: 0_Word_tank_8
+  m_Name: 9
   m_EditorClassIdentifier: 
-  idLevelWord: 1
-  title: "\u0422\u0430\u043D\u043A"
-  word: "\u0442\u0430\u043D\u043A"
-  maxCountHiddenChar: 5
-  hiddenWords:
-  - "\u0430\u043A\u0440"
-  - "\u0430\u0440"
-  - "\u0430\u0440\u043A"
-  - "\u043A\u0430\u0440"
-  - "\u0440\u0430"
-  - "\u0440\u0430\u043A"
+  idLevelWord: 9
+  word: "\u043D\u043E\u0436\u0438\u043A"
+  minRate: 10
+  countHint: 3
+  countStar: 3
+  maxCountHiddenChar: 10
+  maxNeedFindWords: 10

@@ -6,7 +6,6 @@ public class GameSetting : ScriptableObject
 {
   public GameAudio Audio;
   public CharMB PrefabSymbol;
-  public List<GameLevel> GameLevels;
 
   public GameTheme Theme;
 
@@ -49,4 +48,5 @@ public class GameSetting : ScriptableObject
   [Header("System")]
   public int debounceTime;
   [Range(10, 1000)] public int timeDelayOverChar;
+  public GameLevel GameLevels;
 }

@@ -56,100 +56,100 @@ public class UILevels : UILocaleBase
 
   private async void FillLevels()
   {
-    var dataGame = _gameManager.DataManager.DataGame;
-    int minLevel = _gameSettings.GameLevels.FindIndex(t => t.idLevel == dataGame.lastLevel);
-    var allowLevels = minLevel != -1
-      ? _gameSettings.GameLevels.GetRange(minLevel, _gameSettings.GameLevels.Count - minLevel)
-      : _gameSettings.GameLevels;
+    // var dataGame = _gameManager.DataManager.DataGame;
+    // int minLevel = _gameSettings.GameLevelWords.FindIndex(t => t.idLevel == dataGame.lastLevel);
+    // var allowLevels = minLevel != -1
+    //   ? _gameSettings.GameLevelWords.GetRange(minLevel, _gameSettings.GameLevelWords.Count - minLevel)
+    //   : _gameSettings.GameLevelWords;
 
-    foreach (var level in allowLevels)
-    {
-      var section = LevelSection.Instantiate();
-      section.Q<Label>("Name").text = level.title;
-      var sectionListWords = section.Q<VisualElement>("ListWords");
-      sectionListWords.Clear();
+    // foreach (var level in allowLevels)
+    // {
+    //   var section = LevelSection.Instantiate();
+    //   section.Q<Label>("Name").text = await Helpers.GetLocaledString(level.text.title);
+    //   var sectionListWords = section.Q<VisualElement>("ListWords");
+    //   sectionListWords.Clear();
 
-      for (int i = 0; i < level.words.Count; i++)
-      {
-        var currentWord = level.words[i];
-        var levelData = dataGame != null
-          ? dataGame.levels.Find(t => t.id == level.idLevel && t.idWord == currentWord.idLevelWord)
-          : null;
-        var userRate = dataGame != null
-          ? dataGame.rate
-          : 0;
-        var levelBlok = LevelBlok.Instantiate();
+    //   for (int i = 0; i < level.words.Count; i++)
+    //   {
+    //     var currentWord = level.words[i];
+    //     var levelData = dataGame != null
+    //       ? dataGame.levels.Find(t => t.id == level.idLevel && t.word == currentWord)
+    //       : null;
+    //     var userRate = dataGame != null
+    //       ? dataGame.rate
+    //       : 0;
+    //     var levelBlok = LevelBlok.Instantiate();
 
-        var btnGo = levelBlok.Q<Button>("GoBtn");
-        btnGo.clickable.clicked += () =>
-        {
-          InitLevel(level, currentWord);
-        };
-        var success = levelBlok.Q<VisualElement>("Success");
-        success.style.backgroundImage = new StyleBackground(_gameSettings.spriteCheck);
-        success.style.display = DisplayStyle.None;
-        var lockElement = levelBlok.Q<VisualElement>("Lock");
-        lockElement.style.backgroundImage = new StyleBackground(_gameSettings.spriteLock);
-        lockElement.style.display = DisplayStyle.None;
-        var description = levelBlok.Q<Label>("Description");
-        var progressBlok = levelBlok.Q<VisualElement>("ProgressBarBox");
-        levelBlok.Q<Label>("Name").text = currentWord.word;
+    //     var btnGo = levelBlok.Q<Button>("GoBtn");
+    //     btnGo.clickable.clicked += () =>
+    //     {
+    //       InitLevel(level, currentWord);
+    //     };
+    //     var success = levelBlok.Q<VisualElement>("Success");
+    //     success.style.backgroundImage = new StyleBackground(_gameSettings.spriteCheck);
+    //     success.style.display = DisplayStyle.None;
+    //     var lockElement = levelBlok.Q<VisualElement>("Lock");
+    //     lockElement.style.backgroundImage = new StyleBackground(_gameSettings.spriteLock);
+    //     lockElement.style.display = DisplayStyle.None;
+    //     var description = levelBlok.Q<Label>("Description");
+    //     var progressBlok = levelBlok.Q<VisualElement>("ProgressBarBox");
+    //     levelBlok.Q<Label>("Name").text = currentWord;
 
-        if (levelData == null || levelData.openWords.Count == 0)
-        {
-          if (level.minRate <= userRate)
-          {
-            btnGo.text = await Helpers.GetLocaleString("start");
-            lockElement.style.display = DisplayStyle.None;
-          }
-          else
-          {
-            btnGo.style.display = DisplayStyle.None;
-            lockElement.style.display = DisplayStyle.Flex;
-          }
-          description.style.display = DisplayStyle.None;
-          progressBlok.style.display = DisplayStyle.None;
-        }
-        else
-        {
-          var dataPlural = new Dictionary<string, int> {
-            {"count",  levelData.openWords.Count},
-            {"count2", levelData.countWords},
-          };
-          var arguments = new[] { dataPlural };
-          var textCountWords = await Helpers.GetLocalizedPluralString(
-              new UnityEngine.Localization.LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, "foundcountword"),
-              arguments,
-              dataPlural
-              );
-          description.text = string.Format(
-            "{0}",
-            textCountWords
-            );
+    //     if (levelData == null || levelData.openWords.Count == 0)
+    //     {
+    //       if (level.minRate <= userRate)
+    //       {
+    //         btnGo.text = await Helpers.GetLocaledString("start");
+    //         lockElement.style.display = DisplayStyle.None;
+    //       }
+    //       else
+    //       {
+    //         btnGo.style.display = DisplayStyle.None;
+    //         lockElement.style.display = DisplayStyle.Flex;
+    //       }
+    //       description.style.display = DisplayStyle.None;
+    //       progressBlok.style.display = DisplayStyle.None;
+    //     }
+    //     else
+    //     {
+    //       var dataPlural = new Dictionary<string, int> {
+    //         {"count",  levelData.openWords.Count},
+    //         {"count2", levelData.countWords},
+    //       };
+    //       var arguments = new[] { dataPlural };
+    //       var textCountWords = await Helpers.GetLocalizedPluralString(
+    //           new UnityEngine.Localization.LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, "foundcountword"),
+    //           arguments,
+    //           dataPlural
+    //           );
+    //       description.text = string.Format(
+    //         "{0}",
+    //         textCountWords
+    //         );
 
-          var procentOpen = levelData.openWords.Count * 100 / levelData.countWords;
-          var progressBar = levelBlok.Q<VisualElement>("ProgressBar");
-          progressBar.style.width
-            = new StyleLength(new Length(procentOpen, LengthUnit.Percent));
-          if (levelData.openWords.Count == levelData.countWords)
-          {
-            progressBlok.style.display = DisplayStyle.None;
-            btnGo.style.display = DisplayStyle.None;
-            success.style.display = DisplayStyle.Flex;
-            description.text = await Helpers.GetLocaleString("сompleted");
-          }
+    //       var procentOpen = levelData.openWords.Count * 100 / levelData.countWords;
+    //       var progressBar = levelBlok.Q<VisualElement>("ProgressBar");
+    //       progressBar.style.width
+    //         = new StyleLength(new Length(procentOpen, LengthUnit.Percent));
+    //       if (levelData.openWords.Count == levelData.countWords)
+    //       {
+    //         progressBlok.style.display = DisplayStyle.None;
+    //         btnGo.style.display = DisplayStyle.None;
+    //         success.style.display = DisplayStyle.Flex;
+    //         description.text = await Helpers.GetLocaledString("сompleted");
+    //       }
 
-          btnGo.text = await Helpers.GetLocaleString("continue");
-        }
+    //       btnGo.text = await Helpers.GetLocaledString("continue");
+    //     }
 
-        sectionListWords.Add(levelBlok);
-      }
+    //     sectionListWords.Add(levelBlok);
+    //   }
 
-      _listLevels.Add(section);
-    }
+    //   _listLevels.Add(section);
+    // }
   }
 
-  private async void InitLevel(GameLevel levelConfig, GameLevelWord wordConfig)
+  private async void InitLevel(GameLevelWord wordConfig)
   {
     if (!_gameManager.environment.Scene.IsValid())
     {
@@ -160,7 +160,7 @@ public class UILevels : UILocaleBase
       await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
     }
     ClickClose();
-    _gameManager.LevelManager.InitLevel(levelConfig, wordConfig);
+    _gameManager.LevelManager.InitLevel(wordConfig);
   }
 
   private void ClickClose()

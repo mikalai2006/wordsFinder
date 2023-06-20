@@ -46,7 +46,7 @@ public class Coin : BaseEntity
     gameObject.transform
       .DOPath(waypoints, 1f, PathType.Linear)
       .SetEase(Ease.OutCubic)
-      .OnComplete(() => CompleteEffect());
+      .OnComplete(() => AddCoins());
   }
 
   public override void SetPosition(Vector3 pos)
@@ -59,9 +59,9 @@ public class Coin : BaseEntity
     //SetDefault();
   }
 
-  public override void CompleteEffect()
+  public override void AddCoins(int count = 1)
   {
-    _stateManager.IncrementCoin(1);
+    _stateManager.IncrementCoin(count);
     _levelManager.topSide.AddCoin().Forget();
     Destroy(gameObject);
   }

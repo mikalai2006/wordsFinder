@@ -220,9 +220,9 @@ MonoBehaviour:
   dataGame:
     rate: 0
     coins: 0
-    Levels: []
-    lastActiveLevelId: 
-    lastActiveWordId: 
+    levels: []
+    completeWords: []
+    lastLevelWord: 
   statePerk:
     countCharInOrder: 0
     countWordInOrder: 0
@@ -231,9 +231,7 @@ MonoBehaviour:
     countCharForAddCoin: 0
     countCharForAddStar: 0
     countErrorForNullBonus: 0
-    needCreateStar: 0
     needCreateCoin: 0
-  ActiveLevelConfig: {fileID: 0}
   ActiveWordConfig: {fileID: 0}
 --- !u!1 &516352404
 GameObject:
@@ -842,7 +840,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1957392313}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e2ddb80ddd171b449fe8500cd7b53be, type: 3}
+  m_Script: {fileID: 11500000, guid: 33ef2abdd9df9e642a338c19672faa50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   jsonFile: {fileID: 4900000, guid: 256722d1ee7dff744a9764a500a69d62, type: 3}

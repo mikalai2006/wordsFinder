@@ -12,7 +12,7 @@ namespace Loader
 
       await LocalizationSettings.InitializationOperation;
 
-      var t = await Helpers.GetLocaleString("loading");
+      var t = await Helpers.GetLocaledString("loading");
       onSetNotify?.Invoke(t);
 
       onProgress?.Invoke(0.9f);

@@ -33,9 +33,11 @@
     var allWords = text.split("\n");
 
     const hashMap = new Map();
+    const jsonDataSmallWords = [];
     allWords.forEach((word) => {
       var w = word.replace(/['"]+/g, "").trim();
       if (w.indexOf("-") > 0 || hashMap.has(w) || w.length <= 2) {
+        if (w.length <= 2) jsonDataSmallWords.push(w);
       } else {
         if (!hashMap.has(w)) {
           hashMap.set(w, w);
@@ -43,10 +45,15 @@
       }
     });
 
+    console.group("Small Words");
+    console.log(jsonDataSmallWords);
+    console.groupEnd();
+
     var jsonDataWords = [...hashMap.keys()];
+    console.group("Normal Words");
     console.log(jsonDataWords);
 
-    var allowWords = jsonDataWords.filter((t) => t.length < 20);
+    var allowWords = jsonDataWords.filter((t) => t.length < 6);
     var allowWordsObj = [];
     for (let i = 0; i < allowWords.length; i++) {
       allowWordsObj.push({
@@ -85,6 +92,7 @@
     }
     var arrayWords2 = arrayWords.sort(compare);
     console.log(arrayWords2);
+    console.groupEnd();
 
     console.timeEnd();
     return text;

@@ -14,7 +14,7 @@ namespace Loader
     {
       onProgress?.Invoke(0.1f);
 
-      var t = await Helpers.GetLocaleString("loading");
+      var t = await Helpers.GetLocaledString("loading");
       onSetNotify?.Invoke(t);
       var environment = await GameManager.Instance.AssetProvider.LoadSceneAdditive(Constants.Scenes.SCENE_GAME);
       var rootObjects = environment.Scene.GetRootGameObjects();
@@ -37,7 +37,7 @@ namespace Loader
 
       // editorGame.Init(environment);
       // editorGame.BeginNewGame();
-      onProgress?.Invoke(0.2f);
+      onProgress?.Invoke(.9f);
     }
   }
 }

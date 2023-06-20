@@ -58,7 +58,7 @@ public class HiddenCharMB : MonoBehaviour
 
     // Remove open char.
     if (
-      _stateManager.dataGame.activeLevel.openChars.ContainsKey(OccupiedNode.arrKey)
+      _stateManager.dataGame.activeLevelWord.openChars.ContainsKey(OccupiedNode.arrKey)
       &&
       _levelManager.ManagerHiddenWords.OpenWords.ContainsKey(OccupiedNode.OccupiedWord._word)
       )
@@ -227,9 +227,9 @@ public class HiddenCharMB : MonoBehaviour
           positionTo,
         };
     newObj.transform
-      .DOPath(waypoints, 2f, PathType.Linear)
+      .DOPath(waypoints, 1f, PathType.Linear)
       .SetEase(Ease.OutCubic)
-      .OnComplete(() => newEntity.CompleteEffect());
+      .OnComplete(() => newEntity.AddCoins());
   }
 
 #if UNITY_EDITOR

@@ -22,7 +22,7 @@ namespace User
       _onProgress = onProgress;
       _onSetNotify = onSetNotify;
 
-      var t = await Helpers.GetLocaleString("loading");
+      var t = await Helpers.GetLocaledString("loading");
       _onSetNotify?.Invoke(t);
       _onProgress?.Invoke(0.1f);
       _appInfoContainer.UserInfo = await GetUserInfo(DeviceInfo.GetDeviceId());

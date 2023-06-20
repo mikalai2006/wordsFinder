@@ -24,12 +24,13 @@ public class Stat : MonoBehaviour
   {
     // View new data.
     var dataPlural = new Dictionary<string, int> {
-      {"count",  data.activeLevel.openWords.Count},
-      {"count2", data.activeLevel.countWords},
+      {"count",  _levelManager.ManagerHiddenWords.OpenNeedWords.Count},
+      {"count2", data.activeLevelWord.countWords},
+      {"count3", _levelManager.ManagerHiddenWords.AllowPotentialWords.Count}, //  data.activeLevelWord.openWords.Count
     };
     var arguments = new[] { dataPlural };
     var textCountWords = await Helpers.GetLocalizedPluralString(
-        new UnityEngine.Localization.LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, "countword"),
+        new UnityEngine.Localization.LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, "foundcountword"),
         arguments,
         dataPlural
         );

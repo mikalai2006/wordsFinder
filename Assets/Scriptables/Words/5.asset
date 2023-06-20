@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
-  m_Name: Level_0
+  m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
+  m_Name: 5
   m_EditorClassIdentifier: 
-  idLevel: 0
-  title: "\u041F\u0440\u043E\u043B\u043E\u0433 0"
-  minRate: 0
+  idLevelWord: 5
+  word: "\u043A\u043E\u043C\u043E\u0434"
+  minRate: 10
   countHint: 3
   countStar: 3
-  words:
-  - {fileID: 11400000, guid: fa27780d9109a0f449b1bcd480f356e9, type: 2}
+  maxCountHiddenChar: 10
+  maxNeedFindWords: 10

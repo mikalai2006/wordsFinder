@@ -77,7 +77,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1563663732473856
-    m_Localized: Found {count} {count:word|words} of {count2}
+    m_Localized: Found {count} {count:word|words} of {count2}. All may be  {count3}
+      {count:word|words}
     m_Metadata:
       m_Items:
       - rid: 366247623133495314

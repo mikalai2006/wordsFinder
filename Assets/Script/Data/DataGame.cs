@@ -8,9 +8,9 @@ public class DataGame
   public int coins;
   public List<DataLevel> levels;
   public List<string> completeWords;
-  [System.NonSerialized] public DataLevel activeLevel;
-  public string lastLevel;
-  public string lastWord;
+  [System.NonSerialized] public DataLevel activeLevelWord;
+  public string lastLevelWord;
+  // public string lastWord;
 
   public DataGame()
   {
@@ -24,7 +24,6 @@ public class DataGame
 public class DataLevel
 {
   public string id;
-  public string idWord;
   public int hint;
   public int star;
   public float index;
@@ -32,9 +31,9 @@ public class DataLevel
   public SerializeEntity ent;
   public List<string> openWords;
   public List<string> hiddenWords;
-  public string wordForChars;
+  public string word;
   public int countWords;
-  // public int countOpenWords;
+  public List<string> allowWords;
   public int countOpenChars;
 
   public DataLevel()

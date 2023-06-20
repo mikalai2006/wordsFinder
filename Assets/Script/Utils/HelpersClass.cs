@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Localization;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// A static class for general helpful methods
@@ -25,11 +22,11 @@ public static class Helpers
     foreach (Transform child in t) UnityEngine.Object.Destroy(child.gameObject);
   }
 
-  public static int GenerateChance(int start = 0, int end = 100)
-  {
-    System.Random random = new System.Random();
-    return random.Next(0, 100);
-  }
+  // public static int GenerateChance(int start = 0, int end = 100)
+  // {
+  //   System.Random random = new System.Random();
+  //   return random.Next(0, 100);
+  // }
 
   public static Dictionary<Transform, dynamic> GetChildrenHierarchy(this GameObject gameobject)
   {
@@ -62,30 +59,7 @@ public static class Helpers
     return ret;
   }
 
-  // public static string GetLocalizedPluralString<T>(
-  //     LocalizedString localizedString,
-  //     Dictionary<string, T>[] args,
-  //     Dictionary<string, T> dictionary
-  //     )
-  // {
-  //     if (localizedString.IsEmpty) return "NO_LANG";
 
-  //     localizedString.Arguments = args;
-  //     return localizedString.GetLocalizedString(dictionary);
-  // }
-
-  // public static string GetNameByValue(LocalizedString localizedString, int value)
-  // {
-  //     var data = new Dictionary<string, int> {
-  //         { "value", value },
-  //     };
-  //     var arguments = new[] { data };
-  //     return Helpers.GetLocalizedPluralString(
-  //         localizedString,
-  //         arguments,
-  //         data
-  //         );
-  // }
   public static void LineConnection(LineRenderer lr, GameObject first, GameObject second, float linewidth)
   {
     // var lr = first.GetComponent<LineRenderer>();
@@ -98,12 +72,24 @@ public static class Helpers
   {
     return " <color=#FFFFAB>" + str + "</color>";
   }
-  public async static UniTask<string> GetLocaleString(string key)
+
+
+  public async static UniTask<string> GetLocaledString(LocalizedString localizedString)
+  {
+    var t = localizedString.GetLocalizedStringAsync();
+    await t.Task;
+    return t.Result;
+  }
+
+
+  public async static UniTask<string> GetLocaledString(string key)
   {
     var t = new LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, key).GetLocalizedStringAsync();
     await t.Task;
     return t.Result;
   }
+
+
   public static IEnumerable<T> IntersectWithRepetitons<T>(this IEnumerable<T> first,
     IEnumerable<T> second)
   {
@@ -115,6 +101,7 @@ public static class Helpers
         lookup[item]--;
       }
   }
+
 
   public async static UniTask<string> GetLocalizedPluralString<T>(
         LocalizedString localizedString,

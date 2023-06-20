@@ -21,6 +21,8 @@ public class Hint : MonoBehaviour, IPointerDownHandler
   private StateManager _stateManager => GameManager.Instance.StateManager;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
 
+  private bool _statusShowCounter = false;
+
   private void Awake()
   {
     _transform = gameObject.transform;
@@ -42,22 +44,22 @@ public class Hint : MonoBehaviour, IPointerDownHandler
   {
     // Set new value
     int oldValue = int.Parse(_countHintText.text);
-    if (data.activeLevel.hint > 0)
+    if (data.activeLevelWord.hint > 0)
     {
-      if (oldValue == 0)
+      if (!_statusShowCounter)
       {
         Show();
       }
-      else if (data.activeLevel.hint != oldValue)
+      else if (data.activeLevelWord.hint != oldValue)
       {
         HelpersAnimation.Pulse(_countHintObject, new Vector3(.5f, .5f, 0), 1f);
       }
     }
-    else if (oldValue != 0)
+    else if (_statusShowCounter)
     {
-      Hide();
+      HideCounter();
     }
-    _countHintText.text = data.activeLevel.hint.ToString();
+    _countHintText.text = data.activeLevelWord.hint.ToString();
 
     // TODO animation get hit.
 
@@ -74,13 +76,15 @@ public class Hint : MonoBehaviour, IPointerDownHandler
       .DOPunchScale(new Vector3(0.5f, 0.5f, 1), _gameSetting.timeGeneralAnimation)
       .SetDelay(_gameSetting.timeGeneralAnimation)
       .SetEase(Ease.OutBack);
+    _statusShowCounter = true;
   }
 
-  public void Hide()
+  public void HideCounter()
   {
     _countHintObject.transform
-      .DOScale(new Vector3(0, 0, 1), _gameSetting.timeGeneralAnimation)
+      .DOScale(new Vector3(0, 0, 0), _gameSetting.timeGeneralAnimation)
       .SetEase(Ease.OutBack);
+    _statusShowCounter = false;
     //gameObject.SetActive(false);
   }
 
@@ -118,7 +122,7 @@ public class Hint : MonoBehaviour, IPointerDownHandler
 
   public void OnPointerDown(PointerEventData eventData)
   {
-    if (_stateManager.dataGame.activeLevel.hint == 0)
+    if (_stateManager.dataGame.activeLevelWord.hint == 0)
     {
       // TODO Show dialog with info get hint by adsense.
       return;
@@ -132,5 +136,13 @@ public class Hint : MonoBehaviour, IPointerDownHandler
     var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)statePerk.countCharForAddHint / _gameSetting.PlayerSetting.bonusCount.charHint;
     _spriteProgress.transform.localPosition
       = new Vector3(_spriteProgress.transform.localPosition.x, newPosition);
+  }
+
+  public void ResetProgressBar()
+  {
+    var pos = new Vector3(_spriteProgress.transform.localPosition.x, progressBasePositionY);
+    _spriteProgress.transform
+      .DOMove(pos, _gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutBack);
   }
 }

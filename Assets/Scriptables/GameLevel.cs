@@ -1,14 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 [CreateAssetMenu]
 public class GameLevel : ScriptableObject
 {
   public string idLevel;
-  public string title;
-  public int minRate;
-  public int countHint;
-  public int countStar;
+  public TextLevel text;
 
-  public List<GameLevelWord> words;
+  public List<GameLevelWord> levelWords;
+}
+
+[System.Serializable]
+public struct TextLevel
+{
+  public LocalizedString title;
+  public LocalizedString description;
 }

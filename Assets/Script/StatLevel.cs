@@ -11,7 +11,7 @@ public class StatLevel : MonoBehaviour
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   private StateManager _stateManager => GameManager.Instance.StateManager;
   private GameManager _gameManager => GameManager.Instance;
-  private float duration = .5f;
+  private float duration => _gameSetting.timeGeneralAnimation;
 
   [SerializeField] private GameObject _bg;
   [SerializeField] private SpriteRenderer _spriteStar;
@@ -40,7 +40,7 @@ public class StatLevel : MonoBehaviour
   private TaskCompletionSource<DataResultLevelDialog> _processCompletionSource;
   private DataResultLevelDialog _result;
 
-  private Vector3 defaultPositionWrapper = new Vector3(0, 20, 0);
+  private Vector3 defaultPositionWrapper = new Vector3(0, 15, 0);
   private Vector3 _initPositionColba;
   private Vector3 _initPositionHint;
 
@@ -81,7 +81,7 @@ public class StatLevel : MonoBehaviour
     _wrapStar.SetActive(true);
 
     _wrapStar.transform
-      .DOMove(new Vector3(0, -3, 0), duration)
+      .DOMove(new Vector3(0, -3, 0), duration / 2)
       .From()
       .OnComplete(async () => await AnimateStarStat());
 
@@ -93,25 +93,27 @@ public class StatLevel : MonoBehaviour
     var positionTo = _spriteStar.transform.position;
     Vector3[] waypoints = {
           _initPositionColba,
-          _initPositionColba + new Vector3(1, 1),
-          positionTo - new Vector3(1.5f, 1.5f),
+          // _initPositionColba + new Vector3(1, 1),
+          // positionTo - new Vector3(1.5f, 1.5f),
           positionTo,
         };
-    _levelManager.colba.gameObject.transform.DOPath(waypoints, duration, PathType.Linear);
+    _levelManager.colba.gameObject.transform.DOPath(waypoints, duration / 2, PathType.Linear);
 
-    await UniTask.Delay((int)(duration * 1000));
+    await UniTask.Delay((int)(duration * 500));
 
-    if (_stateManager.dataGame.activeLevel.star > 0)
+    if (_stateManager.dataGame.activeLevelWord.star > 0)
     {
       _indexStarObject.transform.DOPunchScale(new Vector3(1, 1, 0), duration, 5, 1);
+      _levelManager.colba.HideCounter();
+      _levelManager.colba.ResetProgressBar();
 
-      _indexCountStar.text = _stateManager.dataGame.activeLevel.star.ToString();
+      _indexCountStar.text = _stateManager.dataGame.activeLevelWord.star.ToString();
 
       AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
 
-      await UniTask.Delay((int)(duration * 1000));
+      await UniTask.Delay((int)(duration * 500));
 
-      int valueTotalStarCoin = _stateManager.dataGame.activeLevel.star * _stateManager.dataGame.activeLevel.star;
+      int valueTotalStarCoin = _stateManager.dataGame.activeLevelWord.star * _stateManager.dataGame.activeLevelWord.star;
 
       _textStarTotalCoin.text = valueTotalStarCoin.ToString();
 
@@ -127,7 +129,7 @@ public class StatLevel : MonoBehaviour
     _wrapHint.SetActive(true);
 
     _wrapHint.transform
-      .DOMove(new Vector3(0, -3, 0), duration)
+      .DOMove(new Vector3(0, -3, 0), duration / 2)
       .From()
       .OnComplete(async () => await AnimateHitStat());
   }
@@ -138,25 +140,27 @@ public class StatLevel : MonoBehaviour
     var positionTo = _spriteHint.transform.position;
     Vector3[] waypoints = {
           _initPositionHint,
-          _initPositionHint + new Vector3(1, 1),
-          positionTo - new Vector3(1.5f, 1.5f),
+          // _initPositionHint + new Vector3(1, 1),
+          // positionTo - new Vector3(1.5f, 1.5f),
           positionTo,
         };
-    _levelManager.hint.gameObject.transform.DOPath(waypoints, duration, PathType.Linear);
+    _levelManager.hint.gameObject.transform.DOPath(waypoints, duration / 2, PathType.Linear);
 
-    await UniTask.Delay((int)(duration * 1000));
+    await UniTask.Delay((int)(duration * 500));
 
-    if (_stateManager.dataGame.activeLevel.hint > 0)
+    if (_stateManager.dataGame.activeLevelWord.hint > 0)
     {
       _indexHintObject.transform.DOPunchScale(new Vector3(1, 1, 0), duration, 5, 1);
+      _levelManager.hint.HideCounter();
+      _levelManager.hint.ResetProgressBar();
 
-      _indexCountHint.text = _stateManager.dataGame.activeLevel.hint.ToString();
+      _indexCountHint.text = _stateManager.dataGame.activeLevelWord.hint.ToString();
 
       AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
 
-      await UniTask.Delay((int)(duration * 1000));
+      await UniTask.Delay((int)(duration * 500));
 
-      int valueTotalHintCoin = _stateManager.dataGame.activeLevel.hint * _stateManager.dataGame.activeLevel.hint;
+      int valueTotalHintCoin = _stateManager.dataGame.activeLevelWord.hint * _stateManager.dataGame.activeLevelWord.hint;
 
       _textHintTotalCoin.text = valueTotalHintCoin.ToString();
 
@@ -168,50 +172,46 @@ public class StatLevel : MonoBehaviour
 
   private async UniTask AnimateTotal()
   {
-    await UniTask.Delay((int)(duration * 1000));
+    await UniTask.Delay((int)(duration * 500));
     _totalObject.SetActive(true);
     _textTotalCoin.text = (int.Parse(_textHintTotalCoin.text) + int.Parse(_textStarTotalCoin.text)).ToString();
 
-    await UniTask.Delay((int)(duration * 1000));
+    await UniTask.Delay((int)(duration * 500));
 
     _buttonNext.gameObject.SetActive(true);
     _buttonDouble.gameObject.SetActive(true);
   }
 
-  private async UniTask GoCoins()
+  private void GoCoins()
   {
     var countNotUseHint = int.Parse(_textTotalCoin.text);
 
-    for (int i = 0; i < countNotUseHint; i++)
-    {
-      var newObj = GameObject.Instantiate(
-        _gameSetting.PrefabCoin,
-        _levelManager.statLevel.spriteCoin.transform.position,
-        Quaternion.identity
-      );
-      var newEntity = newObj.GetComponent<BaseEntity>();
-      newEntity.InitStandalone();
-      newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
-      var positionFrom = _levelManager.statLevel.spriteCoin.transform.position;// transform.position;
-      var positionTo = _levelManager.topSide.spriteCoinPosition;
-      Vector3[] waypoints = {
+    var newObj = GameObject.Instantiate(
+      _gameSetting.PrefabCoin,
+      _levelManager.statLevel.spriteCoin.transform.position,
+      Quaternion.identity
+    );
+    var newEntity = newObj.GetComponent<BaseEntity>();
+    newEntity.InitStandalone();
+    newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
+    var positionFrom = _levelManager.statLevel.spriteCoin.transform.position;// transform.position;
+    var positionTo = _levelManager.topSide.spriteCoinPosition;
+    Vector3[] waypoints = {
           positionFrom,
           positionFrom + new Vector3(-1.5f, 1.5f),
           positionTo - new Vector3(1.5f, 1.5f),
           positionTo,
         };
 
-      newObj.gameObject.transform
-        .DOPath(waypoints, 1f, PathType.Linear)
-        .SetEase(Ease.OutCubic)
-        .OnComplete(() => newEntity.CompleteEffect());
-      await UniTask.Delay(150);
-    }
+    newObj.gameObject.transform
+      .DOPath(waypoints, 1f, PathType.Linear)
+      .SetEase(Ease.OutCubic)
+      .OnComplete(() => newEntity.AddCoins(countNotUseHint));
   }
 
   public async void Next()
   {
-    await GoCoins();
+    GoCoins();
 
     transform.DOMove(defaultPositionWrapper, 1f).SetEase(Ease.Linear);
     _levelManager.hint.gameObject.transform.DOMove(_initPositionHint, duration).SetEase(Ease.Linear);

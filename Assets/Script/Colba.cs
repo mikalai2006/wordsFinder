@@ -22,6 +22,7 @@ public class Colba : MonoBehaviour, IPointerDownHandler
   private StateManager _stateManager => GameManager.Instance.StateManager;
   private GameManager _gameManager => GameManager.Instance;
   private float progressBasePositionY = -1.4f;
+  private bool _statusShowCounter = false;
 
   private void Awake()
   {
@@ -131,26 +132,26 @@ public class Colba : MonoBehaviour, IPointerDownHandler
     // }
 
     int oldValue = int.Parse(_countStarText.text);
-    if (data.activeLevel.star > 0)
+    if (data.activeLevelWord.star > 0)
     {
-      if (oldValue == 0)
+      if (!_statusShowCounter)
       {
         Show();
       }
-      else if (data.activeLevel.star != oldValue)
+      else if (data.activeLevelWord.star != oldValue)
       {
         HelpersAnimation.Pulse(_countStarObject, new Vector3(.5f, .5f, 0), 1f);
       }
     }
-    else if (oldValue != 0)
+    else if (_statusShowCounter)
     {
-      Hide();
+      HideCounter();
     }
 
-    _countStarText.text = data.activeLevel.star.ToString();
+    _countStarText.text = data.activeLevelWord.star.ToString();
     _countChars.text = string.Format(
       "{0}--{1}",
-      data.activeLevel.countOpenChars,
+      data.activeLevelWord.countOpenChars,
       statePerk.countCharForAddStar
     );
 
@@ -169,13 +170,15 @@ public class Colba : MonoBehaviour, IPointerDownHandler
       .DOPunchScale(new Vector3(0.5f, 0.5f, 1), _gameSetting.timeGeneralAnimation)
       .SetDelay(_gameSetting.timeGeneralAnimation)
       .SetEase(Ease.OutBack);
+    _statusShowCounter = true;
   }
 
-  public void Hide()
+  public void HideCounter()
   {
     _countStarObject.transform
-      .DOScale(new Vector3(0, 0, 1), _gameSetting.timeGeneralAnimation)
+      .DOScale(new Vector3(0, 0, 0), _gameSetting.timeGeneralAnimation)
       .SetEase(Ease.OutBack);
+    _statusShowCounter = false;
     //gameObject.SetActive(false);
   }
 
@@ -186,10 +189,17 @@ public class Colba : MonoBehaviour, IPointerDownHandler
       = new Vector3(_spriteProgress.transform.localPosition.x, newPosition);
   }
 
+  public void ResetProgressBar()
+  {
+    var pos = new Vector3(_spriteProgress.transform.localPosition.x, progressBasePositionY);
+    _spriteProgress.transform
+      .DOMove(pos, _gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutBack);
+  }
 
   public void OnPointerDown(PointerEventData eventData)
   {
-    if (_stateManager.dataGame.activeLevel.star == 0)
+    if (_stateManager.dataGame.activeLevelWord.star == 0)
     {
       // TODO Show dialog with info get hint by adsense.
       return;

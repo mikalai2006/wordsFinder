@@ -97,13 +97,13 @@ public class UIStartMenu : UILocaleBase
     operations.Enqueue(new GameInitOperation());
     await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
 
-    var activeLastLevel = _gameSettings.GameLevels
-      .Find(t => t.idLevel == _gameManager.DataManager.DataGame.lastLevel);
-    var activeLastLevelWord = activeLastLevel
-      .words
-      .Find(t => t.idLevelWord == _gameManager.DataManager.DataGame.lastWord);
+    var activeLastWord = _gameSettings.GameLevels.levelWords
+      .Find(t => t.idLevelWord == _gameManager.DataManager.DataGame.lastLevelWord);
+    // var activeLastLevelWord = activeLastWord
+    //   .words
+    //   .Find(t => t == _gameManager.DataManager.DataGame.lastWord);
 
-    _gameManager.LevelManager.InitLevel(activeLastLevel, activeLastLevelWord);
+    _gameManager.LevelManager.InitLevel(activeLastWord);
 
     // var dialogWindow = new UILevelsOperation();
     // var result = await dialogWindow.ShowAndHide();
@@ -116,10 +116,9 @@ public class UIStartMenu : UILocaleBase
     operations.Enqueue(new GameInitOperation());
     await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
 
-    var activeLastLevel = _gameSettings.GameLevels.ElementAt(0);
-    var activeLastLevelWord = activeLastLevel.words.ElementAt(0); ;
+    var activeLastLevelWord = _gameSettings.GameLevels.levelWords.ElementAt(0);
 
-    _gameManager.LevelManager.InitLevel(activeLastLevel, activeLastLevelWord);
+    _gameManager.LevelManager.InitLevel(activeLastLevelWord);
   }
 
   private void ClickExitButton()

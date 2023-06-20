@@ -29,7 +29,7 @@ public class LevelManager : Singleton<LevelManager>
     _symbols = new();
   }
 
-  public void InitLevel(GameLevel levelConfig, GameLevelWord wordConfig)
+  public void InitLevel(GameLevelWord wordConfig)
   {
     ResetLevel();
 
@@ -40,14 +40,14 @@ public class LevelManager : Singleton<LevelManager>
     stopWatch.Start();
 #endif
 
-    GameManager.Instance.StateManager.SetActiveLevel(levelConfig, wordConfig);
+    GameManager.Instance.StateManager.SetActiveLevel(wordConfig);
 
     ManagerHiddenWords.Init(); // levelConfig, wordConfig
 
     // Check complete level.
     if (_stateManager.dataGame.levels.Count > 0)
     {
-      var currentLevel = _stateManager.dataGame.levels.Find(t => t.id == levelConfig.idLevel && t.idWord == wordConfig.idLevelWord);
+      var currentLevel = _stateManager.dataGame.levels.Find(t => t.id == wordConfig.idLevelWord);
       bool isEndLevel = currentLevel.openWords.Count == currentLevel.countWords && currentLevel.openWords.Count > 0;
       if (isEndLevel)
       {
