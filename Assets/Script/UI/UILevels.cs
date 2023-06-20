@@ -57,7 +57,12 @@ public class UILevels : UILocaleBase
   private async void FillLevels()
   {
     var dataGame = _gameManager.DataManager.DataGame;
-    foreach (var level in _gameSettings.GameLevels)
+    int minLevel = _gameSettings.GameLevels.FindIndex(t => t.idLevel == dataGame.lastLevel);
+    var allowLevels = minLevel != -1
+      ? _gameSettings.GameLevels.GetRange(minLevel, _gameSettings.GameLevels.Count - minLevel)
+      : _gameSettings.GameLevels;
+
+    foreach (var level in allowLevels)
     {
       var section = LevelSection.Instantiate();
       section.Q<Label>("Name").text = level.title;
@@ -68,7 +73,7 @@ public class UILevels : UILocaleBase
       {
         var currentWord = level.words[i];
         var levelData = dataGame != null
-          ? dataGame.levels.Find(t => t.id == level.id && t.idWord == currentWord.id)
+          ? dataGame.levels.Find(t => t.id == level.idLevel && t.idWord == currentWord.idLevelWord)
           : null;
         var userRate = dataGame != null
           ? dataGame.rate

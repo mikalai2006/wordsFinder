@@ -48,6 +48,7 @@ public class StateManager : MonoBehaviour
       dataGame.activeLevel.ent.Add(item.Key, item.Value);
     }
     dataGame.activeLevel.openWords = _levelManager.ManagerHiddenWords.OpenWords.Keys.ToList();
+    // dataGame.activeLevel.countOpenWords = _levelManager.ManagerHiddenWords.OpenWords.Count;
     // dataGame.activeLevel.openHiddenWords = _levelManager.ManagerHiddenWords.OpenHiddenWords.Keys.ToList();
     dataGame.activeLevel.countWords = _levelManager.ManagerHiddenWords.AllowWords.Count;
     dataGame.activeLevel.hiddenWords = dataGame.activeLevel.openWords.Count == dataGame.activeLevel.countWords
@@ -186,30 +187,59 @@ public class StateManager : MonoBehaviour
 
   public void SetActiveLevel(GameLevel levelConfig, GameLevelWord wordConfig)
   {
+    var allLevels = _gameManager.GameSettings.GameLevels;
+
+    if (dataGame.levels.Count == 0)
+    {
+      if (levelConfig.words.Count == dataGame.completeWords.Count)
+      // Check compete level with all word.
+      {
+        int indexLevel = allLevels.FindIndex(t => t.idLevel == levelConfig.idLevel);
+        if (indexLevel != -1 && indexLevel + 1 <= allLevels.Count)
+        {
+          levelConfig = _gameManager.GameSettings.GameLevels.ElementAt(indexLevel + 1);
+          wordConfig = levelConfig.words.ElementAt(0);
+
+          // Clear all words prev level.
+          dataGame.completeWords.Clear();
+        }
+      }
+      else
+      // Check complete word.
+      {
+        var allowWords = levelConfig.words.Where(t => !dataGame.completeWords.Contains(t.idLevelWord));
+        if (allowWords.Count() > 0)
+        {
+          wordConfig = allowWords.ElementAt(0);
+          // Debug.Log($"Change word [{wordConfig.idLevelWord}-{wordConfig.title}]");
+        }
+      }
+    }
+
     ActiveLevelConfig = levelConfig;
     ActiveWordConfig = wordConfig;
-    dataGame.lastActiveLevelId = levelConfig.id;
-    dataGame.lastActiveWordId = wordConfig.id;
+    dataGame.lastLevel = levelConfig.idLevel;
+    dataGame.lastWord = wordConfig.idLevelWord;
 
-    if (dataGame.levels.Find(t => t.id == levelConfig.id && t.idWord == wordConfig.id) == null)
+    if (dataGame.levels.Find(t => t.id == levelConfig.idLevel && t.idWord == wordConfig.idLevelWord) == null)
     {
       dataGame.levels.Add(new DataLevel()
       {
-        id = levelConfig.id,
-        idWord = wordConfig.id,
+        id = levelConfig.idLevel,
+        idWord = wordConfig.idLevelWord,
         hint = levelConfig.countHint,
         star = levelConfig.countStar
       });
 
     }
-    var indexActiveLevel = dataGame.levels.FindIndex(t => t.id == levelConfig.id && t.idWord == wordConfig.id);
+    var indexActiveLevel = dataGame.levels.FindIndex(t => t.id == levelConfig.idLevel && t.idWord == wordConfig.idLevelWord);
     dataGame.activeLevel = dataGame.levels.ElementAt(indexActiveLevel);
     // Debug.Log($"Set active level ={indexActiveLevel}| {dataGame.activeLevel.openChars.Count}");
 
     SetDefaultPerk();
   }
 
-  public void LoadState(DataGame data)
+  public void Init(DataGame data)
   {
     if (data == null)
     {
@@ -218,16 +248,21 @@ public class StateManager : MonoBehaviour
     dataGame = data;
   }
 
+  public void RemoveCompleteLevel()
+  {
+    dataGame.levels.Remove(dataGame.activeLevel);
+    SetActiveLevel(ActiveLevelConfig, ActiveWordConfig);
+  }
+
   public DataGame GetData()
   {
     // check completed level.
     if (dataGame.activeLevel.openWords.Count >= dataGame.activeLevel.countWords)
     {
-      if (!dataGame.sl.Contains(dataGame.activeLevel.id))
+      if (!dataGame.completeWords.Contains(dataGame.activeLevel.idWord))
       {
-        dataGame.sl.Add(dataGame.activeLevel.id);
+        dataGame.completeWords.Add(dataGame.activeLevel.idWord);
       }
-      dataGame.levels.Remove(dataGame.activeLevel);
     }
 
     return dataGame;
@@ -237,14 +272,12 @@ public class StateManager : MonoBehaviour
   {
     dataGame.activeLevel.hint--;
     RefreshData();
-    // _gameManager.DataManager.Save();
   }
 
   public void UseStar()
   {
     dataGame.activeLevel.star--;
     RefreshData();
-    // _gameManager.DataManager.Save();
   }
 }
 
@@ -259,7 +292,5 @@ public struct StatePerk
   public int countCharForAddCoin;
   public int countCharForAddStar;
   public int countErrorForNullBonus;
-
-  // public int needCreateStar;
   public int needCreateCoin;
 }

@@ -1,7 +1,6 @@
-using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -28,7 +27,7 @@ public class Hint : MonoBehaviour, IPointerDownHandler
     _scale = _transform.localScale;
     _position = _transform.position;
 
-    _countHintObject.gameObject.SetActive(false);
+    _countHintText.text = "0";
     _countHintObject.transform.localScale = new Vector3(0, 0, 0);
 
     StateManager.OnChangeState += SetValue;
@@ -45,9 +44,8 @@ public class Hint : MonoBehaviour, IPointerDownHandler
     int oldValue = int.Parse(_countHintText.text);
     if (data.activeLevel.hint > 0)
     {
-      if (!_countHintObject.activeInHierarchy)
+      if (oldValue == 0)
       {
-        _countHintObject.gameObject.SetActive(true);
         Show();
       }
       else if (data.activeLevel.hint != oldValue)
@@ -57,8 +55,7 @@ public class Hint : MonoBehaviour, IPointerDownHandler
     }
     else if (oldValue != 0)
     {
-      // Hide();
-      _countHintObject.gameObject.SetActive(false);
+      Hide();
     }
     _countHintText.text = data.activeLevel.hint.ToString();
 
@@ -69,31 +66,23 @@ public class Hint : MonoBehaviour, IPointerDownHandler
 
   private void Show()
   {
-    iTween.ScaleTo(_countHintObject, iTween.Hash(
-        "scale", new Vector3(1, 1, 1),
-        "time", .5f,
-        "easetype", iTween.EaseType.easeOutBack
-        // "oncomplete", "CompetedShow",
-        // "oncompletetarget", gameObject
-        ));
+    _countHintObject.transform
+      .DOScale(new Vector3(1, 1, 1), _gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutBack)
+      .From(new Vector3(0, 0, 0));
+    _countHintObject.transform
+      .DOPunchScale(new Vector3(0.5f, 0.5f, 1), _gameSetting.timeGeneralAnimation)
+      .SetDelay(_gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutBack);
   }
 
-  // private void Hide()
-  // {
-  //   iTween.ScaleTo(_countHintObject, iTween.Hash(
-  //       "scale", new Vector3(0, 0, 0),
-  //       "time", .1f,
-  //       "easetype", iTween.EaseType.linear,
-  //       "oncomplete", "CompetedHide",
-  //       "oncompletetarget", gameObject
-  //       ));
-
-  // }
-
-  // private void CompetedHide()
-  // {
-  //   _countHintObject.gameObject.SetActive(false);
-  // }
+  public void Hide()
+  {
+    _countHintObject.transform
+      .DOScale(new Vector3(0, 0, 1), _gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutBack);
+    //gameObject.SetActive(false);
+  }
 
   private void SetDefault()
   {
@@ -143,39 +132,5 @@ public class Hint : MonoBehaviour, IPointerDownHandler
     var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)statePerk.countCharForAddHint / _gameSetting.PlayerSetting.bonusCount.charHint;
     _spriteProgress.transform.localPosition
       = new Vector3(_spriteProgress.transform.localPosition.x, newPosition);
-  }
-
-  public async UniTask Destroy()
-  {
-    var countNotUseHint = _stateManager.dataGame.activeLevel.hint;
-
-    for (int i = 0; i < countNotUseHint; i++)
-    {
-      var newObj = GameObject.Instantiate(
-        _gameSetting.PrefabCoin,
-        transform.position,
-        Quaternion.identity
-      );
-      var newEntity = newObj.GetComponent<BaseEntity>();
-      newEntity.InitStandalone();
-      newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
-      var positionFrom = transform.position;
-      var positionTo = _levelManager.topSide.spriteCoinPosition;
-      Vector3[] waypoints = {
-          positionFrom,
-          positionFrom + new Vector3(1, 1),
-          positionTo - new Vector3(1.5f, 2.5f),
-          positionTo,
-        };
-      await UniTask.Delay(150);
-      iTween.MoveTo(newObj, iTween.Hash(
-        "path", waypoints,
-        "time", 2,
-        "easetype", iTween.EaseType.easeOutCubic,
-        "oncomplete", "OnCompleteEffect"
-        ));
-    }
-
-    gameObject.SetActive(false);
   }
 }

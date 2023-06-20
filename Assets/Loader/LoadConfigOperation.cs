@@ -15,8 +15,8 @@ namespace Loader
 
 
       GameManager.Instance.DataManager.Init();
-      var dataGame = GameManager.Instance.DataManager.Load();
-      GameManager.Instance.StateManager.LoadState(dataGame);
+      var dataGame = await GameManager.Instance.DataManager.Load();
+      GameManager.Instance.StateManager.Init(dataGame);
 
       onProgress?.Invoke(.9f);
     }

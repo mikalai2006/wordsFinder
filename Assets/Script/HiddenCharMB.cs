@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -225,12 +226,10 @@ public class HiddenCharMB : MonoBehaviour
           positionTo - new Vector3(1.5f, 2.5f),
           positionTo,
         };
-    iTween.MoveTo(newObj, iTween.Hash(
-      "path", waypoints,
-      "time", 2,
-      "easetype", iTween.EaseType.easeOutCubic,
-      "oncomplete", "OnCompleteEffect"
-      ));
+    newObj.transform
+      .DOPath(waypoints, 2f, PathType.Linear)
+      .SetEase(Ease.OutCubic)
+      .OnComplete(() => newEntity.CompleteEffect());
   }
 
 #if UNITY_EDITOR

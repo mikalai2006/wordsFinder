@@ -129,6 +129,28 @@ public static class Helpers
     await t.Task;
     return t.Result;
   }
+
+  // public static Dictionary<string, List<string>> GetDictionaryCompleteLevel(List<string> list)
+  // {
+  //   Dictionary<string, List<string>> result = new();
+
+  //   foreach (var item in list)
+  //   {
+  //     var splitString = item.Split(":");
+  //     if (!result.ContainsKey(splitString[0]))
+  //     {
+  //       result[splitString[0]] = new List<string>() {
+  //         splitString[1]
+  //       };
+  //     }
+  //     else
+  //     {
+  //       result[splitString[0]].Add(splitString[1]);
+  //     }
+  //   }
+
+  //   return result;
+  // }
 }
 
 // [System.Serializable]

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
   m_Name: 5_Word_nabor
   m_EditorClassIdentifier: 
-  id: level.word.nabor
+  idLevelWord: 1
   title: "\u043D\u0430\u0431\u043E\u0440"
   word: "\u043D\u0430\u0431\u043E\u0440"
   maxCountHiddenChar: 50

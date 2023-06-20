@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
   m_Name: Level_1
   m_EditorClassIdentifier: 
-  id: level.1
-  title: "\u041F\u0440\u043E\u043B\u043E\u0433"
+  idLevel: 1
+  title: "\u041F\u0440\u043E\u043B\u043E\u0433 1"
   minRate: 0
   countHint: 3
   countStar: 3
@@ -21,5 +21,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d0c5141d061d31f42acde3a5e7d18b17, type: 2}
   - {fileID: 11400000, guid: d2d6dc8549a99b0448578750c2b25b29, type: 2}
   - {fileID: 11400000, guid: aa363dbc972d7c646a46098b89cc90d6, type: 2}
-  - {fileID: 11400000, guid: 59f240a0537ab4543836945fcd0fdbe5, type: 2}
-  - {fileID: 11400000, guid: 86518c7825ac60e4ebaa9c48f87f7ca8, type: 2}

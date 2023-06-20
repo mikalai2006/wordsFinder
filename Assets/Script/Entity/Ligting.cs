@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -92,7 +93,9 @@ public class Ligting : BaseEntity
   public override void SetPosition(Vector3 pos)
   {
     pos = pos + new Vector3(_spriteRenderer.bounds.size.x / 2, _spriteRenderer.bounds.size.y / 2);
-    iTween.MoveFrom(gameObject, iTween.Hash("position", pos, "islocal", true, "time", 1, "easetype", iTween.EaseType.easeOutBounce));
+    gameObject.transform
+      .DOMove(pos, 1f)
+      .SetEase(Ease.OutCubic);
 
     //SetDefault();
   }

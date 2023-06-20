@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -42,30 +43,23 @@ public class Coin : BaseEntity
       positionTo - new Vector3(1.5f, 1.5f),
       positionTo - new Vector3(0.5f, 0),
     };
-    iTween.MoveTo(gameObject, iTween.Hash(
-      // "position", positionCoin,
-      "path", waypoints,
-      // "islocal", true,
-      "time", 3,
-      "easetype", iTween.EaseType.easeOutCubic,
-      "oncomplete", "OnCompleteEffect"
-      ));
+    gameObject.transform
+      .DOPath(waypoints, 1f, PathType.Linear)
+      .SetEase(Ease.OutCubic)
+      .OnComplete(() => CompleteEffect());
   }
 
   public override void SetPosition(Vector3 pos)
   {
     pos = pos + new Vector3(_spriteRenderer.bounds.size.x / 2, _spriteRenderer.bounds.size.y / 2);
-    iTween.MoveFrom(gameObject, iTween.Hash(
-      "position", pos,
-      "islocal", true,
-      "time", 1,
-      "easetype", iTween.EaseType.easeOutCubic
-    ));
+    gameObject.transform
+      .DOMove(pos, 1f)
+      .SetEase(Ease.OutCubic);
 
     //SetDefault();
   }
 
-  private void OnCompleteEffect()
+  public override void CompleteEffect()
   {
     _stateManager.IncrementCoin(1);
     _levelManager.topSide.AddCoin().Forget();

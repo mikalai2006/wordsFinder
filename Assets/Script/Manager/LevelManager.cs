@@ -10,15 +10,19 @@ public class LevelManager : Singleton<LevelManager>
   public static event Action OnInitLevel;
   private GameManager _gameManager => GameManager.Instance;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
+  private StateManager _stateManager => GameManager.Instance.StateManager;
   [Header("File Storage Config")]
   public ManagerHiddenWords ManagerHiddenWords;
   private List<CharMB> _symbols;
   public List<CharMB> Symbols => _symbols;
   public GameObject SymbolsField;
   public TopSide topSide;
+  public StatLevel statLevel;
   public Colba colba;
   public Hint hint;
   public Shuffle shuffle;
+  public Stat stat;
+
   protected override void Awake()
   {
     base.Awake();
@@ -38,9 +42,20 @@ public class LevelManager : Singleton<LevelManager>
 
     GameManager.Instance.StateManager.SetActiveLevel(levelConfig, wordConfig);
 
-    ManagerHiddenWords.Init(levelConfig, wordConfig);
+    ManagerHiddenWords.Init(); // levelConfig, wordConfig
 
-    GameManager.Instance.StateManager.RefreshData();
+    // Check complete level.
+    if (_stateManager.dataGame.levels.Count > 0)
+    {
+      var currentLevel = _stateManager.dataGame.levels.Find(t => t.id == levelConfig.idLevel && t.idWord == wordConfig.idLevelWord);
+      bool isEndLevel = currentLevel.openWords.Count == currentLevel.countWords && currentLevel.openWords.Count > 0;
+      if (isEndLevel)
+      {
+        ManagerHiddenWords.NextLevel().Forget();
+        // GameManager.Instance.StateManager.RefreshData();
+        return;
+      }
+    }
 
     CreateChars(ManagerHiddenWords.WordForChars);
 

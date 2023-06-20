@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -28,8 +29,7 @@ public class Colba : MonoBehaviour, IPointerDownHandler
     _initPosition = spritesObject.transform.position;
     _sprite.sprite = _gameSetting.spriteStar;
 
-
-    _countStarObject.gameObject.SetActive(false);
+    _countStarText.text = "0";
     _countStarObject.transform.localScale = new Vector3(0, 0, 0);
 
     StateManager.OnChangeState += SetValue;
@@ -133,9 +133,8 @@ public class Colba : MonoBehaviour, IPointerDownHandler
     int oldValue = int.Parse(_countStarText.text);
     if (data.activeLevel.star > 0)
     {
-      if (!_countStarObject.activeInHierarchy)
+      if (oldValue == 0)
       {
-        _countStarObject.gameObject.SetActive(true);
         Show();
       }
       else if (data.activeLevel.star != oldValue)
@@ -145,9 +144,9 @@ public class Colba : MonoBehaviour, IPointerDownHandler
     }
     else if (oldValue != 0)
     {
-      // Hide();
-      _countStarObject.gameObject.SetActive(false);
+      Hide();
     }
+
     _countStarText.text = data.activeLevel.star.ToString();
     _countChars.text = string.Format(
       "{0}--{1}",
@@ -162,31 +161,23 @@ public class Colba : MonoBehaviour, IPointerDownHandler
 
   private void Show()
   {
-    iTween.ScaleTo(_countStarObject, iTween.Hash(
-        "scale", new Vector3(1, 1, 1),
-        "time", 1,
-        "easetype", iTween.EaseType.easeOutBack
-        // "oncomplete", "CompetedShow",
-        // "oncompletetarget", gameObject
-        ));
+    _countStarObject.transform
+      .DOScale(new Vector3(1, 1, 1), _gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutBack)
+      .From(new Vector3(0, 0, 0));
+    _countStarObject.transform
+      .DOPunchScale(new Vector3(0.5f, 0.5f, 1), _gameSetting.timeGeneralAnimation)
+      .SetDelay(_gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutBack);
   }
 
-  // private void Hide()
-  // {
-  //   iTween.ScaleTo(_countStarObject, iTween.Hash(
-  //       "scale", new Vector3(0, 0, 0),
-  //       "time", 1,
-  //       "easetype", iTween.EaseType.easeOutQuad,
-  //       "oncomplete", "CompetedHide",
-  //       "oncompletetarget", gameObject
-  //       ));
-  // }
-
-  // private void CompetedHide()
-  // {
-  //   _countStarObject.gameObject.SetActive(false);
-  // }
-
+  public void Hide()
+  {
+    _countStarObject.transform
+      .DOScale(new Vector3(0, 0, 1), _gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutBack);
+    //gameObject.SetActive(false);
+  }
 
   private void SetValueProgressBar(DataGame data, StatePerk statePerk)
   {
@@ -224,39 +215,5 @@ public class Colba : MonoBehaviour, IPointerDownHandler
   {
     spritesObject.transform.localScale = _initScale;
     spritesObject.transform.position = _initPosition;
-  }
-
-  public async UniTask Destroy()
-  {
-    var countNotUseHint = _stateManager.dataGame.activeLevel.star;
-
-    for (int i = 0; i < countNotUseHint; i++)
-    {
-      var newObj = GameObject.Instantiate(
-        _gameSetting.PrefabCoin,
-        transform.position,
-        Quaternion.identity
-      );
-      var newEntity = newObj.GetComponent<BaseEntity>();
-      newEntity.InitStandalone();
-      newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
-      var positionFrom = transform.position;
-      var positionTo = _levelManager.topSide.spriteCoinPosition;
-      Vector3[] waypoints = {
-          positionFrom,
-          positionFrom + new Vector3(1, 1),
-          positionTo - new Vector3(1.5f, 2.5f),
-          positionTo,
-        };
-      await UniTask.Delay(150);
-      iTween.MoveTo(newObj, iTween.Hash(
-        "path", waypoints,
-        "time", 2,
-        "easetype", iTween.EaseType.easeOutCubic,
-        "oncomplete", "OnCompleteEffect"
-        ));
-    }
-
-    gameObject.SetActive(false);
   }
 }

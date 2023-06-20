@@ -1,6 +1,5 @@
-using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
+using System.Linq;
 using Loader;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -12,7 +11,6 @@ public class UIStartMenu : UILocaleBase
   private Button _exitButton;
   private Button _newGameButton;
   private Button _loadGameMenuButton;
-  private GameSetting GameSetting;
   [SerializeField] private AudioManager _audioManager => GameManager.Instance.audioManager;
 
   private void Awake()
@@ -44,8 +42,6 @@ public class UIStartMenu : UILocaleBase
   {
     _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
 
-    GameSetting = GameManager.Instance.GameSettings;
-
     _exitButton = _menu.Q<Button>("ExitBtn");
     _exitButton.clickable.clicked += () =>
     {
@@ -64,16 +60,24 @@ public class UIStartMenu : UILocaleBase
       ClickLoadGameButton();
     };
 
+    DrawMenu();
+
     base.Localize(_uiDoc.rootVisualElement);
   }
 
-  private async void ClickLoadGameButton()
+  private void DrawMenu()
   {
-    // HideMenu();
-    // GameManager.Instance.ChangeState(GameState.LoadLevel);
-
-    var dialogWindow = new UILevelsOperation();
-    var result = await dialogWindow.ShowAndHide();
+    _newGameButton.style.display = DisplayStyle.None;
+    _loadGameMenuButton.style.display = DisplayStyle.None;
+    if (_gameManager.StateManager.dataGame.completeWords.Count == 0 && _gameManager.StateManager.dataGame.levels.Count == 0)
+    {
+      _newGameButton.style.display = DisplayStyle.Flex;
+    }
+    else
+    // if (_gameManager.StateManager.dataGame.levels.Count != 0 || _gameManager.StateManager.dataGame.sl.Count != 0)
+    {
+      _loadGameMenuButton.style.display = DisplayStyle.Flex;
+    }
   }
 
   private void HideMenu()
@@ -82,22 +86,38 @@ public class UIStartMenu : UILocaleBase
   }
   private void ShowMenu()
   {
+    DrawMenu();
     _menu.style.display = DisplayStyle.Flex;
   }
 
-  private async void ClickNewGameButton()
+  private async void ClickLoadGameButton()
   {
-    _menu.style.display = DisplayStyle.None;
-    // GameManager.Instance.ChangeState(GameState.CreateGame);
+    HideMenu();
     var operations = new Queue<ILoadingOperation>();
     operations.Enqueue(new GameInitOperation());
     await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
 
     var activeLastLevel = _gameSettings.GameLevels
-      .Find(t => t.id == _gameManager.DataManager.DataGame.lastActiveLevelId);
+      .Find(t => t.idLevel == _gameManager.DataManager.DataGame.lastLevel);
     var activeLastLevelWord = activeLastLevel
       .words
-      .Find(t => t.id == _gameManager.DataManager.DataGame.lastActiveWordId);
+      .Find(t => t.idLevelWord == _gameManager.DataManager.DataGame.lastWord);
+
+    _gameManager.LevelManager.InitLevel(activeLastLevel, activeLastLevelWord);
+
+    // var dialogWindow = new UILevelsOperation();
+    // var result = await dialogWindow.ShowAndHide();
+  }
+
+  private async void ClickNewGameButton()
+  {
+    HideMenu();
+    var operations = new Queue<ILoadingOperation>();
+    operations.Enqueue(new GameInitOperation());
+    await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
+
+    var activeLastLevel = _gameSettings.GameLevels.ElementAt(0);
+    var activeLastLevelWord = activeLastLevel.words.ElementAt(0); ;
 
     _gameManager.LevelManager.InitLevel(activeLastLevel, activeLastLevelWord);
   }

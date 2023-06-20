@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
   m_Name: 3_Word_spros_8
   m_EditorClassIdentifier: 
-  id: level.word.spros
+  idLevelWord: 1
   title: "\u0441\u043F\u0440\u043E\u0441"
   word: "\u0441\u043F\u0440\u043E\u0441"
   maxCountHiddenChar: 15

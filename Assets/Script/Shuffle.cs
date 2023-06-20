@@ -75,9 +75,12 @@ public class Shuffle : MonoBehaviour, IPointerDownHandler
     _stateManager.RefreshData();
   }
 
-  public async UniTask Destroy()
+  public void Hide()
   {
     gameObject.SetActive(false);
-    await UniTask.Yield();
+  }
+  public void Show()
+  {
+    gameObject.SetActive(true);
   }
 }

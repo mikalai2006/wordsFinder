@@ -221,6 +221,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0, z: 0}
   _spriteRenderer: {fileID: 6879312156056755900}
   _spriteBg: {fileID: 1010569637082084670}
+  order: {fileID: 907700873290559729}
 --- !u!61 &-6505895426175235599
 BoxCollider2D:
   m_ObjectHideFlags: 0

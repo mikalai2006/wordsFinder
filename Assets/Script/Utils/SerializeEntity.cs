@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -39,4 +38,3 @@ public class SerializeEntity : Dictionary<Vector2Int, TypeEntity>, ISerializatio
   }
 
 }
-

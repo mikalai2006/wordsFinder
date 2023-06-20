@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
   m_Name: Level_0
   m_EditorClassIdentifier: 
-  id: 0
-  title: "\u041F\u0440\u043E\u043B\u043E\u0433"
+  idLevel: 0
+  title: "\u041F\u0440\u043E\u043B\u043E\u0433 0"
   minRate: 0
   countHint: 3
   countStar: 3

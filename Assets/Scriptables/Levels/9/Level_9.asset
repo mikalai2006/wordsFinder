@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
   m_Name: Level_9
   m_EditorClassIdentifier: 
-  id: level.9
+  idLevel: 9
   title: "\u0423\u0440\u043E\u0432\u0435\u043D\u044C 9"
   minRate: 100
+  countHint: 0
+  countStar: 0
   words:
   - {fileID: 11400000, guid: 7c671e6cd1774374a971577bedfb310e, type: 2}

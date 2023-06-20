@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
   m_Name: 20_Word_pravdoiskatelnitsa
   m_EditorClassIdentifier: 
-  id: level.word.pravdoiskatelnitsa
+  idLevelWord: 1
   title: "\u043F\u0440\u0430\u0432\u0434\u043E\u0438\u0441\u043A\u0430\u0442\u0435\u043B\u044C\u043D\u0438\u0446\u0430"
   word: "\u043F\u0440\u0430\u0432\u0434\u043E\u0438\u0441\u043A\u0430\u0442\u0435\u043B\u044C\u043D\u0438\u0446\u0430"
   maxCountHiddenChar: 300

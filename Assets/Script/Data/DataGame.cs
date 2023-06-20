@@ -7,15 +7,15 @@ public class DataGame
   public int rate;
   public int coins;
   public List<DataLevel> levels;
-  public List<string> sl;
+  public List<string> completeWords;
   [System.NonSerialized] public DataLevel activeLevel;
-  public string lastActiveLevelId;
-  public string lastActiveWordId;
+  public string lastLevel;
+  public string lastWord;
 
   public DataGame()
   {
     levels = new();
-    sl = new();
+    completeWords = new();
   }
 }
 
@@ -34,6 +34,7 @@ public class DataLevel
   public List<string> hiddenWords;
   public string wordForChars;
   public int countWords;
+  // public int countOpenWords;
   public int countOpenChars;
 
   public DataLevel()

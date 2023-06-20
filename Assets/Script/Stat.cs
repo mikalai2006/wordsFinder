@@ -37,10 +37,13 @@ public class Stat : MonoBehaviour
     _countWords.text = textCountWords;
   }
 
-  public async UniTask Destroy()
+  public void Hide()
   {
     gameObject.SetActive(false);
+  }
 
-    await UniTask.Yield();
+  public void Show()
+  {
+    gameObject.SetActive(true);
   }
 }

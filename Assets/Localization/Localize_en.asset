@@ -40,11 +40,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70858921115648
-    m_Localized: Choose level
+    m_Localized: Start game
     m_Metadata:
       m_Items: []
   - m_Id: 70874469400576
-    m_Localized: Load game
+    m_Localized: Continue game
     m_Metadata:
       m_Items: []
   - m_Id: 74181401280512
@@ -95,6 +95,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1596861162094592
     m_Localized: Words Finder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2874372776951808
+    m_Localized: Achievements
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2878022177947648
+    m_Localized: Increase advertising bonus
     m_Metadata:
       m_Items: []
   references:

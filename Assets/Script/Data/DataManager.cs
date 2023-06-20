@@ -24,9 +24,9 @@ public class DataManager : Singleton<DataManager>
     _fileDataHandler = new FileDataHandler(Application.persistentDataPath, _gameManager.AppInfo.UserInfo.DeviceId, useEncryption);
   }
 
-  public DataGame Load()
+  public async UniTask<DataGame> Load()
   {
-    _dataGame = _fileDataHandler.LoadData();
+    _dataGame = await _fileDataHandler.LoadData();
     // OnLoadData?.Invoke(_dataGame);
     return _dataGame;
   }

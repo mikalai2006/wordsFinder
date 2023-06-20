@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class FileDataHandler
@@ -18,7 +18,7 @@ public class FileDataHandler
     this._nameFile = _fileName;
   }
 
-  public DataGame LoadData()
+  public async UniTask<DataGame> LoadData()
   {
     string fullPath = Path.Combine(_dataDirPath, _nameFile);
 
@@ -34,7 +34,7 @@ public class FileDataHandler
         {
           using (StreamReader reader = new StreamReader(stream))
           {
-            dataToLoad = reader.ReadToEnd();
+            dataToLoad = await reader.ReadToEndAsync();
           }
         }
 
@@ -53,7 +53,6 @@ public class FileDataHandler
     }
 
     return loadedData;
-
   }
 
   public void SaveData(DataGame data)

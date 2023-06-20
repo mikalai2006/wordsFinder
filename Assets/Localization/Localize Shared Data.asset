@@ -36,7 +36,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70858921115648
-    m_Key: chooselevel
+    m_Key: newgame
     m_Metadata:
       m_Items: []
   - m_Id: 70874469400576
@@ -89,6 +89,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1596861162094592
     m_Key: appname
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2874372776951808
+    m_Key: achievements
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2878022177947648
+    m_Key: double
     m_Metadata:
       m_Items: []
   m_Metadata:

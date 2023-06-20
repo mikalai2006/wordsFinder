@@ -4,6 +4,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class BaseEntity : MonoBehaviour, IPointerDownHandler
@@ -14,6 +15,7 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   [SerializeField] protected Vector3 _position;
   [SerializeField] protected SpriteRenderer _spriteRenderer;
   [SerializeField] protected SpriteRenderer _spriteBg;
+  [SerializeField] private SortingGroup order;
   // [SerializeField] private TMPro.TextMeshProUGUI _countHintText;
   // [SerializeField] private Image _countHintImage;
   // [SerializeField] private GameObject _countHintObject;
@@ -46,11 +48,19 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   public virtual void InitStandalone()
   {
     _scale = _transform.localScale;
+    order.sortingOrder = 20;
   }
 
   public virtual void SetColor(Color color)
   {
   }
+
+  #region Effects
+  public virtual void CompleteEffect()
+  {
+
+  }
+  #endregion
 
   // public virtual void SetValue(DataGame data, StatePerk statePerk)
   // {

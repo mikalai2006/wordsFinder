@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
   m_Name: 0_Word_tank_8
   m_EditorClassIdentifier: 
-  id: tank
+  idLevelWord: 1
   title: "\u0422\u0430\u043D\u043A"
   word: "\u0442\u0430\u043D\u043A"
-  maxCountHiddenChar: 30
+  maxCountHiddenChar: 5
   hiddenWords:
   - "\u0430\u043A\u0440"
   - "\u0430\u0440"

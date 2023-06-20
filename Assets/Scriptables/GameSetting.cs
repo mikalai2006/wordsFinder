@@ -6,7 +6,6 @@ public class GameSetting : ScriptableObject
 {
   public GameAudio Audio;
   public CharMB PrefabSymbol;
-  public StatLevel PrefabStatLevel;
   public List<GameLevel> GameLevels;
 
   public GameTheme Theme;
@@ -19,8 +18,8 @@ public class GameSetting : ScriptableObject
   [Range(0.5f, 3f)] public float radius;
 
   [Space(5)]
-  [Header("Events")]
-  [Range(10, 1000)] public int timeDelayOverChar;
+  [Header("Animations")]
+  [Range(0.1f, 2f)] public float timeGeneralAnimation;
 
   [Space(5)]
   [Header("Particle System")]
@@ -49,4 +48,5 @@ public class GameSetting : ScriptableObject
   [Space(5)]
   [Header("System")]
   public int debounceTime;
+  [Range(10, 1000)] public int timeDelayOverChar;
 }

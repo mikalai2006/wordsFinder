@@ -13,4 +13,5 @@ public class GameAudio : ScriptableObject
   public AudioClip bgMusic;
   public AudioClip addToColba;
   public AudioClip addCoin;
+  public AudioClip calculateCoin;
 }

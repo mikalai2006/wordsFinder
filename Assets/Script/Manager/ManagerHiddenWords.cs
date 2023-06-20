@@ -14,6 +14,7 @@ public class ManagerHiddenWords : MonoBehaviour
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   private StateManager _stateManager => GameManager.Instance.StateManager;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
+  protected GameManager _gameManager => GameManager.Instance;
   [SerializeField] private LineManager _lineManager;
 
   [SerializeField] private ChoosedWordMB _choosedWordMB;
@@ -54,8 +55,11 @@ public class ManagerHiddenWords : MonoBehaviour
   /// </summary>
   /// <param name="levelConfig">Config level</param>
   /// <param name="wordConfig">Config word</param>
-  public void Init(GameLevel levelConfig, GameLevelWord wordConfig)
+  public void Init() // GameLevel levelConfig, GameLevelWord wordConfig
   {
+    var levelConfig = _stateManager.ActiveLevelConfig;
+    var wordConfig = _stateManager.ActiveWordConfig;
+
     _levelManager.shuffle.gameObject.SetActive(true);
     _levelManager.colba.gameObject.SetActive(true);
     _levelManager.hint.gameObject.SetActive(true);
@@ -233,7 +237,7 @@ public class ManagerHiddenWords : MonoBehaviour
 
   public void CreateAllowWords()
   {
-    var potentialWords = GameManager.Instance.Words.data
+    var potentialWords = _gameManager.Words.data
       .Where(t => t.Length <= WordForChars.Length)
       .OrderBy(t => UnityEngine.Random.value)
       .ToList();
@@ -442,37 +446,34 @@ public class ManagerHiddenWords : MonoBehaviour
   }
 
 
-  private async UniTask NextLevel()
+  public async UniTask NextLevel()
   {
-    _levelManager.ResetSymbols();
-
-    Reset();
-    await _levelManager.shuffle.Destroy();
-    await _levelManager.colba.Destroy();
-    await _levelManager.hint.Destroy();
-
-    _stateManager.RefreshData();
-
+    // await _levelManager.shuffle.Destroy();
+    // await _levelManager.colba.Destroy();
+    // await _levelManager.hint.Destroy();
+    // _stateManager.RefreshData();
+    // await _levelManager.NextLevel();
     // AllowWords.Clear();
     // // OpenHiddenWords.Clear();
     // OpenWords.Clear();
     // // GameManager.Instance.DataManager.Save();
-
-    // // var newObj = GameObject.Instantiate(
-    // //       _gameSetting.PrefabStatLevel,
-    // //       transform.position,
-    // //       Quaternion.identity,
-    // //       transform
-    // //     );
-
-
-    // await _levelManager.NextLevel();
-
+    _stateManager.RefreshData();
+    var result = await _levelManager.statLevel.Show();
+    if (result.isOk)
+    {
+      // _gameManager.DataManager.Save();
+      // Reset();
+      _stateManager.RemoveCompleteLevel();
+      _levelManager.InitLevel(_stateManager.ActiveLevelConfig, _stateManager.ActiveWordConfig);
+      // await _levelManager.NextLevel();
+    }
   }
 
 
   public void Reset()
   {
+    _levelManager.ResetSymbols();
+
     foreach (var wordItem in HiddenWords)
     {
       GameObject.Destroy(wordItem.Value.gameObject);

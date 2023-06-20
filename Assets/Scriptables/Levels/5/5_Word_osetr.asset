@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
   m_Name: 5_Word_osetr
   m_EditorClassIdentifier: 
-  id: level.word.osetr
+  idLevelWord: 2
   title: "\u043E\u0441\u0435\u0442\u0440"
   word: "\u043E\u0441\u0435\u0442\u0440"
   maxCountHiddenChar: 50

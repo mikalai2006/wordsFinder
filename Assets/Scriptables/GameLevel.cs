@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class GameLevel : ScriptableObject
 {
-  public string id;
+  public string idLevel;
   public string title;
   public int minRate;
   public int countHint;
