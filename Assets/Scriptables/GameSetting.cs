@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu]
 public class GameSetting : ScriptableObject
@@ -45,10 +46,28 @@ public class GameSetting : ScriptableObject
   public Sprite spriteRate;
   public Sprite spriteShop;
   public Sprite spriteCart;
+  public Sprite spriteAdv;
+  public Sprite spriteBuy;
 
   [Space(5)]
   [Header("System")]
   public int debounceTime;
   [Range(10, 1000)] public int timeDelayOverChar;
   public GameLevel GameLevels;
+
+
+  [Space(5)]
+  [Header("Shop")]
+  public List<ShopItem> ShopItems;
+}
+
+
+[System.Serializable]
+public struct ShopItem
+{
+  public string id;
+  public TextLocalize text;
+  public Sprite sprite;
+  public int count;
+  public int cost;
 }

@@ -46,7 +46,7 @@ public class UILevels : UILocaleBase
 
     FillLevels();
 
-    base.Localize(_root);
+    base.Initialize(_root);
   }
 
   private void Hide()

@@ -67,7 +67,7 @@ public class UIStartMenu : UILocaleBase
     DrawMenu();
     DrawUserInfoBlok();
 
-    base.Localize(_uiDoc.rootVisualElement);
+    base.Initialize(_uiDoc.rootVisualElement);
   }
 
   private async void DrawUserInfoBlok()
@@ -83,25 +83,37 @@ public class UIStartMenu : UILocaleBase
     var status = blok.Q<Label>("Status");
     var foundWords = blok.Q<Label>("FoundWords");
 
+    var coin = blok.Q<Label>("Coin");
+    var textCost = await Helpers.GetLocalizedPluralString(
+          "coin",
+           new Dictionary<string, object> {
+            {"count",  dataState.coins},
+          }
+        );
+    coin.text = string.Format("{0} <size=12>{1}</size>", dataState.coins, textCost);
+
+    var coinImg = blok.Q<VisualElement>("CoinImg");
+    coinImg.style.backgroundImage = new StyleBackground(_gameSettings.spriteCoin);
+
+
     name.text = "Mikalai2006";
+
+
     var percentFindWords = (dataState.rate * 100 / _gameManager.PlayerSetting.countFindWordsForUp);
     progress.style.width = new StyleLength(new Length(percentFindWords, LengthUnit.Percent));
 
     status.text = await Helpers.GetLocaledString(dataState.idPlayerSetting);
 
-    var dataPlural = new Dictionary<string, int> {
-        {"count",  dataState.rate},
-      };
-    var arguments = new[] { dataPlural };
     var textCountWords = await Helpers.GetLocalizedPluralString(
-        new UnityEngine.Localization.LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, "foundwords"),
-        arguments,
-        dataPlural
+          "foundwords",
+           new Dictionary<string, object> {
+            {"count",  dataState.rate},
+          }
         );
     foundWords.text = string.Format("{0}", textCountWords);
 
     _userInfoBlok.Add(blok);
-    base.Localize(_userInfoBlok);
+    base.Initialize(_userInfoBlok);
   }
 
   private void DrawMenu()
@@ -170,6 +182,6 @@ public class UIStartMenu : UILocaleBase
 
   private void ChangeLocale()
   {
-    base.Localize(_uiDoc.rootVisualElement);
+    base.Initialize(_uiDoc.rootVisualElement);
   }
 }

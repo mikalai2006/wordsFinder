@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu]
 public class GameTheme : ScriptableObject
@@ -41,4 +42,6 @@ public class GameTheme : ScriptableObject
   public Color entityColor;
   public Color colorLine;
   public Color entityActiveColor;
+  public Color colorPrimary;
+  public Color colorSecondary;
 }

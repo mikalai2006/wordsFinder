@@ -16,13 +16,34 @@ public abstract class UILocaleBase : MonoBehaviour
   protected GameManager _gameManager => GameManager.Instance;
   protected GameSetting _gameSettings => GameManager.Instance.GameSettings;
 
-  public void Localize(VisualElement root = null)
+  public void Initialize(VisualElement root)
   {
     _box = root;
-    OnLocalization();
+    Localize();
+    Theming(_box);
   }
 
-  private async void OnLocalization()
+  public void Theming(VisualElement root)
+  {
+    _box = root;
+
+    UQueryBuilder<VisualElement> builder = new UQueryBuilder<VisualElement>(_box);
+    List<VisualElement> list = builder.Class("text-primary").ToList();
+    foreach (var item in list)
+    {
+      item.style.color = _gameSettings.Theme.colorPrimary;
+    }
+
+    UQueryBuilder<VisualElement> builderSecondary = new UQueryBuilder<VisualElement>(_box);
+    List<VisualElement> listSecondary = builderSecondary.Class("text-secondary").ToList();
+    foreach (var item in listSecondary)
+    {
+      item.style.color = _gameSettings.Theme.colorSecondary;
+    }
+
+  }
+
+  private async void Localize()
   {
     var op = _localization.GetTableAsync();
     await op.Task;

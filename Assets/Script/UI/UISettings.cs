@@ -13,7 +13,7 @@ public class UISettings : UILocaleBase
   private Button _exitButton;
   private Button _openMenuButton;
   private Button _closeMenuButton;
-  private Button _LevelsButton;
+  private Button _shopButton;
   private Button _toMenuAppButton;
   private GameSetting GameSetting;
   [SerializeField] private AudioManager _audioManager => GameManager.Instance.audioManager;
@@ -33,10 +33,10 @@ public class UISettings : UILocaleBase
     _exitButton = _aside.Q<Button>("ExitBtn");
     _openMenuButton = _aside.Q<Button>("MenuBtn");
     _closeMenuButton = _menu.Q<Button>("CloseMenuBtn");
-    _LevelsButton = _aside.Q<Button>("ShopBtn");
-    _LevelsButton.clickable.clicked += () =>
+    _shopButton = _aside.Q<Button>("ShopBtn");
+    _shopButton.clickable.clicked += () =>
     {
-      ClickOpenListLevels();
+      ClickOpenShop();
     };
     _exitButton.clickable.clicked += () =>
     {
@@ -63,19 +63,20 @@ public class UISettings : UILocaleBase
       _toMenuAppButton.style.display = DisplayStyle.None;
     }
 
-    base.Localize(_uiDoc.rootVisualElement);
+    base.Initialize(_uiDoc.rootVisualElement);
   }
 
-  private async void ClickOpenListLevels()
+  private async void ClickOpenShop()
   {
     _gameManager.InputManager.Disable();
-    var dialogWindow = new UILevelsOperation();
+    var dialogWindow = new UIShopOperation();
     var result = await dialogWindow.ShowAndHide();
     _gameManager.InputManager.Enable();
   }
 
   private void ShowMenu()
   {
+    base.Theming(_uiDoc.rootVisualElement);
     _menu.style.display = DisplayStyle.Flex;
 
     if (_gameManager.LevelManager == null)
@@ -172,7 +173,7 @@ public class UISettings : UILocaleBase
     {
       LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[indexLocale];
       userSettings.lang = nameLanguage;
-      base.Localize(_uiDoc.rootVisualElement);
+      base.Initialize(_uiDoc.rootVisualElement);
     }
     OnChangeLocale?.Invoke();
   }

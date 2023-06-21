@@ -36,3 +36,5 @@ MonoBehaviour:
   entityColor: {r: 0.56580555, g: 0.5943396, b: 0.21586862, a: 1}
   colorLine: {r: 1, g: 1, b: 1, a: 1}
   entityActiveColor: {r: 1, g: 0.88915, b: 0, a: 1}
+  colorPrimary: {r: 0.9150943, g: 0.9150943, b: 0.9150943, a: 1}
+  colorSecondary: {r: 0, g: 0, b: 0, a: 1}

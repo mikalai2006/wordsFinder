@@ -19,7 +19,7 @@
         <ui:VisualElement name="MenuBlokWrapper" class="b-rounded" style="background-color: rgb(164, 164, 164); align-items: stretch; max-width: 600px; align-self: center; flex-grow: 0; width: 380px;">
             <ui:VisualElement class="header" style="flex-grow: 1;">
                 <ui:VisualElement class="p-1" style="flex-shrink: 0; align-items: stretch; flex-grow: 1;">
-                    <ui:Label tabindex="-1" text="#settings" display-tooltip-when-elided="true" class="p-2" />
+                    <ui:Label tabindex="-1" text="#settings" display-tooltip-when-elided="true" class="p-2 text-primary" />
                 </ui:VisualElement>
                 <ui:VisualElement class="p-1" style="flex-shrink: 0; align-items: flex-end;">
                     <ui:Button display-tooltip-when-elided="true" name="CloseMenuBtn" class="button_circle">
@@ -28,22 +28,25 @@
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="Menu" style="background-color: rgba(0, 0, 0, 0); padding-left: 20px; padding-right: 20px; padding-top: 20px; padding-bottom: 20px;">
-                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); margin-bottom: 20px;">
-                    <ui:Slider picking-mode="Ignore" label="#volumeEffect" value="0.2" high-value="1" name="VolumeEffect" />
+                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); margin-bottom: 20px; flex-direction: row;">
+                    <ui:Label tabindex="-1" text="#volumeEffect" display-tooltip-when-elided="true" class="text-primary" />
+                    <ui:Slider picking-mode="Ignore" value="0.2" high-value="1" name="VolumeEffect" class="text-primary" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); padding-bottom: 20px; flex-direction: row;">
+                    <ui:Label tabindex="-1" text="#volumeMusic" display-tooltip-when-elided="true" class="text-primary" />
+                    <ui:Slider picking-mode="Ignore" value="0.2" high-value="1" name="VolumeMusic" class="text-primary" style="flex-grow: 1;" />
                 </ui:VisualElement>
                 <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); padding-bottom: 20px;">
-                    <ui:Slider picking-mode="Ignore" label="#volumeMusic" value="0.2" high-value="1" name="VolumeMusic" />
+                    <ui:Label tabindex="-1" text="#timedelay" display-tooltip-when-elided="true" class="text-primary" />
+                    <ui:SliderInt picking-mode="Ignore" value="50" high-value="500" name="TimeDelay" low-value="5" class="text-primary" />
                 </ui:VisualElement>
-                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); padding-bottom: 20px;">
-                    <ui:Label tabindex="-1" text="#timedelay" display-tooltip-when-elided="true" />
-                    <ui:SliderInt picking-mode="Ignore" value="50" high-value="500" name="TimeDelay" low-value="5" />
-                </ui:VisualElement>
-                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0);">
-                    <ui:DropdownField label="#language" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Language" />
+                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-direction: row;">
+                    <ui:Label tabindex="-1" text="#language" display-tooltip-when-elided="true" class="text-primary" />
+                    <ui:DropdownField index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Language" class="text-primary" style="flex-grow: 1;" />
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement style="margin-left: 20px; margin-right: 20px; margin-top: 20px; margin-bottom: 20px; flex-direction: row; justify-content: space-between;">
-                <ui:Button text="#tostartmenu" display-tooltip-when-elided="true" name="ToStartMenuBtn" class="button" />
+                <ui:Button text="#tostartmenu" display-tooltip-when-elided="true" name="ToStartMenuBtn" class="button text-primary" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

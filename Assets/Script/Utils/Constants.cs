@@ -10,6 +10,7 @@ public class Constants
   {
     public const string UI_GAME_ASIDE = "UIGameAside";
     public const string UI_LEVELS = "UILevels";
+    public const string UI_SHOP = "UIShop";
 
   }
 

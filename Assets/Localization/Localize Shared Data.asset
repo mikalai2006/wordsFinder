@@ -139,6 +139,58 @@ MonoBehaviour:
     m_Key: shop
     m_Metadata:
       m_Items: []
+  - m_Id: 3431009346551808
+    m_Key: buyforcoin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3431140439523328
+    m_Key: buyadv
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3448300033441792
+    m_Key: costitemtext
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3451102625431552
+    m_Key: star
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3451218186895360
+    m_Key: lamp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3451377402675200
+    m_Key: bomb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3452249054543872
+    m_Key: coin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3458438974832640
+    m_Key: lightning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3458590401789952
+    m_Key: lightning_d
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3458919637876736
+    m_Key: lamp_d
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3459213977354240
+    m_Key: bomb_d
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3459454394859520
+    m_Key: star_d
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3460500663992320
+    m_Key: lackscoin
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

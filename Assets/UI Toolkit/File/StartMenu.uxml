@@ -7,10 +7,10 @@
                 <ui:VisualElement name="UserInfoBlok" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-bottom: 15px;">
                     <ui:Instance template="UserInfo" name="UserInfo" />
                 </ui:VisualElement>
-                <ui:Button text="#loadgame" display-tooltip-when-elided="true" name="LoadGameBtn" class="button" />
-                <ui:Button text="#newgame" display-tooltip-when-elided="true" name="NewGameBtn" class="button" />
+                <ui:Button text="#loadgame" display-tooltip-when-elided="true" name="LoadGameBtn" class="button text-primary" />
+                <ui:Button text="#newgame" display-tooltip-when-elided="true" name="NewGameBtn" class="button text-primary" />
             </ui:VisualElement>
-            <ui:Button text="#exit" display-tooltip-when-elided="true" name="ExitBtn" class="button" />
+            <ui:Button text="#exit" display-tooltip-when-elided="true" name="ExitBtn" class="button text-primary" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

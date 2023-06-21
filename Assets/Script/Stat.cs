@@ -13,28 +13,32 @@ public class Stat : MonoBehaviour
   private void Awake()
   {
     StateManager.OnChangeState += SetValue;
+    UISettings.OnChangeLocale += Localize;
   }
 
   private void OnDestroy()
   {
     StateManager.OnChangeState -= SetValue;
+    UISettings.OnChangeLocale -= Localize;
   }
 
-  public async void SetValue(DataGame data, StatePerk statePerk)
+  public void SetValue(DataGame data, StatePerk statePerk)
   {
-    // View new data.
-    var dataPlural = new Dictionary<string, int> {
-      {"count",  _levelManager.ManagerHiddenWords.OpenNeedWords.Count},
-      {"count2", data.activeLevel.countWords},
-      {"count3", _levelManager.ManagerHiddenWords.AllowPotentialWords.Count}, //  data.activeLevelWord.openWords.Count
-    };
-    var arguments = new[] { dataPlural };
-    var textCountWords = await Helpers.GetLocalizedPluralString(
-        new UnityEngine.Localization.LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, "foundcountword"),
-        arguments,
-        dataPlural
-        );
+    Localize();
+  }
 
+  private async void Localize()
+  {
+
+    // View new data.
+    var textCountWords = await Helpers.GetLocalizedPluralString(
+          "foundcountword",
+           new Dictionary<string, object> {
+            {"count",  _levelManager.ManagerHiddenWords.OpenNeedWords.Count},
+            {"count2", _gameManager.StateManager.dataGame.activeLevel.countWords},
+            {"count3", _levelManager.ManagerHiddenWords.AllowPotentialWords.Count},
+          }
+        );
     _countWords.text = textCountWords;
   }
 

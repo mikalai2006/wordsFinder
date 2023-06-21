@@ -103,6 +103,17 @@ public static class Helpers
   }
 
 
+  public async static UniTask<string> GetLocalizedPluralString<T>(string key, Dictionary<string, T> data)
+  {
+    var localizedString = new LocalizedString(Constants.LanguageTable.LANG_TABLE_LOCALIZE, key);
+    var args = new[] { data };
+    localizedString.Arguments = args;
+    var t = localizedString.GetLocalizedStringAsync(data);
+    await t.Task;
+    return t.Result;
+  }
+
+
   public async static UniTask<string> GetLocalizedPluralString<T>(
         LocalizedString localizedString,
         Dictionary<string, T>[] args,
