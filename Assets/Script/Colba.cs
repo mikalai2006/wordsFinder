@@ -216,6 +216,10 @@ public class Colba : MonoBehaviour, IPointerDownHandler
 
   public void OnPointerDown(PointerEventData eventData)
   {
+    transform
+      .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutBack);
+
     if (_stateManager.dataGame.activeLevel.star == 0)
     {
       // TODO Show dialog with info get hint by adsense.

@@ -117,6 +117,7 @@ public class Hint : MonoBehaviour, IPointerDownHandler
       return;
     };
 
+
     var nodesForShow = nodes.OrderBy(t => -t.Value.Count).First().Value;
 
     int countRunHit = 0;
@@ -136,6 +137,10 @@ public class Hint : MonoBehaviour, IPointerDownHandler
 
   public void OnPointerDown(PointerEventData eventData)
   {
+    transform
+      .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutBack);
+
     if (_stateManager.dataGame.activeLevel.hint == 0)
     {
       // TODO Show dialog with info get hint by adsense.

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,6 +13,7 @@ public class Shuffle : MonoBehaviour, IPointerDownHandler
   [SerializeField] private Vector3 _scale;
   [SerializeField] private Vector3 _position;
   [SerializeField] private SpriteRenderer _sprite;
+  // [SerializeField] private Button _button;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   private StateManager _stateManager => GameManager.Instance.StateManager;
@@ -22,6 +23,7 @@ public class Shuffle : MonoBehaviour, IPointerDownHandler
     _transform = gameObject.transform;
     _scale = _transform.localScale;
     _position = _transform.position;
+    _sprite.sprite = _gameSetting.spriteShuffle;
   }
 
   // public async UniTask SetPosition(Vector3 newPos)
@@ -60,6 +62,9 @@ public class Shuffle : MonoBehaviour, IPointerDownHandler
     // shuffle positions.
     existChars = existChars.OrderBy(t => UnityEngine.Random.value).ToList();
 
+    // Run animation button.
+    RotateButton();
+
     // set new position.
     List<UniTask> tasks = new();
     string newWord = "";
@@ -73,6 +78,13 @@ public class Shuffle : MonoBehaviour, IPointerDownHandler
     await UniTask.WhenAll(tasks);
     // GameManager.Instance.DataManager.Save();
     _stateManager.RefreshData();
+  }
+
+  public void RotateButton()
+  {
+    transform
+      .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutBack);
   }
 
   public void Hide()

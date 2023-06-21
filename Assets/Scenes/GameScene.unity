@@ -573,7 +573,11 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 430bfd9bcbe976346ae4a660d7bd2672, type: 3}
     - target: {fileID: 1588579740537279072, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
       propertyPath: m_Name
-      value: Shuffle
+      value: Shuffle1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1588579740537279072, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
       propertyPath: m_RootOrder
@@ -629,10 +633,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
   m_PrefabInstance: {fileID: 415837258}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &415837260 stripped
+--- !u!1001 &651550723
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1847410320}
+    m_Modifications:
+    - target: {fileID: 1588579740537279072, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_Name
+      value: Shuffle
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+--- !u!4 &651550724 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3912603994601956321, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
+  m_PrefabInstance: {fileID: 651550723}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &651550725 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7338800396835726061, guid: e82af0e97698dbe488c06cb0628f553a, type: 3}
-  m_PrefabInstance: {fileID: 415837258}
+  m_PrefabInstance: {fileID: 651550723}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -1436,7 +1506,7 @@ MonoBehaviour:
   statLevel: {fileID: 1384004046}
   colba: {fileID: 1433028502}
   hint: {fileID: 959151112}
-  shuffle: {fileID: 415837260}
+  shuffle: {fileID: 651550725}
   stat: {fileID: 1761405220}
 --- !u!1001 &1433028500
 PrefabInstance:
@@ -1941,6 +2011,7 @@ Transform:
   - {fileID: 959151111}
   - {fileID: 1433028501}
   - {fileID: 1301584317}
+  - {fileID: 651550724}
   - {fileID: 415837259}
   - {fileID: 1761405219}
   m_Father: {fileID: 0}
