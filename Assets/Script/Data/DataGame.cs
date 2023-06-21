@@ -41,6 +41,8 @@ public class DataLevel
   public List<string> allowWords;
   public int countOpenChars;
   public int countDopWords;
+  public int bomb;
+  public int lighting;
 
   public DataLevel()
   {

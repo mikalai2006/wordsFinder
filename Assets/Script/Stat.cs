@@ -12,6 +12,8 @@ public class Stat : MonoBehaviour
 
   private void Awake()
   {
+    _countWords.color = _gameSetting.Theme.colorSecondary;
+
     StateManager.OnChangeState += SetValue;
     UISettings.OnChangeLocale += Localize;
   }
@@ -37,6 +39,7 @@ public class Stat : MonoBehaviour
             {"count",  _levelManager.ManagerHiddenWords.OpenNeedWords.Count},
             {"count2", _gameManager.StateManager.dataGame.activeLevel.countWords},
             {"count3", _levelManager.ManagerHiddenWords.AllowPotentialWords.Count},
+            {"count4", _levelManager.ManagerHiddenWords.OpenWords.Count},
           }
         );
     _countWords.text = textCountWords;

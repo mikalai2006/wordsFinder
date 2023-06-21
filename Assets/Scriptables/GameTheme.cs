@@ -44,4 +44,5 @@ public class GameTheme : ScriptableObject
   public Color entityActiveColor;
   public Color colorPrimary;
   public Color colorSecondary;
+  public Color colorDisable;
 }

@@ -76,8 +76,8 @@ public class StatLevel : MonoBehaviour
       {
         _levelManager.shuffle.Hide();
         _levelManager.stat.Hide();
-        _initPositionColba = _levelManager.colba.gameObject.transform.position;
-        _initPositionHint = _levelManager.hint.gameObject.transform.position;
+        _initPositionColba = _levelManager.buttonStar.gameObject.transform.position;
+        _initPositionHint = _levelManager.buttonHint.gameObject.transform.position;
       })
     );
 
@@ -90,7 +90,7 @@ public class StatLevel : MonoBehaviour
       positionTo,
     };
     mySequence.Append(
-     _levelManager.colba.gameObject.transform
+     _levelManager.buttonStar.gameObject.transform
        .DOJump(positionTo, 2, 1, duration)
        .SetEase(Ease.OutQuad)
    );
@@ -107,8 +107,8 @@ public class StatLevel : MonoBehaviour
         .OnComplete(() =>
         {
           AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
-          _levelManager.colba.HideCounter();
-          _levelManager.colba.ResetProgressBar();
+          _levelManager.buttonStar.HideCounter();
+          _levelManager.buttonStar.ResetProgressBar();
 
           _indexCountStar.text = _stateManager.dataGame.activeLevel.star.ToString();
           _valueTotalStarCoin = _stateManager.dataGame.activeLevel.star * _stateManager.dataGame.activeLevel.star;
@@ -130,7 +130,7 @@ public class StatLevel : MonoBehaviour
     // );
 
     mySequence.Append(
-     _levelManager.hint.gameObject.transform
+     _levelManager.buttonHint.gameObject.transform
        .DOJump(positionToHint, 2, 1, duration)
        .SetEase(Ease.OutQuad)
    );
@@ -141,8 +141,8 @@ public class StatLevel : MonoBehaviour
         .OnComplete(() =>
         {
           AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
-          _levelManager.hint.HideCounter();
-          _levelManager.hint.ResetProgressBar();
+          _levelManager.buttonHint.HideCounter();
+          _levelManager.buttonHint.ResetProgressBar();
 
           _indexCountHint.text = _stateManager.dataGame.activeLevel.hint.ToString();
 
@@ -313,10 +313,10 @@ public class StatLevel : MonoBehaviour
   {
     GoCoins();
 
-    _levelManager.hint.gameObject.transform
+    _levelManager.buttonHint.gameObject.transform
       .DOJump(_initPositionHint, 2, 1, duration)
       .SetEase(Ease.OutQuad);
-    _levelManager.colba.gameObject.transform
+    _levelManager.buttonStar.gameObject.transform
        .DOJump(_initPositionColba, 2, 1, duration)
        .SetEase(Ease.OutQuad);
     // _levelManager.hint.gameObject.transform.DOMove(_initPositionHint, duration).SetEase(Ease.Linear);

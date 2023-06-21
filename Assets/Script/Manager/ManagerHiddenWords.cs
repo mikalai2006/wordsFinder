@@ -48,12 +48,12 @@ public class ManagerHiddenWords : MonoBehaviour
 
     OpenNeedWords = new();
 
-    Shuffle.OnShuffleWord += SetWordForChars;
+    ButtonShuffle.OnShuffleWord += SetWordForChars;
   }
 
   private void OnDestroy()
   {
-    Shuffle.OnShuffleWord -= SetWordForChars;
+    ButtonShuffle.OnShuffleWord -= SetWordForChars;
   }
 
   /// <summary>
@@ -67,8 +67,8 @@ public class ManagerHiddenWords : MonoBehaviour
     var word = wordConfig.word;
 
     _levelManager.shuffle.gameObject.SetActive(true);
-    _levelManager.colba.gameObject.SetActive(true);
-    _levelManager.hint.gameObject.SetActive(true);
+    _levelManager.buttonStar.gameObject.SetActive(true);
+    _levelManager.buttonHint.gameObject.SetActive(true);
     HiddenWords.Clear();
 
     var data = _stateManager.dataGame.activeLevel;
@@ -351,7 +351,7 @@ public class ManagerHiddenWords : MonoBehaviour
         if (NeedWords.ContainsKey(choosedWord))
         {
           OpenNeedWords.Add(choosedWord, 1);
-          _levelManager.colba.CreateCoin();
+          _levelManager.buttonStar.CreateCoin();
         }
       }
     }

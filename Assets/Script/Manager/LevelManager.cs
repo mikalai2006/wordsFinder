@@ -18,9 +18,11 @@ public class LevelManager : Singleton<LevelManager>
   public GameObject SymbolsField;
   public TopSide topSide;
   public StatLevel statLevel;
-  public Colba colba;
-  public Hint hint;
-  public Shuffle shuffle;
+  public ButtonStar buttonStar;
+  public ButtonHint buttonHint;
+  public ButtonBomb buttonBomb;
+  public ButtonLighting buttonLighting;
+  public ButtonShuffle shuffle;
   public Stat stat;
 
   protected override void Awake()

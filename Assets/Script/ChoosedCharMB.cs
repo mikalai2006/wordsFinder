@@ -77,7 +77,7 @@ public class ChoosedCharMB : MonoBehaviour
 
   public async UniTask OpenCharAllowWord(int delay)
   {
-    var targetToMove = _levelManager.colba;
+    var targetToMove = _levelManager.buttonStar;
 
     _image.color = _gameSetting.Theme.bgFindAllowWord;
     _charText.color = _gameSetting.Theme.textFindAllowWord;

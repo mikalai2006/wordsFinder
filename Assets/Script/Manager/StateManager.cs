@@ -303,6 +303,11 @@ public class StateManager : MonoBehaviour
     dataGame.activeLevel.hint--;
     RefreshData();
   }
+  public void UseBomb()
+  {
+    dataGame.activeLevel.bomb--;
+    RefreshData();
+  }
 
   public void UseStar()
   {
