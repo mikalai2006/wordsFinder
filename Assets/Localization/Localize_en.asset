@@ -181,7 +181,7 @@ MonoBehaviour:
       m_Items:
       - rid: 366247623133495314
   - m_Id: 3458438974832640
-    m_Localized: lightning
+    m_Localized: Lightning
     m_Metadata:
       m_Items: []
   - m_Id: 3458590401789952
@@ -206,6 +206,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 3460500663992320
     m_Localized: Lacks coin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3476356110385152
+    m_Localized: Pass word
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3476387282452480
+    m_Localized: When used, changes the word to the next, keeping the current progress
     m_Metadata:
       m_Items: []
   references:

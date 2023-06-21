@@ -138,6 +138,29 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 18c91ce829ef1104782b450e424a1947, type: 3}
     count: 1
     cost: 500
+  - id: 5
+    text:
+      title:
+        m_TableReference:
+          m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+        m_TableEntryReference:
+          m_KeyId: 3476356110385152
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      description:
+        m_TableReference:
+          m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+        m_TableEntryReference:
+          m_KeyId: 3476387282452480
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+    sprite: {fileID: 21300000, guid: 92e1f6396d832254e81719c952fbb398, type: 3}
+    count: 1
+    cost: 1000
   references:
     version: 2
     RefIds: []

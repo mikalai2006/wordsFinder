@@ -15,6 +15,7 @@ public class UISettings : UILocaleBase
   private Button _closeMenuButton;
   private Button _shopButton;
   private Button _toMenuAppButton;
+  private Button _okButton;
   private GameSetting GameSetting;
   [SerializeField] private AudioManager _audioManager => GameManager.Instance.audioManager;
 
@@ -32,8 +33,11 @@ public class UISettings : UILocaleBase
 
     _exitButton = _aside.Q<Button>("ExitBtn");
     _openMenuButton = _aside.Q<Button>("MenuBtn");
-    _closeMenuButton = _menu.Q<Button>("CloseMenuBtn");
     _shopButton = _aside.Q<Button>("ShopBtn");
+
+    _okButton = _menu.Q<Button>("Ok");
+    _closeMenuButton = _menu.Q<Button>("CloseMenuBtn");
+
     _shopButton.clickable.clicked += () =>
     {
       ClickOpenShop();
@@ -41,6 +45,10 @@ public class UISettings : UILocaleBase
     _exitButton.clickable.clicked += () =>
     {
       ClickExitButton();
+    };
+    _okButton.clickable.clicked += () =>
+    {
+      ClickCloseMenuButton();
     };
 
     _openMenuButton.clickable.clicked += () =>

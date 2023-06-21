@@ -22,12 +22,12 @@ namespace User
       _onProgress = onProgress;
       _onSetNotify = onSetNotify;
 
-      var t = await Helpers.GetLocaledString("loading");
-      _onSetNotify?.Invoke(t);
+      // var t = await Helpers.GetLocaledString("loading");
+      _onSetNotify?.Invoke("...");
       _onProgress?.Invoke(0.1f);
       _appInfoContainer.UserInfo = await GetUserInfo(DeviceInfo.GetDeviceId());
 
-      _onProgress?.Invoke(.4f);
+      _onProgress?.Invoke(.2f);
     }
 
     private async UniTask<UserInfoContainer> GetUserInfo(string deviceId)
