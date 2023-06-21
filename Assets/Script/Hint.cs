@@ -23,6 +23,7 @@ public class Hint : MonoBehaviour, IPointerDownHandler
   private GameManager _gameManager => GameManager.Instance;
 
   private bool _statusShowCounter = false;
+  private int _valueCounter;
 
   private void Awake()
   {
@@ -44,23 +45,30 @@ public class Hint : MonoBehaviour, IPointerDownHandler
   public void SetValue(DataGame data, StatePerk statePerk)
   {
     // Set new value
-    int oldValue = int.Parse(_countHintText.text);
-    if (data.activeLevelWord.hint > 0)
+    if (data.activeLevel.hint > 0)
     {
       if (!_statusShowCounter)
       {
         Show();
       }
-      else if (data.activeLevelWord.hint != oldValue)
+      else if (data.activeLevel.hint != _valueCounter)
       {
-        HelpersAnimation.Pulse(_countHintObject, new Vector3(.5f, .5f, 0), 1f);
+        // HelpersAnimation.Pulse(_countHintObject, new Vector3(.5f, .5f, 0), .5f);
+        _countHintObject.transform
+          .DOPunchScale(new Vector3(.5f, .5f, 0), _gameSetting.timeGeneralAnimation)
+          .SetEase(Ease.OutBack)
+          .OnComplete(() =>
+          {
+            _statusShowCounter = true;
+          });
       }
     }
     else if (_statusShowCounter)
     {
       HideCounter();
     }
-    _countHintText.text = data.activeLevelWord.hint.ToString();
+    _valueCounter = data.activeLevel.hint;
+    _countHintText.text = _valueCounter.ToString();
 
     // TODO animation get hit.
 
@@ -70,23 +78,28 @@ public class Hint : MonoBehaviour, IPointerDownHandler
   private void Show()
   {
     _countHintObject.transform
-      .DOScale(new Vector3(1, 1, 1), _gameSetting.timeGeneralAnimation)
+      .DOScale(new Vector3(1, 1, 0), _gameSetting.timeGeneralAnimation)
       .SetEase(Ease.OutBack)
-      .From(new Vector3(0, 0, 0));
+      .From(0, true)
+      .OnComplete(() =>
+      {
+        _statusShowCounter = true;
+      });
     _countHintObject.transform
-      .DOPunchScale(new Vector3(0.5f, 0.5f, 1), _gameSetting.timeGeneralAnimation)
+      .DOPunchScale(new Vector3(0.5f, 0.5f, 0), _gameSetting.timeGeneralAnimation)
       .SetDelay(_gameSetting.timeGeneralAnimation)
       .SetEase(Ease.OutBack);
-    _statusShowCounter = true;
   }
 
   public void HideCounter()
   {
     _countHintObject.transform
       .DOScale(new Vector3(0, 0, 0), _gameSetting.timeGeneralAnimation)
-      .SetEase(Ease.OutBack);
-    _statusShowCounter = false;
-    //gameObject.SetActive(false);
+      .SetEase(Ease.OutBack)
+       .OnComplete(() =>
+      {
+        _statusShowCounter = false;
+      });
   }
 
   private void SetDefault()
@@ -123,7 +136,7 @@ public class Hint : MonoBehaviour, IPointerDownHandler
 
   public void OnPointerDown(PointerEventData eventData)
   {
-    if (_stateManager.dataGame.activeLevelWord.hint == 0)
+    if (_stateManager.dataGame.activeLevel.hint == 0)
     {
       // TODO Show dialog with info get hint by adsense.
       return;

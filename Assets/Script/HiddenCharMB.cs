@@ -58,7 +58,7 @@ public class HiddenCharMB : MonoBehaviour
 
     // Remove open char.
     if (
-      _stateManager.dataGame.activeLevelWord.openChars.ContainsKey(OccupiedNode.arrKey)
+      _stateManager.dataGame.activeLevel.openChars.ContainsKey(OccupiedNode.arrKey)
       &&
       _levelManager.ManagerHiddenWords.OpenWords.ContainsKey(OccupiedNode.OccupiedWord._word)
       )

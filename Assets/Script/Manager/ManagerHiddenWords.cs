@@ -71,7 +71,7 @@ public class ManagerHiddenWords : MonoBehaviour
     _levelManager.hint.gameObject.SetActive(true);
     HiddenWords.Clear();
 
-    var data = _stateManager.dataGame.activeLevelWord;
+    var data = _stateManager.dataGame.activeLevel;
 
     if (!string.IsNullOrEmpty(data.word))
     {
@@ -253,7 +253,7 @@ public class ManagerHiddenWords : MonoBehaviour
       ? potentialWords.Count
       : _stateManager.ActiveWordConfig.maxNeedFindWords;
 
-    var savedAllowWords = _stateManager.dataGame.activeLevelWord.allowWords;
+    var savedAllowWords = _stateManager.dataGame.activeLevel.allowWords;
 
     foreach (var word in potentialWords)
     {

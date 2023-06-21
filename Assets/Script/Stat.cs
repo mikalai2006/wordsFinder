@@ -25,7 +25,7 @@ public class Stat : MonoBehaviour
     // View new data.
     var dataPlural = new Dictionary<string, int> {
       {"count",  _levelManager.ManagerHiddenWords.OpenNeedWords.Count},
-      {"count2", data.activeLevelWord.countWords},
+      {"count2", data.activeLevel.countWords},
       {"count3", _levelManager.ManagerHiddenWords.AllowPotentialWords.Count}, //  data.activeLevelWord.openWords.Count
     };
     var arguments = new[] { dataPlural };

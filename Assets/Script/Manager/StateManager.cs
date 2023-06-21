@@ -55,27 +55,27 @@ public class StateManager : MonoBehaviour
     // Save setting user.
     dataGame.userSettings = _gameManager.AppInfo.userSettings;
 
-    dataGame.activeLevelWord.word = _levelManager.ManagerHiddenWords.WordForChars;
+    dataGame.activeLevel.word = _levelManager.ManagerHiddenWords.WordForChars;
 
-    dataGame.activeLevelWord.openChars.Clear();
+    dataGame.activeLevel.openChars.Clear();
     foreach (var item in _levelManager.ManagerHiddenWords.OpenChars)
     {
-      dataGame.activeLevelWord.openChars.Add(item.Key, item.Value);
+      dataGame.activeLevel.openChars.Add(item.Key, item.Value);
     }
 
-    dataGame.activeLevelWord.ent.Clear();
+    dataGame.activeLevel.ent.Clear();
     foreach (var item in _levelManager.ManagerHiddenWords.Entities)
     {
-      dataGame.activeLevelWord.ent.Add(item.Key, item.Value);
+      dataGame.activeLevel.ent.Add(item.Key, item.Value);
     }
-    dataGame.activeLevelWord.openWords = _levelManager.ManagerHiddenWords.OpenWords.Keys.ToList();
+    dataGame.activeLevel.openWords = _levelManager.ManagerHiddenWords.OpenWords.Keys.ToList();
     // dataGame.activeLevel.countOpenWords = _levelManager.ManagerHiddenWords.OpenWords.Count;
-    dataGame.activeLevelWord.allowWords = _levelManager.ManagerHiddenWords.NeedWords.Keys.ToList();
-    dataGame.activeLevelWord.countWords = _levelManager.ManagerHiddenWords.NeedWords.Count;
-    dataGame.activeLevelWord.hiddenWords = dataGame.activeLevelWord.openWords.Count == dataGame.activeLevelWord.countWords
+    dataGame.activeLevel.allowWords = _levelManager.ManagerHiddenWords.NeedWords.Keys.ToList();
+    dataGame.activeLevel.countWords = _levelManager.ManagerHiddenWords.NeedWords.Count;
+    dataGame.activeLevel.hiddenWords = dataGame.activeLevel.openWords.Count == dataGame.activeLevel.countWords
       ? new()
       : _levelManager.ManagerHiddenWords.HiddenWords.Keys.ToList();
-    dataGame.activeLevelWord.countOpenChars = _levelManager.ManagerHiddenWords.OpenWords.Select(t => t.Key.Length).Sum();
+    dataGame.activeLevel.countOpenChars = _levelManager.ManagerHiddenWords.OpenWords.Select(t => t.Key.Length).Sum();
 
     _gameManager.DataManager.Save();
     OnChangeState.Invoke(dataGame, statePerk);
@@ -150,21 +150,21 @@ public class StateManager : MonoBehaviour
     if (statePerk.countCharForBonus >= _gameManager.PlayerSetting.bonusCount.charBonus)
     {
       statePerk.countCharForBonus -= _gameManager.PlayerSetting.bonusCount.charBonus;
-      dataGame.activeLevelWord.index++;
+      dataGame.activeLevel.index++;
     }
 
     // Add hint.
     if (statePerk.countCharForAddHint >= _gameManager.PlayerSetting.bonusCount.charHint)
     {
       statePerk.countCharForAddHint -= _gameManager.PlayerSetting.bonusCount.charHint;
-      dataGame.activeLevelWord.hint++;
+      dataGame.activeLevel.hint++;
     }
 
     // Check add star to grid.
     if (statePerk.countCharForAddStar >= _gameManager.PlayerSetting.bonusCount.charStar)
     {
       statePerk.countCharForAddStar -= _gameManager.PlayerSetting.bonusCount.charStar;
-      dataGame.activeLevelWord.star++;
+      dataGame.activeLevel.star++;
     }
 
     RefreshData();
@@ -258,7 +258,7 @@ public class StateManager : MonoBehaviour
 
     }
     // var indexActiveLevel = dataGame.levels.FindIndex(t => t.id == wordConfig.idLevel && t.word == word);
-    dataGame.activeLevelWord = dataGame.levels.Find((t) => t.id == wordConfig.idLevelWord);
+    dataGame.activeLevel = dataGame.levels.Find((t) => t.id == wordConfig.idLevelWord);
     // Debug.Log($"Set active level ={indexActiveLevel}| {dataGame.activeLevel.openChars.Count}");
 
     SetDefaultPerk();
@@ -267,16 +267,16 @@ public class StateManager : MonoBehaviour
   public GameLevelWord GetConfigNextLevel()
   {
     // check completed level.
-    if (dataGame.activeLevelWord.openWords.Count >= dataGame.activeLevelWord.countWords)
+    if (dataGame.activeLevel.openWords.Count >= dataGame.activeLevel.countWords)
     {
-      if (!dataGame.completeWords.Contains(dataGame.activeLevelWord.id))
+      if (!dataGame.completeWords.Contains(dataGame.activeLevel.id))
       {
-        dataGame.completeWords.Add(dataGame.activeLevelWord.id);
+        dataGame.completeWords.Add(dataGame.activeLevel.id);
       }
     }
     GameLevelWord result = null;
 
-    dataGame.levels.Remove(dataGame.activeLevelWord);
+    dataGame.levels.Remove(dataGame.activeLevel);
 
     // Find not completed word.
     var notCompletedWords = _gameManager.GameSettings.GameLevels.levelWords.Where(t => !dataGame.completeWords.Contains(t.idLevelWord));
@@ -297,13 +297,13 @@ public class StateManager : MonoBehaviour
 
   public void UseHint()
   {
-    dataGame.activeLevelWord.hint--;
+    dataGame.activeLevel.hint--;
     RefreshData();
   }
 
   public void UseStar()
   {
-    dataGame.activeLevelWord.star--;
+    dataGame.activeLevel.star--;
     RefreshData();
   }
 }

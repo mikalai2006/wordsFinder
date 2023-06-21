@@ -23,6 +23,7 @@ public class Colba : MonoBehaviour, IPointerDownHandler
   private GameManager _gameManager => GameManager.Instance;
   private float progressBasePositionY = -1.4f;
   private bool _statusShowCounter = false;
+  private int _valueCounter;
 
   private void Awake()
   {
@@ -131,27 +132,34 @@ public class Colba : MonoBehaviour, IPointerDownHandler
     //   }
     // }
 
-    int oldValue = int.Parse(_countStarText.text);
-    if (data.activeLevelWord.star > 0)
+    Debug.Log($"star={data.activeLevel.star}/status={_statusShowCounter}");
+    if (data.activeLevel.star > 0)
     {
       if (!_statusShowCounter)
       {
         Show();
       }
-      else if (data.activeLevelWord.star != oldValue)
+      else if (data.activeLevel.star != _valueCounter)
       {
-        HelpersAnimation.Pulse(_countStarObject, new Vector3(.5f, .5f, 0), 1f);
+        _countStarObject.transform
+          .DOPunchScale(new Vector3(.5f, .5f, 0), _gameSetting.timeGeneralAnimation)
+          .SetEase(Ease.OutBack)
+          .OnComplete(() =>
+          {
+            _statusShowCounter = true;
+          });
       }
     }
-    else if (_statusShowCounter)
+    else // if (_statusShowCounter)
     {
+
       HideCounter();
     }
-
-    _countStarText.text = data.activeLevelWord.star.ToString();
+    _valueCounter = data.activeLevel.star;
+    _countStarText.text = _valueCounter.ToString();
     _countChars.text = string.Format(
       "{0}--{1}",
-      data.activeLevelWord.countOpenChars,
+      data.activeLevel.countOpenChars,
       statePerk.countCharForAddStar
     );
 
@@ -162,23 +170,33 @@ public class Colba : MonoBehaviour, IPointerDownHandler
 
   private void Show()
   {
+    // Debug.Log($"Run Show");
     _countStarObject.transform
-      .DOScale(new Vector3(1, 1, 1), _gameSetting.timeGeneralAnimation)
+      .DOScale(1f, _gameSetting.timeGeneralAnimation)
       .SetEase(Ease.OutBack)
-      .From(new Vector3(0, 0, 0));
+      .From(0f, true)
+      .OnComplete(() =>
+      {
+        // Debug.Log($"complete show");
+        _statusShowCounter = true;
+      });
     _countStarObject.transform
-      .DOPunchScale(new Vector3(0.5f, 0.5f, 1), _gameSetting.timeGeneralAnimation)
+      .DOPunchScale(new Vector3(0.5f, 0.5f, 0), _gameSetting.timeGeneralAnimation)
       .SetDelay(_gameSetting.timeGeneralAnimation)
       .SetEase(Ease.OutBack);
-    _statusShowCounter = true;
   }
 
   public void HideCounter()
   {
+    // Debug.Log($"Run hide");
     _countStarObject.transform
-      .DOScale(new Vector3(0, 0, 0), _gameSetting.timeGeneralAnimation)
-      .SetEase(Ease.OutBack);
-    _statusShowCounter = false;
+      .DOScale(0f, _gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutBack)
+      .OnComplete(() =>
+      {
+        // Debug.Log($"complete hide");
+        _statusShowCounter = false;
+      });
     //gameObject.SetActive(false);
   }
 
@@ -191,22 +209,20 @@ public class Colba : MonoBehaviour, IPointerDownHandler
 
   public void ResetProgressBar()
   {
-    var pos = new Vector3(_spriteProgress.transform.localPosition.x, progressBasePositionY);
     _spriteProgress.transform
-      .DOMove(pos, _gameSetting.timeGeneralAnimation)
+      .DOMoveY(progressBasePositionY, _gameSetting.timeGeneralAnimation)
       .SetEase(Ease.OutBack);
   }
 
   public void OnPointerDown(PointerEventData eventData)
   {
-    if (_stateManager.dataGame.activeLevelWord.star == 0)
+    if (_stateManager.dataGame.activeLevel.star == 0)
     {
       // TODO Show dialog with info get hint by adsense.
       return;
     }
     RunHint();
   }
-
 
   public void RunHint()
   {

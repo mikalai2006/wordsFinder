@@ -30,10 +30,10 @@ public class StatLevel : MonoBehaviour
   [SerializeField] private TMPro.TextMeshProUGUI _textHintTotalCoin;
   [SerializeField] private Button _buttonNext;
   [SerializeField] private Button _buttonDouble;
-  [SerializeField] private GameObject _totalObject;
 
   [Space(10)]
   [Header("Total")]
+  [SerializeField] private GameObject _totalObject;
   [SerializeField] private SpriteRenderer spriteCoin;
   [SerializeField] private TMPro.TextMeshProUGUI _textTotalCoin;
 
@@ -43,6 +43,9 @@ public class StatLevel : MonoBehaviour
   private Vector3 defaultPositionWrapper = new Vector3(0, 15, 0);
   private Vector3 _initPositionColba;
   private Vector3 _initPositionHint;
+  private int _countTotalCoins;
+  private int _valueTotalHintCoin;
+  private int _valueTotalStarCoin;
 
   private void Awake()
   {
@@ -62,125 +65,227 @@ public class StatLevel : MonoBehaviour
 
     _bg.SetActive(true);
 
-    // Sequence mySequence = DOTween.Sequence();
+    gameObject.SetActive(true);
 
-    // mySequence.Append(transform.DOMove(new Vector3(0, 0, 0), 2f).SetEase(Ease.OutElastic));
+    Sequence mySequence = DOTween.Sequence();
+    mySequence.Append(
+      transform
+      .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)
+      .SetEase(Ease.OutElastic)
+      .OnComplete(() =>
+      {
+        _levelManager.shuffle.Hide();
+        _levelManager.stat.Hide();
+        _initPositionColba = _levelManager.colba.gameObject.transform.position;
+        _initPositionHint = _levelManager.hint.gameObject.transform.position;
+      })
+    );
+
+    var positionTo = _spriteStar.transform.position;
+    Vector3[] waypoints = new[] {
+      // _initPositionColba,
+      _initPositionColba + new Vector3(.5f, -1f),
+      // positionTo - new Vector3(0.5f, 0.5f),
+      // positionTo - new Vector3(1, 1),
+      positionTo,
+    };
+    mySequence.Append(
+     _levelManager.colba.gameObject.transform
+       .DOJump(positionTo, 2, 1, duration)
+       .SetEase(Ease.OutQuad)
+   );
+    // mySequence.Append(
+    //   _levelManager.colba.gameObject.transform
+    //     .DOPath(waypoints, duration * 2, PathType.CatmullRom)
+    //     .SetEase(Ease.OutQuad)
+    // );
+    // mySequence.Join(_levelManager.colba.gameObject.transform.DOScale(new Vector3(3, 3, 3), duration * 2));
+
+    mySequence.Append(
+      _indexStarObject.transform
+        .DOPunchScale(new Vector3(1, 1, 0), duration, 5, 1)
+        .OnComplete(() =>
+        {
+          AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
+          _levelManager.colba.HideCounter();
+          _levelManager.colba.ResetProgressBar();
+
+          _indexCountStar.text = _stateManager.dataGame.activeLevel.star.ToString();
+          _valueTotalStarCoin = _stateManager.dataGame.activeLevel.star * _stateManager.dataGame.activeLevel.star;
+          _textStarTotalCoin.text = _valueTotalStarCoin.ToString();
+        })
+    );
+
+    var positionToHint = _spriteHint.transform.position;
+    // Vector3[] waypointsToHint = {
+    //   _initPositionHint,
+    //   _initPositionHint + new Vector3(0, 0),
+    //   // positionToHint - new Vector3(0.5f, 0.5f),
+    //   positionToHint,
+    // };
+    // mySequence.Append(
+    //   _levelManager.hint.gameObject.transform
+    //     .DOPath(waypointsToHint, duration * 2, PathType.Linear)
+    //     .SetEase(Ease.OutQuad)
+    // );
+
+    mySequence.Append(
+     _levelManager.hint.gameObject.transform
+       .DOJump(positionToHint, 2, 1, duration)
+       .SetEase(Ease.OutQuad)
+   );
+
+    mySequence.Append(
+      _indexHintObject.transform
+        .DOPunchScale(new Vector3(1, 1, 0), duration, 5, 1)
+        .OnComplete(() =>
+        {
+          AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
+          _levelManager.hint.HideCounter();
+          _levelManager.hint.ResetProgressBar();
+
+          _indexCountHint.text = _stateManager.dataGame.activeLevel.hint.ToString();
+
+          _valueTotalHintCoin = _stateManager.dataGame.activeLevel.hint * _stateManager.dataGame.activeLevel.hint;
+
+          _textHintTotalCoin.text = _valueTotalHintCoin.ToString();
+          _totalObject.SetActive(true);
+        })
+    );
+    mySequence.Append(
+      _totalObject.transform
+        .DOPunchScale(new Vector3(1, 1, 0), duration, 5, 1)
+        .OnComplete(() =>
+        {
+          AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
+          _countTotalCoins = _valueTotalHintCoin + _valueTotalStarCoin;
+          _textTotalCoin.text = _countTotalCoins.ToString();
+
+          _buttonNext.gameObject.SetActive(true);
+          _buttonDouble.gameObject.SetActive(true);
+        })
+    );
     // mySequence.AppendCallback(() =>
     // {
     //   ShowStarWrap();
     // });
-    transform.DOMove(new Vector3(0, 0, 0), 1.5f).SetEase(Ease.OutElastic).OnComplete(ShowStarWrap);
-    _levelManager.shuffle.Hide();
-    _levelManager.stat.Hide();
+    // transform.DOMove(new Vector3(0, 0, 0), 1.5f).SetEase(Ease.OutElastic).OnComplete(ShowStarWrap);
 
     return await _processCompletionSource.Task;
   }
 
-  private void ShowStarWrap()
+  // private void ShowStarWrap()
+  // {
+  //   _wrapStar.transform
+  //     .DOMove(new Vector3(0, -3, 0), duration / 2)
+  //     .From()
+  //     .OnComplete(async () => await AnimateStarStat());
+
+  // }
+
+  // public async UniTask AnimateStarStat()
+  // {
+  //   _initPositionColba = _levelManager.colba.gameObject.transform.position;
+  //   var positionTo = _spriteStar.transform.position;
+  //   _levelManager.colba.gameObject.transform.DOMove(positionTo, duration).SetEase(Ease.Linear);
+
+  //   await UniTask.Delay((int)(duration * 500));
+
+  //   if (_stateManager.dataGame.activeLevel.star > 0)
+  //   {
+  //     _indexStarObject.transform.DOPunchScale(new Vector3(1, 1, 0), duration, 5, 1);
+  //     _levelManager.colba.HideCounter();
+  //     _levelManager.colba.ResetProgressBar();
+
+  //     _indexCountStar.text = _stateManager.dataGame.activeLevel.star.ToString();
+
+  //     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
+
+  //     await UniTask.Delay((int)(duration * 500));
+
+  //     int valueTotalStarCoin = _stateManager.dataGame.activeLevel.star * _stateManager.dataGame.activeLevel.star;
+
+  //     _textStarTotalCoin.text = valueTotalStarCoin.ToString();
+
+  //     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
+
+  //   }
+
+  //   ShowHintWrap();
+  // }
+
+  // private void ShowHintWrap()
+  // {
+  //   _wrapHint.SetActive(true);
+
+  //   _wrapHint.transform
+  //     .DOMove(new Vector3(0, -3, 0), duration / 2)
+  //     .From()
+  //     .OnComplete(async () => await AnimateHitStat());
+  // }
+
+  // public async UniTask AnimateHitStat()
+  // {
+  //   _initPositionHint = _levelManager.hint.gameObject.transform.position;
+  //   var positionTo = _spriteHint.transform.position;
+  //   _levelManager.hint.gameObject.transform.DOMove(positionTo, duration).SetEase(Ease.Linear);
+  //   // Vector3[] waypoints = {
+  //   //       _initPositionHint,
+  //   //       // _initPositionHint + new Vector3(1, 1),
+  //   //       positionTo - new Vector3(0.5f, 0.5f),
+  //   //       positionTo,
+  //   //     };
+  //   // _levelManager.hint.gameObject.transform.DOPath(waypoints, duration, PathType.Linear).SetEase(Ease.Linear);
+
+  //   await UniTask.Delay((int)(duration * 500));
+
+  //   if (_stateManager.dataGame.activeLevel.hint > 0)
+  //   {
+  //     _indexHintObject.transform.DOPunchScale(new Vector3(1, 1, 0), duration, 5, 1);
+  //     _levelManager.hint.HideCounter();
+  //     _levelManager.hint.ResetProgressBar();
+
+  //     _indexCountHint.text = _stateManager.dataGame.activeLevel.hint.ToString();
+
+  //     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
+
+  //     await UniTask.Delay((int)(duration * 500));
+
+  //     int valueTotalHintCoin = _stateManager.dataGame.activeLevel.hint * _stateManager.dataGame.activeLevel.hint;
+
+  //     _textHintTotalCoin.text = valueTotalHintCoin.ToString();
+
+  //     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
+  //   }
+
+  //   await AnimateTotal();
+  // }
+
+  // private async UniTask AnimateTotal()
+  // {
+  //   await UniTask.Delay((int)(duration * 500));
+  //   _totalObject.SetActive(true);
+  //   _textTotalCoin.text = (int.Parse(_textHintTotalCoin.text) + int.Parse(_textStarTotalCoin.text)).ToString();
+
+  //   await UniTask.Delay((int)(duration * 500));
+
+  //   _buttonNext.gameObject.SetActive(true);
+  //   _buttonDouble.gameObject.SetActive(true);
+  // }
+
+  public void OnClickDoubleButton()
   {
-    _wrapStar.SetActive(true);
-
-    _wrapStar.transform
-      .DOMove(new Vector3(0, -3, 0), duration / 2)
-      .From()
-      .OnComplete(async () => await AnimateStarStat());
-
+    OnDoubleCoins();
   }
 
-  public async UniTask AnimateStarStat()
+  public void OnDoubleCoins()
   {
-    _initPositionColba = _levelManager.colba.gameObject.transform.position;
-    var positionTo = _spriteStar.transform.position;
-    _levelManager.colba.gameObject.transform.DOMove(positionTo, duration).SetEase(Ease.OutBounce);
-
-    await UniTask.Delay((int)(duration * 500));
-
-    if (_stateManager.dataGame.activeLevelWord.star > 0)
-    {
-      _indexStarObject.transform.DOPunchScale(new Vector3(1, 1, 0), duration, 5, 1);
-      _levelManager.colba.HideCounter();
-      _levelManager.colba.ResetProgressBar();
-
-      _indexCountStar.text = _stateManager.dataGame.activeLevelWord.star.ToString();
-
-      AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
-
-      await UniTask.Delay((int)(duration * 500));
-
-      int valueTotalStarCoin = _stateManager.dataGame.activeLevelWord.star * _stateManager.dataGame.activeLevelWord.star;
-
-      _textStarTotalCoin.text = valueTotalStarCoin.ToString();
-
-      AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
-
-    }
-
-    ShowHintWrap();
-  }
-
-  private void ShowHintWrap()
-  {
-    _wrapHint.SetActive(true);
-
-    _wrapHint.transform
-      .DOMove(new Vector3(0, -3, 0), duration / 2)
-      .From()
-      .OnComplete(async () => await AnimateHitStat());
-  }
-
-  public async UniTask AnimateHitStat()
-  {
-    _initPositionHint = _levelManager.hint.gameObject.transform.position;
-    var positionTo = _spriteHint.transform.position;
-    _levelManager.hint.gameObject.transform.DOMove(positionTo, duration).SetEase(Ease.OutBounce);
-    // Vector3[] waypoints = {
-    //       _initPositionHint,
-    //       // _initPositionHint + new Vector3(1, 1),
-    //       // positionTo - new Vector3(1.5f, 1.5f),
-    //       positionTo,
-    //     };
-    // _levelManager.hint.gameObject.transform.DOPath(waypoints, duration / 2, PathType.Linear);
-
-    await UniTask.Delay((int)(duration * 500));
-
-    if (_stateManager.dataGame.activeLevelWord.hint > 0)
-    {
-      _indexHintObject.transform.DOPunchScale(new Vector3(1, 1, 0), duration, 5, 1);
-      _levelManager.hint.HideCounter();
-      _levelManager.hint.ResetProgressBar();
-
-      _indexCountHint.text = _stateManager.dataGame.activeLevelWord.hint.ToString();
-
-      AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
-
-      await UniTask.Delay((int)(duration * 500));
-
-      int valueTotalHintCoin = _stateManager.dataGame.activeLevelWord.hint * _stateManager.dataGame.activeLevelWord.hint;
-
-      _textHintTotalCoin.text = valueTotalHintCoin.ToString();
-
-      AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
-    }
-
-    await AnimateTotal();
-  }
-
-  private async UniTask AnimateTotal()
-  {
-    await UniTask.Delay((int)(duration * 500));
-    _totalObject.SetActive(true);
-    _textTotalCoin.text = (int.Parse(_textHintTotalCoin.text) + int.Parse(_textStarTotalCoin.text)).ToString();
-
-    await UniTask.Delay((int)(duration * 500));
-
-    _buttonNext.gameObject.SetActive(true);
-    _buttonDouble.gameObject.SetActive(true);
+    _countTotalCoins *= 2;
+    _textTotalCoin.text = _countTotalCoins.ToString();
   }
 
   private void GoCoins()
   {
-    var countNotUseHint = int.Parse(_textTotalCoin.text);
-
     var newObj = GameObject.Instantiate(
       _gameSetting.PrefabCoin,
       _levelManager.statLevel.spriteCoin.transform.position,
@@ -199,23 +304,38 @@ public class StatLevel : MonoBehaviour
         };
 
     newObj.gameObject.transform
-      .DOPath(waypoints, 1f, PathType.Linear)
+      .DOPath(waypoints, 1f, PathType.CatmullRom)
       .SetEase(Ease.OutCubic)
-      .OnComplete(() => newEntity.AddCoins(countNotUseHint));
+      .OnComplete(() => newEntity.AddCoins(_countTotalCoins));
   }
 
   public async void Next()
   {
     GoCoins();
 
-    transform.DOMove(defaultPositionWrapper, 1f).SetEase(Ease.Linear);
-    _levelManager.hint.gameObject.transform.DOMove(_initPositionHint, duration).SetEase(Ease.Linear);
-    _levelManager.colba.gameObject.transform.DOMove(_initPositionColba, duration).SetEase(Ease.Linear);
+    _levelManager.hint.gameObject.transform
+      .DOJump(_initPositionHint, 2, 1, duration)
+      .SetEase(Ease.OutQuad);
+    _levelManager.colba.gameObject.transform
+       .DOJump(_initPositionColba, 2, 1, duration)
+       .SetEase(Ease.OutQuad);
+    // _levelManager.hint.gameObject.transform.DOMove(_initPositionHint, duration).SetEase(Ease.Linear);
+    // _levelManager.colba.gameObject.transform.DOMove(_initPositionColba, duration).SetEase(Ease.Linear);
+
+    await UniTask.Delay(500);
+    transform
+      .DOMove(defaultPositionWrapper, duration)
+      .SetEase(Ease.Linear)
+      .OnComplete(() =>
+      {
+        gameObject.SetActive(false);
+
+      });
 
     _levelManager.shuffle.Show();
     _levelManager.stat.Show();
 
-    await UniTask.Delay(1000);
+    await UniTask.Delay(500);
 
     _bg.SetActive(false);
     SetDefault();
@@ -226,19 +346,20 @@ public class StatLevel : MonoBehaviour
 
   private void SetDefault()
   {
-    gameObject.transform.position = defaultPositionWrapper;
+    gameObject.SetActive(false);
+    gameObject.transform.position = new Vector3(0, 0, 0);
     _bg.SetActive(false);
     _buttonNext.gameObject.SetActive(false);
     _buttonDouble.gameObject.SetActive(false);
     // _textCountStar.text = "";
     // _textCountHint.text = "";
-    _indexCountStar.text = "1";
-    _indexCountHint.text = "1";
-    _textStarTotalCoin.text = "0";
-    _textHintTotalCoin.text = "0";
-    _textTotalCoin.text = "0";
-    _wrapStar.SetActive(false);
-    _wrapHint.SetActive(false);
+    _indexCountStar.text = "?";
+    _indexCountHint.text = "?";
+    _textStarTotalCoin.text = "?";
+    _textHintTotalCoin.text = "?";
+    _textTotalCoin.text = "?";
+    // _wrapStar.SetActive(false);
+    // _wrapHint.SetActive(false);
     _totalObject.SetActive(false);
   }
 }

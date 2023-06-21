@@ -9,7 +9,7 @@ public class DataGame
   public int coins;
   public List<DataLevel> levels;
   public List<string> completeWords;
-  [System.NonSerialized] public DataLevel activeLevelWord;
+  [System.NonSerialized] public DataLevel activeLevel;
   public string lastLevelWord;
   public string idPlayerSetting;
   public UserSettings userSettings;

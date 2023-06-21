@@ -59,7 +59,7 @@ public class TopSide : MonoBehaviour
 
   public void SetValue(DataGame data, StatePerk statePerk)
   {
-    Debug.Log($"TopSide setValue {data.rate}");
+    // Debug.Log($"TopSide setValue {data.rate}");
     _rate.text = data.rate.ToString();
     _coins.text = data.coins.ToString();
   }
