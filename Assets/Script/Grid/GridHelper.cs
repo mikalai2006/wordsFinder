@@ -82,8 +82,8 @@ public class GridHelper
       .OrderBy(t => t.y)
       .ThenBy(t => t.x);
 
-    var chooseNode = potentialNodes.First();
-    result = GetLineNodesByCount(chooseNode, countChars);
+    var chooseNode = potentialNodes.FirstOrDefault();
+    if (chooseNode != null) result = GetLineNodesByCount(chooseNode, countChars);
     return result;
   }
 

@@ -22,5 +22,5 @@ MonoBehaviour:
     charBonus: 40
     errorClear: 20
     charCoin: 10
-    charStar: 10
-    charHint: 10
+    charStar: 20
+    charHint: 20

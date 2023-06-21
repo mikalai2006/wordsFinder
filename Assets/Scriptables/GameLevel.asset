@@ -35,7 +35,6 @@ MonoBehaviour:
   coefHint: 0.1
   coefStar: 0.2
   levelWords:
-  - {fileID: 11400000, guid: d9e867c56a2364d4caa507c9d3604d26, type: 2}
   - {fileID: 11400000, guid: ff000bb530ea4ea4d8423a4710f35553, type: 2}
   - {fileID: 11400000, guid: dc6afd93993e3ab4ba360afa93d1677a, type: 2}
   - {fileID: 11400000, guid: d9e867c56a2364d4caa507c9d3604d26, type: 2}
@@ -48,6 +47,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d25fb7c8f313dbe4489fa815d2096be9, type: 2}
   - {fileID: 11400000, guid: 97092dc170bd2514981c01f9f3d04ff3, type: 2}
   - {fileID: 11400000, guid: 7b04bb9c74ffdfb44bde55da651000cd, type: 2}
+  - {fileID: 11400000, guid: d9e867c56a2364d4caa507c9d3604d26, type: 2}
   references:
     version: 2
     RefIds: []
