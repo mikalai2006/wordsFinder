@@ -135,6 +135,10 @@ MonoBehaviour:
     m_Key: timedelay
     m_Metadata:
       m_Items: []
+  - m_Id: 3424084047331328
+    m_Key: shop
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

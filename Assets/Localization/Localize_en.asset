@@ -143,6 +143,10 @@ MonoBehaviour:
     m_Localized: Time delay (ms)
     m_Metadata:
       m_Items: []
+  - m_Id: 3424084047331328
+    m_Localized: Shop
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

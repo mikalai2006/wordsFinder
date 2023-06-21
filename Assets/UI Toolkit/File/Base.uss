@@ -187,3 +187,12 @@
 .text-primary {
     color: rgb(255, 255, 255);
 }
+
+.header {
+    background-color: rgba(0, 0, 0, 0.2);
+    -unity-font-style: bold;
+    font-size: 18px;
+    -unity-text-align: upper-center;
+    flex-direction: row;
+    color: rgb(255, 255, 255);
+}

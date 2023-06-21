@@ -15,9 +15,18 @@
             </ui:Button>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="MenuBlok" class="font text-primary" style="background-color: rgba(0, 0, 0, 0.71); position: absolute; left: 2px; top: -3px; right: -1px; bottom: 5px; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; display: flex; flex-grow: 1;">
+    <ui:VisualElement name="MenuBlok" class="font text-primary" style="background-color: rgba(0, 0, 0, 0.71); position: absolute; left: 0; top: 0; right: 0; bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; display: flex; flex-grow: 1;">
         <ui:VisualElement name="MenuBlokWrapper" class="b-rounded" style="background-color: rgb(164, 164, 164); align-items: stretch; max-width: 600px; align-self: center; flex-grow: 0; width: 380px;">
-            <ui:Label tabindex="-1" text="#settings" display-tooltip-when-elided="true" class="p-2" style="-unity-font-style: bold; -unity-text-align: upper-center;" />
+            <ui:VisualElement class="header" style="flex-grow: 1;">
+                <ui:VisualElement class="p-1" style="flex-shrink: 0; align-items: stretch; flex-grow: 1;">
+                    <ui:Label tabindex="-1" text="#settings" display-tooltip-when-elided="true" class="p-2" />
+                </ui:VisualElement>
+                <ui:VisualElement class="p-1" style="flex-shrink: 0; align-items: flex-end;">
+                    <ui:Button display-tooltip-when-elided="true" name="CloseMenuBtn" class="button_circle">
+                        <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Sprites/128/Close128.png?fileID=2800000&amp;guid=403f4819152989949a0b60620e8ee754&amp;type=3#Close128&apos;); flex-grow: 1;" />
+                    </ui:Button>
+                </ui:VisualElement>
+            </ui:VisualElement>
             <ui:VisualElement name="Menu" style="background-color: rgba(0, 0, 0, 0); padding-left: 20px; padding-right: 20px; padding-top: 20px; padding-bottom: 20px;">
                 <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); margin-bottom: 20px;">
                     <ui:Slider picking-mode="Ignore" label="#volumeEffect" value="0.2" high-value="1" name="VolumeEffect" />
@@ -35,7 +44,6 @@
             </ui:VisualElement>
             <ui:VisualElement style="margin-left: 20px; margin-right: 20px; margin-top: 20px; margin-bottom: 20px; flex-direction: row; justify-content: space-between;">
                 <ui:Button text="#tostartmenu" display-tooltip-when-elided="true" name="ToStartMenuBtn" class="button" />
-                <ui:Button text="#close" display-tooltip-when-elided="true" name="CloseMenuBtn" class="button" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
