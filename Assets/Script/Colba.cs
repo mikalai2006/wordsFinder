@@ -122,6 +122,31 @@ public class Colba : MonoBehaviour, IPointerDownHandler
     SetDefault();
   }
 
+  public void CreateCoin()
+  {
+    var newObj = GameObject.Instantiate(
+       _gameSetting.PrefabCoin,
+       transform.position,
+       Quaternion.identity
+     );
+    var newEntity = newObj.GetComponent<BaseEntity>();
+    newEntity.InitStandalone();
+    newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
+    var positionFrom = transform.position;
+    var positionTo = _levelManager.topSide.spriteCoinPosition;
+    Vector3[] waypoints = {
+          positionFrom,
+          positionFrom + new Vector3(1.5f, 0f),
+          positionTo - new Vector3(1.5f, 0.5f),
+          positionTo,
+        };
+
+    newObj.gameObject.transform
+      .DOPath(waypoints, 1f, PathType.CatmullRom)
+      .SetEase(Ease.OutCubic)
+      .OnComplete(() => newEntity.AddCoins(1));
+  }
+
   public void SetValue(DataGame data, StatePerk statePerk)
   {
     // if (data.activeLevel.star > 0)

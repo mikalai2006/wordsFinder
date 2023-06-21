@@ -343,14 +343,16 @@ public class ManagerHiddenWords : MonoBehaviour
       }
       else
       {
-        if (NeedWords.ContainsKey(choosedWord))
-        {
-          OpenNeedWords.Add(choosedWord, 1);
-        }
         // open new allow word.
         OpenWords.Add(choosedWord, 1);
         await _choosedWordMB.OpenAllowWord();
         _stateManager.OpenAllowWord(choosedWord);
+
+        if (NeedWords.ContainsKey(choosedWord))
+        {
+          OpenNeedWords.Add(choosedWord, 1);
+          _levelManager.colba.CreateCoin();
+        }
       }
     }
     else

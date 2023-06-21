@@ -40,6 +40,7 @@ public class DataLevel
   public int countWords;
   public List<string> allowWords;
   public int countOpenChars;
+  public int countDopWords;
 
   public DataLevel()
   {

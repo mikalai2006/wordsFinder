@@ -52,30 +52,33 @@ public class StateManager : MonoBehaviour
 
   public void RefreshData()
   {
+    var managerHiddenWords = _levelManager.ManagerHiddenWords;
     // Save setting user.
     dataGame.userSettings = _gameManager.AppInfo.userSettings;
 
-    dataGame.activeLevel.word = _levelManager.ManagerHiddenWords.WordForChars;
+    dataGame.activeLevel.word = managerHiddenWords.WordForChars;
+
+    dataGame.activeLevel.countDopWords = managerHiddenWords.OpenWords.Count - managerHiddenWords.OpenNeedWords.Count;
 
     dataGame.activeLevel.openChars.Clear();
-    foreach (var item in _levelManager.ManagerHiddenWords.OpenChars)
+    foreach (var item in managerHiddenWords.OpenChars)
     {
       dataGame.activeLevel.openChars.Add(item.Key, item.Value);
     }
 
     dataGame.activeLevel.ent.Clear();
-    foreach (var item in _levelManager.ManagerHiddenWords.Entities)
+    foreach (var item in managerHiddenWords.Entities)
     {
       dataGame.activeLevel.ent.Add(item.Key, item.Value);
     }
-    dataGame.activeLevel.openWords = _levelManager.ManagerHiddenWords.OpenWords.Keys.ToList();
-    // dataGame.activeLevel.countOpenWords = _levelManager.ManagerHiddenWords.OpenWords.Count;
-    dataGame.activeLevel.allowWords = _levelManager.ManagerHiddenWords.NeedWords.Keys.ToList();
-    dataGame.activeLevel.countWords = _levelManager.ManagerHiddenWords.NeedWords.Count;
+    dataGame.activeLevel.openWords = managerHiddenWords.OpenWords.Keys.ToList();
+    // dataGame.activeLevel.countOpenWords = managerHiddenWords.OpenWords.Count;
+    dataGame.activeLevel.allowWords = managerHiddenWords.NeedWords.Keys.ToList();
+    dataGame.activeLevel.countWords = managerHiddenWords.NeedWords.Count;
     dataGame.activeLevel.hiddenWords = dataGame.activeLevel.openWords.Count == dataGame.activeLevel.countWords
       ? new()
-      : _levelManager.ManagerHiddenWords.HiddenWords.Keys.ToList();
-    dataGame.activeLevel.countOpenChars = _levelManager.ManagerHiddenWords.OpenWords.Select(t => t.Key.Length).Sum();
+      : managerHiddenWords.HiddenWords.Keys.ToList();
+    dataGame.activeLevel.countOpenChars = managerHiddenWords.OpenWords.Select(t => t.Key.Length).Sum();
 
     _gameManager.DataManager.Save();
     OnChangeState.Invoke(dataGame, statePerk);
