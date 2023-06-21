@@ -14,6 +14,10 @@ public class GamePlayerSetting : ScriptableObject
   public int countFindWordsForUp;
   [Tooltip("Максимальная длина слов, которые будут использоваться для табло")]
   public int maxLengthWord;
+  // [Tooltip("Максимальная длина слова для набора символов")]
+  // public int maxLengthWordForChars;
+  // [Tooltip("Минимальная длина слова для набора символов")]
+  // public int minLengthWordForChars;
   [Range(5, 200)] public int maxFindWords;
   [Range(0f, 5f)] public int maxCountHints;
 

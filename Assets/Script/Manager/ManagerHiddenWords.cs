@@ -484,26 +484,20 @@ public class ManagerHiddenWords : MonoBehaviour
 
   public async UniTask NextLevel()
   {
-    // await _levelManager.shuffle.Destroy();
-    // await _levelManager.colba.Destroy();
-    // await _levelManager.hint.Destroy();
-    // _stateManager.RefreshData();
-    // await _levelManager.NextLevel();
-    // AllowWords.Clear();
-    // // OpenHiddenWords.Clear();
-    // OpenWords.Clear();
-    // // GameManager.Instance.DataManager.Save();
     _gameManager.InputManager.Disable();
     _stateManager.RefreshData();
     var result = await _levelManager.statLevel.Show();
+
     if (result.isOk)
     {
-      // _gameManager.DataManager.Save();
-      // Reset();
+      // Check next level status player.
+      await _levelManager.CheckNextLevelPlayer();
+
       var newConfigWord = _stateManager.GetConfigNextLevel();
       _levelManager.InitLevel(newConfigWord);
-      // await _levelManager.NextLevel();
+
     }
+
     _gameManager.InputManager.Enable();
   }
 

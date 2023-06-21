@@ -132,38 +132,16 @@ public class LevelManager : Singleton<LevelManager>
     // await UniTask.Yield();
   }
 
-  public async UniTask NextLevel()
+  public async UniTask CheckNextLevelPlayer()
   {
-
-    // var indexActiveLevel = _gameSetting.GameLevels.FindIndex(t => t.id == _gameManager.StateManager.dataGame.lastActiveLevelId);
-    // var indexActiveWord = _gameSetting.GameLevels.ElementAt(indexActiveLevel).words
-    //   .FindIndex(t => t.id == _gameManager.StateManager.dataGame.lastActiveWordId);
-    // if (indexActiveWord >= _gameManager.StateManager.ActiveLevelConfig.words.Count - 1)
-    // {
-    //   if (indexActiveLevel >= _gameSetting.GameLevels.Count - 1)
-    //   {
-
-    //   }
-    //   else
-    //   {
-    //     InitLevel(
-    //     _gameSetting.GameLevels.ElementAt(indexActiveLevel + 1),
-    //     _gameSetting.GameLevels.ElementAt(indexActiveLevel + 1).words.ElementAt(0)
-    //     );
-    //   }
-    // }
-    // else
-    // {
-    //   InitLevel(
-    //     _gameManager.StateManager.ActiveLevelConfig,
-    //     _gameManager.StateManager.ActiveLevelConfig.words.ElementAt(indexActiveWord + 1)
-    //     );
-    // }
-
-    _gameManager.InputManager.Disable();
-    var dialogWindow = new UILevelsOperation();
-    var result = await dialogWindow.ShowAndHide();
-    _gameManager.InputManager.Enable();
+    if (_gameManager.PlayerSetting.countFindWordsForUp <= _stateManager.dataGame.rate)
+    {
+      // TODO Next level status player;
+    }
+    // _gameManager.InputManager.Disable();
+    // var dialogWindow = new UILevelsOperation();
+    // var result = await dialogWindow.ShowAndHide();
+    // _gameManager.InputManager.Enable();
     await UniTask.Yield();
   }
 

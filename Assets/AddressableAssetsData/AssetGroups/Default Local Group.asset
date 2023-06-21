@@ -16,27 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: ba540162e29de6f4bba518947db2e9b8
-  m_SerializeEntries:
-  - m_GUID: b9fdadbac2f6bc14dbbc5eeb1a0a395d
-    m_Address: Assets/Font/Roboto-Regular SDF.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a56291f66c8962e4caf49e18003f2295
-    m_Address: Assets/Font/Roboto-Regular.ttf
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0d562af7fc11e5c42bf31bde64c74d93
-    m_Address: Assets/Font/roboto-v30-cyrillic_latin-regular SDF.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4091177b81726b94c81519eb247e23a6
-    m_Address: Assets/Font/roboto-v30-cyrillic_latin-regular.ttf
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 912e5358d86a0b7449e455fba5359f6c, type: 2}
   m_SchemaSet:

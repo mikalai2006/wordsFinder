@@ -13,8 +13,8 @@ public class UIShop : UILocaleBase
   [SerializeField] private VisualElement _root;
   private GameObject _enviromnment;
   [SerializeField] private ScrollView _listItems;
-  private TaskCompletionSource<DataResultLevelDialog> _processCompletionSource;
-  private DataResultLevelDialog _result;
+  private TaskCompletionSource<DataResultUIDialog> _processCompletionSource;
+  private DataResultUIDialog _result;
 
   private void Awake()
   {
@@ -125,10 +125,10 @@ public class UIShop : UILocaleBase
     _processCompletionSource.SetResult(_result);
   }
 
-  public async UniTask<DataResultLevelDialog> ProcessAction()
+  public async UniTask<DataResultUIDialog> ProcessAction()
   {
 
-    _processCompletionSource = new TaskCompletionSource<DataResultLevelDialog>();
+    _processCompletionSource = new TaskCompletionSource<DataResultUIDialog>();
 
     return await _processCompletionSource.Task;
   }

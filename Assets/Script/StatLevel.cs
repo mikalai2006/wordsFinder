@@ -37,8 +37,8 @@ public class StatLevel : MonoBehaviour
   [SerializeField] private SpriteRenderer spriteCoin;
   [SerializeField] private TMPro.TextMeshProUGUI _textTotalCoin;
 
-  private TaskCompletionSource<DataResultLevelDialog> _processCompletionSource;
-  private DataResultLevelDialog _result;
+  private TaskCompletionSource<DataResultUIDialog> _processCompletionSource;
+  private DataResultUIDialog _result;
 
   private Vector3 defaultPositionWrapper = new Vector3(0, 15, 0);
   private Vector3 _initPositionColba;
@@ -56,7 +56,7 @@ public class StatLevel : MonoBehaviour
     SetDefault();
   }
 
-  public async UniTask<DataResultLevelDialog> Show()
+  public async UniTask<DataResultUIDialog> Show()
   {
     _processCompletionSource = new();
     _result = new();
