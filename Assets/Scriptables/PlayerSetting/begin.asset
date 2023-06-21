@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idPlayerSetting: begin
   countFindWordsForUp: 50
+  maxLengthWord: 5
   bonusCount:
     charBonus: 40
     errorClear: 20

@@ -15,6 +15,7 @@ public class StateManager : MonoBehaviour
 
   public LevelManager _levelManager => GameManager.Instance.LevelManager;
   public GameManager _gameManager => GameManager.Instance;
+  public GameSetting _gameSetting => GameManager.Instance.GameSettings;
 
   private void Awake()
   {
@@ -36,7 +37,7 @@ public class StateManager : MonoBehaviour
   {
     if (data == null || string.IsNullOrEmpty(data.idPlayerSetting))
     {
-      var idPlayerSetting = _gameManager.GameSettings.PlayerSetting.ElementAt(0).idPlayerSetting;
+      var idPlayerSetting = _gameSetting.PlayerSetting.ElementAt(0).idPlayerSetting;
       data = new DataGame()
       {
         idPlayerSetting = idPlayerSetting,
@@ -44,7 +45,7 @@ public class StateManager : MonoBehaviour
     }
 
     dataGame = data;
-    _gameManager.PlayerSetting = _gameManager.GameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.idPlayerSetting);
+    _gameManager.PlayerSetting = _gameSetting.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.idPlayerSetting);
 
     // Load setting user.
     _gameManager.AppInfo.userSettings = dataGame.userSettings;
@@ -255,8 +256,8 @@ public class StateManager : MonoBehaviour
       {
         id = wordConfig.idLevelWord,
         // word = word,
-        hint = wordConfig.countHint,
-        star = wordConfig.countStar
+        // hint = (int)Mathf.Round(wordConfig.word.Length * _gameSetting.GameLevels.coefHint),
+        // star = (int)Mathf.Round(wordConfig.word.Length * _gameSetting.GameLevels.coefStar)
       });
 
     }

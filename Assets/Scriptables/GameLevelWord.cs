@@ -10,11 +10,5 @@ public class GameLevelWord : ScriptableObject
   [Space(10)]
   [Header("Bonus settings")]
   public int minRate;
-  public int countHint;
-  public int countStar;
 
-  [Space(10)]
-  [Header("Word settings")]
-  public int maxCountHiddenChar;
-  public int maxNeedFindWords;
 }

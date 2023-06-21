@@ -16,6 +16,8 @@ public class GameSetting : ScriptableObject
   [Header("Game")]
   [Range(0.1f, 1f)] public float lineWidth;
   [Range(0.5f, 3f)] public float radius;
+  [Range(0, 3)] public int addinitiallyRow;
+  [Range(10, 200)] public int maxCountHiddenChar;
 
   [Space(5)]
   [Header("Animations")]

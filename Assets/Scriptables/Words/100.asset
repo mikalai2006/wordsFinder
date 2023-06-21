@@ -17,5 +17,5 @@ MonoBehaviour:
   minRate: 100
   countHint: 3
   countStar: 3
-  maxCountHiddenChar: 100
+  maxCountHiddenChar: 180
   maxNeedFindWords: 100

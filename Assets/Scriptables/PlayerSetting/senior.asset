@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idPlayerSetting: senior
   countFindWordsForUp: 10000000
+  maxLengthWord: 20
   bonusCount:
     charBonus: 40
     errorClear: 20
