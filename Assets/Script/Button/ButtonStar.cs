@@ -117,8 +117,11 @@ public class ButtonStar : BaseButton
   public override void SetValueProgressBar(DataGame data, StatePerk statePerk)
   {
     var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)statePerk.countCharForAddStar / _gameManager.PlayerSetting.bonusCount.charStar;
-    spriteProgress.transform.localPosition
-      = new Vector3(spriteProgress.transform.localPosition.x, newPosition);
+    // spriteProgress.transform.localPosition
+    //   = new Vector3(spriteProgress.transform.localPosition.x, newPosition);
+    spriteProgress.transform
+      .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
+      .SetEase(Ease.OutBounce);
   }
 
   public override void RunHint()

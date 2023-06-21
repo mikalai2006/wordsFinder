@@ -173,6 +173,8 @@ MonoBehaviour:
   StateManager: {fileID: 153567558}
   Words:
     data: []
+  LevelManager: {fileID: 0}
+  PlayerSetting: {fileID: 0}
 --- !u!1 &153567556
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,6 +225,12 @@ MonoBehaviour:
     levels: []
     completeWords: []
     lastLevelWord: 
+    idPlayerSetting: 
+    userSettings:
+      lang: 
+      muv: 0
+      auv: 0
+      td: 0
   statePerk:
     countCharInOrder: 0
     countWordInOrder: 0
@@ -246,7 +254,7 @@ GameObject:
   m_Layer: 0
   m_Name: StartApp
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

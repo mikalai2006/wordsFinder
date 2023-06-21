@@ -1,5 +1,6 @@
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 
 public class ButtonHint : BaseButton
@@ -58,7 +59,10 @@ public class ButtonHint : BaseButton
   public override void SetValueProgressBar(DataGame data, StatePerk statePerk)
   {
     var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)statePerk.countCharForAddHint / _gameManager.PlayerSetting.bonusCount.charHint;
-    spriteProgress.transform.localPosition
-      = new Vector3(spriteProgress.transform.localPosition.x, newPosition);
+    // spriteProgress.transform.localPosition
+    //   = new Vector3(spriteProgress.transform.localPosition.x, newPosition);
+    spriteProgress.transform
+      .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
+      .SetEase(Ease.OutBounce);
   }
 }

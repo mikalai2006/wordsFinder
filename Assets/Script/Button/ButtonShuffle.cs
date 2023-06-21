@@ -24,6 +24,8 @@ public class ButtonShuffle : BaseButton
 
   public override async void OnPointerDown(PointerEventData eventData)
   {
+    base.OnPointerDown(eventData);
+
     var existChars = _levelManager.Symbols;
 
     // get all positions.
@@ -57,6 +59,10 @@ public class ButtonShuffle : BaseButton
   {
     transform
       .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)
-      .SetEase(Ease.OutBack);
+      .SetEase(Ease.OutBack)
+      .OnComplete(() =>
+      {
+        transform.localScale = initScale;
+      });
   }
 }

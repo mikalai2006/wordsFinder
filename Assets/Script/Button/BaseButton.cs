@@ -13,8 +13,10 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   protected StateManager _stateManager => GameManager.Instance.StateManager;
   protected GameManager _gameManager => GameManager.Instance;
 
+  protected MonoBehaviour poiner;
   protected Vector3 initScale;
   protected Vector3 initPosition;
+  protected Vector3 initScaleCounterObject;
   [SerializeField] protected GameObject spritesObject;
   [SerializeField] protected SpriteRenderer spriteBg;
   [SerializeField] protected SpriteMask spriteMask;
@@ -29,8 +31,11 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   #region UnityMethods
   protected virtual void Awake()
   {
+    poiner = GetComponent<IPointerDownHandler>() as MonoBehaviour;
+
     initScale = spritesObject.transform.localScale;
     initPosition = spritesObject.transform.position;
+    initScaleCounterObject = counterObject.transform.localScale;
 
     counterText.text = "0";
     counterObject.transform.localScale = new Vector3(0, 0, 0);
@@ -62,6 +67,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
           .OnComplete(() =>
           {
             statusShowCounter = true;
+            counterObject.transform.localScale = initScaleCounterObject;
           });
       }
     }
@@ -125,9 +131,16 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 
   public virtual void OnPointerDown(PointerEventData eventData)
   {
+    poiner.enabled = false;
     transform
-      .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)
-      .SetEase(Ease.OutBack);
+        .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)
+        .SetEase(Ease.OutBack)
+        .OnComplete(() =>
+        {
+          statusShowCounter = true;
+          transform.localScale = initScale;
+          poiner.enabled = true;
+        });
 
     if (value != 0)
     {
