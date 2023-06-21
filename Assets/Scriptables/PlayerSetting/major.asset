@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: major
   m_EditorClassIdentifier: 
   idPlayerSetting: major
+  coefDifficulty: 0.4
   countFindWordsForUp: 500
   maxLengthWord: 7
+  maxFindWords: 0
+  maxCountHints: 0
   bonusCount:
     charBonus: 50
     errorClear: 10

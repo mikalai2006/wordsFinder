@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: begin
   m_EditorClassIdentifier: 
   idPlayerSetting: begin
+  coefDifficulty: 0.1
   countFindWordsForUp: 50
   maxLengthWord: 5
+  maxFindWords: 100
+  maxCountHints: 0
   bonusCount:
     charBonus: 40
     errorClear: 20

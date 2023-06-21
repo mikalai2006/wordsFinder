@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: senior
   m_EditorClassIdentifier: 
   idPlayerSetting: senior
+  coefDifficulty: 0.8
   countFindWordsForUp: 10000000
   maxLengthWord: 20
+  maxFindWords: 0
+  maxCountHints: 0
   bonusCount:
     charBonus: 40
     errorClear: 20

@@ -15,7 +15,3 @@ MonoBehaviour:
   idLevelWord: 11
   word: "\u043A\u043E\u043B\u043E\u0434\u0435\u0446"
   minRate: 10
-  countHint: 3
-  countStar: 3
-  maxCountHiddenChar: 10
-  maxNeedFindWords: 10

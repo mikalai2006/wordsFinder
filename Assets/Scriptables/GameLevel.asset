@@ -32,6 +32,8 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+  coefHint: 0.1
+  coefStar: 0.2
   levelWords:
   - {fileID: 11400000, guid: d9e867c56a2364d4caa507c9d3604d26, type: 2}
   - {fileID: 11400000, guid: 7e6d945eaead8214db177ae3ead2de8b, type: 2}

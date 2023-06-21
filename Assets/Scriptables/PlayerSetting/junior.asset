@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: junior
   m_EditorClassIdentifier: 
   idPlayerSetting: junior
+  coefDifficulty: 0.2
   countFindWordsForUp: 100
   maxLengthWord: 6
+  maxFindWords: 0
+  maxCountHints: 0
   bonusCount:
     charBonus: 40
     errorClear: 15

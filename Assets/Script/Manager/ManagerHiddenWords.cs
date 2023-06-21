@@ -35,7 +35,6 @@ public class ManagerHiddenWords : MonoBehaviour
 
   public float scaleGrid;
   private int minGridSize = 9;
-  private int countHiddenChars = 0;
 
   private void Awake()
   {
@@ -97,8 +96,6 @@ public class ManagerHiddenWords : MonoBehaviour
 
     CreateAllowWords();
 
-    CreateHints();
-
     List<string> _hiddenWords = new();
     if (!string.IsNullOrEmpty(data.word))
     {
@@ -107,6 +104,7 @@ public class ManagerHiddenWords : MonoBehaviour
     else
     {
       _hiddenWords = CreateHiddenWords();
+      CreateHints();
     }
 
     SetScaleChars(_hiddenWords);
@@ -227,7 +225,7 @@ public class ManagerHiddenWords : MonoBehaviour
   {
     List<string> hiddenWords = new();
 
-    countHiddenChars = 0;
+    var countHiddenChars = 0;
     foreach (var word in NeedWords)
     {
       if (countHiddenChars > _gameSetting.maxCountHiddenChar) break;
@@ -439,20 +437,12 @@ public class ManagerHiddenWords : MonoBehaviour
 
   private void SetScaleChars(List<string> _hiddenWords)
   {
+    var countHiddenChars = _hiddenWords.Select(t => t.Length).Sum();
+
     var defaultGridSize = minGridSize;
     var defaultCountChars = System.Math.Pow(defaultGridSize, 2);
 
-    // calculate count char of by words.
-    // var sortedListHiddenWords = _hiddenWords.OrderBy(t => t.Length);
-    // int countChars = sortedListHiddenWords.OrderBy(t => t.Length).Select(t => t.Length).Sum();
-    // countChars += sortedListHiddenWords.Count();
-    // string wordWithMaxLength = sortedListHiddenWords.Last();
-    // int maxLengthWord = wordWithMaxLength.Length;
-    // if (maxLengthWord < defaultGridSize) maxLengthWord = defaultGridSize;
-    // int minNeedRows = (int)System.Math.Ceiling((double)countChars / maxLengthWord);
-
     var sizeGridXY = defaultGridSize;
-    // _stateManager.ActiveWordConfig.maxCountHiddenChar
     if (countHiddenChars > defaultCountChars)
     {
       sizeGridXY = System.Convert.ToInt32(System.MathF.Ceiling((float)System.Math.Sqrt(countHiddenChars))); //_stateManager.ActiveWordConfig.maxCountHiddenChar
@@ -476,10 +466,6 @@ public class ManagerHiddenWords : MonoBehaviour
 
     Helpers.DestroyChildren(tilemapEntities.transform);
     Helpers.DestroyChildren(tilemap.transform);
-    // foreach (var wordItem in HiddenWords)
-    // {
-    //   GameObject.Destroy(wordItem.Value.gameObject);
-    // }
 
     HiddenWords.Clear();
 
@@ -487,11 +473,12 @@ public class ManagerHiddenWords : MonoBehaviour
 
     SetScaleChars(_hiddenWords);
 
+    CreateHints();
+
     CreateGameObjectHiddenWords(_hiddenWords);
 
     // CreateEntities();
     _stateManager.RefreshData();
-    // GameManager.Instance.DataManager.Save();
   }
 
 

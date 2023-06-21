@@ -15,7 +15,3 @@ MonoBehaviour:
   idLevelWord: 1
   word: "\u0442\u043E\u0441\u0442"
   minRate: 0
-  countHint: 3
-  countStar: 3
-  maxCountHiddenChar: 10
-  maxNeedFindWords: 10

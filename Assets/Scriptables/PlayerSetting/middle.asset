@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: middle
   m_EditorClassIdentifier: 
   idPlayerSetting: middle
+  coefDifficulty: 0.6
   countFindWordsForUp: 700
   maxLengthWord: 10
+  maxFindWords: 0
+  maxCountHints: 0
   bonusCount:
     charBonus: 40
     errorClear: 20

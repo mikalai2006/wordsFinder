@@ -1,6 +1,5 @@
 using System;
 using Cysharp.Threading.Tasks;
-//using Loading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -15,8 +14,7 @@ namespace Assets
       var handle = Addressables.InstantiateAsync(assetId);
       _cachedObject = await handle.Task;
       if (_cachedObject.TryGetComponent(out T component) == false)
-        throw new NullReferenceException($"Object of type {typeof(T)} is null on " +
-                                         "attempt to load it from addressables");
+        throw new NullReferenceException($"Object of type {typeof(T)} is null on attempt to load it from addressables");
       //Debug.Log($"Load {component}");
       return component;
     }
