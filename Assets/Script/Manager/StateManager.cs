@@ -225,7 +225,7 @@ public class StateManager : MonoBehaviour
       if (dataGame.completeWords.Contains(wordConfig.word))
       {
         // Find not completed word.
-        var notCompletedWords = allLevels.levelWords.Where(t => !dataGame.completeWords.Contains(t.idLevelWord));
+        var notCompletedWords = allLevels.levelWords.Where(t => !dataGame.completeWords.Contains(t.name));
         if (notCompletedWords.Count() > 0)
         {
           wordConfig = notCompletedWords.ElementAt(0);
@@ -248,13 +248,13 @@ public class StateManager : MonoBehaviour
     ActiveWordConfig = wordConfig;
     // ActiveWordConfig = word;
     // dataGame.lastLevelWord = wordConfig.idLevel;
-    dataGame.lastLevelWord = wordConfig.idLevelWord;
+    dataGame.lastLevelWord = wordConfig.name;
 
-    if (dataGame.levels.Find(t => t.id == wordConfig.idLevelWord) == null)
+    if (dataGame.levels.Find(t => t.id == wordConfig.name) == null)
     {
       dataGame.levels.Add(new DataLevel()
       {
-        id = wordConfig.idLevelWord,
+        id = wordConfig.name,
         // word = word,
         // hint = (int)Mathf.Round(wordConfig.word.Length * _gameSetting.GameLevels.coefHint),
         // star = (int)Mathf.Round(wordConfig.word.Length * _gameSetting.GameLevels.coefStar)
@@ -262,7 +262,7 @@ public class StateManager : MonoBehaviour
 
     }
     // var indexActiveLevel = dataGame.levels.FindIndex(t => t.id == wordConfig.idLevel && t.word == word);
-    dataGame.activeLevel = dataGame.levels.Find((t) => t.id == wordConfig.idLevelWord);
+    dataGame.activeLevel = dataGame.levels.Find((t) => t.id == wordConfig.name);
     // Debug.Log($"Set active level ={indexActiveLevel}| {dataGame.activeLevel.openChars.Count}");
 
     SetDefaultPerk();
@@ -283,7 +283,7 @@ public class StateManager : MonoBehaviour
     dataGame.levels.Remove(dataGame.activeLevel);
 
     // Find not completed word.
-    var notCompletedWords = _gameManager.GameSettings.GameLevels.levelWords.Where(t => !dataGame.completeWords.Contains(t.idLevelWord));
+    var notCompletedWords = _gameManager.GameSettings.GameLevels.levelWords.Where(t => !dataGame.completeWords.Contains(t.name));
 
     if (notCompletedWords.Count() > 0)
     {

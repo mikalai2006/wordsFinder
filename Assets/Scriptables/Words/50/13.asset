@@ -10,12 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
-  m_Name: 5
+  m_Name: 13
   m_EditorClassIdentifier: 
-  idLevelWord: 5
-  word: "\u043A\u043E\u043C\u043E\u0434"
+  word: "\u0430\u0432\u043B\u043E\u0441"
   minRate: 10
-  countHint: 3
-  countStar: 3
-  maxCountHiddenChar: 10
-  maxNeedFindWords: 10

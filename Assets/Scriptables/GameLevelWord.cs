@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class GameLevelWord : ScriptableObject
 {
-  public string idLevelWord;
+  // public string idLevelWord;
   public string word;
 
   [Space(10)]

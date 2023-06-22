@@ -152,7 +152,7 @@ public class UIStartMenu : UILocaleBase
     await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
 
     var activeLastWord = _gameSettings.GameLevels.levelWords
-      .Find(t => t.idLevelWord == _gameManager.DataManager.DataGame.lastLevelWord);
+      .Find(t => t.name == _gameManager.DataManager.DataGame.lastLevelWord);
     // var activeLastLevelWord = activeLastWord
     //   .words
     //   .Find(t => t == _gameManager.DataManager.DataGame.lastWord);

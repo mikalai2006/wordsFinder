@@ -49,7 +49,7 @@ public class LevelManager : Singleton<LevelManager>
     // Check complete level.
     if (_stateManager.dataGame.levels.Count > 0)
     {
-      var currentLevel = _stateManager.dataGame.levels.Find(t => t.id == wordConfig.idLevelWord);
+      var currentLevel = _stateManager.dataGame.levels.Find(t => t.id == wordConfig.name);
       bool isEndLevel = currentLevel.openWords.Count == currentLevel.countWords && currentLevel.openWords.Count > 0;
       if (isEndLevel)
       {

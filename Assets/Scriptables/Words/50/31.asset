@@ -10,8 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
-  m_Name: 12
+  m_Name: 31
   m_EditorClassIdentifier: 
-  idLevelWord: 12
-  word: "\u0442\u0443\u0440\u043A\u0430"
+  word: "\u0432\u043E\u043B\u0435\u0439\u0431\u043E\u043B"
   minRate: 10
