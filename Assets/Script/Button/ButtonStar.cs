@@ -104,7 +104,7 @@ public class ButtonStar : BaseButton
 
   public override void SetValue(DataGame data, StatePerk statePerk)
   {
-    value = data.activeLevel.star;
+    value = data.star;
 
     base.SetValue(data, statePerk);
     _countChars.text = string.Format(

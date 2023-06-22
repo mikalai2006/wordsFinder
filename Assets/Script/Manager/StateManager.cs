@@ -161,14 +161,14 @@ public class StateManager : MonoBehaviour
     if (statePerk.countCharForAddHint >= _gameManager.PlayerSetting.bonusCount.charHint)
     {
       statePerk.countCharForAddHint -= _gameManager.PlayerSetting.bonusCount.charHint;
-      dataGame.activeLevel.hint++;
+      dataGame.hint++;
     }
 
     // Check add star to grid.
     if (statePerk.countCharForAddStar >= _gameManager.PlayerSetting.bonusCount.charStar)
     {
       statePerk.countCharForAddStar -= _gameManager.PlayerSetting.bonusCount.charStar;
-      dataGame.activeLevel.star++;
+      dataGame.star++;
     }
 
     RefreshData();
@@ -301,18 +301,18 @@ public class StateManager : MonoBehaviour
 
   public void UseHint()
   {
-    dataGame.activeLevel.hint--;
+    dataGame.hint--;
     RefreshData();
   }
   public void UseBomb()
   {
-    dataGame.activeLevel.bomb--;
+    dataGame.bomb--;
     RefreshData();
   }
 
   public void UseStar()
   {
-    dataGame.activeLevel.star--;
+    dataGame.star--;
     RefreshData();
   }
 }

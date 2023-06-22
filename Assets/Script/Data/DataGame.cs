@@ -7,6 +7,10 @@ public class DataGame
 {
   public int rate;
   public int coins;
+  public int hint;
+  public int star;
+  public int bomb;
+  public int lighting;
   public List<DataLevel> levels;
   public List<string> completeWords;
   [System.NonSerialized] public DataLevel activeLevel;
@@ -29,9 +33,9 @@ public class DataGame
 public class DataLevel
 {
   public string id;
-  public int hint;
-  public int star;
   public float index;
+  public int hintLevel;
+  public int starLevel;
   public SerializableDictionary<Vector2, string> openChars;
   public SerializeEntity ent;
   public List<string> openWords;
@@ -41,8 +45,6 @@ public class DataLevel
   public List<string> needWords;
   public int countOpenChars;
   public int countDopWords;
-  public int bomb;
-  public int lighting;
 
   public DataLevel()
   {

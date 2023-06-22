@@ -23,7 +23,7 @@ public class ButtonLighting : BaseButton
 
   public override void SetValue(DataGame data, StatePerk statePerk)
   {
-    value = data.activeLevel.lighting;
+    value = data.lighting;
     base.SetValue(data, statePerk);
   }
 

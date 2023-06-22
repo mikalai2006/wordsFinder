@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 275b2bfd9e335ea4c9a8b619a64213e8, type: 3}
-  m_Name: 17
+  m_Name: 17-remove
   m_EditorClassIdentifier: 
   word: "\u0437\u0430\u043B\u0438\u0432"
   minRate: 10

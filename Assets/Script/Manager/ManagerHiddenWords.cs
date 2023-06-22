@@ -540,10 +540,12 @@ public class ManagerHiddenWords : MonoBehaviour
   {
     var countNeedFindWords = NeedWords.Count;
 
-    _stateManager.dataGame.activeLevel.hint
+    _stateManager.dataGame.activeLevel.hintLevel
       += (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameSetting.GameLevels.coefHint);
-    _stateManager.dataGame.activeLevel.star
+    _stateManager.dataGame.activeLevel.starLevel
       += (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameSetting.GameLevels.coefStar);
+    _stateManager.dataGame.hint += _stateManager.dataGame.activeLevel.hintLevel;
+    _stateManager.dataGame.star += _stateManager.dataGame.activeLevel.starLevel;
   }
 
 

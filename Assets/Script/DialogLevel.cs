@@ -178,17 +178,14 @@ public class DialogLevel : MonoBehaviour
       .SetEase(Ease.InBack)
       .OnComplete(() =>
       {
-        gameObject.SetActive(false);
-        transform.localPosition = defaultPositionWrapper;
+        // gameObject.SetActive(false);
+        // transform.localPosition = defaultPositionWrapper;
+        _buttonNext.gameObject.SetActive(false);
+        _buttonDouble.gameObject.SetActive(false);
+        _totalObject.SetActive(false);
       });
 
-    _levelManager.buttonShuffle.Show();
-    _levelManager.stat.Show();
-
     await UniTask.Delay(1000);
-
-    _bg.SetActive(false);
-    SetDefault();
 
     _result.isOk = true;
     _processCompletionSource.SetResult(_result);
@@ -208,7 +205,7 @@ public class DialogLevel : MonoBehaviour
     );
     _textMessage.text = "";
 
-    var countHints = _stateManager.dataGame.activeLevel.hint + _stateManager.dataGame.activeLevel.star;
+    var countHints = _stateManager.dataGame.activeLevel.hintLevel + _stateManager.dataGame.activeLevel.starLevel;
     var textMessageHints = await Helpers.GetLocalizedPluralString(
         "givestarthints",
         new Dictionary<string, object> {
@@ -269,6 +266,12 @@ public class DialogLevel : MonoBehaviour
         gameObject.SetActive(false);
         _bg.SetActive(false);
         SetDefault();
+
+        // _levelManager.buttonShuffle.Show();
+        // _levelManager.stat.Show();
+        _bg.SetActive(false);
+
+
         _result.isOk = true;
         _processCompletionSource.SetResult(_result);
       });
@@ -289,6 +292,7 @@ public class DialogLevel : MonoBehaviour
     _bg.SetActive(false);
     _buttonNext.gameObject.SetActive(false);
     _buttonDouble.gameObject.SetActive(false);
+    _totalObject.SetActive(false);
     _buttonOk.gameObject.SetActive(false);
     // _textCountStar.text = "";
     // _textCountHint.text = "";
@@ -299,7 +303,6 @@ public class DialogLevel : MonoBehaviour
     _textTotalCoin.text = "";
     // _wrapStar.SetActive(false);
     // _wrapHint.SetActive(false);
-    _totalObject.SetActive(false);
   }
 
 

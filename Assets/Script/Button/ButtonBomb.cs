@@ -23,7 +23,7 @@ public class ButtonBomb : BaseButton
 
   public override void SetValue(DataGame data, StatePerk statePerk)
   {
-    value = data.activeLevel.bomb;
+    value = data.bomb;
     base.SetValue(data, statePerk);
   }
 

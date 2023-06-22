@@ -25,7 +25,7 @@ public class ButtonHint : BaseButton
 
   public override void SetValue(DataGame data, StatePerk statePerk)
   {
-    value = data.activeLevel.hint;
+    value = data.hint;
 
     base.SetValue(data, statePerk);
   }
