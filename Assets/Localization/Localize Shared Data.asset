@@ -199,6 +199,38 @@ MonoBehaviour:
     m_Key: nextword_d
     m_Metadata:
       m_Items: []
+  - m_Id: 3730866485493760
+    m_Key: completelevel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3731728058449920
+    m_Key: completelevel_d
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3766257527717888
+    m_Key: policyround
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3766582691135488
+    m_Key: roundconditdesc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3767132480503808
+    m_Key: roundresult
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769140453212160
+    m_Key: round
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806642551554048
+    m_Key: givestarthints
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806768712024064
+    m_Key: givestarthints_no
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

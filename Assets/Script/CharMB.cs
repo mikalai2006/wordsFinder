@@ -81,7 +81,7 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     else if (context.canceled && _inputManager.Dragging)
     {
       _inputManager.SetDragging(false);
-      await UniTask.Delay(100);
+      // await UniTask.Delay(100);
       await _levelManager.ManagerHiddenWords.CheckChoosedWord();
     }
   }
@@ -117,7 +117,7 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
       await UniTask.Delay(_gameManager.AppInfo.userSettings.td, cancellationToken: cancellationToken);
     }
 
-    if (!cancellationToken.IsCancellationRequested)
+    if (!cancellationToken.IsCancellationRequested && _inputManager.Dragging)
     {
       ChooseSymbol();
     }

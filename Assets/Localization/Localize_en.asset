@@ -216,10 +216,41 @@ MonoBehaviour:
     m_Localized: When used, changes the word to the next, keeping the current progress
     m_Metadata:
       m_Items: []
+  - m_Id: 3730866485493760
+    m_Localized: Complete level successfully!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3766257527717888
+    m_Localized: Round conditions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3766582691135488
+    m_Localized: 'It is necessary to find {count} word{count:|s|} from {count2} possible. '
+    m_Metadata:
+      m_Items:
+      - rid: 366247623133495314
+  - m_Id: 3767132480503808
+    m_Localized: Result of {value} round
+    m_Metadata:
+      m_Items:
+      - rid: 366247623133495314
+  - m_Id: 3769140453212160
+    m_Localized: Round
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806642551554048
+    m_Localized: You will be given {count} hint{count:|s}
+    m_Metadata:
+      m_Items:
+      - rid: 366247623133495314
+  - m_Id: 3806768712024064
+    m_Localized: You start this round without prompts.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 366247623133495314
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 008012baef150200008052d5248e05000080d2ebf1590b00008092ea35400c000080925ecd430c000080521d7c300c00
+        m_Entries: 008012baef150200008052d5248e05000080d2ebf1590b00008092ea35400c000080925ecd430c000080521d7c300c00008052e12f620d00008052dfaf610d00008012091f860d00

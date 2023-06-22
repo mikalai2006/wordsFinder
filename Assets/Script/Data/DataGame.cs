@@ -37,8 +37,8 @@ public class DataLevel
   public List<string> openWords;
   public List<string> hiddenWords;
   public string word;
-  public int countWords;
-  public List<string> allowWords;
+  public int countNeedWords;
+  public List<string> needWords;
   public int countOpenChars;
   public int countDopWords;
   public int bomb;

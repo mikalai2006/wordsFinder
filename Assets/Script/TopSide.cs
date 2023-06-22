@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class TopSide : MonoBehaviour
 {
+  private LevelManager _levelManager => GameManager.Instance.LevelManager;
+  private GameManager _gameManager => GameManager.Instance;
   private Vector3 _scaleSpriteCoin;
   private Vector3 _positionSpriteCoin;
   private Vector3 _scaleSpriteRate;
@@ -14,10 +16,9 @@ public class TopSide : MonoBehaviour
   [SerializeField] private Image _spriteRate;
   [SerializeField] private TMPro.TextMeshProUGUI _rate;
   [SerializeField] private Image _spriteCoin;
+  [SerializeField] public GameObject coinObject;
   [SerializeField] private TMPro.TextMeshProUGUI _coins;
   public Vector3 spriteCoinPosition => _spriteCoin.gameObject.transform.position;
-  private LevelManager _levelManager => GameManager.Instance.LevelManager;
-  private GameManager _gameManager => GameManager.Instance;
 
   private void Awake()
   {

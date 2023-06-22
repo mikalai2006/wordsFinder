@@ -17,12 +17,12 @@ public class LevelManager : Singleton<LevelManager>
   public List<CharMB> Symbols => _symbols;
   public GameObject SymbolsField;
   public TopSide topSide;
-  public StatLevel statLevel;
+  public DialogLevel dialogLevel;
   public ButtonStar buttonStar;
   public ButtonHint buttonHint;
   public ButtonBomb buttonBomb;
   public ButtonLighting buttonLighting;
-  public ButtonShuffle shuffle;
+  public ButtonShuffle buttonShuffle;
   public Stat stat;
 
   protected override void Awake()
@@ -31,8 +31,10 @@ public class LevelManager : Singleton<LevelManager>
     _symbols = new();
   }
 
-  public void InitLevel(GameLevelWord wordConfig)
+  public async void InitLevel(GameLevelWord wordConfig)
   {
+    _gameManager.InputManager.Disable();
+
     ResetLevel();
 
     OnInitLevel?.Invoke();
@@ -50,7 +52,7 @@ public class LevelManager : Singleton<LevelManager>
     if (_stateManager.dataGame.levels.Count > 0)
     {
       var currentLevel = _stateManager.dataGame.levels.Find(t => t.id == wordConfig.name);
-      bool isEndLevel = currentLevel.openWords.Count == currentLevel.countWords && currentLevel.openWords.Count > 0;
+      bool isEndLevel = currentLevel.openWords.Count - currentLevel.countDopWords == currentLevel.countNeedWords && currentLevel.openWords.Count > 0;
       if (isEndLevel)
       {
         ManagerHiddenWords.NextLevel().Forget();
@@ -64,6 +66,14 @@ public class LevelManager : Singleton<LevelManager>
     // GameManager.Instance.DataManager.Save();
     GameManager.Instance.StateManager.RefreshData();
 
+    // Show start info.
+    _gameManager.InputManager.Disable();
+    var result = await dialogLevel.ShowDialogStartRound();
+    if (result.isOk)
+    {
+      _gameManager.InputManager.Enable();
+    }
+
 #if UNITY_EDITOR
     stopWatch.Stop();
     System.TimeSpan timeTaken = stopWatch.Elapsed;
@@ -73,7 +83,7 @@ public class LevelManager : Singleton<LevelManager>
 
   public void CreateChars(string str)
   {
-    Debug.Log($"str={str}");
+    // Debug.Log($"str={str}");
     float baseRadius = GameManager.Instance.GameSettings.radius;
     var countCharGO = str.ToArray();
     float radius = baseRadius + (countCharGO.Length / 2) * 0.1f;

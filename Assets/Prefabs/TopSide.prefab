@@ -62,7 +62,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 51
   m_TargetDisplay: 0
 --- !u!114 &8977745634511141909
 MonoBehaviour:
@@ -377,7 +377,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 51
   m_TargetDisplay: 0
 --- !u!114 &8603826646097943020
 MonoBehaviour:
@@ -679,4 +679,5 @@ MonoBehaviour:
   _spriteRate: {fileID: 4512146248690993921}
   _rate: {fileID: 8400015452949626710}
   _spriteCoin: {fileID: 4624554111501152261}
+  coinObject: {fileID: 1684284823243444707}
   _coins: {fileID: 5808277365564703603}

@@ -137,7 +137,7 @@ public class ChoosedWordMB : MonoBehaviour
     await UniTask.WhenAll(listTasks);
   }
 
-  private void ResetWord()
+  public void ResetWord()
   {
     foreach (var ch in _charsGameObject)
     {

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idPlayerSetting: begin
   coefDifficulty: 0.1
-  countFindWordsForUp: 50
+  countFindWordsForUp: 1000
   maxLengthWord: 5
   maxFindWords: 100
   maxCountHints: 0

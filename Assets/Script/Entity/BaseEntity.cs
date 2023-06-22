@@ -48,7 +48,7 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   public virtual void InitStandalone()
   {
     _scale = _transform.localScale;
-    order.sortingOrder = 20;
+    order.sortingOrder = 51;
   }
 
   public virtual void SetColor(Color color)

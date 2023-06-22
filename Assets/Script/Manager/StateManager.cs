@@ -74,9 +74,9 @@ public class StateManager : MonoBehaviour
     }
     dataGame.activeLevel.openWords = managerHiddenWords.OpenWords.Keys.ToList();
     // dataGame.activeLevel.countOpenWords = managerHiddenWords.OpenWords.Count;
-    dataGame.activeLevel.allowWords = managerHiddenWords.NeedWords.Keys.ToList();
-    dataGame.activeLevel.countWords = managerHiddenWords.NeedWords.Count;
-    dataGame.activeLevel.hiddenWords = dataGame.activeLevel.openWords.Count == dataGame.activeLevel.countWords
+    dataGame.activeLevel.needWords = managerHiddenWords.NeedWords.Keys.ToList();
+    dataGame.activeLevel.countNeedWords = managerHiddenWords.NeedWords.Count;
+    dataGame.activeLevel.hiddenWords = dataGame.activeLevel.openWords.Count == dataGame.activeLevel.countNeedWords
       ? new()
       : managerHiddenWords.HiddenWords.Keys.ToList();
     dataGame.activeLevel.countOpenChars = managerHiddenWords.OpenWords.Select(t => t.Key.Length).Sum();
@@ -271,7 +271,7 @@ public class StateManager : MonoBehaviour
   public GameLevelWord GetConfigNextLevel()
   {
     // check completed level.
-    if (dataGame.activeLevel.openWords.Count >= dataGame.activeLevel.countWords)
+    if (dataGame.activeLevel.openWords.Count >= dataGame.activeLevel.countNeedWords)
     {
       if (!dataGame.completeWords.Contains(dataGame.activeLevel.id))
       {

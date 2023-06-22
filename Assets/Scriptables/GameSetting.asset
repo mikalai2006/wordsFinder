@@ -19,7 +19,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b57b9e953e14d084dbf1e284147084c7, type: 2}
   lineWidth: 0.15
   radius: 2.5
-  addinitiallyRow: 2
+  addinitiallyRow: 3
   maxCountHiddenChar: 200
   timeGeneralAnimation: 0.5
   Boom: {fileID: 4370175670826504157, guid: 0d64c2d06fc2020488bed46426152725, type: 3}

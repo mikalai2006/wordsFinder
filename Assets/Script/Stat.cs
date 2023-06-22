@@ -37,7 +37,7 @@ public class Stat : MonoBehaviour
           "foundcountword",
            new Dictionary<string, object> {
             {"count",  _levelManager.ManagerHiddenWords.OpenNeedWords.Count},
-            {"count2", _gameManager.StateManager.dataGame.activeLevel.countWords},
+            {"count2", _gameManager.StateManager.dataGame.activeLevel.countNeedWords},
             {"count3", _levelManager.ManagerHiddenWords.AllowPotentialWords.Count},
             {"count4", _levelManager.ManagerHiddenWords.OpenWords.Count},
           }
