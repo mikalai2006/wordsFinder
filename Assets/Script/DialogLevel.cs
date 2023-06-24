@@ -42,8 +42,8 @@ public class DialogLevel : MonoBehaviour
   [SerializeField] private SpriteRenderer spriteCoin;
   [SerializeField] private TMPro.TextMeshProUGUI _textTotalCoin;
 
-  private TaskCompletionSource<DataResultUIDialog> _processCompletionSource;
-  private DataResultUIDialog _result;
+  private TaskCompletionSource<DataDialogResult> _processCompletionSource;
+  private DataDialogResult _result;
 
   private Vector3 defaultPositionWrapper = new Vector3(0, 20, 0);
   private Vector3 visiblePositionWrapper = new Vector3(0, 6.5f, 0);
@@ -62,7 +62,7 @@ public class DialogLevel : MonoBehaviour
     SetDefault();
   }
 
-  public async UniTask<DataResultUIDialog> ShowDialogEndRound()
+  public async UniTask<DataDialogResult> ShowDialogEndRound()
   {
     _processCompletionSource = new();
     _result = new();
@@ -134,34 +134,36 @@ public class DialogLevel : MonoBehaviour
     _textTotalCoin.text = _countTotalCoins.ToString();
   }
 
-  private void GoCoins()
+  private async UniTask GoCoins()
   {
-    var newObj = GameObject.Instantiate(
-      _gameSetting.PrefabCoin,
-      spriteCoin.transform.position,
-      Quaternion.identity
-    );
-    var newEntity = newObj.GetComponent<BaseEntity>();
-    newEntity.InitStandalone();
-    newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
-    var positionFrom = spriteCoin.transform.position;// transform.position;
-    var positionTo = _levelManager.topSide.spriteCoinPosition;
-    Vector3[] waypoints = {
-          positionFrom,
-          positionFrom + new Vector3(-1.5f, 1.5f),
-          positionTo - new Vector3(1.5f, 1.5f),
-          positionTo,
-        };
+    GameEntity configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+    // var newObj = GameObject.Instantiate(
+    //   configEntity.prefab,
+    //   spriteCoin.transform.position,
+    //   Quaternion.identity
+    // );
+    // var newEntity = newObj.GetComponent<BaseEntity>();
+    // newEntity.InitStandalone();
+    // newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
+    // var positionFrom = spriteCoin.transform.position;// transform.position;
+    // var positionTo = _levelManager.topSide.spriteCoinPosition;
+    // Vector3[] waypoints = {
+    //       positionFrom,
+    //       positionFrom + new Vector3(-1.5f, 1.5f),
+    //       positionTo - new Vector3(1.5f, 1.5f),
+    //       positionTo,
+    //     };
 
-    newObj.gameObject.transform
-      .DOPath(waypoints, 1f, PathType.CatmullRom)
-      .SetEase(Ease.OutCubic)
-      .OnComplete(() => newEntity.AddCoins(_countTotalCoins));
+    // newObj.gameObject.transform
+    //   .DOPath(waypoints, 1f, PathType.CatmullRom)
+    //   .SetEase(Ease.OutCubic)
+    //   .OnComplete(() => newEntity.AddCoins(_countTotalCoins));
+    await _levelManager.CreateCoin(transform.position);
   }
 
   public async void CloseDialogEndRound()
   {
-    GoCoins();
+    await GoCoins();
 
     // _levelManager.buttonHint.gameObject.transform
     //   .DOJump(_initPositionHint, 2, 1, duration)
@@ -192,7 +194,7 @@ public class DialogLevel : MonoBehaviour
   }
 
 
-  public async UniTask<DataResultUIDialog> ShowDialogStartRound()
+  public async UniTask<DataDialogResult> ShowDialogStartRound()
   {
     _processCompletionSource = new();
     _result = new();

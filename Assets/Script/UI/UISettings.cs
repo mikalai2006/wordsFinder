@@ -76,6 +76,7 @@ public class UISettings : UILocaleBase
 
   private async void ClickOpenShop()
   {
+    AudioManager.Instance.Click();
     _gameManager.InputManager.Disable();
     var dialogWindow = new UIShopOperation();
     var result = await dialogWindow.ShowAndHide();
@@ -103,18 +104,21 @@ public class UISettings : UILocaleBase
 
   private void ClickToStartMenuButton()
   {
+    AudioManager.Instance.Click();
     HideMenu();
     GameManager.Instance.ChangeState(GameState.CloseLevel);
   }
 
   private void ClickCloseMenuButton()
   {
+    AudioManager.Instance.Click();
     _gameManager.InputManager.Enable();
     HideMenu();
   }
 
   private void ClickOpenMenuButton()
   {
+    AudioManager.Instance.Click();
     _gameManager.InputManager.Disable();
     ShowMenu();
     CreateMenu();

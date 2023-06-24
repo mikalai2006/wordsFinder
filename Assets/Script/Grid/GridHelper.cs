@@ -40,7 +40,8 @@ public class GridHelper
       .Where(t =>
         t.StateNode.HasFlag(StateNode.Occupied)
         && !t.StateNode.HasFlag(StateNode.Open)
-        && !t.StateNode.HasFlag(StateNode.Entity)
+        && !t.StateNode.HasFlag(StateNode.Hint)
+        // && !t.StateNode.HasFlag(StateNode.Entity)
         )
       .ToList();
 
@@ -154,7 +155,7 @@ public class GridHelper
     return result;
   }
 
-  public GridNode GetRandomNodeWithChar()
+  public GridNode GetRandomNodeWithHiddenChar()
   {
     return GetAllGridNodes()
       .Where(t =>
@@ -164,6 +165,147 @@ public class GridHelper
       )
       .OrderBy(t => UnityEngine.Random.value)
       .FirstOrDefault();
+  }
+
+  /// <summary>
+  /// Get All neighbours node with char
+  /// </summary>
+  /// <param name="startNode"></param>
+  /// <param name="isDiagonal"></param>
+  /// <returns></returns>
+  public List<GridNode> GetAllNeighboursWithChar(GridNode startNode, bool isDiagonal = true)
+  {
+    List<GridNode> neighbours = new();
+
+    var leftNode = startNode.LeftNode;
+    if (leftNode != null && leftNode.StateNode.HasFlag(StateNode.Occupied))
+    {
+      neighbours.Add(leftNode);
+    }
+    var rightNode = startNode.RightNode;
+    if (rightNode != null && rightNode.StateNode.HasFlag(StateNode.Occupied))
+    {
+      neighbours.Add(rightNode);
+    }
+    var topNode = startNode.TopNode;
+    if (topNode != null && topNode.StateNode.HasFlag(StateNode.Occupied))
+    {
+      neighbours.Add(topNode);
+    }
+    var bottomNode = startNode.BottomNode;
+    if (bottomNode != null && bottomNode.StateNode.HasFlag(StateNode.Occupied))
+    {
+      neighbours.Add(bottomNode);
+    }
+    if (isDiagonal)
+    {
+      var bottomLeftNode = GetNode(startNode.x - 1, startNode.y - 1);
+      if (bottomLeftNode != null && bottomLeftNode.StateNode.HasFlag(StateNode.Occupied))
+      {
+        neighbours.Add(bottomLeftNode);
+      }
+      var topLeftNode = GetNode(startNode.x - 1, startNode.y + 1);
+      if (topLeftNode != null && topLeftNode.StateNode.HasFlag(StateNode.Occupied))
+      {
+        neighbours.Add(topLeftNode);
+      }
+      var bottomRightNode = GetNode(startNode.x + 1, startNode.y - 1);
+      if (bottomRightNode != null && bottomRightNode.StateNode.HasFlag(StateNode.Occupied))
+      {
+        neighbours.Add(bottomRightNode);
+      }
+      var topRightNode = GetNode(startNode.x + 1, startNode.y + 1);
+      if (topRightNode != null && topRightNode.StateNode.HasFlag(StateNode.Occupied))
+      {
+        neighbours.Add(topRightNode);
+      }
+    }
+
+    return neighbours;
+  }
+
+  /// <summary>
+  /// Get all nodes matching the condition
+  /// </summary>
+  /// <param name="callback">condition</param>
+  /// <returns></returns>
+  public List<GridNode> GetNodeForEntity(Func<GridNode, bool> callback)
+  {
+    List<GridNode> result = new();
+
+    foreach (var node in GetAllGridNodes())
+    {
+      if (callback(node))
+      {
+        result.Add(node);
+      }
+    }
+
+    return result;
+  }
+
+  /// <summary>
+  /// Get all nodes with char by x
+  /// </summary>
+  /// <param name="startNode"></param>
+  /// <returns></returns>
+  public List<GridNode> GetAllNodeWithHiddenCharByX(GridNode startNode)
+  {
+    List<GridNode> result = new();
+
+    foreach (var node in GetAllGridNodes().Where(t =>
+      t.StateNode.HasFlag(StateNode.Occupied)
+      && !t.StateNode.HasFlag(StateNode.Open)
+      && !t.StateNode.HasFlag(StateNode.Entity)
+    ))
+    {
+      if (node != startNode && node.x == startNode.x)
+      {
+        result.Add(node);
+      }
+    }
+
+    return result;
+  }
+
+  /// <summary>
+  /// Get all nodes with gidden char
+  /// </summary>
+  /// <returns></returns>
+  public List<GridNode> GetAllNodeWithHiddenChar()
+  {
+    List<GridNode> result = new();
+
+    foreach (var node in GetAllGridNodes())
+    {
+      if (
+        node.StateNode.HasFlag(StateNode.Occupied)
+        && !node.StateNode.HasFlag(StateNode.Open)
+        && !node.StateNode.HasFlag(StateNode.Entity)
+        && !node.StateNode.HasFlag(StateNode.Hint)
+        // && !node.StateNode.HasFlag(StateNode.Entity)
+        )
+      {
+        result.Add(node);
+      }
+    }
+
+    return result;
+  }
+
+  public List<GridNode> GetExistEntityByVertical(GridNode startNode)
+  {
+    List<GridNode> result = new();
+
+    foreach (var node in GetAllGridNodes().Where(t => t.StateNode.HasFlag(StateNode.Occupied)))
+    {
+      if (node != startNode && node.x == startNode.x && node.StateNode.HasFlag(StateNode.Entity))
+      {
+        result.Add(node);
+      }
+    }
+
+    return result;
   }
 
 }

@@ -192,11 +192,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3476356110385152
-    m_Key: nextword
+    m_Key: openword
     m_Metadata:
       m_Items: []
   - m_Id: 3476387282452480
-    m_Key: nextword_d
+    m_Key: openword_d
     m_Metadata:
       m_Items: []
   - m_Id: 3730866485493760
@@ -229,6 +229,26 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 3806768712024064
     m_Key: givestarthints_no
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4121322570547200
+    m_Key: info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4131258318880768
+    m_Key: cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4151194764345344
+    m_Key: coin_t
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4151229912612864
+    m_Key: coin_d
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4186970411663360
+    m_Key: notfoundnodehiddenchar
     m_Metadata:
       m_Items: []
   m_Metadata:

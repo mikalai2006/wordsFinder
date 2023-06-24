@@ -1,15 +1,14 @@
+using System.Collections.Generic;
 using System.Linq;
-using Cysharp.Threading.Tasks;
 
 public class ButtonBomb : BaseButton
 {
   #region UnityMethods
   protected override void Awake()
   {
-    base.Awake();
+    configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Bomb);
 
-    spriteBg.sprite = _gameSetting.spriteBomb;
-    spriteMask.sprite = _gameSetting.spriteBomb;
+    base.Awake();
 
     StateManager.OnChangeState += SetValue;
   }
@@ -27,29 +26,46 @@ public class ButtonBomb : BaseButton
     base.SetValue(data, statePerk);
   }
 
-  public override void RunHint()
+  public async override void RunHint()
   {
-    var nodes = _levelManager.ManagerHiddenWords.GridHelper.GetGroupNodeChars();
-    if (nodes.Count <= 0)
+    GridNode nodeStartEffect = null;
+    var helper = _levelManager.ManagerHiddenWords.GridHelper;
+    var nodeWithHiddenChar = helper.GetAllNodeWithHiddenChar();
+
+    if (nodeWithHiddenChar.Count == 0)
     {
-      // TODO Show dialog - no hidden char
+      // Show dialog - not found node for entity
+      var message = await Helpers.GetLocaledString("notfoundnodehiddenchar");
+      var dialog = new DialogProvider(new DataDialog()
+      {
+        messageText = message,
+        showCancelButton = false
+      });
+
+      _gameManager.InputManager.Disable();
+      await dialog.ShowAndHide();
+      _gameManager.InputManager.Enable();
       return;
     };
 
-
-    var nodesForShow = nodes.OrderBy(t => -t.Value.Count).First().Value;
-
-    int countRunHit = 0;
-    foreach (var node in nodesForShow)
+    Dictionary<GridNode, List<GridNode>> potentialNodes = new();
+    foreach (var node in nodeWithHiddenChar)
     {
-      if (node != null)
-      {
-        node.OccupiedChar.ShowCharAsNei(true).Forget();
-        _levelManager.ManagerHiddenWords.AddOpenChar(node.OccupiedChar);
-        node.SetHint();
-        countRunHit++;
-      }
+      potentialNodes[node] = helper.GetAllNeighboursWithChar(node)
+        .Where(t => !t.StateNode.HasFlag(StateNode.Open))
+        .ToList();
     }
-    if (countRunHit > 0) _stateManager.UseBomb();
+    nodeStartEffect = potentialNodes.OrderBy(t => -t.Value.Count).First().Key;
+
+    List<GridNode> nodesForEffect = potentialNodes[nodeStartEffect];
+    // nodesForEffect.Add(nodeStartEffect);
+
+    var newEntity = await _levelManager.AddEntity(nodeStartEffect.arrKey, TypeEntity.Bomb);
+
+    nodeStartEffect.SetHint();
+
+    newEntity.Move(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position), nodesForEffect, true);
+
+    _stateManager.UseBomb();
   }
 }

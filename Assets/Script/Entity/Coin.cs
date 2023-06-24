@@ -1,62 +1,38 @@
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Coin : BaseEntity
 {
-  public override void Init(GridNode node)
+  #region Unity methods
+  protected override void Awake()
   {
-    base.Init(node);
+    configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+
+    base.Awake();
+  }
+  #endregion
+
+  public override void Init(GridNode node, UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset)
+  {
+    base.Init(node, asset);
 
     node.SetOccupiedEntity(this);
 
-    _spriteRenderer.sprite = _gameSetting.spriteCoin;
-    _spriteBg.color = _gameSetting.Theme.bgColor;
     SetColor(_gameSetting.Theme.entityColor);
   }
 
-  public override void InitStandalone()
+  public override void InitStandalone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset)
   {
-    base.InitStandalone();
+    base.InitStandalone(asset);
 
-    _spriteRenderer.sprite = _gameSetting.spriteCoin;
-    _spriteBg.color = _gameSetting.Theme.bgColor;
+    spriteBg.color = _gameSetting.Theme.bgColor;
     SetColor(_gameSetting.Theme.entityColor);
   }
 
   public override void SetColor(Color color)
   {
     // base.SetColor(color);
-    _spriteRenderer.color = color;
-    _spriteRenderer.sprite = _gameSetting.spriteCoin;
-  }
-
-  public void RunEffect()
-  {
-    SetColor(_gameSetting.Theme.entityActiveColor);
-    Vector3 positionTo = _levelManager.topSide.spriteCoinPosition;
-    Vector3 positionFrom = _levelManager.ManagerHiddenWords.tilemap.CellToWorld(new Vector3Int(OccupiedNode.arrKey.x, OccupiedNode.arrKey.y));
-    Vector3[] waypoints = {
-      positionFrom,
-      positionFrom + new Vector3(1, 1),
-      positionTo - new Vector3(1.5f, 1.5f),
-      positionTo - new Vector3(0.5f, 0),
-    };
-    gameObject.transform
-      .DOPath(waypoints, 1f, PathType.Linear)
-      .SetEase(Ease.OutCubic)
-      .OnComplete(() => AddCoins());
-  }
-
-  public override void SetPosition(Vector3 pos)
-  {
-    pos = pos + new Vector3(_spriteRenderer.bounds.size.x / 2, _spriteRenderer.bounds.size.y / 2);
-    gameObject.transform
-      .DOMove(pos, 1f)
-      .SetEase(Ease.OutCubic);
-
-    //SetDefault();
+    spriteRenderer.color = color;
   }
 
   public override void AddCoins(int count = 1)
@@ -66,17 +42,12 @@ public class Coin : BaseEntity
     Destroy(gameObject);
   }
 
-  public override void Run()
+  public async override UniTask Run()
   {
-    base.Run();
+    await base.Run();
 
-    RunEffect();
+    // RunEffect();
 
     Debug.Log("TODO Run coin");
-  }
-
-  public override void OnPointerDown(PointerEventData eventData)
-  {
-    Debug.Log("TODO Show dialog about coin.");
   }
 }

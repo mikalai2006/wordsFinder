@@ -13,10 +13,11 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   protected StateManager _stateManager => GameManager.Instance.StateManager;
   protected GameManager _gameManager => GameManager.Instance;
 
-  protected MonoBehaviour poiner;
+  protected MonoBehaviour pointer;
   protected Vector3 initScale;
   protected Vector3 initPosition;
   protected Vector3 initScaleCounterObject;
+  protected GameEntity configEntity;
   [SerializeField] protected GameObject spritesObject;
   [SerializeField] protected SpriteRenderer spriteBg;
   [SerializeField] protected SpriteMask spriteMask;
@@ -31,7 +32,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   #region UnityMethods
   protected virtual void Awake()
   {
-    poiner = GetComponent<IPointerDownHandler>() as MonoBehaviour;
+    pointer = GetComponent<IPointerDownHandler>() as MonoBehaviour;
 
     initScale = spritesObject.transform.localScale;
     initPosition = spritesObject.transform.position;
@@ -43,6 +44,12 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
     ResetProgressBar();
 
     spriteBg.color = _gameSetting.Theme.colorPrimary;
+
+    if (configEntity != null)
+    {
+      spriteBg.sprite = configEntity.sprite;
+      spriteMask.sprite = configEntity.sprite;
+    }
   }
 
   protected virtual void OnDestroy()
@@ -131,7 +138,9 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 
   public virtual void OnPointerDown(PointerEventData eventData)
   {
-    poiner.enabled = false;
+    if (!pointer.enabled) return;
+
+    pointer.enabled = false;
     transform
         .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)
         .SetEase(Ease.OutBack)
@@ -139,7 +148,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
         {
           statusShowCounter = true;
           transform.localScale = initScale;
-          poiner.enabled = true;
+          pointer.enabled = true;
         });
 
     if (value != 0)
@@ -167,71 +176,14 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
     spritesObject.transform.position = initPosition;
   }
 
-  #region Effects
-
-  public virtual void RunOpenEffect()
-  {
-    var _CachedSystem = GameObject.Instantiate(
-      _gameSetting.Boom,
-      transform.position,
-      Quaternion.identity
-    );
-
-    var main = _CachedSystem.main;
-    main.startSize = new ParticleSystem.MinMaxCurve(0.05f, _levelManager.ManagerHiddenWords.scaleGrid / 2);
-
-    var col = _CachedSystem.colorOverLifetime;
-    col.enabled = true;
-
-    Gradient grad = new Gradient();
-    grad.SetKeys(new GradientColorKey[] {
-      new GradientColorKey(_gameSetting.Theme.bgFindAllowWord, 1.0f),
-      new GradientColorKey(_gameSetting.Theme.bgHiddenWord, 0.0f)
-      }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
-    });
-
-    col.color = grad;
-    _CachedSystem.Play();
-    if (_CachedSystem.isPlaying || _CachedSystem.isStopped) Destroy(_CachedSystem.gameObject, 2f);
-  }
-
-  //   public virtual void CreateStar(DataGame data, StatePerk statePerk)
-  //   {
-  //     // if (data.activeLevel.star <= 0) return;
-
-  //     var potentialGroup = _levelManager.ManagerHiddenWords.GridHelper
-  //       .GetGroupNodeChars()
-  //       // .OrderBy(t => UnityEngine.Random.value)
-  //       .FirstOrDefault();
-  //     if (potentialGroup.Value != null && potentialGroup.Value.Count > 0)
-  //     {
-  //       var node = potentialGroup.Value.First();
-  //       if (node != null)
-  //       {
-  //         // data.activeLevel.star -= 1;
-  //         var starEntity = _levelManager.ManagerHiddenWords.AddEntity(node.arrKey, TypeEntity.Star);
-  //         if (gameObject != null)
-  //         {
-  //           // node.StateNode |= StateNode.Entity;
-  //           starEntity.SetPosition(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position));
-  //         }
-  //         else
-  //         {
-  //           Debug.LogWarning($"Not found {name}");
-  //         }
-  //       }
-  //     }
-  //   }
-
   public void Hide()
   {
     gameObject.SetActive(false);
   }
+
   public void Show()
   {
     gameObject.SetActive(true);
   }
-
-  #endregion
 
 }

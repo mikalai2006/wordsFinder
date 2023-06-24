@@ -11,6 +11,9 @@ namespace Loader
     {
       onProgress?.Invoke(0.2f);
 
+      GameManager.Instance.ResourceSystem = ResourceSystem.Instance;
+      await ResourceSystem.Instance.LoadCollectionsAsset<GameEntity>(Constants.Labels.LABEL_ENTITY);
+
       GameManager.Instance.DataManager.Init();
       var dataGame = await GameManager.Instance.DataManager.Load();
       GameManager.Instance.StateManager.Init(dataGame);

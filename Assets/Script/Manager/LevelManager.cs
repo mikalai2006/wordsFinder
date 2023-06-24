@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
 
 public class LevelManager : Singleton<LevelManager>
@@ -99,7 +101,7 @@ public class LevelManager : Singleton<LevelManager>
          SymbolsField.transform
      );
       symbolGO.Init(countCharGO.ElementAt(i));
-      var size = radius - ((radius - baseRadius) * baseRadius) - .3f;
+      var size = radius - ((radius - baseRadius) * baseRadius) - .5f;
       symbolGO.SetSize(size);
       _symbols.Add(symbolGO);
     }
@@ -160,6 +162,87 @@ public class LevelManager : Singleton<LevelManager>
     ResetSymbols();
 
     ManagerHiddenWords.Reset();
+  }
+
+
+  public async UniTask<BaseEntity> AddEntity(Vector2Int pos, TypeEntity typeEntity)
+  {
+    var node = ManagerHiddenWords.GridHelper.GetNode(pos);
+    // pos == Vector2Int.zero
+    //   ? ManagerHiddenWords.GridHelper.GetRandomNodeWithHiddenChar()
+    //   : ManagerHiddenWords.GridHelper.GetNode(pos);
+    var configsAllEntities = _gameManager.ResourceSystem.GetAllEntity();
+    GameEntity entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Star);
+    switch (typeEntity)
+    {
+      case TypeEntity.Bomb:
+        entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Bomb);
+        break;
+      case TypeEntity.Lighting:
+        entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Lighting);
+        break;
+      case TypeEntity.Coin:
+        entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Coin);
+        break;
+      case TypeEntity.Hint:
+        entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Hint);
+        break;
+    }
+
+    var asset = Addressables.InstantiateAsync(
+      entityConfig.prefab,
+      node.position,
+      Quaternion.identity,
+      ManagerHiddenWords.tilemapEntities.transform
+      );
+    var newObj = await asset.Task;
+
+    var newEntity = newObj.GetComponent<BaseEntity>();
+    newEntity.Init(node, asset);
+    //node.StateNode |= StateNode.Entity;
+    if (!ManagerHiddenWords.Entities.ContainsKey(node.arrKey))
+    {
+      ManagerHiddenWords.Entities.Add(node.arrKey, typeEntity);
+    }
+
+    // GameManager.Instance.DataManager.Save();
+    _stateManager.RefreshData();
+
+    return newEntity;
+  }
+
+  public async UniTask<GameObject> CreateCoin(Vector2 pos)
+  {
+    var coinConfig = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+    // var newObj = GameObject.Instantiate(
+    //    coinConfig.prefab,
+    //    transform.position,
+    //    Quaternion.identity
+    //  );
+    var asset = Addressables.InstantiateAsync(
+                  coinConfig.prefab,
+                  pos,
+                  Quaternion.identity
+                  );
+    var newObj = await asset.Task;
+    var newEntity = newObj.GetComponent<BaseEntity>();
+    newEntity.InitStandalone(asset);
+    newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
+    var positionFrom = transform.position;
+    var positionTo = topSide.spriteCoinPosition;
+    Vector3[] waypoints = {
+          positionFrom,
+          positionFrom + new Vector3(1.5f, 0f),
+          positionTo - new Vector3(1.5f, 0.5f),
+          positionTo,
+        };
+
+    newObj.gameObject.transform
+      .DOPath(waypoints, 1f, PathType.CatmullRom)
+      .SetEase(Ease.OutCubic)
+      .OnComplete(() => newEntity.AddCoins(1));
+
+    return newObj;
   }
 
 }

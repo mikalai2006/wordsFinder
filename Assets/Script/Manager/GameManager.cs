@@ -20,6 +20,8 @@ public class GameManager : StaticInstance<GameManager>
   public LoginWindowProvider LoginWindowProvider { get; private set; }
   public AssetProvider AssetProvider { get; private set; }
   public GameState State { get; private set; }
+  public ResourceSystem ResourceSystem { get; internal set; }
+
   public LevelManager LevelManager;
   public GamePlayerSetting PlayerSetting;
 

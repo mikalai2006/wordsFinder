@@ -13,8 +13,8 @@ public class UIShop : UILocaleBase
   [SerializeField] private VisualElement _root;
   private GameObject _enviromnment;
   [SerializeField] private ScrollView _listItems;
-  private TaskCompletionSource<DataResultUIDialog> _processCompletionSource;
-  private DataResultUIDialog _result;
+  private TaskCompletionSource<DataDialogResult> _processCompletionSource;
+  private DataDialogResult _result;
 
   private void Awake()
   {
@@ -81,7 +81,7 @@ public class UIShop : UILocaleBase
         description
         );
 
-      blokItem.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(item.sprite);
+      blokItem.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(item.entity.sprite);
 
       // Button buy for coin.
       var buttonForCoin = blokItem.Q<Button>("Buy");
@@ -89,6 +89,9 @@ public class UIShop : UILocaleBase
       buttonForCoin.clickable.clicked += () =>
         {
           // TODO Buy for coin.
+          AudioManager.Instance.Click();
+          _gameManager.StateManager.BuyHint(item);
+
         };
       var textButtonForCoin = buttonForCoin.Q<Label>("Text");
       if (_gameManager.StateManager.dataGame.coins < item.cost)
@@ -113,6 +116,7 @@ public class UIShop : UILocaleBase
       buttonForAdv.clickable.clicked += () =>
         {
           // TODO Buy for adv.
+          AudioManager.Instance.Click();
         };
 
       _listItems.Add(blokItem);
@@ -121,14 +125,15 @@ public class UIShop : UILocaleBase
 
   private void ClickClose()
   {
+    AudioManager.Instance.Click();
     _result.isOk = false;
     _processCompletionSource.SetResult(_result);
   }
 
-  public async UniTask<DataResultUIDialog> ProcessAction()
+  public async UniTask<DataDialogResult> ProcessAction()
   {
 
-    _processCompletionSource = new TaskCompletionSource<DataResultUIDialog>();
+    _processCompletionSource = new TaskCompletionSource<DataDialogResult>();
 
     return await _processCompletionSource.Task;
   }

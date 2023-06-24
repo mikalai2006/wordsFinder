@@ -52,7 +52,19 @@ public class HiddenWordMB : MonoBehaviour
     }
   }
 
+  public async UniTask AutoOpenWord()
+  {
+    _managerHiddenWords.OpenWords.Add(_word, 1);
+    _managerHiddenWords.OpenNeedWords.Add(_word, 1);
 
+    List<UniTask> tasks = new();
+    foreach (var charObj in Chars)
+    {
+      tasks.Add(charObj.ShowChar(true));
+    }
+    await UniTask.WhenAll(tasks);
+
+  }
 
   public async UniTask FocusOpenWord()
   {

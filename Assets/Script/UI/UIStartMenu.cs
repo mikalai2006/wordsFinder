@@ -93,7 +93,8 @@ public class UIStartMenu : UILocaleBase
     coin.text = string.Format("{0} <size=12>{1}</size>", dataState.coins, textCost);
 
     var coinImg = blok.Q<VisualElement>("CoinImg");
-    coinImg.style.backgroundImage = new StyleBackground(_gameSettings.spriteCoin);
+    var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+    coinImg.style.backgroundImage = new StyleBackground(configCoin.sprite);
 
 
     name.text = "Mikalai2006";
@@ -146,6 +147,7 @@ public class UIStartMenu : UILocaleBase
 
   private async void ClickLoadGameButton()
   {
+    AudioManager.Instance.Click();
     HideMenu();
     var operations = new Queue<ILoadingOperation>();
     operations.Enqueue(new GameInitOperation());
@@ -165,6 +167,7 @@ public class UIStartMenu : UILocaleBase
 
   private async void ClickNewGameButton()
   {
+    AudioManager.Instance.Click();
     HideMenu();
     var operations = new Queue<ILoadingOperation>();
     operations.Enqueue(new GameInitOperation());
@@ -177,6 +180,7 @@ public class UIStartMenu : UILocaleBase
 
   private void ClickExitButton()
   {
+    AudioManager.Instance.Click();
     Debug.Log("ClickExitButton");
   }
 

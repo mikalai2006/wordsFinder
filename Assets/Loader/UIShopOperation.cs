@@ -2,19 +2,13 @@ using Assets;
 
 using Cysharp.Threading.Tasks;
 
-
-public struct DataResultUIDialog
-{
-  public bool isOk;
-}
-
 public class UIShopOperation : LocalAssetLoader
 {
   public UIShopOperation()
   {
   }
 
-  public async UniTask<DataResultUIDialog> ShowAndHide()
+  public async UniTask<DataDialogResult> ShowAndHide()
   {
     var window = await Load();
     var result = await window.ProcessAction();

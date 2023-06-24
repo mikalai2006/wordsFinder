@@ -41,6 +41,10 @@ public class StateManager : MonoBehaviour
       data = new DataGame()
       {
         idPlayerSetting = idPlayerSetting,
+        hint = 10,
+        star = 10,
+        bomb = 10,
+        lighting = 10
       };
     }
 
@@ -309,12 +313,44 @@ public class StateManager : MonoBehaviour
     dataGame.bomb--;
     RefreshData();
   }
+  public void UseLighting()
+  {
+    dataGame.lighting--;
+    RefreshData();
+  }
 
   public void UseStar()
   {
     dataGame.star--;
     RefreshData();
   }
+
+  public void BuyHint(ShopItem item)
+  {
+    Debug.Log($"Buy {item.entity.typeEntity}");
+    switch (item.entity.typeEntity)
+    {
+      case TypeEntity.Hint:
+        dataGame.hint += item.count;
+        break;
+      case TypeEntity.Star:
+        dataGame.star += item.count;
+        break;
+      case TypeEntity.Bomb:
+        dataGame.bomb += item.count;
+        break;
+      case TypeEntity.Lighting:
+        dataGame.lighting += item.count;
+        break;
+      case TypeEntity.OpenWord:
+        dataGame.word += item.count;
+        break;
+    }
+
+    dataGame.coins -= item.cost;
+    if (_levelManager != null) RefreshData();
+  }
+
 }
 
 

@@ -27,7 +27,8 @@ public class TopSide : MonoBehaviour
     _scaleSpriteCoin = _spriteCoin.transform.localScale;
     _positionSpriteCoin = _spriteCoin.transform.position;
 
-    _spriteCoin.sprite = _gameManager.GameSettings.spriteCoin;
+    var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+    _spriteCoin.sprite = configCoin.sprite;
     _spriteRate.sprite = _gameManager.GameSettings.spriteRate;
     StateManager.OnChangeState += SetValue;
   }

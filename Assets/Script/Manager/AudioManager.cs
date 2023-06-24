@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class AudioManager : StaticInstance<AudioManager>
@@ -25,4 +27,8 @@ public class AudioManager : StaticInstance<AudioManager>
     // AudioSource.PlayClipAtPoint(clip, transform.position, GameSetting.Audio.volumeEffect);
   }
 
+  public void Click()
+  {
+    EffectSource.PlayOneShot((AudioClip)GameSetting.Audio.clickButton);
+  }
 }

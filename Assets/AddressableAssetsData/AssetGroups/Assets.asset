@@ -37,13 +37,24 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 85f10bb126a94f14392607cf494c3ab1
-    m_Address: UILevels
+  - m_GUID: aadeeb93a78b5e44db66b27fdf248e53
+    m_Address: UIDialog
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 21e5e7837540eb5448f00546b45bbdc1
     m_Address: UIShop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4cec71cc8fa8f6b479ecf2bfe2862884
+    m_Address: Assets/Scriptables/Entity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - entity
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5eec450ba45afda4fbb9299b3bde83a3
+    m_Address: Assets/Prefabs
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

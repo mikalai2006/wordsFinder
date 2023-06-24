@@ -30,21 +30,21 @@ public class GameSetting : ScriptableObject
 
   [Space(5)]
   [Header("Assets")]
-  public Sprite spriteCoin;
-  public Sprite spriteStar;
-  public Sprite spriteBomb;
+  // public Sprite spriteCoin;
+  // public Sprite spriteStar;
+  // public Sprite spriteBomb;
   public Sprite spriteShuffle;
   public Sprite spriteCog;
-  public Sprite spriteLevels;
-  public Sprite spriteCheck;
-  public Sprite spriteHint;
-  public Sprite spriteBox;
-  public Sprite spriteLighting;
-  public Sprite spriteLock;
-  public GameObject PrefabCoin;
-  public GameObject PrefabBomb;
-  public GameObject PrefabStar;
-  public GameObject PrefabLighting;
+  // public Sprite spriteLevels;
+  // public Sprite spriteCheck;
+  // public Sprite spriteHint;
+  // public Sprite spriteBox;
+  // public Sprite spriteLighting;
+  // public Sprite spriteLock;
+  // public GameObject PrefabCoin;
+  // public GameObject PrefabBomb;
+  // public GameObject PrefabStar;
+  // public GameObject PrefabLighting;
   public Sprite spriteRate;
   public Sprite spriteShop;
   public Sprite spriteCart;
@@ -57,7 +57,6 @@ public class GameSetting : ScriptableObject
   [Range(10, 1000)] public int timeDelayOverChar;
   public GameLevel GameLevels;
 
-
   [Space(5)]
   [Header("Shop")]
   public List<ShopItem> ShopItems;
@@ -67,9 +66,8 @@ public class GameSetting : ScriptableObject
 [System.Serializable]
 public struct ShopItem
 {
-  public string id;
   public TextLocalize text;
-  public Sprite sprite;
+  public GameEntity entity;
   public int count;
   public int cost;
 }

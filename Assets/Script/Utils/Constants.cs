@@ -9,6 +9,7 @@ public class Constants
   public class UILabels
   {
     public const string UI_GAME_ASIDE = "UIGameAside";
+    public const string UI_DIALOG = "UIDialog";
     public const string UI_LEVELS = "UILevels";
     public const string UI_SHOP = "UIShop";
 
@@ -16,7 +17,7 @@ public class Constants
 
   public class Labels
   {
-    public const string LABEL_ATTRIBUTE = "attribute";
+    public const string LABEL_ENTITY = "entity";
   }
 
   public class LanguageTable

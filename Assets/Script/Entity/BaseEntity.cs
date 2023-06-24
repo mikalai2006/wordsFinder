@@ -1,53 +1,58 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
-using UnityEngine.UI;
 
 public class BaseEntity : MonoBehaviour, IPointerDownHandler
 {
   // public static event Action<string> OnShuffleWord;
-  [SerializeField] protected Transform _transform;
-  [SerializeField] protected Vector3 _scale;
-  [SerializeField] protected Vector3 _position;
-  [SerializeField] protected SpriteRenderer _spriteRenderer;
-  [SerializeField] protected SpriteRenderer _spriteBg;
-  [SerializeField] private SortingGroup order;
-  // [SerializeField] private TMPro.TextMeshProUGUI _countHintText;
-  // [SerializeField] private Image _countHintImage;
-  // [SerializeField] private GameObject _countHintObject;
   protected StateManager _stateManager => GameManager.Instance.StateManager;
   protected LevelManager _levelManager => GameManager.Instance.LevelManager;
   protected GameSetting _gameSetting => GameManager.Instance.GameSettings;
   protected GameManager _gameManager => GameManager.Instance;
-
+  protected GameEntity configEntity;
+  protected Vector3 initScale;
+  protected Vector3 initPosition;
+  [SerializeField] protected SpriteRenderer spriteRenderer;
+  [SerializeField] protected SpriteRenderer spriteBg;
+  [SerializeField] private SortingGroup order;
   public GridNode OccupiedNode;
+  protected List<GridNode> nodesForCascade = new();
+  private UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset;
+  // [SerializeField] private TMPro.TextMeshProUGUI _countHintText;
 
+  #region Unity methods
   protected virtual void Awake()
   {
-    _transform = gameObject.transform;
-
-    // StateManager.OnChangeState += SetValue;
+    spriteRenderer.sprite = configEntity.sprite;
+    spriteRenderer.color = _gameSetting.Theme.entityColor;
   }
 
-  // protected virtual void OnDestroy()
-  // {
-  //   StateManager.OnChangeState -= SetValue;
-  // }
-
-  public virtual void Init(GridNode node)
+  private void OnDestroy()
   {
-    transform.localPosition = _position = new Vector3(node.x, node.y) + new Vector3(.5f, .5f);
+    Addressables.Release(asset);
+  }
+  #endregion
+
+  public virtual void Init(GridNode node, UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset)
+  {
+    this.asset = asset;
+
     OccupiedNode = node;
-    _scale = _transform.localScale;
+    transform.localPosition = initPosition = node.arrKey + new Vector2(.5f, .5f); //  = _position
+    initScale = transform.localScale;
+    spriteBg.color = Color.clear;
+    gameObject.SetActive(false);
   }
 
-  public virtual void InitStandalone()
+  public virtual void InitStandalone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset)
   {
-    _scale = _transform.localScale;
+    this.asset = asset;
+
+    initScale = transform.localScale;
     order.sortingOrder = 51;
   }
 
@@ -60,51 +65,162 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   {
 
   }
+
+
+  public void RunOpenEffect()
+  {
+    var _CachedSystem = GameObject.Instantiate(
+      _gameSetting.BoomLarge,
+      transform.position,
+      Quaternion.identity
+    );
+
+    var main = _CachedSystem.main;
+    main.startSize = new ParticleSystem.MinMaxCurve(0.05f, _levelManager.ManagerHiddenWords.scaleGrid / 2);
+
+    var col = _CachedSystem.colorOverLifetime;
+    col.enabled = true;
+
+    Gradient grad = new Gradient();
+    grad.SetKeys(new GradientColorKey[] {
+      new GradientColorKey(_gameSetting.Theme.bgFindAllowWord, 1.0f),
+      new GradientColorKey(_gameSetting.Theme.bgHiddenWord, 0.0f)
+      }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
+    });
+
+    col.color = grad;
+    _CachedSystem.Play();
+    Destroy(_CachedSystem.gameObject, 2f);
+  }
+
+
+  public void RunMoveEffect()
+  {
+    var _CachedSystem = GameObject.Instantiate(
+      configEntity.MoveEffect,
+      transform.position,
+      Quaternion.identity,
+      transform
+    );
+
+    var main = _CachedSystem.main;
+    main.startSize = new ParticleSystem.MinMaxCurve(0.05f, _levelManager.ManagerHiddenWords.scaleGrid / 2);
+
+    var col = _CachedSystem.colorOverLifetime;
+    col.enabled = true;
+
+    Gradient grad = new Gradient();
+    grad.SetKeys(new GradientColorKey[] {
+      new GradientColorKey(_gameSetting.Theme.bgFindAllowWord, 1.0f),
+      new GradientColorKey(_gameSetting.Theme.bgHiddenWord, 0.0f)
+      }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
+    });
+
+    col.color = grad;
+    _CachedSystem.Play();
+    // Destroy(_CachedSystem.gameObject, 2f);
+  }
   #endregion
 
-  // public virtual void SetValue(DataGame data, StatePerk statePerk)
-  // {
-  //   // _countHintText.text = data.activeLevel.hint.ToString();
-  //   // if (data.activeLevel.hint > 0)
-  //   // {
-  //   //   _countHintObject.gameObject.SetActive(true);
-  //   // }
-  //   // else
-  //   // {
-  //   //   _countHintObject.gameObject.SetActive(false);
-  //   // }
-  //   // TODO animation get hit.
-  // }
-
-  public virtual void SetPosition(Vector3 fromPos)
+  public virtual void Move(Vector3 positionFrom, List<GridNode> nodesForEffect, bool isImmediatelyRun)
   {
+    positionFrom = positionFrom + new Vector3(spriteRenderer.bounds.size.x / 2, spriteRenderer.bounds.size.y / 2);
+    transform.localPosition = positionFrom;
+    gameObject.SetActive(true);
+
+    RunMoveEffect();
+
+    Vector3[] waypoints = {
+          positionFrom,
+          positionFrom + new Vector3(Random.Range(0,1), Random.Range(0,1)),
+          initPosition - new Vector3(Random.Range(0.5f,1.5f), Random.Range(0.5f,2.5f)),
+          initPosition,
+        };
+    transform
+      .DOLocalPath(waypoints, 1f, PathType.CatmullRom)
+      .From(true)
+      .SetEase(Ease.OutCubic)
+      .OnComplete(async () =>
+      {
+        if (isImmediatelyRun)
+        {
+          this.nodesForCascade = nodesForEffect;
+          await OccupiedNode.OccupiedChar.ShowCharAsHint(true);
+        }
+      });
+
+    //SetDefault();
+  }
+
+  public virtual void RunCascadeEffect(Vector3 positionFrom, float duration = .5f)
+  {
+    gameObject.SetActive(true);
+    // spriteRenderer.gameObject.SetActive(false);
+    RunMoveEffect();
+
+    transform
+      .DOMove(transform.position, duration)
+      .From(positionFrom, true)
+      .SetEase(Ease.Linear)
+      .OnComplete(async () =>
+      {
+        OccupiedNode.SetHint();
+
+        await OccupiedNode.OccupiedChar.ShowCharAsHint(true);
+      });
   }
 
   public virtual void SetDefault()
   {
-    transform.localScale = _scale;
-    transform.localPosition = _position;
+    transform.localScale = initScale;
+    transform.localPosition = initPosition;
   }
 
-  public virtual void Run()
+  public async virtual UniTask Run()
   {
     _levelManager.ManagerHiddenWords.RemoveEntity(this);
 
+    await UniTask.Yield();
   }
 
-  public virtual void OnPointerDown(PointerEventData eventData)
+  public async virtual void OnPointerDown(PointerEventData eventData)
   {
-    // TODO Show dialog about bomb.
+    var title = await Helpers.GetLocaledString(configEntity.text.title);
+    var message = await Helpers.GetLocaledString(configEntity.text.description);
+    var dialog = new DialogProvider(new DataDialog()
+    {
+      headerText = title,
+      messageText = message,
+      showCancelButton = false
+    });
+
+    _gameManager.InputManager.Disable();
+    await dialog.ShowAndHide();
+    _gameManager.InputManager.Enable();
   }
-}
 
+  #region LoadAsset
+  private async void CreateEntity()
+  {
+    AssetReferenceGameObject gameObj = null;
+    if (configEntity.prefab.RuntimeKeyIsValid())
+    {
+      gameObj = configEntity.prefab;
+    }
 
-[System.Serializable]
-public enum TypeEntity
-{
-  None = 0,
-  Bomb = 1,
-  Lighting = 2,
-  Star = 3,
-  Coin = 4,
+    if (gameObj == null)
+    {
+      Debug.LogWarning($"Not found mapPrefab {configEntity.name}!");
+      return;
+    }
+    var asset = Addressables.InstantiateAsync(
+               gameObj,
+               OccupiedNode.position,
+               Quaternion.identity,
+               _levelManager.ManagerHiddenWords.tilemapEntities.transform
+               );
+    await asset.Task;
+  }
+  #endregion
+
 }

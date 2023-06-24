@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 [System.Flags]
 public enum StateNode
@@ -31,8 +33,11 @@ public class GridNode
 
   public GridNode TopNode => _gridHelper.GetNode(x, y + 1);
   public GridNode BottomNode => _gridHelper.GetNode(x, y - 1);
-  // public GridNode LeftNode => _gridHelper.GetNode(x - 1, y);
-  // public GridNode RightNode => _gridHelper.GetNode(x + 1, y);
+  public GridNode LeftNode => _gridHelper.GetNode(x - 1, y);
+  public GridNode RightNode => _gridHelper.GetNode(x + 1, y);
+  // public bool isAllowEntity => StateNode.HasFlag(StateNode.Occupied)
+  //   && !StateNode.HasFlag(StateNode.Open)
+  //   && !StateNode.HasFlag(StateNode.Entity);
 
   public GridNode(Grid<GridNode> grid, GridHelper gridHelper, int x, int y)
   {
@@ -81,10 +86,13 @@ public class GridNode
   public override string ToString()
   {
     return "GridNode:::" +
-        "[x" + position.x + ",y" + position.y + "] \n" +
+        "[x" + x + ",y" + y + "] \n" +
+        "[arrKey " + arrKey + "] \n" +
+        "[position " + position + "] \n" +
         "OccupiedUnit=" + OccupiedChar?.ToString() + ",\n" +
         "GuestedUnit=" + OccupiedWord?.ToString() + ",\n" +
         "Entity=" + OccupiedEntity?.ToString() + ",\n" +
+        "StateNode=" + StateNode + ",\n" +
         "StateNode=" + System.Convert.ToString((int)StateNode, 2) + ",\n";
   }
 #endif

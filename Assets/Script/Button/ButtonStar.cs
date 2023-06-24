@@ -10,10 +10,9 @@ public class ButtonStar : BaseButton
   #region UnityMethods
   protected override void Awake()
   {
-    base.Awake();
+    configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Star);
 
-    spriteBg.sprite = _gameSetting.spriteStar;
-    spriteMask.sprite = _gameSetting.spriteStar;
+    base.Awake();
 
     StateManager.OnChangeState += SetValue;
   }
@@ -25,33 +24,61 @@ public class ButtonStar : BaseButton
   }
   #endregion
 
-  public void CreateStar(DataGame data, StatePerk statePerk)
-  {
-    // if (data.activeLevel.star <= 0) return;
+  // public void CreateStar(DataGame data, StatePerk statePerk)
+  // {
+  //   // if (data.activeLevel.star <= 0) return;
 
-    var potentialGroup = _levelManager.ManagerHiddenWords.GridHelper
-      .GetGroupNodeChars()
-      // .OrderBy(t => UnityEngine.Random.value)
-      .FirstOrDefault();
-    if (potentialGroup.Value != null && potentialGroup.Value.Count > 0)
-    {
-      var node = potentialGroup.Value.First();
-      if (node != null)
-      {
-        // data.activeLevel.star -= 1;
-        var starEntity = _levelManager.ManagerHiddenWords.AddEntity(node.arrKey, TypeEntity.Star);
-        if (gameObject != null)
-        {
-          // node.StateNode |= StateNode.Entity;
-          starEntity.SetPosition(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position));
-        }
-        else
-        {
-          Debug.LogWarning($"Not found {name}");
-        }
-      }
-    }
+  //   var potentialGroup = _levelManager.ManagerHiddenWords.GridHelper
+  //     .GetGroupNodeChars()
+  //     // .OrderBy(t => UnityEngine.Random.value)
+  //     .FirstOrDefault();
+  //   if (potentialGroup.Value != null && potentialGroup.Value.Count > 0)
+  //   {
+  //     var node = potentialGroup.Value.First();
+  //     if (node != null)
+  //     {
+  //       // data.activeLevel.star -= 1;
+  //       var starEntity = _levelManager.ManagerHiddenWords.AddEntity(node.arrKey, TypeEntity.Star);
+  //       if (gameObject != null)
+  //       {
+  //         // node.StateNode |= StateNode.Entity;
+  //         starEntity.RunEffect(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position));
+  //       }
+  //       else
+  //       {
+  //         Debug.LogWarning($"Not found {name}");
+  //       }
+  //     }
+  //   }
+  // }
+
+  #region Effects
+  public virtual void RunEffect()
+  {
+    var _CachedSystem = GameObject.Instantiate(
+      _gameSetting.Boom,
+      transform.position,
+      Quaternion.identity
+    );
+
+    var main = _CachedSystem.main;
+    main.startSize = new ParticleSystem.MinMaxCurve(0.05f, _levelManager.ManagerHiddenWords.scaleGrid / 2);
+
+    var col = _CachedSystem.colorOverLifetime;
+    col.enabled = true;
+
+    Gradient grad = new Gradient();
+    grad.SetKeys(new GradientColorKey[] {
+      new GradientColorKey(_gameSetting.Theme.bgFindAllowWord, 1.0f),
+      new GradientColorKey(_gameSetting.Theme.bgHiddenWord, 0.0f)
+      }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
+    });
+
+    col.color = grad;
+    _CachedSystem.Play();
+    if (_CachedSystem.isPlaying || _CachedSystem.isStopped) Destroy(_CachedSystem.gameObject, 2f);
   }
+  #endregion
 
 
   public async UniTask AddChar()
@@ -72,34 +99,9 @@ public class ButtonStar : BaseButton
       await UniTask.Yield();
       elapsedTime += Time.deltaTime;
     }
-    RunOpenEffect();
+    RunEffect();
 
     SetDefault();
-  }
-
-  public void CreateCoin()
-  {
-    var newObj = GameObject.Instantiate(
-       _gameSetting.PrefabCoin,
-       transform.position,
-       Quaternion.identity
-     );
-    var newEntity = newObj.GetComponent<BaseEntity>();
-    newEntity.InitStandalone();
-    newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
-    var positionFrom = transform.position;
-    var positionTo = _levelManager.topSide.spriteCoinPosition;
-    Vector3[] waypoints = {
-          positionFrom,
-          positionFrom + new Vector3(1.5f, 0f),
-          positionTo - new Vector3(1.5f, 0.5f),
-          positionTo,
-        };
-
-    newObj.gameObject.transform
-      .DOPath(waypoints, 1f, PathType.CatmullRom)
-      .SetEase(Ease.OutCubic)
-      .OnComplete(() => newEntity.AddCoins(1));
   }
 
   public override void SetValue(DataGame data, StatePerk statePerk)
@@ -124,16 +126,33 @@ public class ButtonStar : BaseButton
       .SetEase(Ease.OutBounce);
   }
 
-  public override void RunHint()
+  public async override void RunHint()
   {
-    var node = _levelManager.ManagerHiddenWords.GridHelper.GetRandomNodeWithChar();
-    if (node != null)
+    var node = _levelManager.ManagerHiddenWords.GridHelper.GetRandomNodeWithHiddenChar();
+
+    if (node == null)
     {
-      node.OccupiedChar.ShowCharAsNei(true).Forget();
-      _levelManager.ManagerHiddenWords.AddOpenChar(node.OccupiedChar);
-      _stateManager.UseStar();
-      node.SetHint();
+      // Show dialog - not found node for entity
+      var message = await Helpers.GetLocaledString("notfoundnodehiddenchar");
+      var dialog = new DialogProvider(new DataDialog()
+      {
+        messageText = message,
+        showCancelButton = false
+      });
+
+      _gameManager.InputManager.Disable();
+      await dialog.ShowAndHide();
+      _gameManager.InputManager.Enable();
+      return;
     }
+
+    var newEntity = await _levelManager.AddEntity(node.arrKey, TypeEntity.Star);
+
+    node.SetHint();
+
+    newEntity.Move(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position), new() { node }, true);
+
+    _stateManager.UseStar();
   }
 
 

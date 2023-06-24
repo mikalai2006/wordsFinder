@@ -8,6 +8,7 @@ public class HiddenCharMB : MonoBehaviour
 {
   [SerializeField] private TMPro.TextMeshProUGUI _charText;
   public char charTextValue;
+  private GameManager _gameManager => GameManager.Instance;
   private LevelManager _levelManager => LevelManager.Instance;
   private StateManager _stateManager => GameManager.Instance.StateManager;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
@@ -49,34 +50,6 @@ public class HiddenCharMB : MonoBehaviour
     _image.color = _gameSetting.Theme.bgHiddenWord;
     _image.sprite = _gameSetting.Theme.bgImageHiddenWord;
     _charText.gameObject.SetActive(false);
-  }
-
-
-  public void Open(bool runEffect)
-  {
-    if (runEffect) RunOpenEffect();
-
-    // Remove open char.
-    if (
-      _stateManager.dataGame.activeLevel.openChars.ContainsKey(OccupiedNode.arrKey)
-      &&
-      _levelManager.ManagerHiddenWords.OpenWords.ContainsKey(OccupiedNode.OccupiedWord._word)
-      )
-    {
-      _levelManager.ManagerHiddenWords.RemoveOpenChar(this);
-    }
-
-    _image.color = _gameSetting.Theme.bgOpentHiddenWord;
-    _image.sprite = _gameSetting.Theme.bgImageHiddenWord;
-    _charText.color = _gameSetting.Theme.textOpentHiddenWord;
-    _charText.gameObject.SetActive(true);
-    OccupiedNode.SetOpen();
-
-    // Check exist entity of by node.
-    if (OccupiedNode.StateNode.HasFlag(StateNode.Entity))
-    {
-      OccupiedNode.OccupiedEntity.Run();
-    }
   }
 
 
@@ -137,21 +110,68 @@ public class HiddenCharMB : MonoBehaviour
     Open(runEffect);
 
     // Add coin.
-    if (runEffect && !OccupiedNode.StateNode.HasFlag(StateNode.Hint)) AddCoin();
+    if (runEffect && !OccupiedNode.StateNode.HasFlag(StateNode.Hint)) _levelManager.CreateCoin(transform.position).Forget();
 
     // await OpenNeighbours(runEffect);
     await UniTask.Yield();
   }
 
 
-  public async UniTask ShowCharAsNei(bool runEffect)
+  public async UniTask ShowCharAsHint(bool runEffect)
   {
+    _levelManager.ManagerHiddenWords.AddOpenChar(this);
+
     Open(runEffect);
 
     _image.color = _gameSetting.Theme.bgOpenNeiHiddenWord;
     _charText.color = _gameSetting.Theme.textOpenNeiHiddenWord;
+
+    // Check hinted all chars of by word.
+    int countOpenChar = 0;
+    foreach (var hiddenChar in OccupiedNode.OccupiedWord.Chars)
+    {
+      if (
+        hiddenChar.OccupiedNode.StateNode.HasFlag(StateNode.Hint)
+        || hiddenChar.OccupiedNode.StateNode.HasFlag(StateNode.Open)
+        )
+      {
+        countOpenChar++;
+      }
+    }
+    if (countOpenChar == OccupiedNode.OccupiedWord._word.Length)
+    {
+      OccupiedNode.OccupiedWord.AutoOpenWord().Forget();
+    }
+
     // await OpenNeighbours(runEffect);
     await UniTask.Yield();
+  }
+
+  public void Open(bool runEffect)
+  {
+    if (runEffect) RunOpenEffect();
+
+    // Remove open char.
+    if (
+      _stateManager.dataGame.activeLevel.openChars.ContainsKey(OccupiedNode.arrKey)
+      &&
+      _levelManager.ManagerHiddenWords.OpenWords.ContainsKey(OccupiedNode.OccupiedWord._word)
+      )
+    {
+      _levelManager.ManagerHiddenWords.RemoveOpenChar(this);
+    }
+
+    _image.color = _gameSetting.Theme.bgOpentHiddenWord;
+    _image.sprite = _gameSetting.Theme.bgImageHiddenWord;
+    _charText.color = _gameSetting.Theme.textOpentHiddenWord;
+    _charText.gameObject.SetActive(true);
+    OccupiedNode.SetOpen();
+
+    // Check exist entity of by node.
+    if (OccupiedNode.StateNode.HasFlag(StateNode.Entity))
+    {
+      OccupiedNode.OccupiedEntity.Run().Forget();
+    }
   }
 
 
@@ -161,7 +181,7 @@ public class HiddenCharMB : MonoBehaviour
     List<GridNode> equalsCharNodes = GameManager.Instance.LevelManager.ManagerHiddenWords.GridHelper.FindNeighboursNodesOfByEqualChar(OccupiedNode);
     foreach (var equalCharNode in equalsCharNodes)
     {
-      await equalCharNode.OccupiedChar.ShowCharAsNei(runEffect);
+      await equalCharNode.OccupiedChar.ShowCharAsHint(runEffect);
     }
     //await UniTask.Yield();
   }
@@ -206,31 +226,32 @@ public class HiddenCharMB : MonoBehaviour
   //   }
   // }
 
-  public void AddCoin()
-  {
-    var nodePosition = new Vector3Int(OccupiedNode.x, OccupiedNode.y);
-    var position = _levelManager.ManagerHiddenWords.tilemap.CellToWorld(nodePosition);
-    var newObj = GameObject.Instantiate(
-      _gameSetting.PrefabCoin,
-      position,
-      Quaternion.identity
-    );
-    var newEntity = newObj.GetComponent<BaseEntity>();
-    newEntity.InitStandalone();
-    newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
-    var positionFrom = position;
-    var positionTo = _levelManager.topSide.spriteCoinPosition;
-    Vector3[] waypoints = {
-          positionFrom,
-          positionFrom + new Vector3(1, 1),
-          positionTo - new Vector3(1.5f, 2.5f),
-          positionTo,
-        };
-    newObj.transform
-      .DOPath(waypoints, 1f, PathType.Linear)
-      .SetEase(Ease.OutCubic)
-      .OnComplete(() => newEntity.AddCoins());
-  }
+  // public void AddCoin()
+  // {
+  //   GameEntity configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+  //   var nodePosition = new Vector3Int(OccupiedNode.x, OccupiedNode.y);
+  //   var position = _levelManager.ManagerHiddenWords.tilemap.CellToWorld(nodePosition);
+  //   var newObj = GameObject.Instantiate(
+  //     configEntity.prefab,
+  //     position,
+  //     Quaternion.identity
+  //   );
+  //   var newEntity = newObj.GetComponent<BaseEntity>();
+  //   newEntity.InitStandalone();
+  //   newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
+  //   var positionFrom = position;
+  //   var positionTo = _levelManager.topSide.spriteCoinPosition;
+  //   Vector3[] waypoints = {
+  //         positionFrom,
+  //         positionFrom + new Vector3(1, 1),
+  //         positionTo - new Vector3(1.5f, 2.5f),
+  //         positionTo,
+  //       };
+  //   newObj.transform
+  //     .DOPath(waypoints, 1f, PathType.Linear)
+  //     .SetEase(Ease.OutCubic)
+  //     .OnComplete(() => newEntity.AddCoins());
+  // }
 
 #if UNITY_EDITOR
   public override string ToString()

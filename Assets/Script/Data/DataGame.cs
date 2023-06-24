@@ -11,6 +11,7 @@ public class DataGame
   public int star;
   public int bomb;
   public int lighting;
+  public int word;
   public List<DataLevel> levels;
   public List<string> completeWords;
   [System.NonSerialized] public DataLevel activeLevel;

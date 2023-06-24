@@ -120,48 +120,10 @@ public class ManagerHiddenWords : MonoBehaviour
     var keysEntity = Entities.Keys.ToList();
     foreach (var item in keysEntity)
     {
-      AddEntity(item, Entities[item]);
+      _levelManager.AddEntity(item, Entities[item]).Forget();
     }
   }
 
-  public BaseEntity AddEntity(Vector2Int pos, TypeEntity typeEntity)
-  {
-    var node = pos == Vector2Int.zero
-      ? GridHelper.GetRandomNodeWithChar()
-      : GridHelper.GetNode(pos);
-    GameObject prefab = _gameSetting.PrefabStar;
-    switch (typeEntity)
-    {
-      case TypeEntity.Bomb:
-        prefab = _gameSetting.PrefabBomb;
-        break;
-      case TypeEntity.Lighting:
-        prefab = _gameSetting.PrefabLighting;
-        break;
-      case TypeEntity.Coin:
-        prefab = _gameSetting.PrefabCoin;
-        break;
-    }
-    var newObj = GameObject.Instantiate(
-          prefab,
-          node.position,
-          Quaternion.identity,
-          tilemapEntities.transform
-        );
-
-    var newEntity = newObj.GetComponent<BaseEntity>();
-    newEntity.Init(node);
-    node.StateNode |= StateNode.Entity;
-    if (!Entities.ContainsKey(node.arrKey))
-    {
-      Entities.Add(node.arrKey, typeEntity);
-    }
-
-    // GameManager.Instance.DataManager.Save();
-    _stateManager.RefreshData();
-
-    return newEntity;
-  }
 
   public void RemoveEntity(BaseEntity entity)
   {
@@ -181,14 +143,17 @@ public class ManagerHiddenWords : MonoBehaviour
     {
       var item = OpenChars.ElementAt(i);
       var node = GridHelper.GetNode(item.Key);
-      node.OccupiedChar.ShowCharAsNei(false).Forget();
+      node.OccupiedChar.ShowCharAsHint(false).Forget();
       node.SetHint();
     }
   }
 
   public void AddOpenChar(HiddenCharMB occupiedChar)
   {
-    OpenChars.Add(occupiedChar.OccupiedNode.arrKey, occupiedChar.charTextValue.ToString());
+    if (!OpenChars.ContainsKey(occupiedChar.OccupiedNode.arrKey))
+    {
+      OpenChars.Add(occupiedChar.OccupiedNode.arrKey, occupiedChar.charTextValue.ToString());
+    }
   }
 
   public void RemoveOpenChar(HiddenCharMB occupiedChar)
@@ -373,7 +338,7 @@ public class ManagerHiddenWords : MonoBehaviour
           if (NeedWords.ContainsKey(choosedWord))
           {
             OpenNeedWords.Add(choosedWord, 1);
-            _levelManager.buttonStar.CreateCoin();
+            _levelManager.CreateCoin(_levelManager.buttonStar.transform.position).Forget();
           }
         }
       }

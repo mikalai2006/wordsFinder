@@ -209,7 +209,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3476356110385152
-    m_Localized: Pass word
+    m_Localized: Open word
     m_Metadata:
       m_Items: []
   - m_Id: 3476387282452480
@@ -245,6 +245,28 @@ MonoBehaviour:
       - rid: 366247623133495314
   - m_Id: 3806768712024064
     m_Localized: You start this round without prompts.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4121322570547200
+    m_Localized: Information
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4131258318880768
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4151194764345344
+    m_Localized: Coin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4151229912612864
+    m_Localized: The main currency of the game, which allows you to purchase various
+      tips and effects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4186970411663360
+    m_Localized: No hidden letters found to apply this effect. All letters on the
+      field are open!
     m_Metadata:
       m_Items: []
   references:

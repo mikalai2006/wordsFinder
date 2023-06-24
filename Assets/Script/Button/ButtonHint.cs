@@ -8,10 +8,9 @@ public class ButtonHint : BaseButton
   #region UnityMethods
   protected override void Awake()
   {
-    base.Awake();
+    configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Hint);
 
-    spriteBg.sprite = _gameSetting.spriteHint;
-    spriteMask.sprite = _gameSetting.spriteHint;
+    base.Awake();
 
     StateManager.OnChangeState += SetValue;
   }
@@ -30,30 +29,37 @@ public class ButtonHint : BaseButton
     base.SetValue(data, statePerk);
   }
 
-  public override void RunHint()
+  public async override void RunHint()
   {
-    var nodes = _levelManager.ManagerHiddenWords.GridHelper.GetGroupNodeChars();
-    if (nodes.Count <= 0)
+    var nodeWithHiddenChar = _levelManager.ManagerHiddenWords.GridHelper.GetGroupNodeChars();
+    if (nodeWithHiddenChar.Count == 0)
     {
-      // TODO Show dialog - no hidden char
+      // Show dialog - not found node for entity
+      var message = await Helpers.GetLocaledString("notfoundnodehiddenchar");
+      var dialog = new DialogProvider(new DataDialog()
+      {
+        messageText = message,
+        showCancelButton = false
+      });
+
+      _gameManager.InputManager.Disable();
+      await dialog.ShowAndHide();
+      _gameManager.InputManager.Enable();
       return;
     };
 
+    var nodesForEffect = nodeWithHiddenChar.OrderBy(t => -t.Value.Count).First().Value.ToList();
 
-    var nodesForShow = nodes.OrderBy(t => -t.Value.Count).First().Value;
+    GridNode nodeStartEffect = nodesForEffect.ElementAt(Random.Range(0, nodesForEffect.Count - 1));
+    nodesForEffect.Remove(nodeStartEffect);
 
-    int countRunHit = 0;
-    foreach (var node in nodesForShow)
-    {
-      if (node != null)
-      {
-        node.OccupiedChar.ShowCharAsNei(true).Forget();
-        _levelManager.ManagerHiddenWords.AddOpenChar(node.OccupiedChar);
-        node.SetHint();
-        countRunHit++;
-      }
-    }
-    if (countRunHit > 0) _stateManager.UseHint();
+    var newEntity = await _levelManager.AddEntity(nodeStartEffect.arrKey, TypeEntity.Hint);
+
+    nodeStartEffect.SetHint();
+
+    newEntity.Move(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position), nodesForEffect, true);
+
+    _stateManager.UseHint();
   }
 
   public override void SetValueProgressBar(DataGame data, StatePerk statePerk)
