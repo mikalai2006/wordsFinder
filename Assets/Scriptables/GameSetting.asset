@@ -29,6 +29,7 @@ MonoBehaviour:
   Boom: {fileID: 4370175670826504157, guid: 0d64c2d06fc2020488bed46426152725, type: 3}
   BoomLarge: {fileID: 5387774378321571289, guid: d3e641e39ca10654fab4ca2a25b477b3, type: 3}
   spriteShuffle: {fileID: 21300000, guid: 430bfd9bcbe976346ae4a660d7bd2672, type: 3}
+  spriteDirectory: {fileID: 21300000, guid: 9093ed3c83657b946b62ce16e789e873, type: 3}
   spriteCog: {fileID: 21300000, guid: fe7f28583815e944993cdb808f259b29, type: 3}
   spriteRate: {fileID: 21300000, guid: 54e35f220d7347e4f99f199862e81c5e, type: 3}
   spriteShop: {fileID: 21300000, guid: 1ab9b49f9f0ed954fbbc36f707b39d3e, type: 3}
@@ -169,6 +170,10 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+  APIDirectory:
+    host: https://ru.wikipedia.org/api/rest_v1/page/summary/
+    token: 
+    expression: 
   references:
     version: 2
     RefIds: []

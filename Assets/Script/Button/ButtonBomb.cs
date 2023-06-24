@@ -20,10 +20,10 @@ public class ButtonBomb : BaseButton
   }
   #endregion
 
-  public override void SetValue(DataGame data, StatePerk statePerk)
+  public override void SetValue(DataGame data)
   {
     value = data.hints.GetValueOrDefault(TypeEntity.Bomb);
-    base.SetValue(data, statePerk);
+    base.SetValue(data);
   }
 
   public async override void RunHint()

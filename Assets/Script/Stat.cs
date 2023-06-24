@@ -24,7 +24,7 @@ public class Stat : MonoBehaviour
     UISettings.OnChangeLocale -= Localize;
   }
 
-  public void SetValue(DataGame data, StatePerk statePerk)
+  public void SetValue(DataGame data)
   {
     Localize();
   }

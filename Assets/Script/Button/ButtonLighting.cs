@@ -21,10 +21,10 @@ public class ButtonLighting : BaseButton
   }
   #endregion
 
-  public override void SetValue(DataGame data, StatePerk statePerk)
+  public override void SetValue(DataGame data)
   {
     value = data.hints.GetValueOrDefault(TypeEntity.Lighting);
-    base.SetValue(data, statePerk);
+    base.SetValue(data);
   }
 
   public async override void RunHint()

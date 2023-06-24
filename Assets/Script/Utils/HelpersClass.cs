@@ -128,6 +128,11 @@ public static class Helpers
     return t.Result;
   }
 
+  public static string StripHTML(string input)
+  {
+    return System.Text.RegularExpressions.Regex.Replace(input, "<.*?>", String.Empty);
+  }
+
   // public static Dictionary<string, List<string>> GetDictionaryCompleteLevel(List<string> list)
   // {
   //   Dictionary<string, List<string>> result = new();

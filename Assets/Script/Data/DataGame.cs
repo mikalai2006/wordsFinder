@@ -30,7 +30,7 @@ public class DataLevel
 {
   public string id;
   public float index;
-
+  public StatePerk statePerk;
   public SerializableDictionary<Vector2, string> openChars;
   public SerializableDictionary<TypeEntity, int> hints; // [System.NonSerialized]
   public SerializeEntity ent;
@@ -49,5 +49,6 @@ public class DataLevel
     openChars = new();
     ent = new();
     hints = new();
+    statePerk = new();
   }
 }

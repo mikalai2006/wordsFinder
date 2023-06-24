@@ -3,36 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using User;
 
 public class StateManager : MonoBehaviour
 {
-  // public DataState dataState;
-  public static event Action<DataGame, StatePerk> OnChangeState;
+  public static event Action<DataGame> OnChangeState;
   public DataGame dataGame;
-  [SerializeField] public StatePerk statePerk;
   public string ActiveWordConfig;
-  // public string ActiveWordConfig;
 
-  public LevelManager _levelManager => GameManager.Instance.LevelManager;
-  public GameManager _gameManager => GameManager.Instance;
-  public GameSetting _gameSetting => GameManager.Instance.GameSettings;
-
-  private void Awake()
-  {
-    // ManagerHiddenWords.OnChangeData += RefreshData;
-    SetDefaultPerk();
-  }
-
-  private void OnDestroy()
-  {
-    // ManagerHiddenWords.OnChangeData -= RefreshData;
-  }
-
-  private void SetDefaultPerk()
-  {
-    statePerk = new();
-  }
+  private LevelManager _levelManager => GameManager.Instance.LevelManager;
+  private GameManager _gameManager => GameManager.Instance;
+  private GameSetting _gameSetting => GameManager.Instance.GameSettings;
 
   public void Init(DataGame data)
   {
@@ -87,7 +67,7 @@ public class StateManager : MonoBehaviour
     dataGame.activeLevel.countOpenChars = managerHiddenWords.OpenWords.Select(t => t.Key.Length).Sum();
 
     _gameManager.DataManager.Save();
-    OnChangeState.Invoke(dataGame, statePerk);
+    OnChangeState.Invoke(dataGame);
   }
 
   // public void RefreshData()
@@ -129,8 +109,8 @@ public class StateManager : MonoBehaviour
   {
     dataGame.rate += 1;
 
-    statePerk.countWordInOrder += 1;
-    statePerk.countErrorForNullBonus = 0;
+    dataGame.activeLevel.statePerk.countWordInOrder += 1;
+    dataGame.activeLevel.statePerk.countErrorForNullBonus = 0;
 
     RefreshData();
   }
@@ -140,8 +120,8 @@ public class StateManager : MonoBehaviour
   {
     dataGame.rate += 1;
 
-    statePerk.countWordInOrder += 1;
-    statePerk.countErrorForNullBonus = 0;
+    dataGame.activeLevel.statePerk.countWordInOrder += 1;
+    dataGame.activeLevel.statePerk.countErrorForNullBonus = 0;
 
     // statePerk.countWordInOrder += 1;
     // statePerk.countErrorForNullBonus = 0;
@@ -152,29 +132,29 @@ public class StateManager : MonoBehaviour
 
   public void OpenCharAllowWord(char textChar)
   {
-    statePerk.countCharInOrder += 1;
-    statePerk.countCharForBonus += 1;
-    statePerk.countCharForAddHint += 1;
-    statePerk.countCharForAddStar += 1;
+    dataGame.activeLevel.statePerk.countCharInOrder += 1;
+    dataGame.activeLevel.statePerk.countCharForBonus += 1;
+    dataGame.activeLevel.statePerk.countCharForAddHint += 1;
+    dataGame.activeLevel.statePerk.countCharForAddStar += 1;
 
     // Add bonus index.
-    if (statePerk.countCharForBonus >= _gameManager.PlayerSetting.bonusCount.charBonus)
+    if (dataGame.activeLevel.statePerk.countCharForBonus >= _gameManager.PlayerSetting.bonusCount.charBonus)
     {
-      statePerk.countCharForBonus -= _gameManager.PlayerSetting.bonusCount.charBonus;
+      dataGame.activeLevel.statePerk.countCharForBonus -= _gameManager.PlayerSetting.bonusCount.charBonus;
       dataGame.activeLevel.index++;
     }
 
     // Add hint.
-    if (statePerk.countCharForAddHint >= _gameManager.PlayerSetting.bonusCount.charHint)
+    if (dataGame.activeLevel.statePerk.countCharForAddHint >= _gameManager.PlayerSetting.bonusCount.charHint)
     {
-      statePerk.countCharForAddHint -= _gameManager.PlayerSetting.bonusCount.charHint;
+      dataGame.activeLevel.statePerk.countCharForAddHint -= _gameManager.PlayerSetting.bonusCount.charHint;
       dataGame.hints[TypeEntity.Hint]++;
     }
 
     // Check add star to grid.
-    if (statePerk.countCharForAddStar >= _gameManager.PlayerSetting.bonusCount.charStar)
+    if (dataGame.activeLevel.statePerk.countCharForAddStar >= _gameManager.PlayerSetting.bonusCount.charStar)
     {
-      statePerk.countCharForAddStar -= _gameManager.PlayerSetting.bonusCount.charStar;
+      dataGame.activeLevel.statePerk.countCharForAddStar -= _gameManager.PlayerSetting.bonusCount.charStar;
       dataGame.hints[TypeEntity.Star]++;
     }
 
@@ -183,13 +163,13 @@ public class StateManager : MonoBehaviour
 
   public void OpenCharHiddenWord(char _char)
   {
-    statePerk.countCharForAddCoin += 1;
+    dataGame.activeLevel.statePerk.countCharForAddCoin += 1;
 
     // Check add coin to grid.
-    if (statePerk.countCharForAddCoin >= _gameManager.PlayerSetting.bonusCount.charCoin)
+    if (dataGame.activeLevel.statePerk.countCharForAddCoin >= _gameManager.PlayerSetting.bonusCount.charCoin)
     {
-      statePerk.countCharForAddCoin -= _gameManager.PlayerSetting.bonusCount.charCoin;
-      statePerk.needCreateCoin++;
+      dataGame.activeLevel.statePerk.countCharForAddCoin -= _gameManager.PlayerSetting.bonusCount.charCoin;
+      dataGame.activeLevel.statePerk.needCreateCoin++;
     }
 
     OpenCharAllowWord(_char);
@@ -197,21 +177,20 @@ public class StateManager : MonoBehaviour
 
   public void DeRunPerk(string word)
   {
-
     if (word.Length > 1)
     {
-      statePerk.countErrorForNullBonus++;
+      dataGame.activeLevel.statePerk.countErrorForNullBonus++;
     }
 
-    if (statePerk.countErrorForNullBonus == _gameManager.PlayerSetting.bonusCount.errorClear)
+    if (dataGame.activeLevel.statePerk.countErrorForNullBonus == _gameManager.PlayerSetting.bonusCount.errorClear)
     {
-      statePerk.countWordInOrder = 0;
-      statePerk.countCharInOrder = 0;
-      statePerk.countCharForBonus = 0;
-      statePerk.countCharForAddCoin = 0;
-      statePerk.countCharForAddHint = 0;
-      statePerk.countCharForAddStar = 0;
-      statePerk.countErrorForNullBonus = 0;
+      dataGame.activeLevel.statePerk.countWordInOrder = 0;
+      dataGame.activeLevel.statePerk.countCharInOrder = 0;
+      dataGame.activeLevel.statePerk.countCharForBonus = 0;
+      dataGame.activeLevel.statePerk.countCharForAddCoin = 0;
+      dataGame.activeLevel.statePerk.countCharForAddHint = 0;
+      dataGame.activeLevel.statePerk.countCharForAddStar = 0;
+      dataGame.activeLevel.statePerk.countErrorForNullBonus = 0;
     }
     RefreshData();
   }
@@ -275,7 +254,7 @@ public class StateManager : MonoBehaviour
     dataGame.activeLevel = dataGame.levels.Find((t) => t.id == wordConfig);
     // Debug.Log($"Set active level ={indexActiveLevel}| {dataGame.activeLevel.openChars.Count}");
 
-    SetDefaultPerk();
+    // SetDefaultPerk();
   }
 
   public GamePlayerSetting SetNewLevelPlayer()

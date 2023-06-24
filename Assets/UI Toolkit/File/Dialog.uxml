@@ -1,11 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/File/Base.uss?fileID=7433441132597879392&amp;guid=47ab2fccdf66be0488c7b62162e81d51&amp;type=3#Base" />
     <Style src="project://database/Assets/UI%20Toolkit/File/Settings.uss?fileID=7433441132597879392&amp;guid=88dfc651dba86d4488abaaa61bc6b672&amp;type=3#Settings" />
+    <Style src="project://database/Assets/UI%20Toolkit/File/UnityBase.uss?fileID=7433441132597879392&amp;guid=1dc2aea145fe99748928c99483204a80&amp;type=3#UnityBase" />
     <ui:VisualElement name="Dialog" class="font text-primary" style="background-color: rgba(0, 0, 0, 0.71); position: absolute; left: 0; top: 0; right: 0; bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; display: flex; flex-grow: 1; justify-content: center;">
         <ui:VisualElement name="DialogWrapper" class="b-rounded" style="background-color: rgb(164, 164, 164); align-items: stretch; flex-grow: 0; width: 380px; align-self: center;">
-            <ui:VisualElement class="header" style="flex-grow: 1;">
+            <ui:VisualElement class="header" style="flex-grow: 1; flex-shrink: 0;">
                 <ui:VisualElement class="p-1" style="flex-shrink: 0; align-items: stretch; flex-grow: 1;">
-                    <ui:Label tabindex="-1" text="#info" display-tooltip-when-elided="true" name="HeaderText" class="p-2 text-primary" />
+                    <ui:Label tabindex="-1" text="#info" display-tooltip-when-elided="true" name="HeaderText" class="p-2 text-primary m-0" />
                 </ui:VisualElement>
                 <ui:VisualElement class="p-1" style="flex-shrink: 0; align-items: flex-end;">
                     <ui:Button display-tooltip-when-elided="true" name="CloseBtn" class="button_circle" style="display: none;">
@@ -13,12 +14,14 @@
                     </ui:Button>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); padding-left: 20px; padding-right: 20px; padding-top: 20px; padding-bottom: 20px;">
+            <ui:VisualElement style="background-color: rgba(0, 0, 0, 0);">
                 <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-grow: 1;">
-                    <ui:Label tabindex="-1" text="Hint informations Hint informations Hint informations Hint informations Hint informations Hint informations Hint informations Hint informations Hint informations Hint informations Hint informations Hint informations Hint informations Hint informations " display-tooltip-when-elided="true" name="MessageText" class="text-primary" style="flex-grow: 1; white-space: normal;" />
+                    <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1">
+                        <ui:Label tabindex="-1" text="Description" display-tooltip-when-elided="true" name="MessageText" class="text-primary p-2" style="flex-grow: 1; white-space: normal;" />
+                    </ui:ScrollView>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement style="margin-left: 20px; margin-right: 20px; margin-top: 20px; margin-bottom: 20px; flex-direction: row; justify-content: center;">
+            <ui:VisualElement class="p-1" style="flex-direction: row; justify-content: center; flex-shrink: 0;">
                 <ui:Button text="#cancel" display-tooltip-when-elided="true" name="Cancel" class="button text-primary" />
                 <ui:Button text="#ok" display-tooltip-when-elided="true" name="Ok" class="button text-primary" />
             </ui:VisualElement>

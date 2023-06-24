@@ -17,6 +17,16 @@
     text-shadow: 0 1px 0 rgb(0, 0, 0);
 }
 
+.button:active {
+    border-left-color: rgba(0, 0, 0, 0.31);
+    border-top-color: rgba(0, 0, 0, 0.31);
+    border-right-color: rgba(0, 0, 0, 0.31);
+    border-bottom-color: rgba(0, 0, 0, 0.31);
+    scale: 0.9 0.9;
+    transition-property: scale;
+    transition-duration: 50ms;
+}
+
 .font {
     font-size: 16px;
 }
@@ -26,14 +36,6 @@
     border-bottom-left-radius: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-}
-
-.button:active {
-    border-left-color: rgba(0, 0, 0, 0.31);
-    border-top-color: rgba(0, 0, 0, 0.31);
-    border-right-color: rgba(0, 0, 0, 0.31);
-    border-bottom-color: rgba(0, 0, 0, 0.31);
-    translate: 2px 2px;
 }
 
 .button_circle {
@@ -163,11 +165,16 @@
     padding-bottom: 0;
 }
 
-.m-0 {
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
+.px-1 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.p-05 {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .p-1 {
@@ -182,6 +189,27 @@
     padding-right: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.m-0 {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.m-05 {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.m-1 {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .text-secondary {
@@ -203,4 +231,20 @@
     -unity-text-align: upper-center;
     flex-direction: row;
     color: rgb(255, 255, 255);
+}
+
+.box_item {
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+    border-left-color: rgba(0, 0, 0, 0.4);
+    border-right-color: rgba(0, 0, 0, 0.4);
+    border-top-color: rgba(0, 0, 0, 0.4);
+    border-bottom-color: rgba(0, 0, 0, 0.4);
+}
+
+.rounded {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }

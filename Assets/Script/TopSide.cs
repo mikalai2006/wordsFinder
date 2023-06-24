@@ -55,7 +55,7 @@ public class TopSide : MonoBehaviour
     SetDefault();
   }
 
-  public async void SetValue(DataGame data, StatePerk statePerk)
+  public async void SetValue(DataGame data)
   {
     _rate.text = data.rate.ToString();
 

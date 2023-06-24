@@ -34,6 +34,7 @@ public class GameSetting : ScriptableObject
   // public Sprite spriteStar;
   // public Sprite spriteBomb;
   public Sprite spriteShuffle;
+  public Sprite spriteDirectory;
   public Sprite spriteCog;
   // public Sprite spriteLevels;
   // public Sprite spriteCheck;
@@ -65,6 +66,18 @@ public class GameSetting : ScriptableObject
   [Space(5)]
   [Header("Texts")]
   public TextLocalize noName;
+
+  [Space(5)]
+  [Header("API Directory")]
+  public APIDirectory APIDirectory;
+}
+
+[System.Serializable]
+public struct APIDirectory
+{
+  public string host;
+  public string token;
+  public string expression;
 }
 
 

@@ -55,6 +55,7 @@ public class UIShop : UILocaleBase
     foreach (var item in _gameSettings.ShopItems)
     {
       var blokItem = _shopItem.Instantiate();
+      blokItem.Q<VisualElement>("ShopItem").style.backgroundColor = _gameSettings.Theme.bgColor;
       var title = await Helpers.GetLocaledString(item.text.title);
       blokItem.Q<Label>("Name").text = title;
 

@@ -23,11 +23,11 @@ public class ButtonHint : BaseButton
   }
   #endregion
 
-  public override void SetValue(DataGame data, StatePerk statePerk)
+  public override void SetValue(DataGame data)
   {
     value = data.hints.GetValueOrDefault(TypeEntity.Hint);
 
-    base.SetValue(data, statePerk);
+    base.SetValue(data);
   }
 
   public async override void RunHint()
@@ -63,9 +63,9 @@ public class ButtonHint : BaseButton
     _stateManager.UseHint(-1, configEntity.typeEntity);
   }
 
-  public override void SetValueProgressBar(DataGame data, StatePerk statePerk)
+  public override void SetValueProgressBar(DataGame data)
   {
-    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)statePerk.countCharForAddHint / _gameManager.PlayerSetting.bonusCount.charHint;
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)data.activeLevel.statePerk.countCharForAddHint / _gameManager.PlayerSetting.bonusCount.charHint;
     // spriteProgress.transform.localPosition
     //   = new Vector3(spriteProgress.transform.localPosition.x, newPosition);
     spriteProgress.transform

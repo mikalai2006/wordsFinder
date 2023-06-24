@@ -25,15 +25,15 @@ public class ButtonStar : BaseButton
   #endregion
 
 
-  public override void SetValue(DataGame data, StatePerk statePerk)
+  public override void SetValue(DataGame data)
   {
     value = data.hints.GetValueOrDefault(TypeEntity.Star);
 
-    base.SetValue(data, statePerk);
+    base.SetValue(data);
     _countChars.text = string.Format(
       "{0}--{1}",
       data.activeLevel.countOpenChars,
-      statePerk.countCharForAddStar
+      data.activeLevel.statePerk.countCharForAddStar
     );
   }
 
@@ -117,9 +117,9 @@ public class ButtonStar : BaseButton
     SetDefault();
   }
 
-  public override void SetValueProgressBar(DataGame data, StatePerk statePerk)
+  public override void SetValueProgressBar(DataGame data)
   {
-    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)statePerk.countCharForAddStar / _gameManager.PlayerSetting.bonusCount.charStar;
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)data.activeLevel.statePerk.countCharForAddStar / _gameManager.PlayerSetting.bonusCount.charStar;
     // spriteProgress.transform.localPosition
     //   = new Vector3(spriteProgress.transform.localPosition.x, newPosition);
     spriteProgress.transform

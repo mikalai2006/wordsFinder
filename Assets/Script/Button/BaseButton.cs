@@ -58,7 +58,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   }
   #endregion
 
-  public virtual void SetValue(DataGame data, StatePerk statePerk)
+  public virtual void SetValue(DataGame data)
   {
     // Debug.Log($"star={data.activeLevel.star}/status={_statusShowCounter}");
     if (value > 0)
@@ -89,7 +89,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 
     // TODO animation get hit.
 
-    SetValueProgressBar(data, statePerk);
+    SetValueProgressBar(data);
   }
 
   private void ShowCounter()
@@ -126,7 +126,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
     //gameObject.SetActive(false);
   }
 
-  public virtual void SetValueProgressBar(DataGame data, StatePerk statePerk)
+  public virtual void SetValueProgressBar(DataGame data)
   {
   }
 
