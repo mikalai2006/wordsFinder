@@ -13,8 +13,27 @@ MonoBehaviour:
   m_Name: begin
   m_EditorClassIdentifier: 
   idPlayerSetting: begin
+  text:
+    title:
+      m_TableReference:
+        m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+      m_TableEntryReference:
+        m_KeyId: 3189624831901696
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    description:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   coefDifficulty: 0.1
-  countFindWordsForUp: 1000
+  countFindWordsForUp: 3
   maxLengthWord: 5
   maxFindWords: 100
   maxCountHints: 0
@@ -24,3 +43,6 @@ MonoBehaviour:
     charCoin: 10
     charStar: 20
     charHint: 20
+  references:
+    version: 2
+    RefIds: []

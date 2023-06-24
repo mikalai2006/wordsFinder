@@ -11,6 +11,7 @@ public class TopSide : MonoBehaviour
   private Vector3 _initialPositionSpriteCoin;
   private Vector3 _initialScaleSpriteRate;
   private Vector3 _initialPositionSpriteRate;
+  [SerializeField] private TMPro.TextMeshProUGUI _statusText;
   [SerializeField] private Image _spriteRate;
   [SerializeField] private TMPro.TextMeshProUGUI _rate;
   [SerializeField] private Image _spriteCoin;
@@ -54,11 +55,19 @@ public class TopSide : MonoBehaviour
     SetDefault();
   }
 
-  public void SetValue(DataGame data, StatePerk statePerk)
+  public async void SetValue(DataGame data, StatePerk statePerk)
   {
-    // Debug.Log($"TopSide setValue {data.rate}");
     _rate.text = data.rate.ToString();
+
     _coins.text = data.coins.ToString();
+
+    string status = await Helpers.GetLocaledString(_gameManager.PlayerSetting.text.title);
+
+    string name = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.Name)
+      ? await Helpers.GetLocaledString(_gameManager.GameSettings.noName.title)
+      : _gameManager.AppInfo.UserInfo.Name;
+
+    _statusText.text = string.Format("{0} <size=.2>{1}</size>", name, status);
   }
 
   private void SetDefault()

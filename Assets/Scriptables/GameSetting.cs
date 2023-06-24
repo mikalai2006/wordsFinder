@@ -55,11 +55,16 @@ public class GameSetting : ScriptableObject
   [Header("System")]
   public int debounceTime;
   [Range(10, 1000)] public int timeDelayOverChar;
-  public GameLevel GameLevels;
+  public List<GameLevel> GameLevels;
 
   [Space(5)]
   [Header("Shop")]
   public List<ShopItem> ShopItems;
+
+
+  [Space(5)]
+  [Header("Texts")]
+  public TextLocalize noName;
 }
 
 

@@ -33,7 +33,7 @@ public class LevelManager : Singleton<LevelManager>
     _symbols = new();
   }
 
-  public async void InitLevel(GameLevelWord wordConfig)
+  public async void InitLevel(string wordConfig)
   {
     _gameManager.InputManager.Disable();
 
@@ -53,7 +53,7 @@ public class LevelManager : Singleton<LevelManager>
     // Check complete level.
     if (_stateManager.dataGame.levels.Count > 0)
     {
-      var currentLevel = _stateManager.dataGame.levels.Find(t => t.id == wordConfig.name);
+      var currentLevel = _stateManager.dataGame.levels.Find(t => t.id == wordConfig);
       bool isEndLevel = currentLevel.openWords.Count - currentLevel.countDopWords == currentLevel.countNeedWords && currentLevel.openWords.Count > 0;
       if (isEndLevel)
       {
@@ -148,8 +148,16 @@ public class LevelManager : Singleton<LevelManager>
   {
     if (_gameManager.PlayerSetting.countFindWordsForUp <= _stateManager.dataGame.rate)
     {
-      // TODO Next level status player;
+      // check rate user.
+      GamePlayerSetting newRankUser = _stateManager.SetNewLevelPlayer();
+
+      var resultDialog = await dialogLevel.ShowDialogNewRankUser();
+
+      // if (resultDialog.isOk)
+      // {
+      // }
     }
+
     // _gameManager.InputManager.Disable();
     // var dialogWindow = new UILevelsOperation();
     // var result = await dialogWindow.ShowAndHide();

@@ -217,7 +217,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3730866485493760
-    m_Localized: Complete level successfully!
+    m_Localized: Complete round successfully!
     m_Metadata:
       m_Items: []
   - m_Id: 3766257527717888
@@ -275,10 +275,24 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 366247623133495314
+  - m_Id: 4517829861867520
+    m_Localized: Unknown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4523303260815360
+    m_Localized: New rank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4523397003509760
+    m_Localized: Congratulations! You receive a new honorary title {name}! Now more
+      complex words are available to you.
+    m_Metadata:
+      m_Items:
+      - rid: 366247623133495314
   references:
     version: 2
     RefIds:
     - rid: 366247623133495314
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 008012baef150200008052d5248e05000080d2ebf1590b00008092ea35400c000080925ecd430c000080521d7c300c00008052e12f620d00008052dfaf610d00008012091f860d0000801274d0f80f00
+        m_Entries: 008012baef150200008052d5248e05000080d2ebf1590b00008092ea35400c000080925ecd430c000080521d7c300c00008052e12f620d00008052dfaf610d00008012091f860d0000801274d0f80f000080926f01121000

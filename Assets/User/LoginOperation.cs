@@ -25,41 +25,45 @@ namespace User
       // var t = await Helpers.GetLocaledString("loading");
       _onSetNotify?.Invoke("...");
       _onProgress?.Invoke(0.1f);
-      _appInfoContainer.UserInfo = await GetUserInfo(DeviceInfo.GetDeviceId());
+
+      var res = await GetUserInfo(DeviceInfo.GetDeviceId());
+      _appInfoContainer.UserInfo = res.UserInfo;
+      _appInfoContainer.DeviceId = res.DeviceId;
 
       _onProgress?.Invoke(.2f);
     }
 
-    private async UniTask<UserInfoContainer> GetUserInfo(string deviceId)
+    private async UniTask<AppInfoContainer> GetUserInfo(string deviceId)
     {
-      UserInfoContainer result = null;
+      AppInfoContainer result = null;
 
       //Fake login
       if (PlayerPrefs.HasKey(deviceId))
       {
-        result = JsonUtility.FromJson<UserInfoContainer>(PlayerPrefs.GetString(deviceId));
+        result = JsonUtility.FromJson<AppInfoContainer>(PlayerPrefs.GetString(deviceId));
       }
       // await UniTask.Delay(TimeSpan.FromSeconds(1.5f));
       _onProgress?.Invoke(0.3f);
       //Fake login
 
-      if (result == null || result.Id == null)
+      if (result == null || result.UserInfo == null || result.UserInfo.Id == null)
       {
         // result = await GameManager.Instance.LoginWindowProvider.ShowAndHide();
         result = await LoginAsDeviceId();
       }
 
-      _appInfoContainer.UserInfo = result;
+      // _appInfoContainer.UserInfo = result.UserInfo;
+      // _appInfoContainer.DeviceId = deviceId;
 
       PlayerPrefs.SetString(deviceId, JsonUtility.ToJson(result));
 
       return result;
     }
 
-    private async UniTask<UserInfoContainer> LoginAsDeviceId()
+    private async UniTask<AppInfoContainer> LoginAsDeviceId()
     {
       string deviceId = DeviceInfo.GetDeviceId();
-      var result = new UserInfoContainer()
+      var result = new AppInfoContainer()
       {
         DeviceId = deviceId
       };

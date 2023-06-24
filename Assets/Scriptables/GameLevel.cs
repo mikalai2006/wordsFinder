@@ -9,15 +9,11 @@ public class GameLevel : ScriptableObject
   public TextLocalize text;
   [Space(10)]
   [Header("---Difficulty settings")]
-
-  [Tooltip("Коэффициент начисления начального количества подсказок: коэф. * количество слов на табло = кол-во подск.")]
-  [Range(0f, .3f)] public float coefHint;
-  [Tooltip("Коэффициент начисления начального количества подсказок: коэф. * количество слов на табло = кол-во подск.")]
-  [Range(0f, .3f)] public float coefStar;
+  public int minRate;
 
   [Space(10)]
   [Header("Word settings")]
-  public List<GameLevelWord> levelWords;
+  public List<string> levelWords;
 }
 
 [System.Serializable]

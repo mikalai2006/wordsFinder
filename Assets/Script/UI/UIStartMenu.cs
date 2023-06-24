@@ -97,13 +97,16 @@ public class UIStartMenu : UILocaleBase
     coinImg.style.backgroundImage = new StyleBackground(configCoin.sprite);
 
 
-    name.text = "Mikalai2006";
+    name.text = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.Name)
+      ? await Helpers.GetLocaledString(_gameSettings.noName.title)
+      : _gameManager.AppInfo.UserInfo.Name;
 
 
     var percentFindWords = (dataState.rate * 100 / _gameManager.PlayerSetting.countFindWordsForUp);
     progress.style.width = new StyleLength(new Length(percentFindWords, LengthUnit.Percent));
 
-    status.text = await Helpers.GetLocaledString(dataState.idPlayerSetting);
+    var playerSettings = _gameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataState.idPlayerSetting);
+    status.text = await Helpers.GetLocaledString(playerSettings.text.title);
 
     var textCountWords = await Helpers.GetLocalizedPluralString(
           "foundwords",
@@ -153,11 +156,12 @@ public class UIStartMenu : UILocaleBase
     operations.Enqueue(new GameInitOperation());
     await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
 
-    var activeLastWord = _gameSettings.GameLevels.levelWords
-      .Find(t => t.name == _gameManager.DataManager.DataGame.lastLevelWord);
-    // var activeLastLevelWord = activeLastWord
-    //   .words
-    //   .Find(t => t == _gameManager.DataManager.DataGame.lastWord);
+    var activeLastWord = _gameManager.StateManager.dataGame.lastLevelWord;
+    // _gameSettings.GameLevels.levelWords
+    //   .Find(t => t.name == _gameManager.DataManager.DataGame.lastLevelWord);
+    // // var activeLastLevelWord = activeLastWord
+    // //   .words
+    // //   .Find(t => t == _gameManager.DataManager.DataGame.lastWord);
 
     _gameManager.LevelManager.InitLevel(activeLastWord);
 
@@ -173,7 +177,9 @@ public class UIStartMenu : UILocaleBase
     operations.Enqueue(new GameInitOperation());
     await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
 
-    var activeLastLevelWord = _gameSettings.GameLevels.levelWords.ElementAt(0);
+    var firstLevel = _gameSettings.GameLevels.GroupBy(t => t.minRate).First();
+
+    var activeLastLevelWord = firstLevel.ElementAt(0).levelWords.ElementAt(0);
 
     _gameManager.LevelManager.InitLevel(activeLastLevelWord);
   }

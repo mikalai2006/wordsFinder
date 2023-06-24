@@ -69,6 +69,7 @@ public class DialogLevel : MonoBehaviour
 
     SetDefault();
     _buttonNext.gameObject.SetActive(true);
+    _buttonNext.onClick.AddListener(CloseDialogEndRound);
     _buttonDouble.gameObject.SetActive(true);
 
     _textHeader.text = await Helpers.GetLocalizedPluralString(
@@ -205,6 +206,8 @@ public class DialogLevel : MonoBehaviour
 
     SetDefault();
 
+    _buttonOk.onClick.AddListener(CloseDialogStartRound);
+
     _textHeader.text = string.Format("{0} {1}",
       await Helpers.GetLocaledString("round"),
       _stateManager.dataGame.completeWords.Count + 1
@@ -270,18 +273,7 @@ public class DialogLevel : MonoBehaviour
     transform
       .DOMove(visiblePositionWrapper, duration * 2)
       .From(defaultPositionWrapper, true)
-      .SetEase(Ease.OutBack)
-      .OnComplete(() =>
-      {
-
-      });
-
-    // transform
-    //   .DOMove(Vector3.zero, duration)
-    //   .SetEase(Ease.OutCubic);
-    // // transform
-    // // .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)
-    // // .SetEase(Ease.OutElastic);
+      .SetEase(Ease.OutBack);
 
     return await _processCompletionSource.Task;
   }
@@ -295,21 +287,69 @@ public class DialogLevel : MonoBehaviour
       .SetEase(Ease.InBack)
       .OnComplete(() =>
       {
-        gameObject.SetActive(false);
-        _bg.SetActive(false);
         SetDefault();
-
-        // _levelManager.buttonShuffle.Show();
-        // _levelManager.stat.Show();
-        _bg.SetActive(false);
-
 
         _result.isOk = true;
         _processCompletionSource.SetResult(_result);
       });
 
-    // _levelManager.buttonShuffle.Show();
-    // _levelManager.stat.Show();
+  }
+
+
+
+  public async UniTask<DataDialogResult> ShowDialogNewRankUser()
+  {
+    _processCompletionSource = new();
+    _result = new();
+
+    SetDefault();
+
+    _buttonOk.onClick.AddListener(CloseDialogNewRankUser);
+
+    _textHeader.text = string.Format("{0}", await Helpers.GetLocaledString("newrank"));
+
+    string newRank = await Helpers.GetLocaledString(_gameManager.PlayerSetting.text.title);
+
+    _textMessage.text = newRank;
+
+    _textMessageSmall.text = string.Format("{0}",
+      await Helpers.GetLocalizedPluralString(
+        "newrank_d",
+        new Dictionary<string, object> {
+        {"name", newRank}
+        }
+      )
+    );
+
+    _bg.SetActive(true);
+    _buttonOk.gameObject.SetActive(true);
+    gameObject.SetActive(true);
+
+    transform
+      .DOMove(visiblePositionWrapper, duration * 2)
+      .From(defaultPositionWrapper, true)
+      .SetEase(Ease.OutBack);
+
+    return await _processCompletionSource.Task;
+  }
+
+  public void CloseDialogNewRankUser()
+  {
+    _gameManager.audioManager.Click();
+
+    transform
+      .DOMove(defaultPositionWrapper, duration * 2)
+      .SetEase(Ease.InBack)
+      .OnComplete(() =>
+      {
+        gameObject.SetActive(false);
+        _bg.SetActive(false);
+        SetDefault();
+        _bg.SetActive(false);
+
+        _result.isOk = true;
+        _processCompletionSource.SetResult(_result);
+      });
   }
 
   private void SetDefault()
@@ -322,10 +362,16 @@ public class DialogLevel : MonoBehaviour
     gameObject.SetActive(false);
     gameObject.transform.position = defaultPositionWrapper;
     _bg.SetActive(false);
-    _buttonNext.gameObject.SetActive(false);
-    _buttonDouble.gameObject.SetActive(false);
     _totalObject.SetActive(false);
+
+    _buttonNext.gameObject.SetActive(false);
+    _buttonNext.onClick.RemoveAllListeners();
+
+    _buttonDouble.gameObject.SetActive(false);
+    // _buttonDouble.onClick.RemoveAllListeners();
+
     _buttonOk.gameObject.SetActive(false);
+    _buttonOk.onClick.RemoveAllListeners();
     // _textCountStar.text = "";
     // _textCountHint.text = "";
     // _indexCountStar.text = "?";

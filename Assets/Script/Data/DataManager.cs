@@ -1,7 +1,5 @@
-using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-// using System.Linq;
 using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
@@ -21,7 +19,7 @@ public class DataManager : Singleton<DataManager>
   {
     cancelTokenSource = new CancellationTokenSource();
 
-    _fileDataHandler = new FileDataHandler(Application.persistentDataPath, _gameManager.AppInfo.UserInfo.DeviceId, useEncryption);
+    _fileDataHandler = new FileDataHandler(Application.persistentDataPath, _gameManager.AppInfo.DeviceId, useEncryption);
   }
 
   public async UniTask<DataGame> Load()

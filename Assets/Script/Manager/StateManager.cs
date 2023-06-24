@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class StateManager : MonoBehaviour
   public static event Action<DataGame, StatePerk> OnChangeState;
   public DataGame dataGame;
   [SerializeField] public StatePerk statePerk;
-  public GameLevelWord ActiveWordConfig;
+  public string ActiveWordConfig;
   // public string ActiveWordConfig;
 
   public LevelManager _levelManager => GameManager.Instance.LevelManager;
@@ -41,10 +42,10 @@ public class StateManager : MonoBehaviour
       data = new DataGame()
       {
         idPlayerSetting = idPlayerSetting,
-        hint = 10,
-        star = 10,
-        bomb = 10,
-        lighting = 10
+        // hint = 10,
+        // star = 10,
+        // bomb = 10,
+        // lighting = 10
       };
     }
 
@@ -216,7 +217,21 @@ public class StateManager : MonoBehaviour
   }
 
 
-  public void SetActiveLevel(GameLevelWord wordConfig)
+  public List<string> GetAllowNotCompleteWords()
+  {
+    var allAllowLevelWords = _gameManager.GameSettings.GameLevels
+      .Where(t => t.minRate <= dataGame.rate)
+      .ToList();
+    List<string> allAllowWords = new();
+    foreach (var el in allAllowLevelWords)
+    {
+      allAllowWords.AddRange(el.levelWords);
+    };
+
+    return allAllowWords.ToList();
+  }
+
+  public void SetActiveLevel(string wordConfig)
   {
     if (wordConfig == null)
     {
@@ -224,43 +239,32 @@ public class StateManager : MonoBehaviour
       return;
     }
 
-    var allLevels = _gameManager.GameSettings.GameLevels;
-
     if (dataGame.levels.Count == 0)
     {
-      if (dataGame.completeWords.Contains(wordConfig.word))
+      if (dataGame.completeWords.Contains(wordConfig))
       {
+        var allAllowWords = GetAllowNotCompleteWords();
+
         // Find not completed word.
-        var notCompletedWords = allLevels.levelWords.Where(t => !dataGame.completeWords.Contains(t.name));
+        var notCompletedWords = allAllowWords.Where(t => !dataGame.completeWords.Contains(t));
+
         if (notCompletedWords.Count() > 0)
         {
           wordConfig = notCompletedWords.ElementAt(0);
-          // Clear all words prev level.
-          // dataGame.completeWords.Clear();
         }
       }
-      // else
-      // // Check complete word.
-      // {
-      //   var allowWords = wordConfig.words.Where(t => !dataGame.completeWords.Contains(t));
-      //   if (allowWords.Count() > 0)
-      //   {
-      //     word = allowWords.ElementAt(0);
-      //     // Debug.Log($"Change word [{wordConfig.idLevelWord}-{wordConfig.title}]");
-      //   }
-      // }
     }
 
     ActiveWordConfig = wordConfig;
     // ActiveWordConfig = word;
     // dataGame.lastLevelWord = wordConfig.idLevel;
-    dataGame.lastLevelWord = wordConfig.name;
+    dataGame.lastLevelWord = wordConfig;
 
-    if (dataGame.levels.Find(t => t.id == wordConfig.name) == null)
+    if (dataGame.levels.Find(t => t.id == wordConfig) == null)
     {
       dataGame.levels.Add(new DataLevel()
       {
-        id = wordConfig.name,
+        id = wordConfig,
         // word = word,
         // hint = (int)Mathf.Round(wordConfig.word.Length * _gameSetting.GameLevels.coefHint),
         // star = (int)Mathf.Round(wordConfig.word.Length * _gameSetting.GameLevels.coefStar)
@@ -268,14 +272,43 @@ public class StateManager : MonoBehaviour
 
     }
     // var indexActiveLevel = dataGame.levels.FindIndex(t => t.id == wordConfig.idLevel && t.word == word);
-    dataGame.activeLevel = dataGame.levels.Find((t) => t.id == wordConfig.name);
+    dataGame.activeLevel = dataGame.levels.Find((t) => t.id == wordConfig);
     // Debug.Log($"Set active level ={indexActiveLevel}| {dataGame.activeLevel.openChars.Count}");
 
     SetDefaultPerk();
   }
 
-  public GameLevelWord GetConfigNextLevel()
+  public GamePlayerSetting SetNewLevelPlayer()
   {
+    GamePlayerSetting result = null;
+
+    int countFindWordsForUp = _gameManager.PlayerSetting.countFindWordsForUp;
+
+    if (dataGame.rate < countFindWordsForUp) return null;
+
+
+    var allPlayerSettings = _gameSetting.PlayerSetting.OrderBy(t => t.countFindWordsForUp).ToList();
+
+    int indexPlayerSetting = allPlayerSettings.FindIndex(t => t.idPlayerSetting == _gameManager.PlayerSetting.idPlayerSetting);
+
+    if (indexPlayerSetting + 1 < allPlayerSettings.Count)
+    {
+      indexPlayerSetting++;
+    }
+
+    dataGame.idPlayerSetting = allPlayerSettings[indexPlayerSetting].idPlayerSetting;
+
+    _gameManager.PlayerSetting = allPlayerSettings[indexPlayerSetting];
+
+    return result;
+  }
+
+  public string GetNextWord()
+  {
+    // // check rate user.
+    // GetNewLevelPlayer();
+
+    Debug.Log($"active  dataGame.activeLevel.id=[{dataGame.activeLevel.id}]");
     // check completed level.
     if (dataGame.activeLevel.openWords.Count >= dataGame.activeLevel.countNeedWords)
     {
@@ -284,17 +317,21 @@ public class StateManager : MonoBehaviour
         dataGame.completeWords.Add(dataGame.activeLevel.id);
       }
     }
-    GameLevelWord result = null;
+    string result = null;
 
     dataGame.levels.Remove(dataGame.activeLevel);
 
     // Find not completed word.
-    var notCompletedWords = _gameManager.GameSettings.GameLevels.levelWords.Where(t => !dataGame.completeWords.Contains(t.name));
+    var allAllowWords = GetAllowNotCompleteWords();
+
+    var notCompletedWords = allAllowWords.Where(t => !dataGame.completeWords.Contains(t));
 
     if (notCompletedWords.Count() > 0)
     {
       result = notCompletedWords.ElementAt(0);
     }
+
+    Debug.Log($"active  notCompletedWord=[{result}]");
 
     return result;
   }

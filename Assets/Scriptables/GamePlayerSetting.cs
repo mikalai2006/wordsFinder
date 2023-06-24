@@ -4,6 +4,7 @@ using UnityEngine;
 public class GamePlayerSetting : ScriptableObject
 {
   public string idPlayerSetting;
+  public TextLocalize text;
 
   [Space(10)]
   [Header("---Difficulty settings")]
@@ -19,7 +20,10 @@ public class GamePlayerSetting : ScriptableObject
   // [Tooltip("Минимальная длина слова для набора символов")]
   // public int minLengthWordForChars;
   [Range(5, 200)] public int maxFindWords;
-  [Range(0f, 5f)] public int maxCountHints;
+  [Tooltip("Коэффициент начисления начального количества подсказок - частая буква")]
+  [Range(0f, .3f)] public float coefHint;
+  [Tooltip("Коэффициент начисления начального количества подсказок - случайная буква")]
+  [Range(0f, .3f)] public float coefStar;
 
   [Space(5)]
   [Header("---Bonuses")]

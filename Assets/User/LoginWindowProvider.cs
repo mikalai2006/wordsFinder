@@ -5,7 +5,7 @@ namespace User
 {
   public class LoginWindowProvider : LocalAssetLoader
   {
-    public async UniTask<UserInfoContainer> ShowAndHide()
+    public async UniTask<AppInfoContainer> ShowAndHide()
     {
       var loginWindow = await Load();
       var result = await loginWindow.ProcessLogin();

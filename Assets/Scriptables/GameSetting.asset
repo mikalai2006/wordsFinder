@@ -17,6 +17,10 @@ MonoBehaviour:
   Theme: {fileID: 11400000, guid: 08e6c1ceee25b7842a70dbb8dedd1c81, type: 2}
   PlayerSetting:
   - {fileID: 11400000, guid: b57b9e953e14d084dbf1e284147084c7, type: 2}
+  - {fileID: 11400000, guid: c74f5f99da2ab024b85faf3c9958078f, type: 2}
+  - {fileID: 11400000, guid: 4d273518aa34c7645bfda59536cd7088, type: 2}
+  - {fileID: 11400000, guid: cb4e1465ae67a53418d2620b40fe9de3, type: 2}
+  - {fileID: 11400000, guid: 2aff9521db4364049844d3fd0ddc9096, type: 2}
   lineWidth: 0.15
   radius: 2.5
   addinitiallyRow: 3
@@ -145,6 +149,25 @@ MonoBehaviour:
     entity: {fileID: 11400000, guid: 2697833efb75290439777579f6d6e8f1, type: 2}
     count: 1
     cost: 1000
+  noName:
+    title:
+      m_TableReference:
+        m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+      m_TableEntryReference:
+        m_KeyId: 4517829861867520
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    description:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   references:
     version: 2
     RefIds: []

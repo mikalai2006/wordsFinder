@@ -13,14 +13,36 @@ MonoBehaviour:
   m_Name: junior
   m_EditorClassIdentifier: 
   idPlayerSetting: junior
+  text:
+    title:
+      m_TableReference:
+        m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+      m_TableEntryReference:
+        m_KeyId: 3189652749189120
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    description:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   coefDifficulty: 0.2
   countFindWordsForUp: 100
   maxLengthWord: 6
-  maxFindWords: 0
+  maxFindWords: 100
   maxCountHints: 0
   bonusCount:
     charBonus: 40
-    errorClear: 15
-    charCoin: 20
+    errorClear: 20
+    charCoin: 10
     charStar: 20
     charHint: 20
+  references:
+    version: 2
+    RefIds: []

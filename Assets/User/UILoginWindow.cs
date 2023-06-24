@@ -37,7 +37,7 @@ public class UILoginWindow : MonoBehaviour
   private TextField _fieldPassword;
   private Button _buttonLogin;
 
-  private TaskCompletionSource<UserInfoContainer> _loginCompletionSource;
+  private TaskCompletionSource<AppInfoContainer> _loginCompletionSource;
 
 
   public UnityEvent loginAction;
@@ -139,17 +139,17 @@ public class UILoginWindow : MonoBehaviour
     }
   }
 
-  public async Task<UserInfoContainer> ProcessLogin()
+  public async Task<AppInfoContainer> ProcessLogin()
   {
 
-    _loginCompletionSource = new TaskCompletionSource<UserInfoContainer>();
+    _loginCompletionSource = new TaskCompletionSource<AppInfoContainer>();
     return await _loginCompletionSource.Task;
   }
 
   private void LoginAsDeviceId()
   {
     string deviceId = DeviceInfo.GetDeviceId();
-    _loginCompletionSource.SetResult(new UserInfoContainer()
+    _loginCompletionSource.SetResult(new AppInfoContainer()
     {
       DeviceId = deviceId
     });
@@ -231,20 +231,20 @@ public class UILoginWindow : MonoBehaviour
       return;
     }
 
-    UserInfoContainer userInfo = new UserInfoContainer();
+    AppInfoContainer appInfo = new AppInfoContainer();
 
     var res = await AsyncLogin();
     var resultObject = JsonUtility.FromJson<DataResultLogin>(res);
-    userInfo.UserInfoAuth.RefreshToken = resultObject.refresh_token;
-    userInfo.UserInfoAuth.AccessToken = resultObject.access_token;
+    appInfo.UserInfo.UserInfoAuth.RefreshToken = resultObject.refresh_token;
+    appInfo.UserInfo.UserInfoAuth.AccessToken = resultObject.access_token;
 
-    if (userInfo.UserInfoAuth.AccessToken == "")
+    if (appInfo.UserInfo.UserInfoAuth.AccessToken == "")
       return;
 
     var infoUser = await GetUserInfo(resultObject.access_token);
     var infoUserObject = JsonUtility.FromJson<UserInfo>(infoUser);
 
-    _loginCompletionSource.SetResult(userInfo);
+    _loginCompletionSource.SetResult(appInfo);
     loginAction?.Invoke();
   }
 

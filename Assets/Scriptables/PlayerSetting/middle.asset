@@ -13,6 +13,25 @@ MonoBehaviour:
   m_Name: middle
   m_EditorClassIdentifier: 
   idPlayerSetting: middle
+  text:
+    title:
+      m_TableReference:
+        m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+      m_TableEntryReference:
+        m_KeyId: 3189693752705024
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    description:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   coefDifficulty: 0.6
   countFindWordsForUp: 700
   maxLengthWord: 10
@@ -24,3 +43,6 @@ MonoBehaviour:
     charCoin: 3
     charStar: 10
     charHint: 5
+  references:
+    version: 2
+    RefIds: []

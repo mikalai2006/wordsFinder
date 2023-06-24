@@ -255,6 +255,18 @@ MonoBehaviour:
     m_Key: currentprogress
     m_Metadata:
       m_Items: []
+  - m_Id: 4517829861867520
+    m_Key: noname
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4523303260815360
+    m_Key: newrank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4523397003509760
+    m_Key: newrank_d
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

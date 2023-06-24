@@ -13,6 +13,25 @@ MonoBehaviour:
   m_Name: major
   m_EditorClassIdentifier: 
   idPlayerSetting: major
+  text:
+    title:
+      m_TableReference:
+        m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+      m_TableEntryReference:
+        m_KeyId: 3189713814061056
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    description:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   coefDifficulty: 0.4
   countFindWordsForUp: 500
   maxLengthWord: 7
@@ -24,3 +43,6 @@ MonoBehaviour:
     charCoin: 15
     charStar: 15
     charHint: 15
+  references:
+    version: 2
+    RefIds: []

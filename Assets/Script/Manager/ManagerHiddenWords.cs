@@ -64,8 +64,7 @@ public class ManagerHiddenWords : MonoBehaviour
   /// <param name="wordConfig">Config word</param>
   public void Init() // GameLevel levelConfig, GameLevelWord wordConfig
   {
-    var wordConfig = _stateManager.ActiveWordConfig;
-    var word = wordConfig.word;
+    var word = _stateManager.ActiveWordConfig;
 
     _levelManager.buttonShuffle.gameObject.SetActive(true);
     _levelManager.buttonStar.gameObject.SetActive(true);
@@ -492,7 +491,7 @@ public class ManagerHiddenWords : MonoBehaviour
       // Check next level status player.
       await _levelManager.CheckNextLevelPlayer();
 
-      var newConfigWord = _stateManager.GetConfigNextLevel();
+      var newConfigWord = _stateManager.GetNextWord();
       _levelManager.InitLevel(newConfigWord);
 
     }
@@ -506,9 +505,9 @@ public class ManagerHiddenWords : MonoBehaviour
     var countNeedFindWords = NeedWords.Count;
 
     _stateManager.dataGame.activeLevel.hintLevel
-      += (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameSetting.GameLevels.coefHint);
+      += (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefHint);
     _stateManager.dataGame.activeLevel.starLevel
-      += (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameSetting.GameLevels.coefStar);
+      += (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefStar);
     _stateManager.dataGame.hint += _stateManager.dataGame.activeLevel.hintLevel;
     _stateManager.dataGame.star += _stateManager.dataGame.activeLevel.starLevel;
   }
