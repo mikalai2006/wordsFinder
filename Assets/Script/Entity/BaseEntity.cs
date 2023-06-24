@@ -13,12 +13,14 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   protected LevelManager _levelManager => GameManager.Instance.LevelManager;
   protected GameSetting _gameSetting => GameManager.Instance.GameSettings;
   protected GameManager _gameManager => GameManager.Instance;
-  protected GameEntity configEntity;
+  public GameEntity configEntity { get; protected set; }
   protected Vector3 initScale;
   protected Vector3 initPosition;
   [SerializeField] protected SpriteRenderer spriteRenderer;
   [SerializeField] protected SpriteRenderer spriteBg;
   [SerializeField] private SortingGroup order;
+  [SerializeField] public GameObject counterObject;
+  [SerializeField] public TMPro.TextMeshProUGUI counterText;
   public GridNode OccupiedNode;
   protected List<GridNode> nodesForCascade = new();
   private UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset;
@@ -29,6 +31,9 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   {
     spriteRenderer.sprite = configEntity.sprite;
     spriteRenderer.color = _gameSetting.Theme.entityColor;
+    spriteBg.color = Color.clear;
+
+    counterObject.transform.localScale = Vector3.zero;
   }
 
   private void OnDestroy()
@@ -44,7 +49,6 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
     OccupiedNode = node;
     transform.localPosition = initPosition = node.arrKey + new Vector2(.5f, .5f); //  = _position
     initScale = transform.localScale;
-    spriteBg.color = Color.clear;
     gameObject.SetActive(false);
   }
 

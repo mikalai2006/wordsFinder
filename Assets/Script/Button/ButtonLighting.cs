@@ -23,7 +23,7 @@ public class ButtonLighting : BaseButton
 
   public override void SetValue(DataGame data, StatePerk statePerk)
   {
-    value = data.lighting;
+    value = data.hints.GetValueOrDefault(TypeEntity.Lighting);
     base.SetValue(data, statePerk);
   }
 
@@ -73,6 +73,6 @@ public class ButtonLighting : BaseButton
 
     newEntity.Move(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position), nodesForEffect, true);
 
-    _stateManager.UseLighting();
+    _stateManager.UseHint(-1, configEntity.typeEntity);
   }
 }

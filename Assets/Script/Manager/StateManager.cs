@@ -36,12 +36,12 @@ public class StateManager : MonoBehaviour
 
   public void Init(DataGame data)
   {
-    if (data == null || string.IsNullOrEmpty(data.idPlayerSetting))
+    if (data == null || string.IsNullOrEmpty(data.rank))
     {
       var idPlayerSetting = _gameSetting.PlayerSetting.ElementAt(0).idPlayerSetting;
       data = new DataGame()
       {
-        idPlayerSetting = idPlayerSetting,
+        rank = idPlayerSetting,
         // hint = 10,
         // star = 10,
         // bomb = 10,
@@ -50,17 +50,17 @@ public class StateManager : MonoBehaviour
     }
 
     dataGame = data;
-    _gameManager.PlayerSetting = _gameSetting.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.idPlayerSetting);
+    _gameManager.PlayerSetting = _gameSetting.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
 
     // Load setting user.
-    _gameManager.AppInfo.userSettings = dataGame.userSettings;
+    _gameManager.AppInfo.userSettings = dataGame.setting;
   }
 
   public void RefreshData()
   {
     var managerHiddenWords = _levelManager.ManagerHiddenWords;
     // Save setting user.
-    dataGame.userSettings = _gameManager.AppInfo.userSettings;
+    dataGame.setting = _gameManager.AppInfo.userSettings;
 
     dataGame.activeLevel.word = managerHiddenWords.WordForChars;
 
@@ -168,14 +168,14 @@ public class StateManager : MonoBehaviour
     if (statePerk.countCharForAddHint >= _gameManager.PlayerSetting.bonusCount.charHint)
     {
       statePerk.countCharForAddHint -= _gameManager.PlayerSetting.bonusCount.charHint;
-      dataGame.hint++;
+      dataGame.hints[TypeEntity.Hint]++;
     }
 
     // Check add star to grid.
     if (statePerk.countCharForAddStar >= _gameManager.PlayerSetting.bonusCount.charStar)
     {
       statePerk.countCharForAddStar -= _gameManager.PlayerSetting.bonusCount.charStar;
-      dataGame.star++;
+      dataGame.hints[TypeEntity.Star]++;
     }
 
     RefreshData();
@@ -241,12 +241,12 @@ public class StateManager : MonoBehaviour
 
     if (dataGame.levels.Count == 0)
     {
-      if (dataGame.completeWords.Contains(wordConfig))
+      if (dataGame.completed.Contains(wordConfig))
       {
         var allAllowWords = GetAllowNotCompleteWords();
 
         // Find not completed word.
-        var notCompletedWords = allAllowWords.Where(t => !dataGame.completeWords.Contains(t));
+        var notCompletedWords = allAllowWords.Where(t => !dataGame.completed.Contains(t));
 
         if (notCompletedWords.Count() > 0)
         {
@@ -258,7 +258,7 @@ public class StateManager : MonoBehaviour
     ActiveWordConfig = wordConfig;
     // ActiveWordConfig = word;
     // dataGame.lastLevelWord = wordConfig.idLevel;
-    dataGame.lastLevelWord = wordConfig;
+    dataGame.lastWord = wordConfig;
 
     if (dataGame.levels.Find(t => t.id == wordConfig) == null)
     {
@@ -296,7 +296,7 @@ public class StateManager : MonoBehaviour
       indexPlayerSetting++;
     }
 
-    dataGame.idPlayerSetting = allPlayerSettings[indexPlayerSetting].idPlayerSetting;
+    dataGame.rank = allPlayerSettings[indexPlayerSetting].idPlayerSetting;
 
     _gameManager.PlayerSetting = allPlayerSettings[indexPlayerSetting];
 
@@ -305,16 +305,12 @@ public class StateManager : MonoBehaviour
 
   public string GetNextWord()
   {
-    // // check rate user.
-    // GetNewLevelPlayer();
-
-    Debug.Log($"active  dataGame.activeLevel.id=[{dataGame.activeLevel.id}]");
     // check completed level.
     if (dataGame.activeLevel.openWords.Count >= dataGame.activeLevel.countNeedWords)
     {
-      if (!dataGame.completeWords.Contains(dataGame.activeLevel.id))
+      if (!dataGame.completed.Contains(dataGame.activeLevel.id))
       {
-        dataGame.completeWords.Add(dataGame.activeLevel.id);
+        dataGame.completed.Add(dataGame.activeLevel.id);
       }
     }
     string result = null;
@@ -324,14 +320,12 @@ public class StateManager : MonoBehaviour
     // Find not completed word.
     var allAllowWords = GetAllowNotCompleteWords();
 
-    var notCompletedWords = allAllowWords.Where(t => !dataGame.completeWords.Contains(t));
+    var notCompletedWords = allAllowWords.Where(t => !dataGame.completed.Contains(t));
 
     if (notCompletedWords.Count() > 0)
     {
       result = notCompletedWords.ElementAt(0);
     }
-
-    Debug.Log($"active  notCompletedWord=[{result}]");
 
     return result;
   }
@@ -342,49 +336,55 @@ public class StateManager : MonoBehaviour
     return dataGame;
   }
 
-  public void UseHint()
+  public void UseHint(int count, TypeEntity typeEntity)
   {
-    dataGame.hint--;
-    RefreshData();
-  }
-  public void UseBomb()
-  {
-    dataGame.bomb--;
-    RefreshData();
-  }
-  public void UseLighting()
-  {
-    dataGame.lighting--;
-    RefreshData();
-  }
+    int currentCount;
 
-  public void UseStar()
-  {
-    dataGame.star--;
+    dataGame.hints.TryGetValue(typeEntity, out currentCount);
+
+    dataGame.hints[typeEntity] = currentCount + count;
+
     RefreshData();
   }
+  // public void UseBomb(int count)
+  // {
+  //   dataGame.bomb -= count;
+  //   RefreshData();
+  // }
+  // public void UseLighting(int count)
+  // {
+  //   dataGame.lighting -= count;
+  //   RefreshData();
+  // }
+
+  // public void UseStar(int count)
+  // {
+  //   dataGame.star -= count;
+  //   RefreshData();
+  // }
 
   public void BuyHint(ShopItem item)
   {
     Debug.Log($"Buy {item.entity.typeEntity}");
-    switch (item.entity.typeEntity)
-    {
-      case TypeEntity.Hint:
-        dataGame.hint += item.count;
-        break;
-      case TypeEntity.Star:
-        dataGame.star += item.count;
-        break;
-      case TypeEntity.Bomb:
-        dataGame.bomb += item.count;
-        break;
-      case TypeEntity.Lighting:
-        dataGame.lighting += item.count;
-        break;
-      case TypeEntity.OpenWord:
-        dataGame.word += item.count;
-        break;
-    }
+    dataGame.hints[item.entity.typeEntity] += item.count;
+    // switch (item.entity.typeEntity)
+    // {
+    //   case TypeEntity.Hint:
+    //     dataGame.hint += item.count;
+    //     break;
+    //   case TypeEntity.Star:
+    //     dataGame.star += item.count;
+    //     break;
+    //   case TypeEntity.Bomb:
+    //     dataGame.bomb += item.count;
+    //     break;
+    //   case TypeEntity.Lighting:
+    //     dataGame.lighting += item.count;
+    //     break;
+    //   case TypeEntity.OpenWord:
+    //     dataGame.word += item.count;
+    //     break;
+    // }
 
     dataGame.coins -= item.cost;
     if (_levelManager != null) RefreshData();

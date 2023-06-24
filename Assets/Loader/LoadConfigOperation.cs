@@ -19,7 +19,7 @@ namespace Loader
       GameManager.Instance.StateManager.Init(dataGame);
 
       // Change locale
-      var userSetting = GameManager.Instance.StateManager.dataGame.userSettings;
+      var userSetting = GameManager.Instance.StateManager.dataGame.setting;
       if (userSetting != null)
       {
         int indexLocale = LocalizationSettings.AvailableLocales.Locales.FindIndex(t => t.name == userSetting.lang);

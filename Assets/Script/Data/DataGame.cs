@@ -7,25 +7,20 @@ public class DataGame
 {
   public int rate;
   public int coins;
-  public int hint;
-  public int star;
-  public int bomb;
-  public int lighting;
-  public int word;
+  public SerializableDictionary<TypeEntity, int> hints;
   public List<DataLevel> levels;
-  public List<string> completeWords;
+  public List<string> completed;
   [System.NonSerialized] public DataLevel activeLevel;
-  public string lastLevelWord;
-  public string idPlayerSetting;
-  public UserSettings userSettings;
-
-  // public string lastWord;
+  public string lastWord;
+  public string rank;
+  public UserSettings setting;
 
   public DataGame()
   {
     levels = new();
-    completeWords = new();
-    userSettings = new();
+    completed = new();
+    setting = new();
+    hints = new();
   }
 }
 
@@ -35,9 +30,9 @@ public class DataLevel
 {
   public string id;
   public float index;
-  public int hintLevel;
-  public int starLevel;
+
   public SerializableDictionary<Vector2, string> openChars;
+  public SerializableDictionary<TypeEntity, int> hints; // [System.NonSerialized]
   public SerializeEntity ent;
   public List<string> openWords;
   public List<string> hiddenWords;
@@ -53,5 +48,6 @@ public class DataLevel
     hiddenWords = new();
     openChars = new();
     ent = new();
+    hints = new();
   }
 }

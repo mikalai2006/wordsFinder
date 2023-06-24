@@ -73,7 +73,7 @@ public class UIStartMenu : UILocaleBase
   private async void DrawUserInfoBlok()
   {
     var dataState = _gameManager.StateManager.dataGame;
-    if (string.IsNullOrEmpty(dataState.idPlayerSetting)) return;
+    if (string.IsNullOrEmpty(dataState.rank)) return;
     _userInfoBlok.Clear();
 
 
@@ -105,7 +105,7 @@ public class UIStartMenu : UILocaleBase
     var percentFindWords = (dataState.rate * 100 / _gameManager.PlayerSetting.countFindWordsForUp);
     progress.style.width = new StyleLength(new Length(percentFindWords, LengthUnit.Percent));
 
-    var playerSettings = _gameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataState.idPlayerSetting);
+    var playerSettings = _gameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataState.rank);
     status.text = await Helpers.GetLocaledString(playerSettings.text.title);
 
     var textCountWords = await Helpers.GetLocalizedPluralString(
@@ -125,7 +125,7 @@ public class UIStartMenu : UILocaleBase
     _newGameButton.style.display = DisplayStyle.None;
     _loadGameMenuButton.style.display = DisplayStyle.None;
     _userInfoBlok.style.display = DisplayStyle.None;
-    if (_gameManager.StateManager.dataGame.completeWords.Count == 0 && _gameManager.StateManager.dataGame.levels.Count == 0)
+    if (_gameManager.StateManager.dataGame.completed.Count == 0 && _gameManager.StateManager.dataGame.levels.Count == 0)
     {
       _newGameButton.style.display = DisplayStyle.Flex;
     }
@@ -156,7 +156,7 @@ public class UIStartMenu : UILocaleBase
     operations.Enqueue(new GameInitOperation());
     await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
 
-    var activeLastWord = _gameManager.StateManager.dataGame.lastLevelWord;
+    var activeLastWord = _gameManager.StateManager.dataGame.lastWord;
     // _gameSettings.GameLevels.levelWords
     //   .Find(t => t.name == _gameManager.DataManager.DataGame.lastLevelWord);
     // // var activeLastLevelWord = activeLastWord

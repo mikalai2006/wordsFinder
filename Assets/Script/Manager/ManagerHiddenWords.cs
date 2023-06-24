@@ -432,7 +432,7 @@ public class ManagerHiddenWords : MonoBehaviour
       sizeGridXY += _gameSetting.addinitiallyRow;
     }
 
-    Debug.Log($"countHiddenChars={countHiddenChars}, defaultCountChars ={defaultCountChars}, sizeGridXY={sizeGridXY}");
+    // Debug.Log($"countHiddenChars={countHiddenChars}, defaultCountChars ={defaultCountChars}, sizeGridXY={sizeGridXY}");
     // Debug.Log($"word max length={wordWithMaxLength}, Need count rows={minNeedRows}, sizeGridXY={sizeGridXY}");
     GridHelper = new GridHelper(sizeGridXY, sizeGridXY);
     // Set transform grid.
@@ -456,7 +456,7 @@ public class ManagerHiddenWords : MonoBehaviour
 
     SetScaleChars(_hiddenWords);
 
-    CreateHints();
+    // CreateHints();
 
     CreateGameObjectHiddenWords(_hiddenWords);
 
@@ -504,12 +504,16 @@ public class ManagerHiddenWords : MonoBehaviour
   {
     var countNeedFindWords = NeedWords.Count;
 
-    _stateManager.dataGame.activeLevel.hintLevel
-      += (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefHint);
-    _stateManager.dataGame.activeLevel.starLevel
-      += (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefStar);
-    _stateManager.dataGame.hint += _stateManager.dataGame.activeLevel.hintLevel;
-    _stateManager.dataGame.star += _stateManager.dataGame.activeLevel.starLevel;
+    _stateManager.dataGame.activeLevel.hints.Clear();
+
+    var countHint = (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefHint);
+    _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Hint, countHint);
+
+    var countStar = (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefStar);
+    _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Star, countHint);
+
+    // _stateManager.dataGame.hint += _stateManager.dataGame.activeLevel.hintLevel;
+    // _stateManager.dataGame.star += _stateManager.dataGame.activeLevel.starLevel;
   }
 
 

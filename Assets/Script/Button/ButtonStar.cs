@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -23,6 +23,19 @@ public class ButtonStar : BaseButton
     StateManager.OnChangeState -= SetValue;
   }
   #endregion
+
+
+  public override void SetValue(DataGame data, StatePerk statePerk)
+  {
+    value = data.hints.GetValueOrDefault(TypeEntity.Star);
+
+    base.SetValue(data, statePerk);
+    _countChars.text = string.Format(
+      "{0}--{1}",
+      data.activeLevel.countOpenChars,
+      statePerk.countCharForAddStar
+    );
+  }
 
   // public void CreateStar(DataGame data, StatePerk statePerk)
   // {
@@ -104,18 +117,6 @@ public class ButtonStar : BaseButton
     SetDefault();
   }
 
-  public override void SetValue(DataGame data, StatePerk statePerk)
-  {
-    value = data.star;
-
-    base.SetValue(data, statePerk);
-    _countChars.text = string.Format(
-      "{0}--{1}",
-      data.activeLevel.countOpenChars,
-      statePerk.countCharForAddStar
-    );
-  }
-
   public override void SetValueProgressBar(DataGame data, StatePerk statePerk)
   {
     var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)statePerk.countCharForAddStar / _gameManager.PlayerSetting.bonusCount.charStar;
@@ -152,7 +153,7 @@ public class ButtonStar : BaseButton
 
     newEntity.Move(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position), new() { node }, true);
 
-    _stateManager.UseStar();
+    _stateManager.UseHint(-1, configEntity.typeEntity);
   }
 
 

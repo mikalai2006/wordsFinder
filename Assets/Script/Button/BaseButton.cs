@@ -4,6 +4,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
 
 public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
@@ -186,6 +187,24 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   public void Show()
   {
     gameObject.SetActive(true);
+  }
+
+  public virtual async UniTask<BaseEntity> CreateEntity(Vector3 positionForSpawn, GameObject target = null)
+  {
+    var asset = Addressables.InstantiateAsync(
+      configEntity.prefab,
+      positionForSpawn,
+      Quaternion.identity,
+      target == null ? _levelManager.ManagerHiddenWords.tilemapEntities.transform : target.transform
+      );
+    var newObj = await asset.Task;
+
+    var newEntity = newObj.GetComponent<BaseEntity>();
+    newEntity.InitStandalone(asset);
+
+    // _stateManager.RefreshData();
+
+    return newEntity;
   }
 
 }

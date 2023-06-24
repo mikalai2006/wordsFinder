@@ -36,7 +36,8 @@ MonoBehaviour:
   countFindWordsForUp: 100
   maxLengthWord: 6
   maxFindWords: 100
-  maxCountHints: 0
+  coefHint: 0.222
+  coefStar: 0.268
   bonusCount:
     charBonus: 40
     errorClear: 20

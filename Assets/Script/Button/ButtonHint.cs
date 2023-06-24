@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -24,7 +25,7 @@ public class ButtonHint : BaseButton
 
   public override void SetValue(DataGame data, StatePerk statePerk)
   {
-    value = data.hint;
+    value = data.hints.GetValueOrDefault(TypeEntity.Hint);
 
     base.SetValue(data, statePerk);
   }
@@ -59,7 +60,7 @@ public class ButtonHint : BaseButton
 
     newEntity.Move(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position), nodesForEffect, true);
 
-    _stateManager.UseHint();
+    _stateManager.UseHint(-1, configEntity.typeEntity);
   }
 
   public override void SetValueProgressBar(DataGame data, StatePerk statePerk)

@@ -35,14 +35,15 @@ MonoBehaviour:
   coefDifficulty: 0.4
   countFindWordsForUp: 500
   maxLengthWord: 7
-  maxFindWords: 0
-  maxCountHints: 0
+  maxFindWords: 100
+  coefHint: 0.174
+  coefStar: 0.183
   bonusCount:
-    charBonus: 50
-    errorClear: 10
-    charCoin: 15
-    charStar: 15
-    charHint: 15
+    charBonus: 40
+    errorClear: 20
+    charCoin: 10
+    charStar: 20
+    charHint: 20
   references:
     version: 2
     RefIds: []

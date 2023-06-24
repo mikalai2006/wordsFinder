@@ -37,7 +37,8 @@ MonoBehaviour:
   spriteBuy: {fileID: 21300000, guid: 8018f3c2bacf80d45a8fa1de3aeab85b, type: 3}
   debounceTime: 1000
   timeDelayOverChar: 47
-  GameLevels: {fileID: 11400000, guid: fb9c287131e4a38468f3068ed7b78c69, type: 2}
+  GameLevels:
+  - {fileID: 11400000, guid: fb9c287131e4a38468f3068ed7b78c69, type: 2}
   ShopItems:
   - text:
       title:

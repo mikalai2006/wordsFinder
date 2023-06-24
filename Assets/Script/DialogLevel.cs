@@ -37,6 +37,10 @@ public class DialogLevel : MonoBehaviour
   [SerializeField] private Button _buttonOk;
 
   [Space(10)]
+  [Header("Hints")]
+  [SerializeField] private GameObject _hintObject;
+
+  [Space(10)]
   [Header("Total")]
   [SerializeField] private GameObject _totalObject;
   [SerializeField] private SpriteRenderer spriteCoin;
@@ -50,6 +54,7 @@ public class DialogLevel : MonoBehaviour
   // private Vector3 _initPositionColba;
   // private Vector3 _initPositionHint;
   private int _countTotalCoins;
+  private Dictionary<BaseEntity, int> _hintsRound = new();
   // private int _valueTotalHintCoin;
   // private int _valueTotalStarCoin;
 
@@ -75,7 +80,7 @@ public class DialogLevel : MonoBehaviour
     _textHeader.text = await Helpers.GetLocalizedPluralString(
       "roundresult",
         new Dictionary<string, int> {
-        {"value", _stateManager.dataGame.completeWords.Count + 1},
+        {"value", _stateManager.dataGame.completed.Count + 1},
       }
     );
 
@@ -210,14 +215,34 @@ public class DialogLevel : MonoBehaviour
 
     _textHeader.text = string.Format("{0} {1}",
       await Helpers.GetLocaledString("round"),
-      _stateManager.dataGame.completeWords.Count + 1
+      _stateManager.dataGame.completed.Count + 1
     );
     _textMessage.text = "";
 
     if (_stateManager.dataGame.activeLevel.openWords.Count == 0)
     {
+      // Create hint entity.
+      var countHints = 0;
 
-      var countHints = _stateManager.dataGame.activeLevel.hintLevel + _stateManager.dataGame.activeLevel.starLevel;
+      if (_stateManager.dataGame.activeLevel.hints.ContainsKey(TypeEntity.Star))
+      {
+        var valueStar = _stateManager.dataGame.activeLevel.hints.GetValueOrDefault(TypeEntity.Star);
+        var newEntityStar = await _levelManager.buttonStar.CreateEntity(Vector3.zero, _hintObject);
+        _hintsRound.Add(newEntityStar, valueStar);
+        newEntityStar.counterObject.transform.DOScale(1, duration);
+        newEntityStar.counterText.text = valueStar.ToString();
+        countHints += valueStar;
+      }
+      if (_stateManager.dataGame.activeLevel.hints.ContainsKey(TypeEntity.Hint))
+      {
+        var valueHint = _stateManager.dataGame.activeLevel.hints.GetValueOrDefault(TypeEntity.Hint);
+        var newEntity = await _levelManager.buttonHint.CreateEntity(Vector3.zero, _hintObject);
+        _hintsRound.Add(newEntity, valueHint);
+        newEntity.counterObject.transform.DOScale(1, duration);
+        newEntity.counterText.text = valueHint.ToString();
+        countHints += valueHint;
+      }
+
       var textMessageHints = await Helpers.GetLocalizedPluralString(
           "givestarthints",
           new Dictionary<string, object> {
@@ -282,8 +307,33 @@ public class DialogLevel : MonoBehaviour
   {
     _gameManager.audioManager.Click();
 
+    foreach (var item in _hintsRound)
+    {
+      GameObject targetMoveHint = null;
+      switch (item.Key.configEntity.typeEntity)
+      {
+        case TypeEntity.Star:
+          targetMoveHint = _levelManager.buttonStar.gameObject;
+          break;
+        case TypeEntity.Hint:
+          targetMoveHint = _levelManager.buttonHint.gameObject;
+          break;
+      }
+      item.Key.gameObject.transform
+        .DOMove(targetMoveHint.transform.position, duration * 1.5f)
+        .SetEase(Ease.InBack)
+        .OnComplete(() =>
+        {
+          Destroy(item.Key);
+          _hintsRound.Remove(item.Key);
+          _stateManager.UseHint(item.Value, item.Key.configEntity.typeEntity);
+        });
+    }
+
+    _stateManager.dataGame.activeLevel.hints.Clear();
+
     transform
-      .DOMove(defaultPositionWrapper, duration * 2)
+      .DOMove(defaultPositionWrapper, duration * 2f)
       .SetEase(Ease.InBack)
       .OnComplete(() =>
       {
@@ -354,6 +404,8 @@ public class DialogLevel : MonoBehaviour
 
   private void SetDefault()
   {
+    Helpers.DestroyChildren(_hintObject.transform);
+
     _textMessageSmall.color = _gameSetting.Theme.colorSecondary;
     _textMessage.color = _gameSetting.Theme.colorPrimary;
     _textHeader.color = _gameSetting.Theme.colorSecondary;

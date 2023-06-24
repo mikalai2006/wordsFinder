@@ -22,7 +22,7 @@ public class ButtonBomb : BaseButton
 
   public override void SetValue(DataGame data, StatePerk statePerk)
   {
-    value = data.bomb;
+    value = data.hints.GetValueOrDefault(TypeEntity.Bomb);
     base.SetValue(data, statePerk);
   }
 
@@ -66,6 +66,6 @@ public class ButtonBomb : BaseButton
 
     newEntity.Move(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position), nodesForEffect, true);
 
-    _stateManager.UseBomb();
+    _stateManager.UseHint(-1, configEntity.typeEntity);
   }
 }
