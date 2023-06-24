@@ -68,7 +68,7 @@ public class ChoosedCharMB : MonoBehaviour
       elapsedTime += Time.deltaTime;
     }
     // transform.localScale = initialScale;
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.openWord);
+    // AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.openWord);
     await needHiddenChar.ShowChar(true); //.Forget();
 
     transform.localScale = new Vector3(0, 0, 0);

@@ -144,6 +144,7 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
       {
         if (isImmediatelyRun)
         {
+          _gameManager.audioManager.PlayClipEffect(_gameSetting.Audio.runEffect);
           this.nodesForCascade = nodesForEffect;
           await OccupiedNode.OccupiedChar.ShowCharAsHint(true);
         }

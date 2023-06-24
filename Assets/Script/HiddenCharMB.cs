@@ -110,7 +110,13 @@ public class HiddenCharMB : MonoBehaviour
     Open(runEffect);
 
     // Add coin.
-    if (runEffect && !OccupiedNode.StateNode.HasFlag(StateNode.Hint)) _levelManager.CreateCoin(transform.position).Forget();
+    if (runEffect && !OccupiedNode.StateNode.HasFlag(StateNode.Hint))
+    {
+      _levelManager.CreateCoin(transform.position).Forget();
+
+      // play sound.
+      _gameManager.audioManager.PlayClipEffect(_gameSetting.Audio.openHiddenChar);
+    }
 
     // await OpenNeighbours(runEffect);
     await UniTask.Yield();
@@ -122,6 +128,13 @@ public class HiddenCharMB : MonoBehaviour
     _levelManager.ManagerHiddenWords.AddOpenChar(this);
 
     Open(runEffect);
+
+    if (runEffect)
+    {
+      // play sound.
+      _gameManager.audioManager.PlayClipEffect(_gameSetting.Audio.openHintChar);
+    }
+
 
     _image.color = _gameSetting.Theme.bgOpenNeiHiddenWord;
     _charText.color = _gameSetting.Theme.textOpenNeiHiddenWord;
@@ -149,7 +162,10 @@ public class HiddenCharMB : MonoBehaviour
 
   public void Open(bool runEffect)
   {
-    if (runEffect) RunOpenEffect();
+    if (runEffect)
+    {
+      RunOpenEffect();
+    }
 
     // Remove open char.
     if (

@@ -38,7 +38,9 @@ public class Coin : BaseEntity
   public override void AddCoins(int count = 1)
   {
     _stateManager.IncrementCoin(count);
+
     _levelManager.topSide.AddCoin().Forget();
+
     Destroy(gameObject);
   }
 

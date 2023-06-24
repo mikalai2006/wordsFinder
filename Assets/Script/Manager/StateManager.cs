@@ -107,6 +107,8 @@ public class StateManager : MonoBehaviour
 
   public void IncrementCoin(int quantity)
   {
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addCoin);
+
     dataGame.coins += quantity;
     // if (_levelManager.ManagerHiddenWords.OpenWords.Keys.Count > 10)
     // {

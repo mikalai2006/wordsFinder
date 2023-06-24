@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,10 +7,10 @@ public class TopSide : MonoBehaviour
 {
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   private GameManager _gameManager => GameManager.Instance;
-  private Vector3 _scaleSpriteCoin;
-  private Vector3 _positionSpriteCoin;
-  private Vector3 _scaleSpriteRate;
-  private Vector3 _positionSpriteRate;
+  private Vector3 _initialScaleSpriteCoin;
+  private Vector3 _initialPositionSpriteCoin;
+  private Vector3 _initialScaleSpriteRate;
+  private Vector3 _initialPositionSpriteRate;
   [SerializeField] private Image _spriteRate;
   [SerializeField] private TMPro.TextMeshProUGUI _rate;
   [SerializeField] private Image _spriteCoin;
@@ -22,10 +20,10 @@ public class TopSide : MonoBehaviour
 
   private void Awake()
   {
-    _scaleSpriteRate = _spriteRate.transform.localScale;
-    _positionSpriteRate = _spriteRate.transform.position;
-    _scaleSpriteCoin = _spriteCoin.transform.localScale;
-    _positionSpriteCoin = _spriteCoin.transform.position;
+    _initialScaleSpriteRate = _spriteRate.transform.localScale;
+    _initialPositionSpriteRate = _spriteRate.transform.position;
+    _initialScaleSpriteCoin = _spriteCoin.transform.localScale;
+    _initialPositionSpriteCoin = _spriteCoin.transform.position;
 
     var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
     _spriteCoin.sprite = configCoin.sprite;
@@ -39,23 +37,20 @@ public class TopSide : MonoBehaviour
 
   public async UniTask AddCoin()
   {
-    Vector3 initialScale = _scaleSpriteCoin;
-    // Vector3 initialPosition = _spriteCoin.transform.localPosition;
     Vector3 upScale = new Vector3(1.5f, 1.5f, 0);
 
     float elapsedTime = 0f;
     float duration = .2f;
     float startTime = Time.time;
 
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addCoin);
     while (elapsedTime < duration)
     {
       float progress = (Time.time - startTime) / duration;
-      _spriteCoin.transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
+      _spriteCoin.transform.localScale = Vector3.Lerp(_initialScaleSpriteCoin, upScale, progress);
       await UniTask.Yield();
       elapsedTime += Time.deltaTime;
     }
-    // _spriteCoin.transform.localScale = initialScale;
+
     SetDefault();
   }
 
@@ -68,9 +63,9 @@ public class TopSide : MonoBehaviour
 
   private void SetDefault()
   {
-    _spriteRate.transform.localScale = _scaleSpriteRate;
-    _spriteRate.transform.position = _positionSpriteRate;
-    _spriteCoin.transform.localScale = _scaleSpriteCoin;
-    _spriteCoin.transform.position = _positionSpriteCoin;
+    _spriteRate.transform.localScale = _initialScaleSpriteRate;
+    _spriteRate.transform.position = _initialPositionSpriteRate;
+    _spriteCoin.transform.localScale = _initialScaleSpriteCoin;
+    _spriteCoin.transform.position = _initialPositionSpriteCoin;
   }
 }
