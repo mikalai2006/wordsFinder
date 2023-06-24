@@ -140,6 +140,8 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   {
     if (!pointer.enabled) return;
 
+    _gameManager.audioManager.Click();
+
     pointer.enabled = false;
     transform
         .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)

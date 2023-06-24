@@ -211,7 +211,7 @@ public class LevelManager : Singleton<LevelManager>
     return newEntity;
   }
 
-  public async UniTask<GameObject> CreateCoin(Vector2 pos)
+  public async UniTask<GameObject> CreateCoin(Vector2 pos, int quantity = 1)
   {
     var coinConfig = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
     // var newObj = GameObject.Instantiate(
@@ -228,11 +228,11 @@ public class LevelManager : Singleton<LevelManager>
     var newEntity = newObj.GetComponent<BaseEntity>();
     newEntity.InitStandalone(asset);
     newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
-    var positionFrom = transform.position;
+    var positionFrom = pos;
     var positionTo = topSide.spriteCoinPosition;
     Vector3[] waypoints = {
           positionFrom,
-          positionFrom + new Vector3(1.5f, 0f),
+          positionFrom + new Vector2(1.5f, 0f),
           positionTo - new Vector3(1.5f, 0.5f),
           positionTo,
         };
@@ -240,7 +240,7 @@ public class LevelManager : Singleton<LevelManager>
     newObj.gameObject.transform
       .DOPath(waypoints, 1f, PathType.CatmullRom)
       .SetEase(Ease.OutCubic)
-      .OnComplete(() => newEntity.AddCoins(1));
+      .OnComplete(() => newEntity.AddCoins(quantity));
 
     return newObj;
   }

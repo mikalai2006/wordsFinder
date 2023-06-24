@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volumeEffect: 0.34
   volumeMusic: 1
-  addChar: {fileID: 8300000, guid: 5cca643be75e1bd4cbf7ab29fbbcc845, type: 3}
-  removeChar: {fileID: 8300000, guid: 1dd75992c9de51e4b9e76019d839de6a, type: 3}
+  addChar: {fileID: 8300000, guid: 5f36543e18973554bbdf6272379c0f24, type: 3}
+  removeChar: {fileID: 8300000, guid: 23507a3f8a9bce8429ee92aa8b02f27b, type: 3}
+  openHiddenChar: {fileID: 8300000, guid: 493300af36b4bcf4382dddaa31f5df66, type: 3}
+  openHintChar: {fileID: 8300000, guid: 23507a3f8a9bce8429ee92aa8b02f27b, type: 3}
   openWord: {fileID: 8300000, guid: 82bc95f33a916684197380bd76461aef, type: 3}
   existWord: {fileID: 8300000, guid: 961dc83f132b8f54f8f2afcb2352133b, type: 3}
   noWord: {fileID: 8300000, guid: 78c7cb6706183df4d862823b10cc2107, type: 3}
@@ -23,4 +25,5 @@ MonoBehaviour:
   addToColba: {fileID: 8300000, guid: 82bc95f33a916684197380bd76461aef, type: 3}
   addCoin: {fileID: 8300000, guid: 843840fd70844104b9f1289b2d033589, type: 3}
   calculateCoin: {fileID: 8300000, guid: d0b46ff8b8b20ad48a34379b7ca59dcc, type: 3}
-  clickButton: {fileID: 8300000, guid: a9ef2e069f987da45b70efa16b8c5117, type: 3}
+  clickButton: {fileID: 8300000, guid: bf08fff122693784aa46b50c00a8172f, type: 3}
+  runEffect: {fileID: 8300000, guid: 12a931e0b02a599478460ae81c8a9b18, type: 3}

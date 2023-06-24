@@ -269,10 +269,16 @@ MonoBehaviour:
       field are open!
     m_Metadata:
       m_Items: []
+  - m_Id: 4495698834915328
+    m_Localized: '{count} word{count:|s} already found! It remains to find {count2}
+      word{count2:|s}.'
+    m_Metadata:
+      m_Items:
+      - rid: 366247623133495314
   references:
     version: 2
     RefIds:
     - rid: 366247623133495314
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 008012baef150200008052d5248e05000080d2ebf1590b00008092ea35400c000080925ecd430c000080521d7c300c00008052e12f620d00008052dfaf610d00008012091f860d00
+        m_Entries: 008012baef150200008052d5248e05000080d2ebf1590b00008092ea35400c000080925ecd430c000080521d7c300c00008052e12f620d00008052dfaf610d00008012091f860d0000801274d0f80f00
