@@ -8,6 +8,7 @@ public class DataGame
   public int rate;
   public int coins;
   public SerializableDictionary<TypeEntity, int> hints;
+  public SerializableDictionary<TypeBonus, int> bonus;
   public List<DataLevel> levels;
   public List<string> completed;
   [System.NonSerialized] public DataLevel activeLevel;
@@ -21,6 +22,7 @@ public class DataGame
     completed = new();
     setting = new();
     hints = new();
+    bonus = new();
   }
 }
 
@@ -31,7 +33,6 @@ public class DataLevel
   public string id;
   public float index;
   public StatePerk statePerk;
-  public SerializableDictionary<TypeBonus, int> bonus;
   public SerializableDictionary<Vector2, string> openChars;
   public SerializableDictionary<TypeEntity, int> hints; // [System.NonSerialized]
   public SerializeEntity ent;
@@ -51,6 +52,5 @@ public class DataLevel
     ent = new();
     hints = new();
     statePerk = new();
-    bonus = new();
   }
 }

@@ -319,11 +319,11 @@ public class StateManager : MonoBehaviour
   {
     int currentCount;
 
-    dataGame.activeLevel.bonus.TryGetValue(typeBonus, out currentCount);
+    dataGame.bonus.TryGetValue(typeBonus, out currentCount);
 
-    dataGame.activeLevel.bonus[typeBonus] = currentCount + count;
+    dataGame.bonus[typeBonus] = currentCount + count;
 
-    _levelManager.topSide.AddBonus(typeBonus).Forget();
+    // await _levelManager.topSide.AddBonus(typeBonus);
 
     RefreshData();
   }
@@ -361,14 +361,15 @@ public class StateManager : MonoBehaviour
   {
     Debug.Log($"Buy bonus {item.entity.typeBonus}");
 
-    int currentCount;
+    // int currentCount;
 
-    dataGame.activeLevel.bonus.TryGetValue(item.entity.typeBonus, out currentCount);
+    // dataGame.bonus.TryGetValue(item.entity.typeBonus, out currentCount);
 
-    dataGame.activeLevel.bonus[item.entity.typeBonus] = item.count + currentCount;
+    // dataGame.bonus[item.entity.typeBonus] = item.count + currentCount;
 
-    dataGame.coins -= item.cost;
+    // dataGame.coins -= item.cost;
     // if (_levelManager != null)
+    UseBonus(item.count, item.entity.typeBonus);
     _gameManager.DataManager.Save();
     OnChangeState?.Invoke(dataGame);
   }

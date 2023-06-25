@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class BonusIndex : BaseBonus
 {
@@ -8,24 +9,29 @@ public class BonusIndex : BaseBonus
     configBonus = _gameManager.ResourceSystem.GetAllBonus().Find(t => t.typeBonus == TypeBonus.Index);
 
     base.Awake();
-
-    StateManager.OnChangeState += SetValue;
-  }
-  protected override void OnDestroy()
-  {
-    base.OnDestroy();
-
-    StateManager.OnChangeState -= SetValue;
   }
   #endregion
 
   public override void SetValue(DataGame data)
   {
-    value = data.activeLevel.bonus.GetValueOrDefault(TypeBonus.Index);
-    counterText.text = value.ToString();
+    value = data.bonus.GetValueOrDefault(TypeBonus.Index);
+
+    counterText.text = string.Format("x{0}", value + 1);
 
     base.SetValue(data);
 
+    if (value == 0) return;
+
+    SetValueProgressBar(data);
+  }
+
+  public override void SetValueProgressBar(DataGame data)
+  {
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY;
+
+    spriteProgress.transform
+      .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
+      .SetEase(Ease.OutBounce);
   }
 
 }

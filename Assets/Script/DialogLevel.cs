@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -125,9 +126,30 @@ public class DialogLevel : MonoBehaviour
     //     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
     //   })
     mySequence.Append(
-      _textTotalCoin.transform
-        .DOPunchScale(new Vector3(.1f, .1f, 0), duration, 5, 1)
+      _textTotalCoin.transform.DOPunchScale(new Vector3(.1f, .1f, 0), duration, 5, 1)
     );
+
+    var indexBonus = _levelManager.topSide.Bonuses.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value;
+
+    if (indexBonus != null)
+    {
+      mySequence.Append(
+        indexBonus.gameObject.transform
+          .DOMove(spriteCoin.transform.localPosition + new Vector3(0, 3.5f), duration)
+          .OnComplete(() =>
+          {
+            int valueIndexBonus = _stateManager.dataGame.bonus.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value + 1;
+
+            _countTotalCoins = valueIndexBonus * _countTotalCoins;
+
+            _textTotalCoin.text = _countTotalCoins.ToString();
+
+            AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
+          })
+      );
+
+
+    }
     return await _processCompletionSource.Task;
   }
 
@@ -171,6 +193,19 @@ public class DialogLevel : MonoBehaviour
 
   public async void CloseDialogEndRound()
   {
+    int valueIndexBonus = _stateManager.dataGame.bonus.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value;
+
+    BaseBonus bonusIndexObject;
+
+    _levelManager.topSide.Bonuses.TryGetValue(TypeBonus.Index, out bonusIndexObject);
+
+    if (bonusIndexObject != null)
+    {
+      bonusIndexObject.SetDefault();
+    }
+
+    _stateManager.UseBonus(-valueIndexBonus, TypeBonus.Index);
+
     _gameManager.audioManager.Click();
 
     await GoCoins();

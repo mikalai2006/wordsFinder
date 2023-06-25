@@ -10,33 +10,35 @@ public class BonusOpenNeighbours : BaseBonus
     configBonus = _gameManager.ResourceSystem.GetAllBonus().Find(t => t.typeBonus == TypeBonus.OpenNeighbours);
 
     base.Awake();
-
-    StateManager.OnChangeState += SetValue;
-  }
-  protected override void OnDestroy()
-  {
-    base.OnDestroy();
-
-    StateManager.OnChangeState -= SetValue;
   }
   #endregion
 
   public override void SetValue(DataGame data)
   {
-    value = data.activeLevel.bonus.GetValueOrDefault(TypeBonus.OpenNeighbours);
+    value = data.bonus.GetValueOrDefault(TypeBonus.OpenNeighbours);
+
+    // counterText.text = string.Format("{0}", value);
+
     base.SetValue(data);
+
+    if (value == 0) return;
 
     SetValueProgressBar(data);
   }
 
   public override void SetValueProgressBar(DataGame data)
   {
-    var valueBonus = data.activeLevel.bonus.Where(t => t.Key == configBonus.typeBonus).First().Value;
-    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)valueBonus / configBonus.value;
+    var valueBonus = data.bonus.Where(t => t.Key == configBonus.typeBonus);
+    if (valueBonus != null)
+    {
 
-    spriteProgress.transform
-      .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
-      .SetEase(Ease.OutBounce);
+      var val = valueBonus.First().Value;
+      var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)val / configBonus.value;
+
+      spriteProgress.transform
+        .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
+        .SetEase(Ease.OutBounce);
+    }
   }
 
 }

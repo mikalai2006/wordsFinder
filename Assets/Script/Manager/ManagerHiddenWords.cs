@@ -62,7 +62,7 @@ public class ManagerHiddenWords : MonoBehaviour
   /// </summary>
   /// <param name="levelConfig">Config level</param>
   /// <param name="wordConfig">Config word</param>
-  public void Init() // GameLevel levelConfig, GameLevelWord wordConfig
+  public async UniTask Init() // GameLevel levelConfig, GameLevelWord wordConfig
   {
     var word = _stateManager.ActiveWordConfig;
 
@@ -120,6 +120,14 @@ public class ManagerHiddenWords : MonoBehaviour
     foreach (var item in keysEntity)
     {
       _levelManager.AddEntity(item, Entities[item]).Forget();
+    }
+
+    // Create bonuses.
+    var keysBonuses = _stateManager.dataGame.bonus.Keys.ToList();
+    foreach (var key in keysBonuses)
+    {
+      // _levelManager.topSide.AddBonus(key);
+      _stateManager.UseBonus(0, key);
     }
   }
 
@@ -465,9 +473,9 @@ public class ManagerHiddenWords : MonoBehaviour
 
     CreateGameObjectHiddenWords(_hiddenWords);
 
+    _stateManager.RefreshData();
     // CreateEntities();
     _stateManager.UseBonus(1, TypeBonus.Index);
-    _stateManager.RefreshData();
   }
 
 
@@ -498,8 +506,10 @@ public class ManagerHiddenWords : MonoBehaviour
       await _levelManager.CheckNextLevelPlayer();
 
       var newConfigWord = _stateManager.GetNextWord();
-      _levelManager.InitLevel(newConfigWord);
 
+      _stateManager.UseBonus(-1, TypeBonus.OpenNeighbours);
+
+      _levelManager.InitLevel(newConfigWord);
     }
 
     // _gameManager.InputManager.Enable();

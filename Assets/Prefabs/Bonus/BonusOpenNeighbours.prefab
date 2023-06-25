@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2936135668634149952, guid: 030fba84fde0e0744bec542a763d9879, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3973243239486224563, guid: 030fba84fde0e0744bec542a763d9879, type: 3}
       propertyPath: m_SortingLayer
       value: 0
@@ -110,7 +114,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6354313716850153968, guid: 030fba84fde0e0744bec542a763d9879, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -208545545471947163}
+      addedObject: {fileID: 1358774621898071069}
   m_SourcePrefab: {fileID: 100100000, guid: 030fba84fde0e0744bec542a763d9879, type: 3}
 --- !u!114 &544904898720932420 stripped
 MonoBehaviour:
@@ -138,7 +142,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6354313716850153968, guid: 030fba84fde0e0744bec542a763d9879, type: 3}
   m_PrefabInstance: {fileID: 2016355201165783806}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &-208545545471947163
+--- !u!114 &1358774621898071069
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

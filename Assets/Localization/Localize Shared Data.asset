@@ -192,11 +192,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3476356110385152
-    m_Key: openword
+    m_Key: openneighbours
     m_Metadata:
       m_Items: []
   - m_Id: 3476387282452480
-    m_Key: openword_d
+    m_Key: openneighbours_d
     m_Metadata:
       m_Items: []
   - m_Id: 3730866485493760
@@ -285,6 +285,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4667022840594432
     m_Key: leaderboard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4968534221422592
+    m_Key: indexbonus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4968681890283520
+    m_Key: indexbonus_d
     m_Metadata:
       m_Items: []
   m_Metadata:

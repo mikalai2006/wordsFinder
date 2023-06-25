@@ -20,7 +20,7 @@ public class TopSide : MonoBehaviour
   [SerializeField] public GameObject coinObject;
   [SerializeField] public GameObject bonusObject;
   [SerializeField] private TMPro.TextMeshProUGUI _coins;
-  private Dictionary<TypeBonus, BaseBonus> Bonuses = new();
+  public Dictionary<TypeBonus, BaseBonus> Bonuses = new();
   public Vector3 spriteCoinPosition => _spriteCoin.gameObject.transform.position;
 
   private void Awake()
@@ -33,6 +33,13 @@ public class TopSide : MonoBehaviour
     var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
     _spriteCoin.sprite = configCoin.sprite;
     _spriteRate.sprite = _gameManager.GameSettings.spriteRate;
+
+
+    var configsAllEntities = _gameManager.ResourceSystem.GetAllBonus();
+    foreach (var item in configsAllEntities)
+    {
+      AddBonus(item.typeBonus).Forget();
+    }
 
     StateManager.OnChangeState += SetValue;
   }
@@ -61,6 +68,7 @@ public class TopSide : MonoBehaviour
       bonusObject.transform
       );
     var newObj = await asset.Task;
+    newObj.transform.localPosition = new Vector3(-Bonuses.Count / 2f + .5f, 0, 0);
 
     var newBonus = newObj.GetComponent<BaseBonus>();
 

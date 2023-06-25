@@ -33,10 +33,10 @@ RectTransform:
   m_Father: {fileID: 7150122719970254864}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0.5, y: -0.5}
+  m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5433646482373063147
 CanvasRenderer:
@@ -312,7 +312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7150122719970254864}
   - component: {fileID: -96026727441085260}
-  - component: {fileID: 8073094767874400850}
+  - component: {fileID: 7285836599506326121}
   m_Layer: 0
   m_Name: BaseBonus
   m_TagString: Untagged
@@ -329,7 +329,7 @@ RectTransform:
   m_GameObject: {fileID: 6354313716850153968}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4600586699696620886}
@@ -387,7 +387,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.1813395, y: 1.1813395}
   m_EdgeRadius: 0
---- !u!114 &8073094767874400850
+--- !u!114 &7285836599506326121
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -536,5 +536,5 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 51
+  m_SortingOrder: 53
   m_SortAtRoot: 0

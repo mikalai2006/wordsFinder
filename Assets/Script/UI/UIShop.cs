@@ -12,7 +12,7 @@ public class UIShop : UILocaleBase
   [SerializeField] private VisualTreeAsset _shopItem;
   [SerializeField] private VisualElement _root;
   private GameObject _enviromnment;
-  [SerializeField] private ScrollView _listItems;
+  [SerializeField] private VisualElement _listItems;
   private TaskCompletionSource<DataDialogResult> _processCompletionSource;
   private DataDialogResult _result;
 
@@ -36,7 +36,7 @@ public class UIShop : UILocaleBase
     var exitBtn = _root.Q<Button>("ExitBtn");
     exitBtn.clickable.clicked += () => ClickClose();
 
-    _listItems = _root.Q<ScrollView>("ListItems");
+    _listItems = _root.Q<VisualElement>("ListItems");
 
     FillItems();
 
@@ -55,7 +55,11 @@ public class UIShop : UILocaleBase
     foreach (var item in _gameSettings.ShopItems)
     {
       var blokItem = _shopItem.Instantiate();
+      blokItem.style.flexGrow = 1;
+      blokItem.AddToClassList("w-50");
       blokItem.Q<VisualElement>("ShopItem").style.backgroundColor = _gameSettings.Theme.bgColor;
+      // blokItem.Q<VisualElement>("ImgWrapper").style.backgroundColor = _gameSettings.Theme.colorPrimary;
+      // blokItem.Q<VisualElement>("ImgWrapper").Q<VisualElement>("Img").style.unityBackgroundImageTintColor = _gameSettings.Theme.bgColor;
       var title = await Helpers.GetLocaledString(item.entity.text.title);
       blokItem.Q<Label>("Name").text = title;
 
@@ -65,16 +69,8 @@ public class UIShop : UILocaleBase
             {"count",  item.cost},
           }
         );
-      blokItem.Q<Label>("Price").text = string.Format("{0} <size=12>{1}</size>", item.cost, textCost);
+      // blokItem.Q<Label>("Price").text = string.Format("{0} <size=12>{1}</size>", item.cost, textCost);
 
-      // var textCountWords = await Helpers.GetLocalizedPluralString(
-      //     "costitemtext",
-      //      new Dictionary<string, object> {
-      //       {"count",  item.count},
-      //       {"cost", item.cost},
-      //       {"name", title},
-      //     }
-      //   );
       var description = await Helpers.GetLocaledString(item.entity.text.description);
       blokItem.Q<Label>("Description").text = string.Format(
         "{0}",
@@ -94,6 +90,15 @@ public class UIShop : UILocaleBase
           _gameManager.StateManager.BuyHint(item);
 
         };
+
+      var textPriceCoin = await Helpers.GetLocalizedPluralString(
+          "costitemtext",
+           new Dictionary<string, object> {
+            {"count",  item.count},
+            {"cost", item.cost},
+            {"name", title},
+          }
+        );
       var textButtonForCoin = buttonForCoin.Q<Label>("Text");
       if (_gameManager.StateManager.dataGame.coins < item.cost)
       {
@@ -107,6 +112,7 @@ public class UIShop : UILocaleBase
           "buyforcoin",
            new Dictionary<string, object> {
             {"cost",  item.cost},
+            {"count", item.count}
           }
         );
       }
@@ -114,6 +120,12 @@ public class UIShop : UILocaleBase
       // Button buy for coin.
       var buttonForAdv = blokItem.Q<Button>("Adv");
       buttonForAdv.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteAdv);
+      buttonForAdv.Q<Label>("Text").text = await Helpers.GetLocalizedPluralString(
+        "buyadv",
+         new Dictionary<string, object> {
+            {"count", item.count}
+        }
+      );
       buttonForAdv.clickable.clicked += () =>
         {
           // TODO Buy for adv.
@@ -122,6 +134,89 @@ public class UIShop : UILocaleBase
 
       _listItems.Add(blokItem);
     }
+
+
+    foreach (var item in _gameSettings.ShopItemsBonus)
+    {
+      var blokItem = _shopItem.Instantiate();
+      blokItem.style.flexGrow = 1;
+      blokItem.AddToClassList("w-50");
+      blokItem.Q<VisualElement>("ShopItem").style.backgroundColor = _gameSettings.Theme.bgColor;
+      var title = await Helpers.GetLocaledString(item.entity.text.title);
+      blokItem.Q<Label>("Name").text = title;
+
+      var textCost = await Helpers.GetLocalizedPluralString(
+          "coin",
+           new Dictionary<string, object> {
+            {"count",  item.cost},
+          }
+        );
+
+      var description = await Helpers.GetLocaledString(item.entity.text.description);
+      blokItem.Q<Label>("Description").text = string.Format(
+        "{0}",
+        // textCountWords,
+        description
+        );
+
+      blokItem.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(item.entity.sprite);
+
+      // Button buy for coin.
+      var buttonForCoin = blokItem.Q<Button>("Buy");
+      buttonForCoin.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteBuy);
+      buttonForCoin.clickable.clicked += () =>
+        {
+          // TODO Buy for coin.
+          AudioManager.Instance.Click();
+          _gameManager.StateManager.BuyBonus(item);
+
+        };
+
+      var textPriceCoin = await Helpers.GetLocalizedPluralString(
+          "costitemtext",
+           new Dictionary<string, object> {
+            {"count",  item.count},
+            {"cost", item.cost},
+            {"name", title},
+          }
+        );
+      var textButtonForCoin = buttonForCoin.Q<Label>("Text");
+      if (_gameManager.StateManager.dataGame.coins < item.cost)
+      {
+        buttonForCoin.SetEnabled(false);
+        textButtonForCoin.text = await Helpers.GetLocaledString("lackscoin");
+      }
+      else
+      {
+        buttonForCoin.SetEnabled(true);
+        textButtonForCoin.text = await Helpers.GetLocalizedPluralString(
+          "buyforcoin",
+           new Dictionary<string, object> {
+            {"cost",  item.cost},
+            {"count", item.count}
+          }
+        );
+      }
+
+      // Button buy for coin.
+      var buttonForAdv = blokItem.Q<Button>("Adv");
+      buttonForAdv.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteAdv);
+      buttonForAdv.Q<Label>("Text").text = await Helpers.GetLocalizedPluralString(
+        "buyadv",
+         new Dictionary<string, object> {
+            {"count", item.count}
+        }
+      );
+      buttonForAdv.clickable.clicked += () =>
+        {
+          // TODO Buy for adv.
+          AudioManager.Instance.Click();
+        };
+
+      _listItems.Add(blokItem);
+    }
+
+
   }
 
   private void ClickClose()

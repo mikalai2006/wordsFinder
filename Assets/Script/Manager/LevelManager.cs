@@ -48,7 +48,7 @@ public class LevelManager : Singleton<LevelManager>
 
     GameManager.Instance.StateManager.SetActiveLevel(wordConfig);
 
-    ManagerHiddenWords.Init(); // levelConfig, wordConfig
+    await ManagerHiddenWords.Init(); // levelConfig, wordConfig
 
     // Check complete level.
     if (_stateManager.dataGame.levels.Count > 0)
@@ -57,7 +57,7 @@ public class LevelManager : Singleton<LevelManager>
       bool isEndLevel = currentLevel.openWords.Count - currentLevel.countDopWords == currentLevel.countNeedWords && currentLevel.openWords.Count > 0;
       if (isEndLevel)
       {
-        ManagerHiddenWords.NextLevel().Forget();
+        await ManagerHiddenWords.NextLevel();
         // GameManager.Instance.StateManager.RefreshData();
         return;
       }

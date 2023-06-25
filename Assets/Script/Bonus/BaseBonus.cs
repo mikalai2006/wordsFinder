@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
 
 public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
@@ -32,8 +28,8 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
   #region UnityMethods
   protected virtual void Awake()
   {
-    initScale = spritesObject.transform.localScale;
-    initPosition = spritesObject.transform.position;
+    initScale = transform.localScale;
+    initPosition = transform.localPosition;
 
     spriteBg.color = _gameSetting.Theme.colorPrimary;
 
@@ -50,10 +46,13 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
       spriteBg.sprite = configBonus.sprite;
       spriteMask.sprite = configBonus.sprite;
     }
-  }
 
+    StateManager.OnChangeState += SetValue;
+  }
   protected virtual void OnDestroy()
   {
+
+    StateManager.OnChangeState -= SetValue;
   }
   #endregion
 
@@ -66,7 +65,8 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
 
   public virtual void SetValue(DataGame data)
   {
-    // Debug.Log($"star={data.activeLevel.star}/status={_statusShowCounter}");
+    if (valueCounter == value) return;
+
     if (value > 0 && valueCounter != value)
     {
       Show();
@@ -85,21 +85,24 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
     gameObject.SetActive(true);
 
     _gameManager.audioManager.PlayClipEffect(_gameSetting.Audio.addBonus);
-    spritesObject.transform
+    transform
       .DOPunchScale(new Vector3(1f, 1f, 0), _gameSetting.timeGeneralAnimation)
-      .SetEase(Ease.OutBack);
+      .SetEase(Ease.OutBack)
+      .OnComplete(() =>
+      {
+        SetDefault();
+      });
   }
 
   public void Hide()
   {
-    // Debug.Log($"Run hide");
-    counterText.transform
+    transform
       .DOScale(0f, _gameSetting.timeGeneralAnimation)
       .SetEase(Ease.OutBack)
       .OnComplete(() =>
       {
-        // Debug.Log($"complete hide");
-        Destroy(gameObject);
+        // Destroy(gameObject);
+        gameObject.SetActive(false);
       });
   }
 
@@ -114,28 +117,32 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
       .SetEase(Ease.OutBack);
   }
 
-  public virtual void OnPointerDown(PointerEventData eventData)
+  public async virtual void OnPointerDown(PointerEventData eventData)
   {
     _gameManager.audioManager.Click();
 
     transform
         .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)
-        .SetEase(Ease.OutBack)
-        .OnComplete(() =>
-        {
-          transform.localScale = initScale;
-        });
-
-    if (value != 0)
+        .SetEase(Ease.OutBack);
+    var title = await Helpers.GetLocaledString(configBonus.text.title);
+    var message = await Helpers.GetLocaledString(configBonus.text.description);
+    var dialog = new DialogProvider(new DataDialog()
     {
-      // RunHint();
-    }
+      headerText = title,
+      messageText = message,
+      showCancelButton = false
+    });
+
+    _gameManager.InputManager.Disable();
+    await dialog.ShowAndHide();
+    _gameManager.InputManager.Enable();
+
   }
 
-  protected void SetDefault()
+  public void SetDefault()
   {
-    spritesObject.transform.localScale = initScale;
-    spritesObject.transform.position = initPosition;
+    transform.localScale = initScale;
+    // transform.localPosition = Vector3.zero;
   }
 
 }

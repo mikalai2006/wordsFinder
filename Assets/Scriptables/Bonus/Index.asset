@@ -17,28 +17,29 @@ MonoBehaviour:
   text:
     title:
       m_TableReference:
-        m_TableCollectionName: 
+        m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
       m_TableEntryReference:
-        m_KeyId: 0
+        m_KeyId: 4968534221422592
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
     description:
       m_TableReference:
-        m_TableCollectionName: 
+        m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
       m_TableEntryReference:
-        m_KeyId: 0
+        m_KeyId: 4968681890283520
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  sprite: {fileID: 21300000, guid: c95e2d0d31a46e442994019d3743290f, type: 3}
+  sprite: {fileID: 21300000, guid: 8b578ceb3130fb9489ec5d34728270e0, type: 3}
   prefab:
     m_AssetGUID: 330d9920205e29647868d3ccce3989f8
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  value: 0
   references:
     version: 2
     RefIds: []

@@ -118,7 +118,11 @@ public class HiddenCharMB : MonoBehaviour
       _gameManager.audioManager.PlayClipEffect(_gameSetting.Audio.openHiddenChar);
     }
 
-    // await OpenNeighbours(runEffect);
+    if (_stateManager.dataGame.bonus.ContainsKey(TypeBonus.OpenNeighbours))
+    {
+      await OpenNeighbours(runEffect);
+    }
+
     await UniTask.Yield();
   }
 
@@ -156,7 +160,10 @@ public class HiddenCharMB : MonoBehaviour
       OccupiedNode.OccupiedWord.AutoOpenWord().Forget();
     }
 
-    // await OpenNeighbours(runEffect);
+    if (_stateManager.dataGame.bonus.ContainsKey(TypeBonus.OpenNeighbours))
+    {
+      await OpenNeighbours(runEffect);
+    }
     await UniTask.Yield();
   }
 
