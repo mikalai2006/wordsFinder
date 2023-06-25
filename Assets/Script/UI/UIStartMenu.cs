@@ -9,10 +9,12 @@ public class UIStartMenu : UILocaleBase
 {
   [SerializeField] private UIDocument _uiDoc;
   [SerializeField] private VisualTreeAsset UserInfoDoc;
+  [SerializeField] private VisualTreeAsset LeaderDoc;
   private VisualElement _menu;
   private Button _exitButton;
   private Button _newGameButton;
   private VisualElement _userInfoBlok;
+  private VisualElement _leaderList;
   private Button _loadGameMenuButton;
   [SerializeField] private AudioManager _audioManager => GameManager.Instance.audioManager;
 
@@ -45,6 +47,7 @@ public class UIStartMenu : UILocaleBase
   {
     _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
     _userInfoBlok = _uiDoc.rootVisualElement.Q<VisualElement>("UserInfoBlok");
+    _leaderList = _uiDoc.rootVisualElement.Q<VisualElement>("LeaderList");
 
     _exitButton = _menu.Q<Button>("ExitBtn");
     _exitButton.clickable.clicked += () =>
@@ -66,8 +69,26 @@ public class UIStartMenu : UILocaleBase
 
     DrawMenu();
     DrawUserInfoBlok();
+    DrawLeaderListBlok();
 
     base.Initialize(_uiDoc.rootVisualElement);
+  }
+
+  private void DrawLeaderListBlok()
+  {
+    var dataState = _gameManager.StateManager.dataGame;
+    _leaderList.Clear();
+
+    for (int i = 0; i < 5; i++)
+    {
+      var blok = LeaderDoc.Instantiate();
+      var name = blok.Q<Label>("Name");
+      var count = blok.Q<Label>("count");
+
+      // blok.Q<Label>("Ava").style.backgroundImage = new StyleBackground(avaSprite);
+      _leaderList.Add(blok);
+    }
+
   }
 
   private async void DrawUserInfoBlok()
@@ -83,18 +104,18 @@ public class UIStartMenu : UILocaleBase
     var status = blok.Q<Label>("Status");
     var foundWords = blok.Q<Label>("FoundWords");
 
-    var coin = blok.Q<Label>("Coin");
-    var textCost = await Helpers.GetLocalizedPluralString(
+    blok.Q<Label>("Rate").text = string.Format("{0}", dataState.rate);
+    blok.Q<VisualElement>("RateImg").style.backgroundImage = new StyleBackground(_gameSettings.spriteRate);
+
+    var textCoin = await Helpers.GetLocalizedPluralString(
           "coin",
            new Dictionary<string, object> {
             {"count",  dataState.coins},
           }
         );
-    coin.text = string.Format("{0} <size=12>{1}</size>", dataState.coins, textCost);
-
-    var coinImg = blok.Q<VisualElement>("CoinImg");
+    blok.Q<Label>("Coin").text = string.Format("{0} <size=12>{1}</size>", dataState.coins, textCoin);
     var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
-    coinImg.style.backgroundImage = new StyleBackground(configCoin.sprite);
+    blok.Q<VisualElement>("CoinImg").style.backgroundImage = new StyleBackground(configCoin.sprite);
 
 
     name.text = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.Name)

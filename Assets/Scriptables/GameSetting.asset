@@ -40,6 +40,7 @@ MonoBehaviour:
   timeDelayOverChar: 47
   GameLevels:
   - {fileID: 11400000, guid: fb9c287131e4a38468f3068ed7b78c69, type: 2}
+  - {fileID: 11400000, guid: c0459733e98b33546ac8a7cb2e605c4d, type: 2}
   ShopItems:
   - text:
       title:

@@ -35,14 +35,20 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
   private void Awake()
   {
+    transform.localPosition = transform.localPosition + new Vector3(0, 0, -2);
+
     _camera = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<Camera>();
+
     ResetObject();
   }
 
   public void ResetObject()
   {
+
     if (_gameSettings.Theme.bgImageChar != null) _image.sprite = _gameSettings.Theme.bgImageChar;
+
     _image.color = _gameSettings.Theme.bgColorChar;
+
     _charText.color = _gameSettings.Theme.colorTextChar;
   }
 
@@ -50,13 +56,16 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
   public void Init(char symbol)
   {
     _charText.text = symbol.ToString();
+
     charTextValue = symbol;
   }
 
   public void SetSize(float size)
   {
     _charText.fontSize = size;
+
     _canvas.sizeDelta = new Vector2(size, size);
+
     _collider.size = new Vector2(size, size);
   }
 

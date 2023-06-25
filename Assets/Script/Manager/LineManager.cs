@@ -1,18 +1,23 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LineManager : MonoBehaviour
 {
   private GameSetting _gameSetting;
+  private GameManager _gameManager;
   [SerializeField] private LineRenderer _lineRenderer;
   [SerializeField] private Material _material;
   private List<Vector3> listPoints = new List<Vector3>();
 
   private void Awake()
   {
+    _gameManager = GameManager.Instance;
+    _gameManager.LineManager = this;
     _gameSetting = GameManager.Instance.GameSettings;
     _lineRenderer.startColor = _gameSetting.Theme.colorLine;
     _lineRenderer.endColor = _gameSetting.Theme.colorLine;
+
   }
 
   public void ResetLine()
@@ -24,16 +29,29 @@ public class LineManager : MonoBehaviour
 
   public void DrawLine()
   {
-    // _lineRenderer.positionCount = listPoints.Count;
     _lineRenderer.startWidth = _gameSetting.lineWidth;
     _lineRenderer.endWidth = _gameSetting.lineWidth;
-    // _lineRenderer.SetPositions(listPoints.ToArray());
 
     //get smoothed values
     Vector3[] smoothedPoints = LineSmoother.SmoothLine(listPoints.ToArray(), 0.15f);
 
     _lineRenderer.positionCount = smoothedPoints.Length;
-    // _lineRenderer.SetVertexCount(smoothedPoints.Length);
+    _lineRenderer.SetPositions(smoothedPoints);
+  }
+
+  public void DrawLine(Vector3 lastPoint)
+  {
+    _lineRenderer.startWidth = _gameSetting.lineWidth;
+    _lineRenderer.endWidth = _gameSetting.lineWidth;
+
+    var listWithLastPoint = listPoints.ToList();
+    listWithLastPoint.Add(lastPoint);
+
+    //get smoothed values
+    Vector3[] smoothedPoints = LineSmoother.SmoothLine(listWithLastPoint.ToArray(), 0.15f);
+
+    _lineRenderer.positionCount = smoothedPoints.Length;
+
     _lineRenderer.SetPositions(smoothedPoints);
   }
 

@@ -345,7 +345,12 @@ public class StateManager : MonoBehaviour
   public void BuyHint(ShopItem item)
   {
     Debug.Log($"Buy {item.entity.typeEntity}");
-    dataGame.hints[item.entity.typeEntity] += item.count;
+
+    int currentCount;
+
+    dataGame.hints.TryGetValue(item.entity.typeEntity, out currentCount);
+
+    dataGame.hints[item.entity.typeEntity] = item.count + currentCount;
     // switch (item.entity.typeEntity)
     // {
     //   case TypeEntity.Hint:
@@ -366,7 +371,9 @@ public class StateManager : MonoBehaviour
     // }
 
     dataGame.coins -= item.cost;
-    if (_levelManager != null) RefreshData();
+    // if (_levelManager != null)
+    _gameManager.DataManager.Save();
+    OnChangeState?.Invoke(dataGame);
   }
 
 }

@@ -135,6 +135,7 @@
 
 .text-md {
     font-size: 14px;
+    -unity-text-align: upper-center;
 }
 
 .text-xs {
@@ -247,4 +248,8 @@
     border-bottom-left-radius: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+
+.transparent {
+    background-color: rgba(0, 0, 0, 0);
 }

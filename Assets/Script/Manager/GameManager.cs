@@ -27,6 +27,7 @@ public class GameManager : StaticInstance<GameManager>
 
   public SceneInstance environment;
   public InputManager InputManager;
+  public LineManager LineManager;
 
   void Start()
   {
