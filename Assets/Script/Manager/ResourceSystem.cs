@@ -106,4 +106,10 @@ public class ResourceSystem : StaticInstance<ResourceSystem>
   }
   #endregion
 
+  #region managers bonus
+  public List<GameBonus> GetAllBonus()
+  {
+    return GetAllAssetsByLabel<GameBonus>(Constants.Labels.LABEL_BONUS);
+  }
+  #endregion
 }

@@ -31,6 +31,7 @@ public class DataLevel
   public string id;
   public float index;
   public StatePerk statePerk;
+  public SerializableDictionary<TypeBonus, int> bonus;
   public SerializableDictionary<Vector2, string> openChars;
   public SerializableDictionary<TypeEntity, int> hints; // [System.NonSerialized]
   public SerializeEntity ent;
@@ -50,5 +51,6 @@ public class DataLevel
     ent = new();
     hints = new();
     statePerk = new();
+    bonus = new();
   }
 }

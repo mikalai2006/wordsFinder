@@ -9,10 +9,13 @@ namespace Loader
   {
     public async UniTask Load(Action<float> onProgress, Action<string> onSetNotify)
     {
-      onProgress?.Invoke(0.2f);
+      onProgress?.Invoke(0.1f);
 
       GameManager.Instance.ResourceSystem = ResourceSystem.Instance;
       await ResourceSystem.Instance.LoadCollectionsAsset<GameEntity>(Constants.Labels.LABEL_ENTITY);
+      onProgress?.Invoke(0.2f);
+      GameManager.Instance.ResourceSystem = ResourceSystem.Instance;
+      await ResourceSystem.Instance.LoadCollectionsAsset<GameBonus>(Constants.Labels.LABEL_BONUS);
 
       GameManager.Instance.DataManager.Init();
       var dataGame = await GameManager.Instance.DataManager.Load();

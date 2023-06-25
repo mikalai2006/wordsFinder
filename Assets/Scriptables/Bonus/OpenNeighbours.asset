@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
-  m_Name: GameLevel1
+  m_Script: {fileID: 11500000, guid: d26edc275218f0545a2c62dc60b5982c, type: 3}
+  m_Name: OpenNeighbours
   m_EditorClassIdentifier: 
-  idLevel: 1
+  idEntity: OpenNeighbours
+  typeBonus: 1
   text:
     title:
       m_TableReference:
@@ -32,21 +33,12 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  minRate: 0
-  levelWords:
-  - "\u043A\u0443\u0440\u0430"
-  - "\u0434\u0440\u043E\u0442"
-  - "\u0431\u0430\u0440\u0441"
-  - "\u0448\u0435\u0440\u0438\u0444"
-  - "\u043A\u043E\u043C\u043E\u0434"
-  - "\u043C\u043E\u0442\u043E\u0440"
-  - "\u0433\u0435\u0440\u043E\u0439"
-  - "\u0442\u0430\u043A\u0441\u0430"
-  - "\u043D\u043E\u0436\u0438\u043A"
-  - "\u0431\u0443\u0440\u0430\u043D"
-  - "\u043A\u0440\u044B\u043B\u043E"
-  - "\u043A\u043E\u043B\u043E\u0434\u0435\u0446"
-  - "\u044D\u043B\u0435\u043A\u0442\u0440\u043E\u0437\u0430\u0432\u043E\u0434"
+  sprite: {fileID: 21300000, guid: 92e1f6396d832254e81719c952fbb398, type: 3}
+  prefab:
+    m_AssetGUID: 46add2aed56f65b49b6a646dbc35131c
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   references:
     version: 2
     RefIds: []

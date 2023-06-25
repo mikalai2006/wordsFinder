@@ -56,7 +56,7 @@ public class UIShop : UILocaleBase
     {
       var blokItem = _shopItem.Instantiate();
       blokItem.Q<VisualElement>("ShopItem").style.backgroundColor = _gameSettings.Theme.bgColor;
-      var title = await Helpers.GetLocaledString(item.text.title);
+      var title = await Helpers.GetLocaledString(item.entity.text.title);
       blokItem.Q<Label>("Name").text = title;
 
       var textCost = await Helpers.GetLocalizedPluralString(
@@ -75,7 +75,7 @@ public class UIShop : UILocaleBase
       //       {"name", title},
       //     }
       //   );
-      var description = await Helpers.GetLocaledString(item.text.description);
+      var description = await Helpers.GetLocaledString(item.entity.text.description);
       blokItem.Q<Label>("Description").text = string.Format(
         "{0}",
         // textCountWords,

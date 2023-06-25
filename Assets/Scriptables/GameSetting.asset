@@ -25,6 +25,7 @@ MonoBehaviour:
   radius: 2.5
   addinitiallyRow: 3
   maxCountHiddenChar: 200
+  minCountHiddenChar: 20
   timeGeneralAnimation: 0.5
   Boom: {fileID: 4370175670826504157, guid: 0d64c2d06fc2020488bed46426152725, type: 3}
   BoomLarge: {fileID: 5387774378321571289, guid: d3e641e39ca10654fab4ca2a25b477b3, type: 3}
@@ -36,6 +37,7 @@ MonoBehaviour:
   spriteCart: {fileID: 21300000, guid: 8018f3c2bacf80d45a8fa1de3aeab85b, type: 3}
   spriteAdv: {fileID: 21300000, guid: 492308d20a1450b47a5bc631a8dbfacd, type: 3}
   spriteBuy: {fileID: 21300000, guid: 8018f3c2bacf80d45a8fa1de3aeab85b, type: 3}
+  spriteBonus: {fileID: 21300000, guid: 46ae1e0d8ebb17240ab94ce1db9ed316, type: 3}
   debounceTime: 1000
   timeDelayOverChar: 47
   GameLevels:

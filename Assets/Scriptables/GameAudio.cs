@@ -18,4 +18,7 @@ public class GameAudio : ScriptableObject
   public AudioClip calculateCoin;
   public AudioClip clickButton;
   public AudioClip runEffect;
+
+  [Header("Bonus")]
+  public AudioClip addBonus;
 }

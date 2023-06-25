@@ -315,6 +315,19 @@ public class StateManager : MonoBehaviour
     return dataGame;
   }
 
+  public void UseBonus(int count, TypeBonus typeBonus)
+  {
+    int currentCount;
+
+    dataGame.activeLevel.bonus.TryGetValue(typeBonus, out currentCount);
+
+    dataGame.activeLevel.bonus[typeBonus] = currentCount + count;
+
+    _levelManager.topSide.AddBonus(typeBonus).Forget();
+
+    RefreshData();
+  }
+
   public void UseHint(int count, TypeEntity typeEntity)
   {
     int currentCount;
@@ -325,24 +338,9 @@ public class StateManager : MonoBehaviour
 
     RefreshData();
   }
-  // public void UseBomb(int count)
-  // {
-  //   dataGame.bomb -= count;
-  //   RefreshData();
-  // }
-  // public void UseLighting(int count)
-  // {
-  //   dataGame.lighting -= count;
-  //   RefreshData();
-  // }
 
-  // public void UseStar(int count)
-  // {
-  //   dataGame.star -= count;
-  //   RefreshData();
-  // }
 
-  public void BuyHint(ShopItem item)
+  public void BuyHint(ShopItem<GameEntity> item)
   {
     Debug.Log($"Buy {item.entity.typeEntity}");
 
@@ -351,24 +349,23 @@ public class StateManager : MonoBehaviour
     dataGame.hints.TryGetValue(item.entity.typeEntity, out currentCount);
 
     dataGame.hints[item.entity.typeEntity] = item.count + currentCount;
-    // switch (item.entity.typeEntity)
-    // {
-    //   case TypeEntity.Hint:
-    //     dataGame.hint += item.count;
-    //     break;
-    //   case TypeEntity.Star:
-    //     dataGame.star += item.count;
-    //     break;
-    //   case TypeEntity.Bomb:
-    //     dataGame.bomb += item.count;
-    //     break;
-    //   case TypeEntity.Lighting:
-    //     dataGame.lighting += item.count;
-    //     break;
-    //   case TypeEntity.OpenWord:
-    //     dataGame.word += item.count;
-    //     break;
-    // }
+
+    dataGame.coins -= item.cost;
+    // if (_levelManager != null)
+    _gameManager.DataManager.Save();
+    OnChangeState?.Invoke(dataGame);
+  }
+
+
+  public void BuyBonus(ShopItem<GameBonus> item)
+  {
+    Debug.Log($"Buy bonus {item.entity.typeBonus}");
+
+    int currentCount;
+
+    dataGame.activeLevel.bonus.TryGetValue(item.entity.typeBonus, out currentCount);
+
+    dataGame.activeLevel.bonus[item.entity.typeBonus] = item.count + currentCount;
 
     dataGame.coins -= item.cost;
     // if (_levelManager != null)

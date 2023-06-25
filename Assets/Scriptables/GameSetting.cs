@@ -18,6 +18,7 @@ public class GameSetting : ScriptableObject
   [Range(0.5f, 3f)] public float radius;
   [Range(0, 3)] public int addinitiallyRow;
   [Range(10, 200)] public int maxCountHiddenChar;
+  [Range(10, 20)] public int minCountHiddenChar;
 
   [Space(5)]
   [Header("Animations")]
@@ -60,7 +61,8 @@ public class GameSetting : ScriptableObject
 
   [Space(5)]
   [Header("Shop")]
-  public List<ShopItem> ShopItems;
+  public List<ShopItem<GameEntity>> ShopItems;
+  public List<ShopItem<GameBonus>> ShopItemsBonus;
 
 
   [Space(5)]
@@ -82,10 +84,9 @@ public struct APIDirectory
 
 
 [System.Serializable]
-public struct ShopItem
+public struct ShopItem<T>
 {
-  public TextLocalize text;
-  public GameEntity entity;
+  public T entity;
   public int count;
   public int cost;
 }

@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 public class TopSide : MonoBehaviour
@@ -16,7 +18,9 @@ public class TopSide : MonoBehaviour
   [SerializeField] private TMPro.TextMeshProUGUI _rate;
   [SerializeField] private Image _spriteCoin;
   [SerializeField] public GameObject coinObject;
+  [SerializeField] public GameObject bonusObject;
   [SerializeField] private TMPro.TextMeshProUGUI _coins;
+  private Dictionary<TypeBonus, BaseBonus> Bonuses = new();
   public Vector3 spriteCoinPosition => _spriteCoin.gameObject.transform.position;
 
   private void Awake()
@@ -29,11 +33,40 @@ public class TopSide : MonoBehaviour
     var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
     _spriteCoin.sprite = configCoin.sprite;
     _spriteRate.sprite = _gameManager.GameSettings.spriteRate;
+
     StateManager.OnChangeState += SetValue;
   }
   private void OnDestroy()
   {
     StateManager.OnChangeState -= SetValue;
+  }
+
+  public async UniTask AddBonus(TypeBonus typeBonus)
+  {
+    if (Bonuses.ContainsKey(typeBonus)) return;
+
+    var configsAllEntities = _gameManager.ResourceSystem.GetAllBonus();
+    GameBonus bonusConfig = configsAllEntities.Find(t => t.typeBonus == TypeBonus.Index);
+    switch (typeBonus)
+    {
+      case TypeBonus.OpenNeighbours:
+        bonusConfig = configsAllEntities.Find(t => t.typeBonus == TypeBonus.OpenNeighbours);
+        break;
+    }
+
+    var asset = Addressables.InstantiateAsync(
+      bonusConfig.prefab,
+      Vector3.zero,
+      Quaternion.identity,
+      bonusObject.transform
+      );
+    var newObj = await asset.Task;
+
+    var newBonus = newObj.GetComponent<BaseBonus>();
+
+    newBonus.Init(asset);
+
+    Bonuses.Add(typeBonus, newBonus);
   }
 
   public async UniTask AddCoin()

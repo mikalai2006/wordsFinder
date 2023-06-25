@@ -196,14 +196,19 @@ public class ManagerHiddenWords : MonoBehaviour
   {
     List<string> hiddenWords = new();
 
+    // Calculate count hidden chars.
+    int countChars = Mathf.RoundToInt(((float)_stateManager.dataGame.rate / (float)_gameManager.PlayerSetting.countFindWordsForUp) * _gameSetting.maxCountHiddenChar);
+    if (countChars < _gameSetting.minCountHiddenChar) countChars = _gameSetting.minCountHiddenChar;
+    Debug.Log($"Max count hidden char={countChars}");
+
     var countHiddenChars = 0;
     foreach (var word in NeedWords)
     {
-      if (countHiddenChars > _gameSetting.maxCountHiddenChar) break;
+      if (countHiddenChars > countChars) break;
       if (OpenWords.ContainsKey(word.Key)) continue;
 
       var newCountChar = countHiddenChars + word.Key.Length; //  + (int)(WordForChars.Length / 3)
-      if (newCountChar < _gameSetting.maxCountHiddenChar)
+      if (newCountChar < countChars)
       {
         hiddenWords.Add(word.Key);
         countHiddenChars += word.Key.Length;
@@ -461,6 +466,7 @@ public class ManagerHiddenWords : MonoBehaviour
     CreateGameObjectHiddenWords(_hiddenWords);
 
     // CreateEntities();
+    _stateManager.UseBonus(1, TypeBonus.Index);
     _stateManager.RefreshData();
   }
 
