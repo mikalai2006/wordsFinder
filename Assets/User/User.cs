@@ -71,5 +71,6 @@ namespace User
     public float muv;
     public float auv;
     public int td;
+    public string theme;
   }
 }

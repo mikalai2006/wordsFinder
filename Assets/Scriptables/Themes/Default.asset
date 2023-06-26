@@ -12,30 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ab369d9f7c175498a033c6688b4df2, type: 3}
   m_Name: Default
   m_EditorClassIdentifier: 
-  bgHiddenWord: {r: 0.098039225, g: 0.18823531, b: 0.18823531, a: 1}
-  bgOpentHiddenWord: {r: 1, g: 1, b: 1, a: 0.36078432}
-  textOpentHiddenWord: {r: 0.098039225, g: 0.18823531, b: 0.18823531, a: 1}
+  bgHiddenWord: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 1}
+  bgOpentHiddenWord: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
+  textOpentHiddenWord: {r: 0.45098042, g: 0.45098042, b: 0.45098042, a: 1}
   bgImageHiddenWord: {fileID: 21300000, guid: 81bc87243f22f9747bf7cbd46d867efe, type: 3}
-  bgOpenNeiHiddenWord: {r: 0.09803922, g: 0.1882353, b: 0.1882353, a: 1}
-  textOpenNeiHiddenWord: {r: 0.972549, g: 0.890873, b: 0, a: 0.34117648}
-  bgChoosedWord: {r: 0.6627451, g: 0.75294125, b: 0.6901961, a: 1}
-  textChoosedWord: {r: 0.098039225, g: 0.18823531, b: 0.18823531, a: 1}
-  bgFindAllowWord: {r: 1, g: 0.7531516, b: 0, a: 1}
+  bgOpenNeiHiddenWord: {r: 0.27450982, g: 0.27450982, b: 0.27450982, a: 1}
+  textOpenNeiHiddenWord: {r: 0.9843138, g: 0.7490196, b: 0.14117648, a: 0.6039216}
+  bgChoosedWord: {r: 0.6392157, g: 0.6392157, b: 0.6392157, a: 1}
+  textChoosedWord: {r: 0.14901961, g: 0.14901961, b: 0.14901961, a: 1}
+  bgFindAllowWord: {r: 0.9843138, g: 0.7490196, b: 0.14117648, a: 1}
   textFindAllowWord: {r: 0, g: 0, b: 0, a: 1}
   bgFindHiddenWord: {r: 0.49019608, g: 0.6156863, b: 0.21960784, a: 1}
   textFindHiddenWord: {r: 0.07058824, g: 0.09411765, b: 0, a: 1}
   bgNotFoundWord: {r: 0.9245283, g: 0.5140829, b: 0.3794055, a: 1}
   textNotFoundWord: {r: 0.3584906, g: 0.08215409, b: 0.045656823, a: 1}
-  colorTextChar: {r: 0.03337486, g: 0.09433961, b: 0.09433961, a: 1}
-  bgColorChar: {r: 1, g: 1, b: 1, a: 0.05490196}
-  colorTextChooseChar: {r: 0, g: 0, b: 0, a: 0.87058824}
+  colorTextChar: {r: 0.8313726, g: 0.8313726, b: 0.8313726, a: 1}
+  bgColorChar: {r: 1, g: 1, b: 1, a: 0.03137255}
+  colorTextChooseChar: {r: 0.09019608, g: 0.09019608, b: 0.09019608, a: 1}
   bgColorChooseChar: {r: 0.8679245, g: 0.6474248, b: 0, a: 0.87058824}
   bgImageChar: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgImageCharChoose: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
-  bgColor: {r: 0.3137255, g: 0.47058827, b: 0.40784317, a: 1}
-  entityColor: {r: 1, g: 1, b: 1, a: 1}
-  colorLine: {r: 1, g: 1, b: 1, a: 1}
-  entityActiveColor: {r: 1, g: 0.88915, b: 0, a: 1}
-  colorPrimary: {r: 0.9150943, g: 0.9150943, b: 0.9150943, a: 1}
-  colorSecondary: {r: 0, g: 0, b: 0, a: 1}
-  colorDisable: {r: 1, g: 1, b: 1, a: 0.29803923}
+  bgColor: {r: 0.15294118, g: 0.15294118, b: 0.16470589, a: 1}
+  colorLine: {r: 0.8313726, g: 0.8313726, b: 0.8470589, a: 1}
+  colorPrimary: {r: 0.8313726, g: 0.8313726, b: 0.8470589, a: 1}
+  colorSecondary: {r: 0.6313726, g: 0.6313726, b: 0.6666667, a: 1}
+  colorAccent: {r: 1, g: 0.8901961, b: 0, a: 1}
+  entityColor: {r: 0.8313726, g: 0.8313726, b: 0.8470589, a: 1}
+  entityActiveColor: {r: 0.9843137, g: 0.7490196, b: 0.14117648, a: 1}
+  colorDisable: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}

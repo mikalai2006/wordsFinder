@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -12,16 +13,23 @@ public class Stat : MonoBehaviour
 
   private void Awake()
   {
-    _countWords.color = _gameSetting.Theme.colorSecondary;
+    ChangeTheme();
 
     StateManager.OnChangeState += SetValue;
     UISettings.OnChangeLocale += Localize;
+    GameManager.OnChangeTheme += ChangeTheme;
   }
 
   private void OnDestroy()
   {
     StateManager.OnChangeState -= SetValue;
     UISettings.OnChangeLocale -= Localize;
+    GameManager.OnChangeTheme -= ChangeTheme;
+  }
+
+  private void ChangeTheme()
+  {
+    _countWords.color = _gameManager.Theme.colorSecondary;
   }
 
   public void SetValue(DataGame data)

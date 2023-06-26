@@ -7,6 +7,7 @@ using UnityEngine;
 public class StateManager : MonoBehaviour
 {
   public static event Action<DataGame> OnChangeState;
+  public static event Action<GameTheme> OnChangeUserSetting;
   public DataGame dataGame;
   public string ActiveWordConfig;
 
@@ -27,6 +28,7 @@ public class StateManager : MonoBehaviour
         // bomb = 10,
         // lighting = 10
       };
+      data.SetDefaultSettings();
     }
 
     dataGame = data;
@@ -34,6 +36,12 @@ public class StateManager : MonoBehaviour
 
     // Load setting user.
     _gameManager.AppInfo.userSettings = dataGame.setting;
+
+    List<GameTheme> allThemes = _gameManager.ResourceSystem.GetAllTheme();
+
+    GameTheme userTheme = allThemes.Find(t => t.name == dataGame.setting.theme);
+
+    _gameManager.SetTheme(userTheme);
   }
 
   public void RefreshData()
@@ -90,14 +98,21 @@ public class StateManager : MonoBehaviour
   {
     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addCoin);
 
-    dataGame.coins += quantity;
+    dataGame.activeLevel.coins += quantity;
     // if (_levelManager.ManagerHiddenWords.OpenWords.Keys.Count > 10)
     // {
     //   dataGame.activeLevel.hint++;
     // }
     RefreshData();
   }
+  public void IncrementTotalCoin(int quantity)
+  {
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addCoin);
 
+    dataGame.coins += quantity;
+
+    RefreshData();
+  }
   // public void IncrementWord(string word)
   // {
   //   statePerk.countWordInOrder += 1;

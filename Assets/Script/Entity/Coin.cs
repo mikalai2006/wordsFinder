@@ -18,15 +18,15 @@ public class Coin : BaseEntity
 
     node.SetOccupiedEntity(this);
 
-    SetColor(_gameSetting.Theme.entityColor);
+    SetColor(_gameManager.Theme.entityColor);
   }
 
   public override void InitStandalone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset)
   {
     base.InitStandalone(asset);
 
-    spriteBg.color = _gameSetting.Theme.bgColor;
-    SetColor(_gameSetting.Theme.entityColor);
+    spriteBg.color = _gameManager.Theme.bgColor;
+    SetColor(_gameManager.Theme.entityColor);
   }
 
   public override void SetColor(Color color)
@@ -43,7 +43,14 @@ public class Coin : BaseEntity
 
     Destroy(gameObject);
   }
+  public override void AddTotalCoins(int count = 1)
+  {
+    _stateManager.IncrementTotalCoin(count);
 
+    // _levelManager.topSide.AddCoin().Forget();
+
+    Destroy(gameObject);
+  }
   public async override UniTask Run()
   {
     await base.Run();

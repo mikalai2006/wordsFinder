@@ -10,6 +10,7 @@ public class UIShop : UILocaleBase
 {
   [SerializeField] private UIDocument _uiDoc;
   [SerializeField] private VisualTreeAsset _shopItem;
+  [SerializeField] private VisualTreeAsset _userBalanceItem;
   [SerializeField] private VisualElement _root;
   private GameObject _enviromnment;
   [SerializeField] private VisualElement _listItems;
@@ -20,28 +21,38 @@ public class UIShop : UILocaleBase
   {
 
     LevelManager.OnInitLevel += Hide;
+    GameManager.OnChangeTheme += ChangeTheme;
   }
 
   private void OnDestroy()
   {
 
     LevelManager.OnInitLevel -= Hide;
+    GameManager.OnChangeTheme -= ChangeTheme;
   }
 
   public virtual void Start()
   {
     _root = _uiDoc.rootVisualElement;
-    _root.Q<VisualElement>("ShopBlokWrapper").style.backgroundColor = new StyleColor(_gameSettings.Theme.bgColor);
 
     var exitBtn = _root.Q<Button>("ExitBtn");
     exitBtn.clickable.clicked += () => ClickClose();
 
     _listItems = _root.Q<VisualElement>("ListItems");
 
-    FillItems();
+    ChangeTheme();
 
     base.Initialize(_root);
   }
+
+
+  private void ChangeTheme()
+  {
+    _root.Q<VisualElement>("ShopBlokWrapper").style.backgroundColor = new StyleColor(_gameManager.Theme.bgColor);
+
+    FillItems();
+  }
+
 
   private void Hide()
   {
@@ -50,6 +61,15 @@ public class UIShop : UILocaleBase
 
   private async void FillItems()
   {
+    var wrapperBalance = _root.Q<VisualElement>("WrapperBalance");
+    wrapperBalance.Clear();
+    var blokBalance = _userBalanceItem.Instantiate();
+    var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+    blokBalance.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(configCoin.sprite);
+    blokBalance.Q<Label>("Coin").text = string.Format("{0}", _gameManager.StateManager.dataGame.coins);
+    wrapperBalance.Add(blokBalance);
+
+
     _listItems.Clear();
 
     foreach (var item in _gameSettings.ShopItems)
@@ -57,7 +77,7 @@ public class UIShop : UILocaleBase
       var blokItem = _shopItem.Instantiate();
       blokItem.style.flexGrow = 1;
       blokItem.AddToClassList("w-50");
-      blokItem.Q<VisualElement>("ShopItem").style.backgroundColor = _gameSettings.Theme.bgColor;
+      blokItem.Q<VisualElement>("ShopItem").style.backgroundColor = _gameManager.Theme.bgColor;
       // blokItem.Q<VisualElement>("ImgWrapper").style.backgroundColor = _gameSettings.Theme.colorPrimary;
       // blokItem.Q<VisualElement>("ImgWrapper").Q<VisualElement>("Img").style.unityBackgroundImageTintColor = _gameSettings.Theme.bgColor;
       var title = await Helpers.GetLocaledString(item.entity.text.title);
@@ -83,11 +103,24 @@ public class UIShop : UILocaleBase
       // Button buy for coin.
       var buttonForCoin = blokItem.Q<Button>("Buy");
       buttonForCoin.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteBuy);
-      buttonForCoin.clickable.clicked += () =>
+      buttonForCoin.clickable.clicked += async () =>
         {
           // TODO Buy for coin.
           AudioManager.Instance.Click();
           _gameManager.StateManager.BuyHint(item);
+          _gameManager.InputManager.Disable();
+
+          var message = await Helpers.GetLocalizedPluralString("successbuy", new Dictionary<string, int>() {
+            {"count", item.count}
+          });
+          var dialog = new DialogProvider(new DataDialog()
+          {
+            messageText = message,
+            showCancelButton = true
+          });
+
+          await dialog.ShowAndHide();
+          _gameManager.InputManager.Enable();
 
         };
 
@@ -141,7 +174,7 @@ public class UIShop : UILocaleBase
       var blokItem = _shopItem.Instantiate();
       blokItem.style.flexGrow = 1;
       blokItem.AddToClassList("w-50");
-      blokItem.Q<VisualElement>("ShopItem").style.backgroundColor = _gameSettings.Theme.bgColor;
+      blokItem.Q<VisualElement>("ShopItem").style.backgroundColor = _gameManager.Theme.bgColor;
       var title = await Helpers.GetLocaledString(item.entity.text.title);
       blokItem.Q<Label>("Name").text = title;
 

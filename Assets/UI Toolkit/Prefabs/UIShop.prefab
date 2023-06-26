@@ -50,6 +50,7 @@ MonoBehaviour:
       m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
   _uiDoc: {fileID: 7423244571743716900}
   _shopItem: {fileID: 9197481963319205126, guid: d921a872ae6113748b5fe6edbe98167d, type: 3}
+  _userBalanceItem: {fileID: 9197481963319205126, guid: 9648ce58a6190ed46a99bca20efe418b, type: 3}
 --- !u!1 &5357942093483452957
 GameObject:
   m_ObjectHideFlags: 0

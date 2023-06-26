@@ -23,6 +23,7 @@ public class UIStartMenu : UILocaleBase
     UISettings.OnChangeLocale += ChangeLocale;
     GameManager.OnAfterStateChanged += AfterStateChanged;
     LevelManager.OnInitLevel += HideMenu;
+    GameManager.OnChangeTheme += ChangeTheme;
   }
 
   private void OnDestroy()
@@ -30,6 +31,7 @@ public class UIStartMenu : UILocaleBase
     UISettings.OnChangeLocale -= ChangeLocale;
     GameManager.OnAfterStateChanged -= AfterStateChanged;
     LevelManager.OnInitLevel -= HideMenu;
+    GameManager.OnChangeTheme -= ChangeTheme;
   }
 
   private void AfterStateChanged(GameState state)
@@ -67,12 +69,19 @@ public class UIStartMenu : UILocaleBase
       ClickLoadGameButton();
     };
 
+    ChangeTheme();
+  }
+
+
+  private void ChangeTheme()
+  {
     DrawMenu();
     DrawUserInfoBlok();
     DrawLeaderListBlok();
 
     base.Initialize(_uiDoc.rootVisualElement);
   }
+
 
   private void DrawLeaderListBlok()
   {
@@ -99,7 +108,10 @@ public class UIStartMenu : UILocaleBase
 
 
     var blok = UserInfoDoc.Instantiate();
+
     var progress = blok.Q<VisualElement>("ProgressBar");
+    progress.style.backgroundColor = new StyleColor(_gameManager.Theme.colorAccent);
+
     var name = blok.Q<Label>("Name");
     var status = blok.Q<Label>("Status");
     var foundWords = blok.Q<Label>("FoundWords");

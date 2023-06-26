@@ -8,7 +8,7 @@ public class GameSetting : ScriptableObject
   public GameAudio Audio;
   public CharMB PrefabSymbol;
 
-  public GameTheme Theme;
+  public GameTheme ThemeDefault;
 
   public List<GamePlayerSetting> PlayerSetting;
 

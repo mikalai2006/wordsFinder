@@ -59,6 +59,11 @@ public class GridNode
   public void SetOpen()
   {
     StateNode |= StateNode.Open;
+
+    if (StateNode.HasFlag(StateNode.Hint))
+    {
+      StateNode &= ~StateNode.Hint;
+    }
   }
 
   public GridNode SetOccupiedEntity(BaseEntity _entity)

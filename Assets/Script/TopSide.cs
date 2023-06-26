@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -9,6 +10,7 @@ public class TopSide : MonoBehaviour
 {
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   private GameManager _gameManager => GameManager.Instance;
+  private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   private Vector3 _initialScaleSpriteCoin;
   private Vector3 _initialPositionSpriteCoin;
   private Vector3 _initialScaleSpriteRate;
@@ -18,6 +20,7 @@ public class TopSide : MonoBehaviour
   [SerializeField] private TMPro.TextMeshProUGUI _rate;
   [SerializeField] private Image _spriteCoin;
   [SerializeField] public GameObject coinObject;
+  [SerializeField] public GameObject targetTotalCoinObject;
   [SerializeField] public GameObject bonusObject;
   [SerializeField] private TMPro.TextMeshProUGUI _coins;
   public Dictionary<TypeBonus, BaseBonus> Bonuses = new();
@@ -29,6 +32,8 @@ public class TopSide : MonoBehaviour
     _initialPositionSpriteRate = _spriteRate.transform.position;
     _initialScaleSpriteCoin = _spriteCoin.transform.localScale;
     _initialPositionSpriteCoin = _spriteCoin.transform.position;
+
+    ChangeTheme();
 
     var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
     _spriteCoin.sprite = configCoin.sprite;
@@ -42,10 +47,21 @@ public class TopSide : MonoBehaviour
     }
 
     StateManager.OnChangeState += SetValue;
+    GameManager.OnChangeTheme += ChangeTheme;
   }
   private void OnDestroy()
   {
     StateManager.OnChangeState -= SetValue;
+    GameManager.OnChangeTheme -= ChangeTheme;
+  }
+
+  private void ChangeTheme()
+  {
+    _statusText.color = _gameManager.Theme.colorPrimary;
+    _rate.color = _gameManager.Theme.colorPrimary;
+    _coins.color = _gameManager.Theme.colorPrimary;
+    _spriteRate.color = _gameManager.Theme.colorPrimary;
+    _spriteCoin.color = _gameManager.Theme.colorPrimary;
   }
 
   public async UniTask AddBonus(TypeBonus typeBonus)
@@ -100,7 +116,7 @@ public class TopSide : MonoBehaviour
   {
     _rate.text = data.rate.ToString();
 
-    _coins.text = data.coins.ToString();
+    _coins.text = data.activeLevel.coins.ToString();
 
     string status = await Helpers.GetLocaledString(_gameManager.PlayerSetting.text.title);
 

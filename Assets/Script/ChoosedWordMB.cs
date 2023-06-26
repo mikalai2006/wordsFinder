@@ -64,7 +64,7 @@ public class ChoosedWordMB : MonoBehaviour
 
       if (needHiddenChar == null) continue;
 
-      needHiddenChar.OccupiedNode.StateNode |= StateNode.Open;
+      // needHiddenChar.OccupiedNode.SetOpen();
 
       listTasks.Add(currentCharMB.OpenCharHiddenWord(needHiddenChar, i * (50 + i * 10)));
     }

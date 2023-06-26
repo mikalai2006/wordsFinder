@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,40 +14,52 @@ public class HiddenCharMB : MonoBehaviour
   [SerializeField] private Image _image;
   [SerializeField] private RectTransform _canvas;
   public GridNode OccupiedNode;
-  // ParticleSystem system
-  // {
-  //   get
-  //   {
-  //     if (_CachedSystem == null)
-  //       _CachedSystem = GetComponent<ParticleSystem>();
-  //     return _CachedSystem;
-  //   }
-  // }
-  // private ParticleSystem _CachedSystem;
 
   public void Awake()
   {
     SetDefault();
+
+    GameManager.OnChangeTheme += ChangeTheme;
+  }
+
+  private void OnDestroy()
+  {
+    GameManager.OnChangeTheme -= ChangeTheme;
+  }
+
+  private void ChangeTheme()
+  {
+    _image.color = _gameManager.Theme.bgHiddenWord;
+    _image.sprite = _gameManager.Theme.bgImageHiddenWord;
+
+    if (OccupiedNode == null) return;
+    // if (!OccupiedNode.StateNode.HasFlag(StateNode.Open)) return;
+
+    if (OccupiedNode.StateNode.HasFlag(StateNode.Open))
+    {
+      _image.color = _gameManager.Theme.bgOpentHiddenWord;
+      _image.sprite = _gameManager.Theme.bgImageHiddenWord;
+      _charText.color = _gameManager.Theme.textOpentHiddenWord;
+    }
+    else if (OccupiedNode.StateNode.HasFlag(StateNode.Hint))
+    {
+      _image.color = _gameManager.Theme.bgOpenNeiHiddenWord;
+      _charText.color = _gameManager.Theme.textOpenNeiHiddenWord;
+    }
   }
 
   public void SetChar(char currentChar)
   {
+    ChangeTheme();
     _charText.text = currentChar.ToString();
     charTextValue = currentChar;
   }
 
 
-  // public void SetSize(float size)
-  // {
-  //   // _charText.fontSize = size;
-  //   _canvas.sizeDelta = new Vector2(size, size);
-  // }
-
-
   private void SetDefault()
   {
-    _image.color = _gameSetting.Theme.bgHiddenWord;
-    _image.sprite = _gameSetting.Theme.bgImageHiddenWord;
+    _image.color = _gameManager.Theme.bgHiddenWord;
+    _image.sprite = _gameManager.Theme.bgImageHiddenWord;
     _charText.gameObject.SetActive(false);
   }
 
@@ -70,55 +81,39 @@ public class HiddenCharMB : MonoBehaviour
 
     Gradient grad = new Gradient();
     grad.SetKeys(new GradientColorKey[] {
-      new GradientColorKey(_gameSetting.Theme.bgHiddenWord, 1.0f),
-      new GradientColorKey(_gameSetting.Theme.bgHiddenWord, 0.0f)
+      new GradientColorKey(_gameManager.Theme.bgHiddenWord, 1.0f),
+      new GradientColorKey(_gameManager.Theme.bgHiddenWord, 0.0f)
       }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
     });
 
     col.color = grad;
-    // var colorOver = cs.colorOverLifetime;
-    // colorOver.enabled = true;
-    // colorOver.color = _gameSetting.Theme.bgHiddenWord; //new ParticleSystem.MinMaxGradient(_gameSetting.Theme.bgHiddenWord, _gameSetting.Theme.textFindHiddenWord);
+
     _CachedSystem.Play();
+
     Destroy(_CachedSystem.gameObject, 2f);
   }
 
-  // public void FixedUpdate()
-  // {
-  //   if (_CachedSystem && !_CachedSystem.IsAlive())
-  //   {
-  //     Destroy(_CachedSystem.gameObject);
-  //     Debug.Log("Destroy PS");
-  //   }
-  // }
-  // public void StopOpenEffect()
-  // {
-  //   if (system.isPlaying)
-  //   {
-  //     system.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-  //   }
-  //   else
-  //   {
-  //     Debug.Log("No Ps");
-  //   }
-  // }
 
   public async UniTask ShowChar(bool runEffect)
   {
     Vector3 initialScale = transform.localScale;
 
-    Open(runEffect);
-
     // Add coin.
     if (runEffect && !OccupiedNode.StateNode.HasFlag(StateNode.Hint))
     {
-      _levelManager.CreateCoin(transform.position).Forget();
+      _levelManager.CreateCoin(transform.position, _levelManager.topSide.spriteCoinPosition).Forget();
 
       // play sound.
       _gameManager.audioManager.PlayClipEffect(_gameSetting.Audio.openHiddenChar);
     }
 
-    if (_stateManager.dataGame.bonus.ContainsKey(TypeBonus.OpenNeighbours))
+    OccupiedNode.SetOpen();
+
+    Open(runEffect);
+
+    ChangeTheme();
+
+    if (runEffect)
     {
       await OpenNeighbours(runEffect);
     }
@@ -131,17 +126,16 @@ public class HiddenCharMB : MonoBehaviour
   {
     _levelManager.ManagerHiddenWords.AddOpenChar(this);
 
+    OccupiedNode.SetHint();
+
     Open(runEffect);
 
-    if (runEffect)
-    {
-      // play sound.
-      _gameManager.audioManager.PlayClipEffect(_gameSetting.Audio.openHintChar);
-    }
+    ChangeTheme();
 
+    if (!runEffect) return;
 
-    _image.color = _gameSetting.Theme.bgOpenNeiHiddenWord;
-    _charText.color = _gameSetting.Theme.textOpenNeiHiddenWord;
+    // play sound.
+    _gameManager.audioManager.PlayClipEffect(_gameSetting.Audio.openHintChar);
 
     // Check hinted all chars of by word.
     int countOpenChar = 0;
@@ -183,12 +177,7 @@ public class HiddenCharMB : MonoBehaviour
     {
       _levelManager.ManagerHiddenWords.RemoveOpenChar(this);
     }
-
-    _image.color = _gameSetting.Theme.bgOpentHiddenWord;
-    _image.sprite = _gameSetting.Theme.bgImageHiddenWord;
-    _charText.color = _gameSetting.Theme.textOpentHiddenWord;
     _charText.gameObject.SetActive(true);
-    OccupiedNode.SetOpen();
 
     // Check exist entity of by node.
     if (OccupiedNode.StateNode.HasFlag(StateNode.Entity))
@@ -200,6 +189,11 @@ public class HiddenCharMB : MonoBehaviour
 
   public async UniTask OpenNeighbours(bool runEffect)
   {
+    int valueBonusOpenNeighbours;
+    _stateManager.dataGame.bonus.TryGetValue(TypeBonus.OpenNeighbours, out valueBonusOpenNeighbours);
+
+    if (valueBonusOpenNeighbours <= 0) return;
+
     // open equals chars.
     List<GridNode> equalsCharNodes = GameManager.Instance.LevelManager.ManagerHiddenWords.GridHelper.FindNeighboursNodesOfByEqualChar(OccupiedNode);
     foreach (var equalCharNode in equalsCharNodes)
@@ -229,52 +223,6 @@ public class HiddenCharMB : MonoBehaviour
     transform.localScale = initialScale;
   }
 
-
-  // public void CreateCoin()
-  // {
-  //   if (_stateManager.statePerk.needCreateCoin > 0)
-  //   {
-  //     for (int i = 0; i < _stateManager.statePerk.needCreateCoin; i++)
-  //     {
-  //       var node = _levelManager.ManagerHiddenWords.GridHelper.GetRandomNodeWithChar();
-  //       if (node != null)
-  //       {
-  //         var coinEntity = _levelManager.ManagerHiddenWords.AddEntity(node.arrKey, TypeEntity.Coin);
-  //         _stateManager.statePerk.needCreateCoin -= 1;
-
-  //         // coinEntity.SetPosition(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position));
-  //         coinEntity.SetPosition(_levelManager.ManagerHiddenWords.tilemap.WorldToCell(gameObject.transform.position));
-  //       }
-  //     }
-  //   }
-  // }
-
-  // public void AddCoin()
-  // {
-  //   GameEntity configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
-  //   var nodePosition = new Vector3Int(OccupiedNode.x, OccupiedNode.y);
-  //   var position = _levelManager.ManagerHiddenWords.tilemap.CellToWorld(nodePosition);
-  //   var newObj = GameObject.Instantiate(
-  //     configEntity.prefab,
-  //     position,
-  //     Quaternion.identity
-  //   );
-  //   var newEntity = newObj.GetComponent<BaseEntity>();
-  //   newEntity.InitStandalone();
-  //   newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
-  //   var positionFrom = position;
-  //   var positionTo = _levelManager.topSide.spriteCoinPosition;
-  //   Vector3[] waypoints = {
-  //         positionFrom,
-  //         positionFrom + new Vector3(1, 1),
-  //         positionTo - new Vector3(1.5f, 2.5f),
-  //         positionTo,
-  //       };
-  //   newObj.transform
-  //     .DOPath(waypoints, 1f, PathType.Linear)
-  //     .SetEase(Ease.OutCubic)
-  //     .OnComplete(() => newEntity.AddCoins());
-  // }
 
 #if UNITY_EDITOR
   public override string ToString()

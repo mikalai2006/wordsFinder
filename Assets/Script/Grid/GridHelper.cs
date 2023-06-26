@@ -134,6 +134,7 @@ public class GridHelper
     if (
         startNode.TopNode != null
         && !startNode.TopNode.StateNode.HasFlag(StateNode.Open)
+        && !startNode.TopNode.StateNode.HasFlag(StateNode.Hint)
         && startNode.TopNode.OccupiedChar != null
         && startNode.OccupiedChar.charTextValue == startNode.TopNode.OccupiedChar.charTextValue
       )
@@ -144,6 +145,7 @@ public class GridHelper
     if (
         startNode.BottomNode != null
         && !startNode.BottomNode.StateNode.HasFlag(StateNode.Open)
+        && !startNode.BottomNode.StateNode.HasFlag(StateNode.Hint)
         && startNode.BottomNode.OccupiedChar != null
         && startNode.OccupiedChar.charTextValue == startNode.BottomNode.OccupiedChar.charTextValue
       )

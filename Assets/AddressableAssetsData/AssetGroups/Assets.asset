@@ -69,6 +69,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - bonus
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 63ea74474329f7e4993eb497f7f78efd
+    m_Address: Assets/Scriptables/Themes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - theme
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 912e5358d86a0b7449e455fba5359f6c, type: 2}
   m_SchemaSet:

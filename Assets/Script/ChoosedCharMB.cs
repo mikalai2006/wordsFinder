@@ -8,6 +8,7 @@ public class ChoosedCharMB : MonoBehaviour
   [SerializeField] public RectTransform RectTransform;
 
   [HideInInspector] public char textChar;
+  private GameManager _gameManager => GameManager.Instance;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   private StateManager _stateManager => GameManager.Instance.StateManager;
   [SerializeField] private Image _image;
@@ -37,8 +38,8 @@ public class ChoosedCharMB : MonoBehaviour
 
   public async UniTask OpenCharHiddenWord(HiddenCharMB needHiddenChar, int delay)
   {
-    _image.color = _gameSetting.Theme.bgFindHiddenWord;
-    _charText.color = _gameSetting.Theme.textFindHiddenWord;
+    _image.color = _gameManager.Theme.bgFindHiddenWord;
+    _charText.color = _gameManager.Theme.textFindHiddenWord;
     await UniTask.Delay(delay); // UniTask.Delay(delay, ignoreTimeScale: false);
 
     Vector3 initialScale = transform.localScale;
@@ -79,8 +80,8 @@ public class ChoosedCharMB : MonoBehaviour
   {
     var targetToMove = _levelManager.buttonStar;
 
-    _image.color = _gameSetting.Theme.bgFindAllowWord;
-    _charText.color = _gameSetting.Theme.textFindAllowWord;
+    _image.color = _gameManager.Theme.bgFindAllowWord;
+    _charText.color = _gameManager.Theme.textFindAllowWord;
 
     await UniTask.Delay(delay);
 
@@ -120,8 +121,8 @@ public class ChoosedCharMB : MonoBehaviour
 
   public async UniTask CheckNo()
   {
-    _image.color = _gameSetting.Theme.bgNotFoundWord;
-    _charText.color = _gameSetting.Theme.textNotFoundWord;
+    _image.color = _gameManager.Theme.bgNotFoundWord;
+    _charText.color = _gameManager.Theme.textNotFoundWord;
 
     await UniTask.Delay(300);
 
@@ -131,8 +132,8 @@ public class ChoosedCharMB : MonoBehaviour
   public void SetDefault()
   {
     gameObject.SetActive(false);
-    _image.color = _gameSetting.Theme.bgChoosedWord;
-    _charText.color = _gameSetting.Theme.textChoosedWord;
+    _image.color = _gameManager.Theme.bgChoosedWord;
+    _charText.color = _gameManager.Theme.textChoosedWord;
     transform.position = _initPosition;
     transform.localScale = _initScale;
   }

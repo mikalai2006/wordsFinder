@@ -112,4 +112,11 @@ public class ResourceSystem : StaticInstance<ResourceSystem>
     return GetAllAssetsByLabel<GameBonus>(Constants.Labels.LABEL_BONUS);
   }
   #endregion
+
+  #region managers theme
+  public List<GameTheme> GetAllTheme()
+  {
+    return GetAllAssetsByLabel<GameTheme>(Constants.Labels.LABEL_THEME);
+  }
+  #endregion
 }

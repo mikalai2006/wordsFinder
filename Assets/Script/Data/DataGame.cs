@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using User;
 
 [System.Serializable]
@@ -24,6 +25,20 @@ public class DataGame
     hints = new();
     bonus = new();
   }
+
+  public void SetDefaultSettings()
+  {
+    var gameSettings = GameManager.Instance.GameSettings;
+
+    setting = new()
+    {
+      auv = gameSettings.Audio.volumeEffect,
+      lang = LocalizationSettings.SelectedLocale.name,
+      muv = gameSettings.Audio.volumeMusic,
+      theme = gameSettings.ThemeDefault.name,
+      td = 50 // time delay
+    };
+  }
 }
 
 
@@ -32,6 +47,7 @@ public class DataLevel
 {
   public string id;
   public float index;
+  public int coins;
   public StatePerk statePerk;
   public SerializableDictionary<Vector2, string> openChars;
   public SerializableDictionary<TypeEntity, int> hints; // [System.NonSerialized]

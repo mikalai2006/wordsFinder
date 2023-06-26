@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 
 public class BaseEntity : MonoBehaviour, IPointerDownHandler
 {
-  // public static event Action<string> OnShuffleWord;
+  // public static event System.Action OnCompletedAnimation;
   protected StateManager _stateManager => GameManager.Instance.StateManager;
   protected LevelManager _levelManager => GameManager.Instance.LevelManager;
   protected GameSetting _gameSetting => GameManager.Instance.GameSettings;
@@ -30,17 +30,26 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   protected virtual void Awake()
   {
     spriteRenderer.sprite = configEntity.sprite;
-    spriteRenderer.color = _gameSetting.Theme.entityColor;
     spriteBg.color = Color.clear;
 
     counterObject.transform.localScale = Vector3.zero;
+    ChangeTheme();
+
+    GameManager.OnChangeTheme += ChangeTheme;
   }
 
   private void OnDestroy()
   {
     Addressables.Release(asset);
+
+    GameManager.OnChangeTheme -= ChangeTheme;
   }
   #endregion
+
+  private void ChangeTheme()
+  {
+    spriteRenderer.color = _gameManager.Theme.entityColor;
+  }
 
   public virtual void Init(GridNode node, UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset)
   {
@@ -69,7 +78,10 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   {
 
   }
+  public virtual void AddTotalCoins(int count = 1)
+  {
 
+  }
 
   public void RunOpenEffect()
   {
@@ -87,8 +99,8 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
 
     Gradient grad = new Gradient();
     grad.SetKeys(new GradientColorKey[] {
-      new GradientColorKey(_gameSetting.Theme.bgFindAllowWord, 1.0f),
-      new GradientColorKey(_gameSetting.Theme.bgHiddenWord, 0.0f)
+      new GradientColorKey(_gameManager.Theme.bgFindAllowWord, 1.0f),
+      new GradientColorKey(_gameManager.Theme.bgHiddenWord, 0.0f)
       }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
     });
 
@@ -115,8 +127,8 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
 
     Gradient grad = new Gradient();
     grad.SetKeys(new GradientColorKey[] {
-      new GradientColorKey(_gameSetting.Theme.bgFindAllowWord, 1.0f),
-      new GradientColorKey(_gameSetting.Theme.bgHiddenWord, 0.0f)
+      new GradientColorKey(_gameManager.Theme.bgFindAllowWord, 1.0f),
+      new GradientColorKey(_gameManager.Theme.bgHiddenWord, 0.0f)
       }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
     });
 
@@ -157,7 +169,7 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
     //SetDefault();
   }
 
-  public virtual void RunCascadeEffect(Vector3 positionFrom, float duration = .5f)
+  public async virtual UniTask RunCascadeEffect(Vector3 positionFrom, float duration = .5f)
   {
     gameObject.SetActive(true);
     // spriteRenderer.gameObject.SetActive(false);
@@ -166,13 +178,14 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
     transform
       .DOMove(transform.position, duration)
       .From(positionFrom, true)
-      .SetEase(Ease.Linear)
-      .OnComplete(async () =>
-      {
-        OccupiedNode.SetHint();
+      .SetEase(Ease.Linear);
+    // .OnComplete(async () =>
+    // {
+    //   // OccupiedNode.SetHint();
 
-        await OccupiedNode.OccupiedChar.ShowCharAsHint(true);
-      });
+    // });
+    await UniTask.Delay((int)(duration * 1000));
+    await OccupiedNode.OccupiedChar.ShowCharAsHint(true);
   }
 
   public virtual void SetDefault()
@@ -228,4 +241,8 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   }
   #endregion
 
+  // protected void CompletedAnimation()
+  // {
+  //   OnCompletedAnimation?.Invoke();
+  // }
 }

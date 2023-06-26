@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87ab369d9f7c175498a033c6688b4df2, type: 3}
-  m_Name: Grey
+  m_Name: GreyDark
   m_EditorClassIdentifier: 
   bgHiddenWord: {r: 0.22352943, g: 0.21960786, b: 0.16078432, a: 1}
   bgOpentHiddenWord: {r: 0.6226415, g: 0.5768245, b: 0.50809896, a: 1}
@@ -32,11 +32,11 @@ MonoBehaviour:
   bgColorChooseChar: {r: 0.8679245, g: 0.6474248, b: 0, a: 0.87058824}
   bgImageChar: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgImageCharChoose: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
-  bgColor: {r: 0.48235297, g: 0.4431373, b: 0.38431376, a: 1}
+  bgColor: {r: 0.21698111, g: 0.19118902, b: 0.15250088, a: 1}
   entityColor: {r: 0.8666667, g: 0.64705884, b: 0, a: 0.87058824}
   colorLine: {r: 1, g: 1, b: 1, a: 1}
   entityActiveColor: {r: 1, g: 0.8901961, b: 0, a: 1}
   colorPrimary: {r: 0.9339623, g: 0.9025286, b: 0.7885814, a: 1}
-  colorSecondary: {r: 0.18867922, g: 0.1866211, b: 0.15574935, a: 1}
-  colorAccent: {r: 0, g: 0, b: 0, a: 0}
-  colorDisable: {r: 0.48235297, g: 0.4431373, b: 0.38431376, a: 1}
+  colorSecondary: {r: 0.7058824, g: 0.6431373, b: 0.4156863, a: 1}
+  colorAccent: {r: 1, g: 0.8901961, b: 0, a: 1}
+  colorDisable: {r: 0.31132078, g: 0.27993172, b: 0.22761661, a: 1}

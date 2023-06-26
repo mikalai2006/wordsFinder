@@ -44,7 +44,7 @@
     border-top-right-radius: 50%;
     border-bottom-right-radius: 50%;
     -unity-font-style: bold;
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: rgba(0, 0, 0, 0.05);
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 0;
@@ -255,4 +255,12 @@
 
 .w-50 {
     width: 50%;
+}
+
+.w4 {
+    width: 20px;
+}
+
+.h-4 {
+    height: 20px;
 }

@@ -219,7 +219,7 @@ public class LevelManager : Singleton<LevelManager>
     return newEntity;
   }
 
-  public async UniTask<GameObject> CreateCoin(Vector2 pos, int quantity = 1)
+  public async UniTask<GameObject> CreateCoin(Vector2 pos, Vector3 positionTo, int quantity = 1)
   {
     var coinConfig = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
     // var newObj = GameObject.Instantiate(
@@ -228,16 +228,16 @@ public class LevelManager : Singleton<LevelManager>
     //    Quaternion.identity
     //  );
     var asset = Addressables.InstantiateAsync(
-                  coinConfig.prefab,
-                  pos,
-                  Quaternion.identity
-                  );
+      coinConfig.prefab,
+      pos,
+      Quaternion.identity
+      );
     var newObj = await asset.Task;
     var newEntity = newObj.GetComponent<BaseEntity>();
     newEntity.InitStandalone(asset);
-    newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
+    newEntity.SetColor(_gameManager.Theme.entityActiveColor);
     var positionFrom = pos;
-    var positionTo = topSide.spriteCoinPosition;
+    // var positionTo = topSide.spriteCoinPosition;
     Vector3[] waypoints = {
           positionFrom,
           positionFrom + new Vector2(1.5f, 0f),
@@ -248,7 +248,18 @@ public class LevelManager : Singleton<LevelManager>
     newObj.gameObject.transform
       .DOPath(waypoints, 1f, PathType.CatmullRom)
       .SetEase(Ease.OutCubic)
-      .OnComplete(() => newEntity.AddCoins(quantity));
+      .OnComplete(() =>
+      {
+        if (positionTo == topSide.spriteCoinPosition)
+        {
+          newEntity.AddCoins(quantity);
+        }
+        else
+        {
+          newEntity.AddTotalCoins(quantity);
+        }
+      }
+      );
 
     return newObj;
   }

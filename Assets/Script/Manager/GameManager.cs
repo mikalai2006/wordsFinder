@@ -7,8 +7,10 @@ using Loader;
 
 public class GameManager : StaticInstance<GameManager>
 {
+  public static event Action OnChangeTheme;
   public AppInfoContainer AppInfo;
   public GameSetting GameSettings;
+  public GameTheme Theme { get; private set; }
   public AudioManager audioManager;
   public DataManager DataManager;
   public StateManager StateManager;
@@ -67,9 +69,9 @@ public class GameManager : StaticInstance<GameManager>
       case GameState.CloseLevel:
         HandleCloseLevel();
         break;
-      case GameState.NoWord:
+      case GameState.StopEffect:
         break;
-      case GameState.YesWord:
+      case GameState.StartEffect:
         break;
       case GameState.ShowMenu:
         break;
@@ -86,7 +88,14 @@ public class GameManager : StaticInstance<GameManager>
 
   private void HandleStartApp()
   {
-    Camera.main.backgroundColor = GameSettings.Theme.bgColor;
+    Theme = GameSettings.ThemeDefault;
+
+    ChangeTheme();
+  }
+
+  private void ChangeTheme()
+  {
+    Camera.main.backgroundColor = Theme.bgColor;
   }
 
   private async void HandleRunLevel()
@@ -112,6 +121,20 @@ public class GameManager : StaticInstance<GameManager>
     //var dataGame = DataManager.Load();
     // LevelManager.LoadLevel();
   }
+
+
+  public void SetTheme(GameTheme newTheme)
+  {
+    AppInfo.userSettings.theme = newTheme.name;
+
+    Theme = newTheme;
+
+    ChangeTheme();
+
+    DataManager.Save();
+
+    OnChangeTheme?.Invoke();
+  }
 }
 
 [Serializable]
@@ -119,8 +142,8 @@ public enum GameState
 {
   StartApp = 0,
   CreateGame = 1,
-  YesWord = 2,
-  NoWord = 3,
+  StartEffect = 2,
+  StopEffect = 3,
   ShowMenu = 4,
   RunLevel = 5,
   CloseLevel = 6,

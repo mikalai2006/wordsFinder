@@ -10,26 +10,35 @@ public class UISettings : UILocaleBase
   public static event Action OnChangeLocale;
   private VisualElement _aside;
   private VisualElement _menu;
+  private VisualElement _userCoinImg;
+  private VisualElement _userRateImg;
+  private Label _userRate;
+  private Label _userCoin;
+  private Label _userName;
   private Button _exitButton;
   private Button _openMenuButton;
   private Button _closeMenuButton;
   private Button _shopButton;
   private Button _toMenuAppButton;
   private Button _okButton;
-  private GameSetting GameSetting;
+  private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   [SerializeField] private AudioManager _audioManager => GameManager.Instance.audioManager;
 
-  public virtual void Start()
+  private void Awake()
   {
+    StateManager.OnChangeState += SetValue;
+  }
 
+  private void OnDestroy()
+  {
+    StateManager.OnChangeState -= SetValue;
+  }
+
+  public async virtual void Start()
+  {
     _aside = _uiDoc.rootVisualElement.Q<VisualElement>("AsideBlok");
     _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
     _menu.style.display = DisplayStyle.None;
-    _menu.Q<VisualElement>("MenuBlokWrapper").style.backgroundColor = new StyleColor(_gameSettings.Theme.bgColor);
-    _aside.Q<VisualElement>("ImgCog").style.backgroundImage = new StyleBackground(_gameSettings.spriteCog);
-    _aside.Q<VisualElement>("ImgShop").style.backgroundImage = new StyleBackground(_gameSettings.spriteShop);
-
-    GameSetting = GameManager.Instance.GameSettings;
 
     _exitButton = _aside.Q<Button>("ExitBtn");
     _openMenuButton = _aside.Q<Button>("MenuBtn");
@@ -71,7 +80,51 @@ public class UISettings : UILocaleBase
       _toMenuAppButton.style.display = DisplayStyle.None;
     }
 
+    _userCoin = _aside.Q<Label>("UserCoin");
+    _userCoinImg = _aside.Q<VisualElement>("UserCoinImg");
+    var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+    _userCoinImg.style.backgroundImage = new StyleBackground(configCoin.sprite);
+
+    _userRate = _aside.Q<Label>("UserRate");
+    _userRateImg = _aside.Q<VisualElement>("UserRateImg");
+    _userRateImg.style.backgroundImage = new StyleBackground(_gameSetting.spriteRate);
+
+    _userName = _aside.Q<Label>("UserName");
+
+    _userName.text = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.Name)
+      ? await Helpers.GetLocaledString(_gameSettings.noName.title)
+      : _gameManager.AppInfo.UserInfo.Name;
+
+    ChangeTheme();
+    SetValue(_gameManager.StateManager.dataGame);
+
     base.Initialize(_uiDoc.rootVisualElement);
+  }
+
+
+  private void ChangeTheme()
+  {
+
+    var imgCog = _aside.Q<VisualElement>("ImgCog");
+    imgCog.style.backgroundImage = new StyleBackground(_gameSettings.spriteCog);
+    imgCog.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorPrimary);
+
+    _userCoinImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.entityColor);
+    _userRateImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.entityColor);
+
+    _menu.Q<VisualElement>("MenuBlokWrapper").style.backgroundColor = new StyleColor(_gameManager.Theme.bgColor);
+
+    var imgShop = _aside.Q<VisualElement>("ImgShop");
+    imgShop.style.backgroundImage = new StyleBackground(_gameSettings.spriteShop);
+    imgShop.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorPrimary);
+
+    base.Theming(_uiDoc.rootVisualElement);
+  }
+
+  private void SetValue(DataGame data)
+  {
+    _userCoin.text = string.Format("{0}", data.coins);
+    _userRate.text = string.Format("{0}", data.rate);
   }
 
   private async void ClickOpenShop()
@@ -130,9 +183,7 @@ public class UISettings : UILocaleBase
 
     var menuBlok = _menu.Q<VisualElement>("Menu");
     var sliderVolumeEffect = menuBlok.Q<Slider>("VolumeEffect");
-    sliderVolumeEffect.value = userSettings == null
-      ? GameSetting.Audio.volumeEffect
-      : userSettings.auv;
+    sliderVolumeEffect.value = userSettings.auv;
     _audioManager.EffectSource.volume = sliderVolumeEffect.value;
     sliderVolumeEffect.RegisterValueChangedCallback((ChangeEvent<float> evt) =>
     {
@@ -141,9 +192,7 @@ public class UISettings : UILocaleBase
     });
 
     var sliderVolumeMusic = menuBlok.Q<Slider>("VolumeMusic");
-    sliderVolumeMusic.value = userSettings == null
-      ? GameSetting.Audio.volumeMusic
-      : userSettings.muv;
+    sliderVolumeMusic.value = userSettings.muv;
     _audioManager.MusicSource.volume = sliderVolumeMusic.value;
     sliderVolumeMusic.RegisterValueChangedCallback((ChangeEvent<float> evt) =>
     {
@@ -152,9 +201,7 @@ public class UISettings : UILocaleBase
     });
 
     var sliderTimeDelay = menuBlok.Q<SliderInt>("TimeDelay");
-    sliderTimeDelay.value = userSettings == null
-      ? GameSetting.timeDelayOverChar
-      : userSettings.td;
+    sliderTimeDelay.value = userSettings.td;
     sliderTimeDelay.RegisterValueChangedCallback((ChangeEvent<int> evt) =>
     {
       userSettings.td = evt.newValue;
@@ -173,6 +220,29 @@ public class UISettings : UILocaleBase
     {
       ChooseLanguage(evt.newValue);
     });
+
+
+    // Theme.
+    var dropdownTheme = menuBlok.Q<DropdownField>("Theme");
+
+    var allThemes = _gameManager.ResourceSystem.GetAllTheme();
+
+    dropdownTheme.choices.Clear();
+    for (int i = 0; i < allThemes.Count; i++)
+    {
+      GameTheme theme = allThemes[i];
+      dropdownTheme.choices.Add(theme.name);
+    }
+    dropdownTheme.value = userSettings.theme;
+    dropdownTheme.RegisterValueChangedCallback((ChangeEvent<string> evt) =>
+    {
+      GameTheme chooseTheme = allThemes.Find(t => t.name == evt.newValue);
+
+      _gameManager.SetTheme(chooseTheme);
+
+      ChangeTheme();
+    });
+
   }
 
   private void ChooseLanguage(string nameLanguage)

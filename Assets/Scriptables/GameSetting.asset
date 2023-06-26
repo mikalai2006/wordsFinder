@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Audio: {fileID: 11400000, guid: 8f34d19db11906f4b8a97ad95ea85df1, type: 2}
   PrefabSymbol: {fileID: 7149879278780047571, guid: e7419d168977efa48a744d43a95bae4e, type: 3}
-  Theme: {fileID: 11400000, guid: 08e6c1ceee25b7842a70dbb8dedd1c81, type: 2}
+  ThemeDefault: {fileID: 11400000, guid: e17a72d413ca2ca4d8ed79658e6b1264, type: 2}
   PlayerSetting:
   - {fileID: 11400000, guid: b57b9e953e14d084dbf1e284147084c7, type: 2}
   - {fileID: 11400000, guid: c74f5f99da2ab024b85faf3c9958078f, type: 2}
@@ -24,8 +24,8 @@ MonoBehaviour:
   lineWidth: 0.15
   radius: 2.5
   addinitiallyRow: 3
-  maxCountHiddenChar: 48
-  minCountHiddenChar: 10
+  maxCountHiddenChar: 200
+  minCountHiddenChar: 20
   timeGeneralAnimation: 0.5
   Boom: {fileID: 4370175670826504157, guid: 0d64c2d06fc2020488bed46426152725, type: 3}
   BoomLarge: {fileID: 5387774378321571289, guid: d3e641e39ca10654fab4ca2a25b477b3, type: 3}

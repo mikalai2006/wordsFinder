@@ -37,6 +37,8 @@ public class Star : BaseEntity
     //   }
     // }
 
+    _gameManager.ChangeState(GameState.StopEffect);
+
     Destroy(gameObject);
   }
 }

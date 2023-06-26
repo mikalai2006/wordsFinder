@@ -295,6 +295,18 @@ MonoBehaviour:
     m_Key: indexbonus_d
     m_Metadata:
       m_Items: []
+  - m_Id: 5209502396874752
+    m_Key: theme
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5290888118042624
+    m_Key: nothint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5294099914719232
+    m_Key: successbuy
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

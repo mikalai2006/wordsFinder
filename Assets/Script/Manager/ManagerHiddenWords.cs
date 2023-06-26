@@ -129,6 +129,8 @@ public class ManagerHiddenWords : MonoBehaviour
       // _levelManager.topSide.AddBonus(key);
       _stateManager.UseBonus(0, key);
     }
+
+    await UniTask.Yield();
   }
 
 
@@ -151,7 +153,7 @@ public class ManagerHiddenWords : MonoBehaviour
       var item = OpenChars.ElementAt(i);
       var node = GridHelper.GetNode(item.Key);
       node.OccupiedChar.ShowCharAsHint(false).Forget();
-      node.SetHint();
+      // node.SetHint();
     }
   }
 
@@ -185,20 +187,24 @@ public class ManagerHiddenWords : MonoBehaviour
       }
 
       HiddenWords[listWords[i]] = wordGameObject;
+
       if (OpenWords.ContainsKey(listWords[i]))
       {
-        CheckWord(listWords[i]);
+        if (HiddenWords.ContainsKey(listWords[i]))
+        {
+          HiddenWords[listWords[i]].ShowWord().Forget();
+        }
       }
     }
   }
 
-  public void CheckWord(string word)
-  {
-    if (HiddenWords.ContainsKey(word))
-    {
-      HiddenWords[word].ShowWord().Forget();
-    }
-  }
+  // public void CheckWord(string word)
+  // {
+  //   if (HiddenWords.ContainsKey(word))
+  //   {
+  //     HiddenWords[word].ShowWord().Forget();
+  //   }
+  // }
 
   public List<string> CreateHiddenWords()
   {
@@ -350,7 +356,7 @@ public class ManagerHiddenWords : MonoBehaviour
           if (NeedWords.ContainsKey(choosedWord))
           {
             OpenNeedWords.Add(choosedWord, 1);
-            _levelManager.CreateCoin(_levelManager.buttonStar.transform.position).Forget();
+            _levelManager.CreateCoin(_levelManager.buttonStar.transform.position, _levelManager.topSide.spriteCoinPosition).Forget();
           }
         }
       }

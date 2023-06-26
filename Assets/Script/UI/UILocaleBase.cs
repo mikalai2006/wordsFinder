@@ -31,14 +31,14 @@ public abstract class UILocaleBase : MonoBehaviour
     List<VisualElement> list = builder.Class("text-primary").ToList();
     foreach (var item in list)
     {
-      item.style.color = _gameSettings.Theme.colorPrimary;
+      item.style.color = _gameManager.Theme.colorPrimary;
     }
 
     UQueryBuilder<VisualElement> builderSecondary = new UQueryBuilder<VisualElement>(_box);
     List<VisualElement> listSecondary = builderSecondary.Class("text-secondary").ToList();
     foreach (var item in listSecondary)
     {
-      item.style.color = _gameSettings.Theme.colorSecondary;
+      item.style.color = _gameManager.Theme.colorSecondary;
     }
 
   }

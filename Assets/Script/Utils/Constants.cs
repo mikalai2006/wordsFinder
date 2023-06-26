@@ -20,6 +20,7 @@ public class Constants
   {
     public const string LABEL_ENTITY = "entity";
     public const string LABEL_BONUS = "bonus";
+    public const string LABEL_THEME = "theme";
   }
 
   public class LanguageTable

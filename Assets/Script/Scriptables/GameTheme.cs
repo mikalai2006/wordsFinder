@@ -39,10 +39,16 @@ public class GameTheme : ScriptableObject
   [Space(5)]
   [Header("Game")]
   public Color bgColor;
-  public Color entityColor;
   public Color colorLine;
-  public Color entityActiveColor;
   public Color colorPrimary;
   public Color colorSecondary;
+  public Color colorAccent;
+
+
+  [Space(5)]
+  [Header("Entity-Bonus")]
+  public Color entityColor;
+  public Color entityActiveColor;
   public Color colorDisable;
+
 }

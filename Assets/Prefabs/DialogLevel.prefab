@@ -267,7 +267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb17730ba865efc48b719e27ed462544, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bg: {fileID: 3346386019750777308}
+  _bg: {fileID: 3650622854513478615}
+  _wrapperSprite: {fileID: 8468235365686308512}
   _textMessageSmall: {fileID: 5717276332820498729}
   _textHeader: {fileID: 4002080667800066124}
   _textMessage: {fileID: 56073708742023491}

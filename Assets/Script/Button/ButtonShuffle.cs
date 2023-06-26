@@ -18,9 +18,14 @@ public class ButtonShuffle : BaseButton
     spriteBg.sprite = _gameSetting.spriteShuffle;
     spriteMask.sprite = _gameSetting.spriteShuffle;
 
-    spriteBg.color = _gameSetting.Theme.colorPrimary;
+    interactible = false;
   }
   #endregion
+
+  public override void ChangeTheme()
+  {
+    spriteBg.color = _gameManager.Theme.colorPrimary;
+  }
 
   public override async void OnPointerDown(PointerEventData eventData)
   {

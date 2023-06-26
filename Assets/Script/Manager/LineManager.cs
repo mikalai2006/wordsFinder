@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,9 +16,20 @@ public class LineManager : MonoBehaviour
     _gameManager = GameManager.Instance;
     _gameManager.LineManager = this;
     _gameSetting = GameManager.Instance.GameSettings;
-    _lineRenderer.startColor = _gameSetting.Theme.colorLine;
-    _lineRenderer.endColor = _gameSetting.Theme.colorLine;
+    ChangeTheme();
 
+    GameManager.OnChangeTheme += ChangeTheme;
+  }
+
+  private void OnDestroy()
+  {
+    GameManager.OnChangeTheme -= ChangeTheme;
+  }
+
+  private void ChangeTheme()
+  {
+    _lineRenderer.startColor = _gameManager.Theme.colorLine;
+    _lineRenderer.endColor = _gameManager.Theme.colorLine;
   }
 
   public void ResetLine()

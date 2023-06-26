@@ -54,8 +54,8 @@ public class HiddenWordMB : MonoBehaviour
 
   public async UniTask AutoOpenWord()
   {
-    _managerHiddenWords.OpenWords.Add(_word, 1);
-    _managerHiddenWords.OpenNeedWords.Add(_word, 1);
+    if (!_managerHiddenWords.OpenWords.ContainsKey(_word)) _managerHiddenWords.OpenWords.Add(_word, 1);
+    if (!_managerHiddenWords.OpenNeedWords.ContainsKey(_word)) _managerHiddenWords.OpenNeedWords.Add(_word, 1);
 
     List<UniTask> tasks = new();
     foreach (var charObj in Chars)

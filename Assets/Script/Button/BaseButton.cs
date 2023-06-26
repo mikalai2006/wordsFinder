@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -29,6 +27,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   protected bool statusShowCounter = false;
   protected int valueCounter;
   protected int value;
+  protected bool interactible = true;
 
   #region UnityMethods
   protected virtual void Awake()
@@ -44,19 +43,57 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 
     ResetProgressBar();
 
-    spriteBg.color = _gameSetting.Theme.colorPrimary;
+    ChangeTheme();
 
     if (configEntity != null)
     {
       spriteBg.sprite = configEntity.sprite;
       spriteMask.sprite = configEntity.sprite;
     }
+
+    GameManager.OnChangeTheme += ChangeTheme;
+    GameManager.OnAfterStateChanged += AfterStateChanged;
   }
 
   protected virtual void OnDestroy()
   {
+    GameManager.OnChangeTheme -= ChangeTheme;
+    GameManager.OnAfterStateChanged -= AfterStateChanged;
+  }
+
+  private void AfterStateChanged(GameState state)
+  {
+    switch (state)
+    {
+      case GameState.StartEffect:
+        pointer.enabled = false;
+        break;
+      case GameState.StopEffect:
+        pointer.enabled = true;
+        break;
+    }
+    ChangeTheme();
   }
   #endregion
+
+  public virtual void ChangeTheme()
+  {
+    if (!pointer.enabled)
+    {
+      spriteBg.color = _gameManager.Theme.colorDisable;
+      return;
+    }
+
+    if (statusShowCounter)
+    {
+      spriteBg.color = _gameManager.Theme.colorPrimary;
+    }
+    else
+    {
+      spriteBg.color = _gameManager.Theme.colorDisable;
+    }
+    spriteProgress.color = _gameManager.Theme.entityActiveColor;
+  }
 
   public virtual void SetValue(DataGame data)
   {
@@ -92,6 +129,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
     SetValueProgressBar(data);
   }
 
+
   private void ShowCounter()
   {
     // Debug.Log($"Run Show");
@@ -103,12 +141,13 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
       {
         // Debug.Log($"complete show");
         statusShowCounter = true;
+        ChangeTheme();
       });
     counterObject.transform
       .DOPunchScale(new Vector3(0.5f, 0.5f, 0), _gameSetting.timeGeneralAnimation)
       .SetDelay(_gameSetting.timeGeneralAnimation)
       .SetEase(Ease.OutBack);
-    spriteBg.color = _gameSetting.Theme.colorPrimary;
+    // spriteBg.color = _gameManager.Theme.colorPrimary;
   }
 
   public void HideCounter()
@@ -121,8 +160,9 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
       {
         // Debug.Log($"complete hide");
         statusShowCounter = false;
+        ChangeTheme();
       });
-    spriteBg.color = _gameSetting.Theme.colorDisable;
+    // spriteBg.color = _gameManager.Theme.colorDisable;
     //gameObject.SetActive(false);
   }
 
@@ -137,13 +177,16 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
       .SetEase(Ease.OutBack);
   }
 
-  public virtual void OnPointerDown(PointerEventData eventData)
+  public async virtual void OnPointerDown(PointerEventData eventData)
   {
     if (!pointer.enabled) return;
 
+    if (value != 0) _gameManager.ChangeState(GameState.StartEffect);
+
     _gameManager.audioManager.Click();
 
-    pointer.enabled = false;
+    // pointer.enabled = false;
+
     transform
         .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)
         .SetEase(Ease.OutBack)
@@ -151,12 +194,41 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
         {
           statusShowCounter = true;
           transform.localScale = initScale;
-          pointer.enabled = true;
+
+          // if (!interactible) pointer.enabled = true;
         });
 
     if (value != 0)
     {
       RunHint();
+    }
+    else
+    {
+      _gameManager.InputManager.Disable();
+
+      string titleHint = await Helpers.GetLocaledString(configEntity.text.title);
+      var message = await Helpers.GetLocalizedPluralString("nothint", new System.Collections.Generic.Dictionary<string, string>() {
+        {"name", titleHint}
+      });
+      var dialog = new DialogProvider(new DataDialog()
+      {
+        messageText = message,
+        showCancelButton = true
+      });
+
+      var result = await dialog.ShowAndHide();
+      if (result.isOk)
+      {
+        // open shop.
+        var dialogWindow = new UIShopOperation();
+        await dialogWindow.ShowAndHide();
+        _gameManager.InputManager.Enable();
+      }
+      else
+      {
+        _gameManager.InputManager.Enable();
+      }
+
     }
   }
 

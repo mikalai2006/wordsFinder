@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -31,7 +32,7 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
     initScale = transform.localScale;
     initPosition = transform.localPosition;
 
-    spriteBg.color = _gameSetting.Theme.colorPrimary;
+    ChangeTheme();
 
     initScaleCounterObject = counterText.gameObject.transform.localScale;
     counterText.text = "";
@@ -39,7 +40,6 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
     gameObject.SetActive(false);
 
     // ResetProgressBar();
-    // spriteProgress.color = _gameSetting.Theme.entityActiveColor;
 
     if (configBonus != null)
     {
@@ -48,13 +48,20 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
     }
 
     StateManager.OnChangeState += SetValue;
+    GameManager.OnChangeTheme += ChangeTheme;
   }
   protected virtual void OnDestroy()
   {
-
     StateManager.OnChangeState -= SetValue;
+    GameManager.OnChangeTheme -= ChangeTheme;
   }
   #endregion
+
+  private void ChangeTheme()
+  {
+    spriteBg.color = _gameManager.Theme.colorPrimary;
+    spriteProgress.color = _gameManager.Theme.entityActiveColor;
+  }
 
 
   public virtual void Init(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset)

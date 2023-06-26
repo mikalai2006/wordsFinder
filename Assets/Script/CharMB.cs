@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -40,16 +41,29 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     _camera = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<Camera>();
 
     ResetObject();
+
+    GameManager.OnChangeTheme += ChangeTheme;
+  }
+
+  private void OnDestroy()
+  {
+
+    GameManager.OnChangeTheme -= ChangeTheme;
+  }
+
+  private void ChangeTheme()
+  {
+    if (_gameManager.Theme.bgImageChar != null) _image.sprite = _gameManager.Theme.bgImageChar;
+
+    _image.color = _gameManager.Theme.bgColorChar;
+
+    _charText.color = _gameManager.Theme.colorTextChar;
   }
 
   public void ResetObject()
   {
 
-    if (_gameSettings.Theme.bgImageChar != null) _image.sprite = _gameSettings.Theme.bgImageChar;
-
-    _image.color = _gameSettings.Theme.bgColorChar;
-
-    _charText.color = _gameSettings.Theme.colorTextChar;
+    ChangeTheme();
   }
 
 
@@ -152,9 +166,9 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
   private void ChooseSymbol()
   {
     _levelManager.ManagerHiddenWords.AddChoosedChar(this);
-    if (_gameSettings.Theme.bgImageCharChoose != null) _image.sprite = _gameSettings.Theme.bgImageCharChoose;
-    _image.color = _gameSettings.Theme.bgColorChooseChar;
-    _charText.color = _gameSettings.Theme.colorTextChooseChar;
+    if (_gameManager.Theme.bgImageCharChoose != null) _image.sprite = _gameManager.Theme.bgImageCharChoose;
+    _image.color = _gameManager.Theme.bgColorChooseChar;
+    _charText.color = _gameManager.Theme.colorTextChooseChar;
   }
 
   public async UniTask SetPosition(Vector3 newPos)

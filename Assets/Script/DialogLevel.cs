@@ -16,6 +16,7 @@ public class DialogLevel : MonoBehaviour
   private float duration => _gameSetting.timeGeneralAnimation;
 
   [SerializeField] private GameObject _bg;
+  [SerializeField] private Image _wrapperSprite;
   [SerializeField] private TMPro.TextMeshProUGUI _textMessageSmall;
   [SerializeField] private TMPro.TextMeshProUGUI _textHeader;
   [SerializeField] private TMPro.TextMeshProUGUI _textMessage;
@@ -66,6 +67,27 @@ public class DialogLevel : MonoBehaviour
     // _indexCountStar = _indexStarObject.GetComponentInChildren<TMPro.TextMeshProUGUI>();
     // _indexCountHint = _indexHintObject.GetComponentInChildren<TMPro.TextMeshProUGUI>();
     SetDefault();
+    ChangeTheme();
+
+    GameManager.OnChangeTheme += ChangeTheme;
+  }
+
+  private void OnDestroy()
+  {
+    GameManager.OnChangeTheme -= ChangeTheme;
+  }
+
+  private void ChangeTheme()
+  {
+    _wrapperSprite.color = _gameManager.Theme.bgColor;
+
+    _textMessageSmall.color = _gameManager.Theme.colorSecondary;
+
+    _textMessage.color = _gameManager.Theme.colorPrimary;
+
+    _textHeader.color = _gameManager.Theme.colorSecondary;
+
+    _textMessageSmall.color = _gameManager.Theme.colorPrimary;
   }
 
   public async UniTask<DataDialogResult> ShowDialogEndRound()
@@ -88,7 +110,11 @@ public class DialogLevel : MonoBehaviour
     int totalFindedWords = _stateManager.dataGame.activeLevel.countDopWords + _stateManager.dataGame.activeLevel.countNeedWords;
 
     _textMessage.text = await Helpers.GetLocaledString("completelevel");
+
     _countTotalCoins = totalFindedWords;
+
+    _textTotalCoin.text = _countTotalCoins.ToString();
+
     _textMessageSmall.text = await Helpers.GetLocalizedPluralString(
           "completelevel_d",
            new Dictionary<string, object> {
@@ -98,22 +124,55 @@ public class DialogLevel : MonoBehaviour
 
 
     _bg.SetActive(true);
+    _totalObject.SetActive(true);
     gameObject.SetActive(true);
 
     // var initScale = transform.localScale;
-    Sequence mySequence = DOTween.Sequence();
-    mySequence.Append(
-      transform
-      .DOMove(visiblePositionWrapper, duration * 2)
-      .From(defaultPositionWrapper, true)
-      .SetEase(Ease.OutBack)
-      .OnComplete(() =>
+    // Sequence mySequence = DOTween.Sequence();
+    // mySequence.Append(
+    transform
+    .DOMove(visiblePositionWrapper, duration * 2)
+    .From(defaultPositionWrapper, true)
+    .SetEase(Ease.OutBack)
+    .OnComplete(async () =>
+    {
+
+      int countCoinLevel = _countTotalCoins + _stateManager.dataGame.activeLevel.coins;
+
+      for (int i = _countTotalCoins; i <= countCoinLevel; i++)
       {
-        _totalObject.SetActive(true);
-        _textTotalCoin.text = _countTotalCoins.ToString();
-        AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
-      })
-    );
+        _textTotalCoin.text = i.ToString();// _countTotalCoins.ToString();
+        await UniTask.Delay(10);
+      }
+      AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
+
+      var indexBonus = _levelManager.topSide.Bonuses.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value;
+
+      if (indexBonus != null)
+      {
+        indexBonus.gameObject.transform
+          .DOMove(spriteCoin.transform.localPosition + new Vector3(0, 3.5f), duration)
+          .OnComplete(async () =>
+          {
+            int valueIndexBonus = _stateManager.dataGame.bonus.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value + 1;
+
+            int _countTotalOfByIndex = valueIndexBonus * countCoinLevel;
+
+            // _textTotalCoin.text = _countTotalCoins.ToString();
+
+            for (int i = countCoinLevel; i <= _countTotalOfByIndex; i++)
+            {
+              _textTotalCoin.text = i.ToString();
+              await UniTask.Delay(10);
+            }
+
+            _countTotalCoins = _countTotalOfByIndex;
+
+            AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
+          });
+      }
+    });
+    // );
 
     // transform
     //   .DOScale(initScale, duration * 3)
@@ -125,31 +184,31 @@ public class DialogLevel : MonoBehaviour
     //     _textTotalCoin.text = _countTotalCoins.ToString();
     //     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
     //   })
-    mySequence.Append(
-      _textTotalCoin.transform.DOPunchScale(new Vector3(.1f, .1f, 0), duration, 5, 1)
-    );
+    // mySequence.Append(
+    //   _textTotalCoin.transform.DOPunchScale(new Vector3(.1f, .1f, 0), duration, 5, 1)
+    // );
 
-    var indexBonus = _levelManager.topSide.Bonuses.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value;
+    // var indexBonus = _levelManager.topSide.Bonuses.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value;
 
-    if (indexBonus != null)
-    {
-      mySequence.Append(
-        indexBonus.gameObject.transform
-          .DOMove(spriteCoin.transform.localPosition + new Vector3(0, 3.5f), duration)
-          .OnComplete(() =>
-          {
-            int valueIndexBonus = _stateManager.dataGame.bonus.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value + 1;
+    // if (indexBonus != null)
+    // {
+    //   mySequence.Append(
+    //     indexBonus.gameObject.transform
+    //       .DOMove(spriteCoin.transform.localPosition + new Vector3(0, 3.5f), duration)
+    //       .OnComplete(() =>
+    //       {
+    //         int valueIndexBonus = _stateManager.dataGame.bonus.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value + 1;
 
-            _countTotalCoins = valueIndexBonus * _countTotalCoins;
+    //         _countTotalCoins = valueIndexBonus * _countTotalCoins;
 
-            _textTotalCoin.text = _countTotalCoins.ToString();
+    //         _textTotalCoin.text = _countTotalCoins.ToString();
 
-            AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
-          })
-      );
+    //         AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
+    //       })
+    //   );
 
 
-    }
+    // }
     return await _processCompletionSource.Task;
   }
 
@@ -158,37 +217,29 @@ public class DialogLevel : MonoBehaviour
     OnDoubleCoins();
   }
 
-  public void OnDoubleCoins()
+  public async void OnDoubleCoins()
   {
+    int startCoins = _countTotalCoins;
+
     _countTotalCoins *= 2;
-    _textTotalCoin.text = _countTotalCoins.ToString();
+
+    for (int i = startCoins; i <= _countTotalCoins; i++)
+    {
+      _textTotalCoin.text = i.ToString();
+
+      await UniTask.Delay(10);
+    }
   }
 
   private async UniTask GoCoins()
   {
     GameEntity configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
-    // var newObj = GameObject.Instantiate(
-    //   configEntity.prefab,
-    //   spriteCoin.transform.position,
-    //   Quaternion.identity
-    // );
-    // var newEntity = newObj.GetComponent<BaseEntity>();
-    // newEntity.InitStandalone();
-    // newEntity.SetColor(_gameSetting.Theme.entityActiveColor);
-    // var positionFrom = spriteCoin.transform.position;// transform.position;
-    // var positionTo = _levelManager.topSide.spriteCoinPosition;
-    // Vector3[] waypoints = {
-    //       positionFrom,
-    //       positionFrom + new Vector3(-1.5f, 1.5f),
-    //       positionTo - new Vector3(1.5f, 1.5f),
-    //       positionTo,
-    //     };
 
-    // newObj.gameObject.transform
-    //   .DOPath(waypoints, 1f, PathType.CatmullRom)
-    //   .SetEase(Ease.OutCubic)
-    //   .OnComplete(() => newEntity.AddCoins(_countTotalCoins));
-    await _levelManager.CreateCoin(transform.position, _countTotalCoins);
+    await _levelManager.CreateCoin(
+      spriteCoin.transform.position,
+      _levelManager.topSide.targetTotalCoinObject.transform.position,
+      _countTotalCoins
+    );
   }
 
   public async void CloseDialogEndRound()
@@ -441,11 +492,6 @@ public class DialogLevel : MonoBehaviour
   {
     Helpers.DestroyChildren(_hintObject.transform);
 
-    _textMessageSmall.color = _gameSetting.Theme.colorSecondary;
-    _textMessage.color = _gameSetting.Theme.colorPrimary;
-    _textHeader.color = _gameSetting.Theme.colorSecondary;
-
-    _textMessageSmall.color = _gameSetting.Theme.colorPrimary;
     gameObject.SetActive(false);
     gameObject.transform.position = defaultPositionWrapper;
     _bg.SetActive(false);

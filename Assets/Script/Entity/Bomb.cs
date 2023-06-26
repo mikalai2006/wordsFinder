@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -25,13 +26,19 @@ public class Bomb : BaseEntity
 
     RunOpenEffect();
 
+    List<UniTask> tasks = new();
     foreach (var node in nodesForCascade)
     {
       var newEntity = await _levelManager.AddEntity(node.arrKey, configEntity.typeEntity);
 
-      newEntity.RunCascadeEffect(gameObject.transform.position, .1f);
+      tasks.Add(newEntity.RunCascadeEffect(gameObject.transform.position, .1f));
     }
+
+    await UniTask.WhenAll(tasks);
+
     nodesForCascade.Clear();
+
+    _gameManager.ChangeState(GameState.StopEffect);
 
     Destroy(gameObject);
   }

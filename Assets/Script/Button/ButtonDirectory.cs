@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 using UnityEngine.EventSystems;
 
 public class ButtonDirectory : BaseButton
@@ -14,9 +13,14 @@ public class ButtonDirectory : BaseButton
     spriteBg.sprite = _gameSetting.spriteDirectory;
     spriteMask.sprite = _gameSetting.spriteDirectory;
 
-    spriteBg.color = _gameSetting.Theme.colorPrimary;
+    interactible = false;
   }
   #endregion
+
+  public override void ChangeTheme()
+  {
+    spriteBg.color = _gameManager.Theme.colorPrimary;
+  }
 
   public override async void OnPointerDown(PointerEventData eventData)
   {

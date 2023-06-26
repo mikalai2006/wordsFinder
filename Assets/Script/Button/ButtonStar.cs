@@ -82,8 +82,8 @@ public class ButtonStar : BaseButton
 
     Gradient grad = new Gradient();
     grad.SetKeys(new GradientColorKey[] {
-      new GradientColorKey(_gameSetting.Theme.bgFindAllowWord, 1.0f),
-      new GradientColorKey(_gameSetting.Theme.bgHiddenWord, 0.0f)
+      new GradientColorKey(_gameManager.Theme.bgFindAllowWord, 1.0f),
+      new GradientColorKey(_gameManager.Theme.bgHiddenWord, 0.0f)
       }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
     });
 

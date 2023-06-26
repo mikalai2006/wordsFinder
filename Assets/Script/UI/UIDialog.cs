@@ -17,6 +17,16 @@ public class UIDialog : UILocaleBase
   private DataDialogResult _dataResultDialog;
   private VisualElement _root;
 
+  private void Awake()
+  {
+    GameManager.OnChangeTheme += ChangeTheme;
+  }
+
+  private void OnDestroy()
+  {
+    GameManager.OnChangeTheme -= ChangeTheme;
+  }
+
   private void Start()
   {
     _root = _uiDoc.rootVisualElement;
@@ -24,7 +34,6 @@ public class UIDialog : UILocaleBase
     _headerText = _root.Q<Label>("HeaderText");
     _messageText = _root.Q<Label>("MessageText");
 
-    _root.Q<VisualElement>("DialogWrapper").style.backgroundColor = new StyleColor(_gameSettings.Theme.bgColor);
 
     _buttonOk = _root.Q<Button>("Ok");
     _buttonOk.clickable.clicked += OnClickOk;
@@ -33,7 +42,14 @@ public class UIDialog : UILocaleBase
     _buttonCancel.style.display = DisplayStyle.None;
     _buttonCancel.clickable.clicked += OnClickCancel;
 
+    ChangeTheme();
+
     base.Initialize(_root);
+  }
+
+  private void ChangeTheme()
+  {
+    _root.Q<VisualElement>("DialogWrapper").style.backgroundColor = new StyleColor(_gameManager.Theme.bgColor);
   }
 
   public async Task<DataDialogResult> ProcessAction(DataDialog dataDialog)

@@ -37,10 +37,12 @@ public class UILoaderScreen : MonoBehaviour
     try
     {
       Root.rootVisualElement.Q<VisualElement>("OverBG").style.backgroundColor
-        = new StyleColor(GameManager.Instance.GameSettings.Theme.bgColor);
+        = new StyleColor(GameManager.Instance.Theme.bgColor);
       progressBarSection = Root.rootVisualElement.Q<VisualElement>(NameProgressBarSection);
       progressBar = Root.rootVisualElement.Q<VisualElement>(NameProgressBar);
+      progressBar.style.backgroundColor = new StyleColor(GameManager.Instance.Theme.colorAccent);
       progressBarText = Root.rootVisualElement.Q<Label>(NameProgressBarText);
+      progressBarText.style.color = new StyleColor(GameManager.Instance.Theme.colorPrimary);
       SetProgressValue(0);
       //buttonsSection = MenuApp.rootVisualElement.Q<VisualElement>("ButtonsSection");
 
