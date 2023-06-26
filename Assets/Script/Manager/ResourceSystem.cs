@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.ResourceLocations;
@@ -11,7 +9,7 @@ public class ResourceSystem : StaticInstance<ResourceSystem>
   public Dictionary<string, List<Object>> ResourceAssets = new Dictionary<string, List<Object>>();
 
   #region Asset load and destroy
-  public async Task<List<T>> LoadCollectionsAsset<T>(string assetNameOrLabel)
+  public async UniTask<List<T>> LoadCollectionsAsset<T>(string assetNameOrLabel)
      where T : Object
   {
     List<T> createdObjs = new List<T>();
@@ -40,7 +38,7 @@ public class ResourceSystem : StaticInstance<ResourceSystem>
   }
 
 
-  private async Task CreateAssetsThenUpdateCollection<T>(IList<IResourceLocation> locations, List<T> createdObjs)
+  private async UniTask CreateAssetsThenUpdateCollection<T>(IList<IResourceLocation> locations, List<T> createdObjs)
       where T : Object
   {
     foreach (var location in locations)

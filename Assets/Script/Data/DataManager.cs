@@ -1,9 +1,16 @@
+using System.Runtime.InteropServices;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
+  [DllImport("__Internal")]
+  private static extern void SaveExtern(string data);
+
+  [DllImport("__Internal")]
+  private static extern void LoadExtern();
+
   // public static event Action<DataGame> OnLoadData;
   [Header("File Storage Config")]
   [SerializeField] private string fileNameGame;
@@ -25,9 +32,18 @@ public class DataManager : Singleton<DataManager>
   public async UniTask<DataGame> Load()
   {
     _dataGame = await _fileDataHandler.LoadData();
+    Debug.Log($"{name}::: Load {JsonUtility.ToJson(_dataGame)}");
     // OnLoadData?.Invoke(_dataGame);
     return _dataGame;
   }
+
+
+  public void LoadPlayerData(string data)
+  {
+    Debug.Log($"{name}::: LoadPlayerData {data}");
+    _dataGame = JsonUtility.FromJson<DataGame>(data);
+  }
+
 
   public void Save()
   {
@@ -51,6 +67,8 @@ public class DataManager : Singleton<DataManager>
       _dataGame = _gameManager.StateManager.GetData(); //.dataGame;
 
       _fileDataHandler.SaveData(_dataGame);
+
+      string jsonString = JsonUtility.ToJson(_dataGame);
 
       Debug.Log("Saved complete successfully!");
     }

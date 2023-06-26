@@ -94,12 +94,9 @@ public class UIDirectory : UILocaleBase
     webRequest.SetRequestHeader("Authorization", "Basic " + _gameSettings.APIDirectory.token);
     webRequest.SetRequestHeader("Content-Type", "application/json");
 
-    webRequest.SendWebRequest();
+    await Task.Yield();
 
-    while (!webRequest.isDone)
-    {
-      await Task.Yield();
-    }
+    await webRequest.SendWebRequest();
 
     if (webRequest.result == UnityWebRequest.Result.ConnectionError)
     {

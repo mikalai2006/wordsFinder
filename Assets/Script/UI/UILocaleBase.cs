@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UIElements;
@@ -45,6 +46,9 @@ public abstract class UILocaleBase : MonoBehaviour
 
   private async void Localize()
   {
+
+    // await LocalizationSettings.InitializationOperation.Task;
+
     var op = _localization.GetTableAsync();
     await op.Task;
     _elementList = HelperUI.FindAllTextElements(_box);

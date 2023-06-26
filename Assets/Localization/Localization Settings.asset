@@ -27,7 +27,7 @@ MonoBehaviour:
     - rid: 366247688578269188
   m_ProjectLocaleIdentifier:
     m_Code: ru
-  m_PreloadBehavior: 1
+  m_PreloadBehavior: 3
   m_InitializeSynchronously: 0
   references:
     version: 2

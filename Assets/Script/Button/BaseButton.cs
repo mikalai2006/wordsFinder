@@ -204,6 +204,8 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
     }
     else
     {
+      if (!interactible) return;
+
       _gameManager.InputManager.Disable();
 
       string titleHint = await Helpers.GetLocaledString(configEntity.text.title);

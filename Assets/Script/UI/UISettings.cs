@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -216,9 +217,9 @@ public class UISettings : UILocaleBase
       Locale locale = LocalizationSettings.AvailableLocales.Locales[i];
       dropdownLanguage.choices.Add(locale.name);
     }
-    dropdownLanguage.RegisterValueChangedCallback((ChangeEvent<string> evt) =>
+    dropdownLanguage.RegisterValueChangedCallback(async (ChangeEvent<string> evt) =>
     {
-      ChooseLanguage(evt.newValue);
+      await ChooseLanguage(evt.newValue);
     });
 
 
@@ -245,9 +246,11 @@ public class UISettings : UILocaleBase
 
   }
 
-  private void ChooseLanguage(string nameLanguage)
+  private async UniTask ChooseLanguage(string nameLanguage)
   {
     var userSettings = _gameManager.AppInfo.userSettings;
+
+    await LocalizationSettings.InitializationOperation.Task;
 
     // Debug.Log($"Choose lang={nameLanguage} | {selectedLocale} | {selectedLocale == nameLanguage}");
     int indexLocale = LocalizationSettings.AvailableLocales.Locales.FindIndex(t => t.name == nameLanguage);

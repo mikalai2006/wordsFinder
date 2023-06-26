@@ -15,8 +15,9 @@ public class StateManager : MonoBehaviour
   private GameManager _gameManager => GameManager.Instance;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
 
-  public void Init(DataGame data)
+  public async void Init(DataGame data)
   {
+    UnityEngine.Debug.Log($"StateManager Ok1");
     if (data == null || string.IsNullOrEmpty(data.rank))
     {
       var idPlayerSetting = _gameSetting.PlayerSetting.ElementAt(0).idPlayerSetting;
@@ -28,20 +29,29 @@ public class StateManager : MonoBehaviour
         // bomb = 10,
         // lighting = 10
       };
-      data.SetDefaultSettings();
+      await data.SetDefaultSettings();
     }
+    UnityEngine.Debug.Log($"StateManager Ok2");
 
     dataGame = data;
     _gameManager.PlayerSetting = _gameSetting.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
 
+    UnityEngine.Debug.Log($"StateManager Ok3");
     // Load setting user.
     _gameManager.AppInfo.userSettings = dataGame.setting;
 
     List<GameTheme> allThemes = _gameManager.ResourceSystem.GetAllTheme();
 
-    GameTheme userTheme = allThemes.Find(t => t.name == dataGame.setting.theme);
+    if (allThemes.Count > 0)
+    {
+      UnityEngine.Debug.Log($"StateManager Ok4");
 
-    _gameManager.SetTheme(userTheme);
+      GameTheme userTheme = allThemes.Where(t => t.name == dataGame.setting.theme).FirstOrDefault();
+
+      UnityEngine.Debug.Log($"StateManager Ok5");
+      _gameManager.SetTheme(userTheme);
+    }
+    UnityEngine.Debug.Log($"StateManager Ok6");
   }
 
   public void RefreshData()

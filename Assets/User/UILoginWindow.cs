@@ -9,6 +9,33 @@ using UnityEngine.Localization;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Localization.Tables;
 using System;
+using Cysharp.Threading.Tasks;
+// using System.Runtime.CompilerServices;
+
+// public readonly struct AsyncOperationAwaiter : INotifyCompletion
+// {
+//   private readonly AsyncOperation _asyncOperation;
+//   public bool IsCompleted => _asyncOperation.isDone;
+
+//   public AsyncOperationAwaiter(AsyncOperation asyncOperation) => _asyncOperation = asyncOperation;
+
+//   public void OnCompleted(Action continuation) => _asyncOperation.completed += _ => continuation();
+
+//   public void GetResult() { }
+// }
+
+// public readonly struct UnityWebRequestAwaiter : INotifyCompletion
+// {
+//   private readonly UnityWebRequestAsyncOperation _asyncOperation;
+
+//   public bool IsCompleted => _asyncOperation.isDone;
+
+//   public UnityWebRequestAwaiter(UnityWebRequestAsyncOperation asyncOperation) => _asyncOperation = asyncOperation;
+
+//   public void OnCompleted(Action continuation) => _asyncOperation.completed += _ => continuation();
+
+//   public UnityWebRequest GetResult() => _asyncOperation.webRequest;
+// }
 
 public struct DataLogin
 {
@@ -59,23 +86,23 @@ public class UILoginWindow : MonoBehaviour
       _buttonLogin.SetEnabled(true);
     };
 
-    OnLocalization();
+    // OnLocalization();
     OnValidFormField();
   }
 
-  private void OnLocalization()
-  {
-    var op = _localization.GetTableAsync();
-    if (op.IsDone)
-    {
-      OnTableLoaded(op);
-    }
-    else
-    {
-      op.Completed -= OnTableLoaded;
-      op.Completed += OnTableLoaded;
-    }
-  }
+  // private void OnLocalization()
+  // {
+  //   var op = _localization.GetTableAsync();
+  //   if (op.IsDone)
+  //   {
+  //     OnTableLoaded(op);
+  //   }
+  //   else
+  //   {
+  //     op.Completed -= OnTableLoaded;
+  //     op.Completed += OnTableLoaded;
+  //   }
+  // }
 
   private void OnTableLoaded(AsyncOperationHandle<StringTable> op)
   {
@@ -163,12 +190,13 @@ public class UILoginWindow : MonoBehaviour
     webRequest.SetRequestHeader("Authorization", "Basic " + token);
     webRequest.SetRequestHeader("Content-Type", "application/json");
 
-    webRequest.SendWebRequest();
+    await UniTask.Yield();
+    await webRequest.SendWebRequest();
 
-    while (!webRequest.isDone)
-    {
-      await Task.Yield();
-    }
+    // while (!webRequest.isDone)
+    // {
+    //   await Task.Yield();
+    // }
 
     if (webRequest.result == UnityWebRequest.Result.ConnectionError)
     {
@@ -204,12 +232,8 @@ public class UILoginWindow : MonoBehaviour
     request.SetRequestHeader("Content-Type", "application/json");
     request.SetRequestHeader("Accept", "*/*");
 
-    request.SendWebRequest();
-
-    while (!request.isDone)
-    {
-      await Task.Yield();
-    }
+    await Task.Yield();
+    await request.SendWebRequest();
 
     if (request.result == UnityWebRequest.Result.ConnectionError)
     {

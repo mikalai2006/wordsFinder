@@ -9,6 +9,7 @@ namespace Loader
   {
     public async UniTask Load(Action<float> onProgress, Action<string> onSetNotify)
     {
+      UnityEngine.Debug.Log($"LoadConfigOperation");
       onProgress?.Invoke(0.1f);
 
       GameManager.Instance.ResourceSystem = ResourceSystem.Instance;
@@ -20,11 +21,18 @@ namespace Loader
       GameManager.Instance.ResourceSystem = ResourceSystem.Instance;
       await ResourceSystem.Instance.LoadCollectionsAsset<GameTheme>(Constants.Labels.LABEL_THEME);
 
+      UnityEngine.Debug.Log($"LoadConfigOperation Ok1");
       GameManager.Instance.DataManager.Init();
+      UnityEngine.Debug.Log($"LoadConfigOperation Ok2");
       var dataGame = await GameManager.Instance.DataManager.Load();
       GameManager.Instance.StateManager.Init(dataGame);
 
+      UnityEngine.Debug.Log($"LoadConfigOperation Ok3");
+
       // Change locale
+      await LocalizationSettings.InitializationOperation.Task;
+
+      UnityEngine.Debug.Log($"LoadConfigOperation Ok4");
       var userSetting = GameManager.Instance.StateManager.dataGame.setting;
       if (userSetting != null)
       {
@@ -34,6 +42,7 @@ namespace Loader
           LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[indexLocale];
         }
       }
+      UnityEngine.Debug.Log($"LoadConfigOperation Ok5");
 
       var t = await Helpers.GetLocaledString("loadconfig");
       onSetNotify?.Invoke(t);

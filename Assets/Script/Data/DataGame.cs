@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using User;
@@ -26,9 +27,11 @@ public class DataGame
     bonus = new();
   }
 
-  public void SetDefaultSettings()
+  public async UniTask SetDefaultSettings()
   {
     var gameSettings = GameManager.Instance.GameSettings;
+
+    await LocalizationSettings.InitializationOperation.Task;
 
     setting = new()
     {

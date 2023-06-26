@@ -125,7 +125,10 @@ public class GameManager : StaticInstance<GameManager>
 
   public void SetTheme(GameTheme newTheme)
   {
-    AppInfo.userSettings.theme = newTheme.name;
+    if (AppInfo != null)
+    {
+      AppInfo.userSettings.theme = newTheme.name;
+    }
 
     Theme = newTheme;
 
