@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 
 namespace User
 {
-  public class LoginWindowProvider : LocalAssetLoader
+  public class InitUserProvider : LocalAssetLoader
   {
     public async UniTask<AppInfoContainer> ShowAndHide()
     {
@@ -13,9 +13,9 @@ namespace User
       return result;
     }
 
-    public UniTask<UILoginWindow> Load()
+    public UniTask<InitUserWindow> Load()
     {
-      return LoadInternal<UILoginWindow>("UILogin");
+      return LoadInternal<InitUserWindow>(Constants.UILabels.UI_INIT_USER);
     }
 
     public void Unload()

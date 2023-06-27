@@ -131,7 +131,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3195120322248704
-    m_Localized: Found {count} {count:word|words}
+    m_Localized: Found {count} word{count:|s}
     m_Metadata:
       m_Items:
       - rid: 366247623133495314
@@ -338,10 +338,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 366247623133495314
+  - m_Id: 3731728058449920
+    m_Localized: Found {count} word{count:|s}!
+    m_Metadata:
+      m_Items:
+      - rid: 366247623133495314
   references:
     version: 2
     RefIds:
     - rid: 366247623133495314
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 008012baef150200008052d5248e05000080d2ebf1590b00008092ea35400c000080925ecd430c000080521d7c300c00008052e12f620d00008052dfaf610d00008012091f860d0000801274d0f80f000080926f011210000080d2e208cc1200008012a39a300c000080d2b0f4ce1200
+        m_Entries: 008012baef150200008052d5248e05000080d2ebf1590b00008092ea35400c000080925ecd430c000080521d7c300c00008052e12f620d00008052dfaf610d00008012091f860d0000801274d0f80f000080926f011210000080d2e208cc1200008012a39a300c000080d2b0f4ce1200008052a5fc410d00

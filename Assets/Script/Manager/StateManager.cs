@@ -17,7 +17,6 @@ public class StateManager : MonoBehaviour
 
   public async void Init(DataGame data)
   {
-    UnityEngine.Debug.Log($"StateManager Ok1");
     if (data == null || string.IsNullOrEmpty(data.rank))
     {
       var idPlayerSetting = _gameSetting.PlayerSetting.ElementAt(0).idPlayerSetting;
@@ -31,27 +30,10 @@ public class StateManager : MonoBehaviour
       };
       await data.SetDefaultSettings();
     }
-    UnityEngine.Debug.Log($"StateManager Ok2");
+    UnityEngine.Debug.Log($"StateManager Ok1");
 
     dataGame = data;
-    _gameManager.PlayerSetting = _gameSetting.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
-
-    UnityEngine.Debug.Log($"StateManager Ok3");
-    // Load setting user.
-    _gameManager.AppInfo.userSettings = dataGame.setting;
-
-    List<GameTheme> allThemes = _gameManager.ResourceSystem.GetAllTheme();
-
-    if (allThemes.Count > 0)
-    {
-      UnityEngine.Debug.Log($"StateManager Ok4");
-
-      GameTheme userTheme = allThemes.Where(t => t.name == dataGame.setting.theme).FirstOrDefault();
-
-      UnityEngine.Debug.Log($"StateManager Ok5");
-      _gameManager.SetTheme(userTheme);
-    }
-    UnityEngine.Debug.Log($"StateManager Ok6");
+    UnityEngine.Debug.Log($"StateManager Ok2");
   }
 
   public void RefreshData()
@@ -302,7 +284,7 @@ public class StateManager : MonoBehaviour
 
     dataGame.rank = allPlayerSettings[indexPlayerSetting].idPlayerSetting;
 
-    _gameManager.PlayerSetting = allPlayerSettings[indexPlayerSetting];
+    // _gameManager.PlayerSetting = allPlayerSettings[indexPlayerSetting];
 
     return result;
   }

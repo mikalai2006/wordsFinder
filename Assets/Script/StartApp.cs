@@ -9,17 +9,16 @@ public class StartApp : MonoBehaviour
 
   private async void Start()
   {
-    GameManager.Instance.Init();
-
-    var appInfo = new AppInfoContainer();
+    // AppInfoContainer appInfoContainer = new();
 
     var loadingOperations = new Queue<ILoadingOperation>();
     loadingOperations.Enqueue(GameManager.Instance.AssetProvider);
-    loadingOperations.Enqueue(new LoginOperation(appInfo));
-    loadingOperations.Enqueue(new LoadConfigOperation());
+    loadingOperations.Enqueue(new InitConfigOperation());
+    loadingOperations.Enqueue(new InitUserOperation());
     loadingOperations.Enqueue(new UIAppOperation());
-    GameManager.Instance.AppInfo = appInfo;
+    // GameManager.Instance.SetAppInfo(appInfoContainer);
     await loadingProvider.LoadAndDestroy(loadingOperations);
 
+    GameManager.Instance.ChangeState(GameState.StartApp);
   }
 }

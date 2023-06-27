@@ -8,28 +8,37 @@ using Loader;
 public class GameManager : StaticInstance<GameManager>
 {
   public static event Action OnChangeTheme;
-  public AppInfoContainer AppInfo;
-  public GameSetting GameSettings;
-  public GameTheme Theme { get; private set; }
-  public AudioManager audioManager;
-  public DataManager DataManager;
-  public StateManager StateManager;
   public static event Action<GameState> OnBeforeStateChanged;
   public static event Action<GameState> OnAfterStateChanged;
+  public AppInfoContainer AppInfo { get; private set; }
+  public GameSetting GameSettings;
+  public GameTheme Theme { get; private set; }
+  public AudioManager audioManager { get; private set; }
+  public DataManager DataManager { get; private set; }
+  public StateManager StateManager;
 
-  [HideInInspector] public Words Words;
+  [HideInInspector] public Words Words { get; private set; }
   public LoadingScreenProvider LoadingScreenProvider { get; private set; }
-  public LoginWindowProvider LoginWindowProvider { get; private set; }
+  public InitUserProvider InitUserProvider { get; private set; }
   public AssetProvider AssetProvider { get; private set; }
   public GameState State { get; private set; }
   public ResourceSystem ResourceSystem { get; internal set; }
 
-  public LevelManager LevelManager;
-  public GamePlayerSetting PlayerSetting;
+  public LevelManager LevelManager { get; private set; }
+  [HideInInspector] public GamePlayerSetting PlayerSetting;
 
-  public SceneInstance environment;
-  public InputManager InputManager;
-  public LineManager LineManager;
+  public SceneInstance environment { get; private set; }
+  public InputManager InputManager { get; private set; }
+
+  protected override void Awake()
+  {
+    base.Awake();
+  }
+
+  // private void OnDestroy()
+  // {
+  //   DataManager.OnLoadData -= InitPlayerInfo;
+  // }
 
   void Start()
   {
@@ -39,15 +48,23 @@ public class GameManager : StaticInstance<GameManager>
     //         Debug.unityLogger.logEnabled = false;
     // #endif
 
-    ChangeState(GameState.StartApp);
-    InputManager = new();
-  }
+    // ChangeState(GameState.StartApp);
 
-  public void Init()
-  {
+    AppInfo = new AppInfoContainer();
+
+    Theme = GameSettings.ThemeDefault;
+
     LoadingScreenProvider = new LoadingScreenProvider();
-    LoginWindowProvider = new LoginWindowProvider();
+
+    InitUserProvider = new InitUserProvider();
+
     AssetProvider = new AssetProvider();
+
+    InputManager = new();
+
+    DataManager = DataManager.Instance;
+
+    audioManager = AudioManager.Instance;
   }
 
   public void ChangeState(GameState newState, object Params = null)
@@ -88,9 +105,13 @@ public class GameManager : StaticInstance<GameManager>
 
   private void HandleStartApp()
   {
-    Theme = GameSettings.ThemeDefault;
-
     ChangeTheme();
+
+  }
+
+  public void SetDefaultState()
+  {
+    var appInfo = new AppInfoContainer();
   }
 
   private void ChangeTheme()
@@ -125,18 +146,34 @@ public class GameManager : StaticInstance<GameManager>
 
   public void SetTheme(GameTheme newTheme)
   {
-    if (AppInfo != null)
+    if (AppInfo != null && AppInfo.userSettings != null)
     {
       AppInfo.userSettings.theme = newTheme.name;
+
+      Theme = newTheme;
+
+      ChangeTheme();
+
+      DataManager.Save();
+
+      OnChangeTheme?.Invoke();
     }
+  }
 
-    Theme = newTheme;
+  public void InitGameLevel(LevelManager levelManager, SceneInstance environment)
+  {
+    this.LevelManager = levelManager;
+    this.environment = environment;
+  }
 
-    ChangeTheme();
+  public void InitWords(Words words)
+  {
+    this.Words = words;
+  }
 
-    DataManager.Save();
-
-    OnChangeTheme?.Invoke();
+  public void SetAppInfo(AppInfoContainer dataInfo)
+  {
+    AppInfo = dataInfo;
   }
 }
 

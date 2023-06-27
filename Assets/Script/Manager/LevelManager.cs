@@ -5,7 +5,6 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using Random = UnityEngine.Random;
 
 public class LevelManager : Singleton<LevelManager>
 {
@@ -13,6 +12,7 @@ public class LevelManager : Singleton<LevelManager>
   private GameManager _gameManager => GameManager.Instance;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   private StateManager _stateManager => GameManager.Instance.StateManager;
+  public LineManager LineManager;
   [Header("File Storage Config")]
   public ManagerHiddenWords ManagerHiddenWords;
   private List<CharMB> _symbols;

@@ -23,9 +23,10 @@ namespace Loader
 
       if (LevelManager != null)
       {
-        GameManager.Instance.LevelManager = LevelManager;
-        GameManager.Instance.environment = environment;
-        // LevelManager.CreateLevel();
+        GameManager.Instance.InitGameLevel(LevelManager, environment);
+        // GameManager.Instance.LevelManager = LevelManager;
+        // GameManager.Instance.environment = environment;
+        // // LevelManager.CreateLevel();
       }
 
       // UIGameAside UIGameAside = GameObject.FindGameObjectWithTag("GameAside")?.GetComponent<UIGameAside>();

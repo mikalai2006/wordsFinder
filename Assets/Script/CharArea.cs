@@ -17,7 +17,7 @@ public class CharArea : MonoBehaviour, IPointerMoveHandler
   private void DrawLine()
   {
     Vector3 worldPosition = Camera.main.ScreenToWorldPoint(_gameManager.InputManager.clickPosition());
-    _gameManager.LineManager.DrawLine(worldPosition);
+    _levelManager.LineManager.DrawLine(worldPosition);
   }
 
   public void OnPointerMove(PointerEventData eventData)

@@ -7,11 +7,16 @@ public class DataManager : Singleton<DataManager>
 {
   [DllImport("__Internal")]
   private static extern void SaveExtern(string data);
-
   [DllImport("__Internal")]
   private static extern void LoadExtern();
+  [DllImport("__Internal")]
+  private static extern void GetName();
+  [DllImport("__Internal")]
+  private static extern void GetPhoto();
 
-  // public static event Action<DataGame> OnLoadData;
+  public static event System.Action<DataGame> OnLoadData;
+  public static event System.Action<string> OnLoadName;
+  public static event System.Action<string> OnLoadPhoto;
   [Header("File Storage Config")]
   [SerializeField] private string fileNameGame;
   [SerializeField] private string fileNameMap;
@@ -22,28 +27,61 @@ public class DataManager : Singleton<DataManager>
   private DataGame _dataGame;
   public DataGame DataGame { get { return _dataGame; } }
 
-  public void Init()
+
+  public void Init(string idDevice)
   {
     cancelTokenSource = new CancellationTokenSource();
 
-    _fileDataHandler = new FileDataHandler(Application.persistentDataPath, _gameManager.AppInfo.DeviceId, useEncryption);
+    _fileDataHandler = new FileDataHandler(Application.persistentDataPath, idDevice, useEncryption);
   }
 
   public async UniTask<DataGame> Load()
   {
     _dataGame = await _fileDataHandler.LoadData();
-    Debug.Log($"{name}::: Load {JsonUtility.ToJson(_dataGame)}");
-    // OnLoadData?.Invoke(_dataGame);
+    Debug.Log($"{name}::: JSON ::: Load {JsonUtility.ToJson(_dataGame)}");
+
+    OnLoadData?.Invoke(_dataGame);
     return _dataGame;
   }
 
 
-  public void LoadPlayerData(string data)
+  public void LoadAsYsdk()
   {
-    Debug.Log($"{name}::: LoadPlayerData {data}");
-    _dataGame = JsonUtility.FromJson<DataGame>(data);
+    LoadExtern();
   }
 
+  public DataGame SetPlayerData(string data)
+  {
+    _dataGame = JsonUtility.FromJson<DataGame>(data);
+    Debug.Log($"{name}::: YSDK ::: LoadPlayerData {JsonUtility.ToJson(_dataGame)}");
+
+    OnLoadData?.Invoke(_dataGame);
+    return _dataGame;
+  }
+
+  public void LoadNameAsYsdk()
+  {
+    GetName();
+  }
+
+  public void SetName(string name)
+  {
+    Debug.Log($"{name}::: YSDK ::: SetName {name}");
+
+    OnLoadName?.Invoke(name);
+  }
+
+  public void LoadPhotoAsYsdk()
+  {
+    GetPhoto();
+  }
+
+  public void SetPhoto(string photo)
+  {
+    Debug.Log($"{name}::: YSDK ::: SetPhoto {photo}");
+
+    OnLoadPhoto?.Invoke(photo);
+  }
 
   public void Save()
   {
@@ -66,9 +104,15 @@ public class DataManager : Singleton<DataManager>
 
       _dataGame = _gameManager.StateManager.GetData(); //.dataGame;
 
+#if android
       _fileDataHandler.SaveData(_dataGame);
+#endif
 
+#if ysdk && !UNITY_EDITOR
       string jsonString = JsonUtility.ToJson(_dataGame);
+      SaveExtern(jsonString);
+#endif
+
 
       Debug.Log("Saved complete successfully!");
     }

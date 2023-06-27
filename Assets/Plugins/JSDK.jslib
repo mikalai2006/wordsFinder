@@ -2,7 +2,7 @@ var plugin = {
   Loaded: function () {},
   SaveExtern: function (data) {
     var dataString = UTF8ToString(data);
-    var myObj = JSON.parse();
+    var myObj = JSON.parse(dataString);
 
     // player.setData(myObj);
     console.group("Save");
@@ -10,13 +10,32 @@ var plugin = {
     console.groupEnd();
   },
   LoadExtern: function () {
+    console.log("Load data");
     // player.getData().then((_data) => {
     //   const myJSON = JSON.stringify(_data);
-    //   myGameInstance.SendMessage("DataManager", "LoadPlayerData", myJSON);
+    //   myGameInstance.SendMessage("DataManager", "SetPlayerData", myJSON);
     // });
-    console.group("Load");
-    // console.log(myObj);
-    console.groupEnd();
+    myGameInstance.SendMessage(
+      "DataManager",
+      "SetPlayerData",
+      JSON.stringify({})
+    );
+  },
+  GetPhoto: function () {
+    console.log("GetPhoto");
+    // player.getPhoto().then((_data) => {
+    //   const myJSON = JSON.stringify(_data);
+    //   myGameInstance.SendMessage("DataManager", "SetPhoto", myJSON);
+    // });
+    myGameInstance.SendMessage("DataManager", "SetPhoto", "photo");
+  },
+  GetName: function () {
+    console.log("GetName");
+    // player.getName().then((_data) => {
+    //   const myJSON = JSON.stringify(_data);
+    //   myGameInstance.SendMessage("DataManager", "SetName", myJSON);
+    // });
+    myGameInstance.SendMessage("DataManager", "SetName", "Mikki");
   },
 };
 

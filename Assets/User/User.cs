@@ -3,10 +3,10 @@ namespace User
   [System.Serializable]
   public class AppInfoContainer
   {
-    public string DeviceId { get; set; }
-    public UserInfo UserInfo { get; set; }
-    public UserSettings userSettings { get; set; }
-    //TODO config etc
+    public string DeviceId;
+    public UserInfo UserInfo;
+    public UserSettings userSettings;
+
     public AppInfoContainer()
     {
       UserInfo = new UserInfo();
@@ -22,38 +22,23 @@ namespace User
         );
     }
   }
-  // [System.Serializable]
-  // public class UserInfoContainer
-  // {
-  //   public string Id { get; set; }
-  //   public string DeviceId { get; set; }
-  //   public UserInfoAuth UserInfoAuth;
-  //   public UserInfo UserInfo;
-
-  //   public UserInfoContainer()
-  //   {
-  //     UserInfo = new UserInfo();
-
-  //     UserInfoAuth = new UserInfoAuth();
-  //   }
-  // }
 
   [System.Serializable]
   public class UserInfo
   {
-    public string Id { get; set; }
-    public string Name { get; set; }
-    public string Lang { get; set; }
-    public string Login { get; set; }
-    public string userId { get; set; }
+    // public string Id { get; set; }
+    // public string Name { get; set; }
+    // public string Lang { get; set; }
+    public string Name;
+    public string Photo;
+    // public string userId { get; set; }
     public UserInfoAuth UserInfoAuth;
     public UserInfo()
     {
 
-      UserInfoAuth = new UserInfoAuth();
+      // UserInfoAuth = new UserInfoAuth();
     }
 
-    // public bool IsFacebook => string.IsNullOrWhiteSpace(FacebookId) == false;
   }
 
   [System.Serializable]

@@ -168,12 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameSettings: {fileID: 11400000, guid: 3ed9298ad7c339d4c8436891370ed992, type: 2}
-  audioManager: {fileID: 1869053859}
-  DataManager: {fileID: 1877038003}
   StateManager: {fileID: 153567558}
-  Words:
-    data: []
-  LevelManager: {fileID: 0}
   PlayerSetting: {fileID: 0}
 --- !u!1 &153567556
 GameObject:
@@ -222,30 +217,23 @@ MonoBehaviour:
   dataGame:
     rate: 0
     coins: 0
-    hint: 0
-    star: 0
-    bomb: 0
-    lighting: 0
-    word: 0
+    hints:
+      keys: 
+      values: 
+    bonus:
+      keys: 
+      values: 
     levels: []
-    completeWords: []
-    lastLevelWord: 
-    idPlayerSetting: 
-    userSettings:
+    completed: []
+    lastWord: 
+    rank: 
+    setting:
       lang: 
       muv: 0
       auv: 0
       td: 0
-  statePerk:
-    countCharInOrder: 0
-    countWordInOrder: 0
-    countCharForBonus: 0
-    countCharForAddHint: 0
-    countCharForAddCoin: 0
-    countCharForAddStar: 0
-    countErrorForNullBonus: 0
-    needCreateCoin: 0
-  ActiveWordConfig: {fileID: 0}
+      theme: 
+  ActiveWordConfig: 
 --- !u!1 &516352404
 GameObject:
   m_ObjectHideFlags: 0

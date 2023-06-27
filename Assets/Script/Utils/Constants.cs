@@ -12,6 +12,7 @@ public class Constants
     public const string UI_DIALOG = "UIDialog";
     public const string UI_LEVELS = "UILevels";
     public const string UI_SHOP = "UIShop";
+    public const string UI_INIT_USER = "UIInitUser";
     public const string UI_DIRECTORY = "UIDirectory";
 
   }

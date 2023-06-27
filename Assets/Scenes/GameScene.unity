@@ -1309,6 +1309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: add0e8b9e0332354e909d95f13af812e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LineManager: {fileID: 1879586447}
   ManagerHiddenWords: {fileID: 1820847145}
   SymbolsField: {fileID: 927029772}
   topSide: {fileID: 1981759014}

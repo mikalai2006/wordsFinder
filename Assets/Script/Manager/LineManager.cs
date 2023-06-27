@@ -1,21 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class LineManager : MonoBehaviour
 {
-  private GameSetting _gameSetting;
-  private GameManager _gameManager;
+  private GameSetting _gameSetting => GameManager.Instance.GameSettings;
+  private GameManager _gameManager => GameManager.Instance;
   [SerializeField] private LineRenderer _lineRenderer;
   [SerializeField] private Material _material;
   private List<Vector3> listPoints = new List<Vector3>();
 
   private void Awake()
   {
-    _gameManager = GameManager.Instance;
-    _gameManager.LineManager = this;
-    _gameSetting = GameManager.Instance.GameSettings;
     ChangeTheme();
 
     GameManager.OnChangeTheme += ChangeTheme;

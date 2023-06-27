@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3182381881307154169}
   - component: {fileID: 2542629637086808871}
   m_Layer: 5
-  m_Name: UI Login
+  m_Name: UIInitUser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3182381881307154170}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b98e2235abeb0749a582163cb2b7ab6, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aac99f63b32f694a8522c1bf512d5a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _uiDoc: {fileID: 3182381881307154169}
