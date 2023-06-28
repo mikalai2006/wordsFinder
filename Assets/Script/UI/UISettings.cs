@@ -92,9 +92,9 @@ public class UISettings : UILocaleBase
 
     _userName = _aside.Q<Label>("UserName");
 
-    _userName.text = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.Name)
+    _userName.text = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.name)
       ? await Helpers.GetLocaledString(_gameSettings.noName.title)
-      : _gameManager.AppInfo.UserInfo.Name;
+      : _gameManager.AppInfo.UserInfo.name;
 
     ChangeTheme();
     SetValue(_gameManager.StateManager.dataGame);
@@ -180,7 +180,7 @@ public class UISettings : UILocaleBase
 
   private void CreateMenu()
   {
-    var userSettings = _gameManager.AppInfo.userSettings;
+    var userSettings = _gameManager.AppInfo.setting;
 
     var menuBlok = _menu.Q<VisualElement>("Menu");
     var sliderVolumeEffect = menuBlok.Q<Slider>("VolumeEffect");
@@ -190,6 +190,7 @@ public class UISettings : UILocaleBase
     {
       _audioManager.EffectSource.volume = evt.newValue;
       userSettings.auv = evt.newValue;
+      _gameManager.DataManager.SaveSettings();
     });
 
     var sliderVolumeMusic = menuBlok.Q<Slider>("VolumeMusic");
@@ -199,6 +200,7 @@ public class UISettings : UILocaleBase
     {
       _audioManager.MusicSource.volume = evt.newValue;
       userSettings.muv = evt.newValue;
+      _gameManager.DataManager.SaveSettings();
     });
 
     var sliderTimeDelay = menuBlok.Q<SliderInt>("TimeDelay");
@@ -206,6 +208,7 @@ public class UISettings : UILocaleBase
     sliderTimeDelay.RegisterValueChangedCallback((ChangeEvent<int> evt) =>
     {
       userSettings.td = evt.newValue;
+      _gameManager.DataManager.SaveSettings();
     });
 
     var dropdownLanguage = menuBlok.Q<DropdownField>("Language");
@@ -240,6 +243,7 @@ public class UISettings : UILocaleBase
       GameTheme chooseTheme = allThemes.Find(t => t.name == evt.newValue);
 
       _gameManager.SetTheme(chooseTheme);
+      _gameManager.DataManager.SaveSettings();
 
       ChangeTheme();
     });
@@ -248,7 +252,7 @@ public class UISettings : UILocaleBase
 
   private async UniTask ChooseLanguage(string nameLanguage)
   {
-    var userSettings = _gameManager.AppInfo.userSettings;
+    var userSettings = _gameManager.AppInfo.setting;
 
     await LocalizationSettings.InitializationOperation.Task;
 
@@ -258,6 +262,7 @@ public class UISettings : UILocaleBase
     {
       LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[indexLocale];
       userSettings.lang = nameLanguage;
+      _gameManager.DataManager.SaveSettings();
       base.Initialize(_uiDoc.rootVisualElement);
     }
     OnChangeLocale?.Invoke();

@@ -7,7 +7,7 @@ using UnityEngine;
 public class StateManager : MonoBehaviour
 {
   public static event Action<DataGame> OnChangeState;
-  public static event Action<GameTheme> OnChangeUserSetting;
+  // public static event Action<GameTheme> OnChangeUserSetting;
   public DataGame dataGame;
   public string ActiveWordConfig;
 
@@ -15,32 +15,14 @@ public class StateManager : MonoBehaviour
   private GameManager _gameManager => GameManager.Instance;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
 
-  public async void Init(DataGame data)
+  public void Init(DataGame data)
   {
-    if (data == null || string.IsNullOrEmpty(data.rank))
-    {
-      var idPlayerSetting = _gameSetting.PlayerSetting.ElementAt(0).idPlayerSetting;
-      data = new DataGame()
-      {
-        rank = idPlayerSetting,
-        // hint = 10,
-        // star = 10,
-        // bomb = 10,
-        // lighting = 10
-      };
-      await data.SetDefaultSettings();
-    }
-    UnityEngine.Debug.Log($"StateManager Ok1");
-
     dataGame = data;
-    UnityEngine.Debug.Log($"StateManager Ok2");
   }
 
   public void RefreshData()
   {
     var managerHiddenWords = _levelManager.ManagerHiddenWords;
-    // Save setting user.
-    dataGame.setting = _gameManager.AppInfo.userSettings;
 
     dataGame.activeLevel.word = managerHiddenWords.WordForChars;
 
@@ -116,8 +98,8 @@ public class StateManager : MonoBehaviour
   {
     dataGame.rate += 1;
 
-    dataGame.activeLevel.statePerk.countWordInOrder += 1;
-    dataGame.activeLevel.statePerk.countErrorForNullBonus = 0;
+    dataGame.activeLevel.bonusCount.wordInOrder += 1;
+    dataGame.activeLevel.bonusCount.errorNullBonus = 0;
 
     RefreshData();
   }
@@ -127,8 +109,8 @@ public class StateManager : MonoBehaviour
   {
     dataGame.rate += 1;
 
-    dataGame.activeLevel.statePerk.countWordInOrder += 1;
-    dataGame.activeLevel.statePerk.countErrorForNullBonus = 0;
+    dataGame.activeLevel.bonusCount.wordInOrder += 1;
+    dataGame.activeLevel.bonusCount.errorNullBonus = 0;
 
     // statePerk.countWordInOrder += 1;
     // statePerk.countErrorForNullBonus = 0;
@@ -139,30 +121,49 @@ public class StateManager : MonoBehaviour
 
   public void OpenCharAllowWord(char textChar)
   {
-    dataGame.activeLevel.statePerk.countCharInOrder += 1;
-    dataGame.activeLevel.statePerk.countCharForBonus += 1;
-    dataGame.activeLevel.statePerk.countCharForAddHint += 1;
-    dataGame.activeLevel.statePerk.countCharForAddStar += 1;
+    dataGame.activeLevel.bonusCount.charInOrder += 1;
+    dataGame.activeLevel.bonusCount.charBonus += 1;
+    dataGame.activeLevel.bonusCount.charHint += 1;
+    dataGame.activeLevel.bonusCount.charStar += 1;
+    dataGame.activeLevel.bonusCount.charBomb += 1;
+    dataGame.activeLevel.bonusCount.charLighting += 1;
 
     // Add bonus index.
-    if (dataGame.activeLevel.statePerk.countCharForBonus >= _gameManager.PlayerSetting.bonusCount.charBonus)
+    if (dataGame.activeLevel.bonusCount.charBonus >= _gameManager.PlayerSetting.bonusCount.charBonus)
     {
-      dataGame.activeLevel.statePerk.countCharForBonus -= _gameManager.PlayerSetting.bonusCount.charBonus;
+      dataGame.activeLevel.bonusCount.charBonus -= _gameManager.PlayerSetting.bonusCount.charBonus;
       dataGame.activeLevel.index++;
     }
 
     // Add hint.
-    if (dataGame.activeLevel.statePerk.countCharForAddHint >= _gameManager.PlayerSetting.bonusCount.charHint)
+    if (dataGame.activeLevel.bonusCount.charHint >= _gameManager.PlayerSetting.bonusCount.charHint)
     {
-      dataGame.activeLevel.statePerk.countCharForAddHint -= _gameManager.PlayerSetting.bonusCount.charHint;
-      dataGame.hints[TypeEntity.Hint]++;
+      dataGame.activeLevel.bonusCount.charHint -= _gameManager.PlayerSetting.bonusCount.charHint;
+      // dataGame.hints[TypeEntity.Hint]++;
+      UseHint(1, TypeEntity.Frequency);
     }
 
     // Check add star to grid.
-    if (dataGame.activeLevel.statePerk.countCharForAddStar >= _gameManager.PlayerSetting.bonusCount.charStar)
+    if (dataGame.activeLevel.bonusCount.charStar >= _gameManager.PlayerSetting.bonusCount.charStar)
     {
-      dataGame.activeLevel.statePerk.countCharForAddStar -= _gameManager.PlayerSetting.bonusCount.charStar;
-      dataGame.hints[TypeEntity.Star]++;
+      dataGame.activeLevel.bonusCount.charStar -= _gameManager.PlayerSetting.bonusCount.charStar;
+      // dataGame.hints[TypeEntity.Star]++;
+      UseHint(1, TypeEntity.Star);
+    }
+
+    // Add bomb.
+    if (dataGame.activeLevel.bonusCount.charBomb >= _gameManager.PlayerSetting.bonusCount.charBomb)
+    {
+      dataGame.activeLevel.bonusCount.charBomb -= _gameManager.PlayerSetting.bonusCount.charBomb;
+      // dataGame.hints[TypeEntity.Bomb]++;
+      UseHint(1, TypeEntity.Bomb);
+    }
+
+    // Add Lighting.
+    if (dataGame.activeLevel.bonusCount.charLighting >= _gameManager.PlayerSetting.bonusCount.charLighting)
+    {
+      dataGame.activeLevel.bonusCount.charLighting -= _gameManager.PlayerSetting.bonusCount.charLighting;
+      UseHint(1, TypeEntity.Lighting);
     }
 
     RefreshData();
@@ -170,13 +171,13 @@ public class StateManager : MonoBehaviour
 
   public void OpenCharHiddenWord(char _char)
   {
-    dataGame.activeLevel.statePerk.countCharForAddCoin += 1;
+    dataGame.activeLevel.bonusCount.charCoin += 1;
 
     // Check add coin to grid.
-    if (dataGame.activeLevel.statePerk.countCharForAddCoin >= _gameManager.PlayerSetting.bonusCount.charCoin)
+    if (dataGame.activeLevel.bonusCount.charCoin >= _gameManager.PlayerSetting.bonusCount.charCoin)
     {
-      dataGame.activeLevel.statePerk.countCharForAddCoin -= _gameManager.PlayerSetting.bonusCount.charCoin;
-      dataGame.activeLevel.statePerk.needCreateCoin++;
+      dataGame.activeLevel.bonusCount.charCoin -= _gameManager.PlayerSetting.bonusCount.charCoin;
+      // dataGame.activeLevel.bonusCount.needCreateCoin++;
     }
 
     OpenCharAllowWord(_char);
@@ -186,18 +187,20 @@ public class StateManager : MonoBehaviour
   {
     if (word.Length > 1)
     {
-      dataGame.activeLevel.statePerk.countErrorForNullBonus++;
+      dataGame.activeLevel.bonusCount.errorNullBonus++;
     }
 
-    if (dataGame.activeLevel.statePerk.countErrorForNullBonus == _gameManager.PlayerSetting.bonusCount.errorClear)
+    if (dataGame.activeLevel.bonusCount.errorNullBonus == _gameManager.PlayerSetting.bonusCount.errorNullBonus)
     {
-      dataGame.activeLevel.statePerk.countWordInOrder = 0;
-      dataGame.activeLevel.statePerk.countCharInOrder = 0;
-      dataGame.activeLevel.statePerk.countCharForBonus = 0;
-      dataGame.activeLevel.statePerk.countCharForAddCoin = 0;
-      dataGame.activeLevel.statePerk.countCharForAddHint = 0;
-      dataGame.activeLevel.statePerk.countCharForAddStar = 0;
-      dataGame.activeLevel.statePerk.countErrorForNullBonus = 0;
+      dataGame.activeLevel.bonusCount.wordInOrder = 0;
+      dataGame.activeLevel.bonusCount.charInOrder = 0;
+      dataGame.activeLevel.bonusCount.charBonus = 0;
+      dataGame.activeLevel.bonusCount.charCoin = 0;
+      dataGame.activeLevel.bonusCount.charHint = 0;
+      dataGame.activeLevel.bonusCount.charStar = 0;
+      dataGame.activeLevel.bonusCount.charBomb = 0;
+      dataGame.activeLevel.bonusCount.charLighting = 0;
+      dataGame.activeLevel.bonusCount.errorNullBonus = 0;
     }
     RefreshData();
   }
@@ -299,11 +302,11 @@ public class StateManager : MonoBehaviour
         dataGame.completed.Add(dataGame.activeLevel.id);
       }
     }
-    string result = null;
-
     dataGame.levels.Remove(dataGame.activeLevel);
 
     // Find not completed word.
+    string result = null;
+
     var allAllowWords = GetAllowNotCompleteWords();
 
     var notCompletedWords = allAllowWords.Where(t => !dataGame.completed.Contains(t));
@@ -332,7 +335,8 @@ public class StateManager : MonoBehaviour
 
     // await _levelManager.topSide.AddBonus(typeBonus);
 
-    RefreshData();
+    // RefreshData();
+    OnChangeState?.Invoke(dataGame);
   }
 
   public void UseHint(int count, TypeEntity typeEntity)
@@ -343,7 +347,8 @@ public class StateManager : MonoBehaviour
 
     dataGame.hints[typeEntity] = currentCount + count;
 
-    RefreshData();
+    // RefreshData();
+    OnChangeState?.Invoke(dataGame);
   }
 
 
@@ -381,18 +386,4 @@ public class StateManager : MonoBehaviour
     OnChangeState?.Invoke(dataGame);
   }
 
-}
-
-
-[System.Serializable]
-public struct StatePerk
-{
-  public int countCharInOrder;
-  public int countWordInOrder;
-  public int countCharForBonus;
-  public int countCharForAddHint;
-  public int countCharForAddCoin;
-  public int countCharForAddStar;
-  public int countErrorForNullBonus;
-  public int needCreateCoin;
 }

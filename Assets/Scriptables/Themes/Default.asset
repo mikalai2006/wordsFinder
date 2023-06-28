@@ -26,7 +26,7 @@ MonoBehaviour:
   textFindHiddenWord: {r: 0.07058824, g: 0.09411765, b: 0, a: 1}
   bgNotFoundWord: {r: 0.9245283, g: 0.5140829, b: 0.3794055, a: 1}
   textNotFoundWord: {r: 0.3584906, g: 0.08215409, b: 0.045656823, a: 1}
-  colorTextChar: {r: 0.8313726, g: 0.8313726, b: 0.8313726, a: 1}
+  colorTextChar: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
   bgColorChar: {r: 1, g: 1, b: 1, a: 0.03137255}
   colorTextChooseChar: {r: 0.09019608, g: 0.09019608, b: 0.09019608, a: 1}
   bgColorChooseChar: {r: 0.8679245, g: 0.6474248, b: 0, a: 0.87058824}
@@ -36,7 +36,7 @@ MonoBehaviour:
   colorLine: {r: 0.8313726, g: 0.8313726, b: 0.8470589, a: 1}
   colorPrimary: {r: 0.8313726, g: 0.8313726, b: 0.8470589, a: 1}
   colorSecondary: {r: 0.6313726, g: 0.6313726, b: 0.6666667, a: 1}
-  colorAccent: {r: 1, g: 0.8901961, b: 0, a: 1}
-  entityColor: {r: 0.8313726, g: 0.8313726, b: 0.8470589, a: 1}
-  entityActiveColor: {r: 0.9843137, g: 0.7490196, b: 0.14117648, a: 1}
+  colorAccent: {r: 0.8666667, g: 0.64705884, b: 0, a: 0.87058824}
+  entityColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
+  entityActiveColor: {r: 0.8666667, g: 0.64705884, b: 0, a: 0.87058824}
   colorDisable: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}

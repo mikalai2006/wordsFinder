@@ -4,12 +4,16 @@ using User;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using System.Collections.Generic;
 using Loader;
+using System.Linq;
+using UnityEngine.Localization.Settings;
+using Cysharp.Threading.Tasks;
 
 public class GameManager : StaticInstance<GameManager>
 {
   public static event Action OnChangeTheme;
   public static event Action<GameState> OnBeforeStateChanged;
   public static event Action<GameState> OnAfterStateChanged;
+  public string namePlayPref;
   public AppInfoContainer AppInfo { get; private set; }
   public GameSetting GameSettings;
   public GameTheme Theme { get; private set; }
@@ -146,15 +150,15 @@ public class GameManager : StaticInstance<GameManager>
 
   public void SetTheme(GameTheme newTheme)
   {
-    if (AppInfo != null && AppInfo.userSettings != null)
+    if (AppInfo != null && AppInfo.setting != null)
     {
-      AppInfo.userSettings.theme = newTheme.name;
+      AppInfo.setting.theme = newTheme.name;
 
       Theme = newTheme;
 
       ChangeTheme();
 
-      DataManager.Save();
+      // DataManager.Save();
 
       OnChangeTheme?.Invoke();
     }
@@ -171,9 +175,24 @@ public class GameManager : StaticInstance<GameManager>
     this.Words = words;
   }
 
-  public void SetAppInfo(AppInfoContainer dataInfo)
+  public async UniTask SetAppInfo(AppInfoContainer dataInfo)
   {
     AppInfo = dataInfo;
+
+    // set language.
+    await LocalizationSettings.InitializationOperation.Task;
+    int indexLocale = LocalizationSettings.AvailableLocales.Locales.FindIndex(t => t.name == AppInfo.setting.lang);
+    if (AppInfo.setting.lang != LocalizationSettings.SelectedLocale.name && indexLocale != -1)
+    {
+      LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[indexLocale];
+    }
+
+    // Set theme.
+    List<GameTheme> allThemes = ResourceSystem.GetAllTheme();
+    GameTheme userTheme = allThemes.Where(t => t.name == AppInfo.setting.theme).FirstOrDefault();
+    SetTheme(userTheme);
+
+    await UniTask.Yield();
   }
 }
 

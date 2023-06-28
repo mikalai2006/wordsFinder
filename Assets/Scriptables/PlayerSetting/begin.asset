@@ -32,18 +32,22 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  coefDifficulty: 0.1
-  countFindWordsForUp: 100
+  coefDifficulty: 0.9
+  countFindWordsForUp: 250
   maxLengthWord: 5
-  maxFindWords: 100
-  coefHint: 0.3
-  coefStar: 0.3
+  maxFindWords: 20
+  coefHint: 0.15
+  coefStar: 0.2
   bonusCount:
-    charBonus: 40
-    errorClear: 20
-    charCoin: 10
+    charInOrder: 30
+    wordInOrder: 10
+    charBonus: 50
     charStar: 20
-    charHint: 20
+    charHint: 40
+    charBomb: 60
+    charLighting: 80
+    charCoin: 10
+    errorNullBonus: 25
   references:
     version: 2
     RefIds: []

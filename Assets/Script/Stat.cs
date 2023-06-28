@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 
 public class Stat : MonoBehaviour
@@ -10,6 +10,8 @@ public class Stat : MonoBehaviour
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   private StateManager _stateManager => GameManager.Instance.StateManager;
   private GameManager _gameManager => GameManager.Instance;
+  private float maxWidthProgress = 10f;
+  [SerializeField] private RectTransform spriteProgress;
 
   private void Awake()
   {
@@ -35,6 +37,20 @@ public class Stat : MonoBehaviour
   public void SetValue(DataGame data)
   {
     Localize();
+
+    SetProgressValue(data);
+  }
+
+  private void SetProgressValue(DataGame data)
+  {
+    float width = 0;
+    if (data.activeLevel.countNeedWords > 0)
+    {
+      width = ((data.activeLevel.openWords.Count - data.activeLevel.countDopWords) * 100f / data.activeLevel.countNeedWords) * (maxWidthProgress / 100f);
+    }
+
+    spriteProgress.DOSizeDelta(new Vector3(width, 1f), _gameSetting.timeGeneralAnimation);
+    //.sizeDelta = new Vector3(width, 1f);
   }
 
   private async void Localize()
@@ -46,8 +62,8 @@ public class Stat : MonoBehaviour
            new Dictionary<string, object> {
             {"count",  _levelManager.ManagerHiddenWords.OpenNeedWords.Count},
             {"count2", _gameManager.StateManager.dataGame.activeLevel.countNeedWords},
-            {"count3", _levelManager.ManagerHiddenWords.AllowPotentialWords.Count},
-            {"count4", _levelManager.ManagerHiddenWords.OpenWords.Count},
+            // {"count3", _levelManager.ManagerHiddenWords.AllowPotentialWords.Count},
+            // {"count4", _levelManager.ManagerHiddenWords.OpenWords.Count},
           }
         );
     _countWords.text = textCountWords;

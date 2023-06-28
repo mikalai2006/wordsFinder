@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 public class ButtonLighting : BaseButton
@@ -25,6 +26,14 @@ public class ButtonLighting : BaseButton
   {
     value = data.hints.GetValueOrDefault(TypeEntity.Lighting);
     base.SetValue(data);
+  }
+
+  public override void SetValueProgressBar(DataGame data)
+  {
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)data.activeLevel.bonusCount.charLighting / _gameManager.PlayerSetting.bonusCount.charLighting;
+    spriteProgress.transform
+      .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
+      .SetEase(Ease.OutBounce);
   }
 
   public async override void RunHint()

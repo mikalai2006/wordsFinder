@@ -28,6 +28,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   protected int valueCounter;
   protected int value;
   protected bool interactible = true;
+  protected bool isShowCounter = true;
 
   #region UnityMethods
   protected virtual void Awake()
@@ -103,6 +104,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
       if (!statusShowCounter)
       {
         ShowCounter();
+        // AddChar();
       }
       else if (value != valueCounter)
       {
@@ -132,6 +134,8 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 
   private void ShowCounter()
   {
+    if (!isShowCounter) return;
+
     // Debug.Log($"Run Show");
     counterObject.transform
       .DOScale(1f, _gameSetting.timeGeneralAnimation)
@@ -198,13 +202,18 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
           // if (!interactible) pointer.enabled = true;
         });
 
+    if (!interactible)
+    {
+      _gameManager.ChangeState(GameState.StopEffect);
+      return;
+    }
+
     if (value != 0)
     {
       RunHint();
     }
     else
     {
-      if (!interactible) return;
 
       _gameManager.InputManager.Disable();
 
@@ -279,6 +288,58 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
     // _stateManager.RefreshData();
 
     return newEntity;
+  }
+
+
+  #region Effects
+  public virtual void RunEffect()
+  {
+    var _CachedSystem = GameObject.Instantiate(
+      _gameSetting.Boom,
+      transform.position,
+      Quaternion.identity
+    );
+
+    var main = _CachedSystem.main;
+    main.startSize = new ParticleSystem.MinMaxCurve(0.05f, _levelManager.ManagerHiddenWords.scaleGrid / 2);
+
+    var col = _CachedSystem.colorOverLifetime;
+    col.enabled = true;
+
+    Gradient grad = new Gradient();
+    grad.SetKeys(new GradientColorKey[] {
+      new GradientColorKey(_gameManager.Theme.bgFindAllowWord, 1.0f),
+      new GradientColorKey(_gameManager.Theme.bgHiddenWord, 0.0f)
+      }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
+    });
+
+    col.color = grad;
+    _CachedSystem.Play();
+    if (_CachedSystem.isPlaying || _CachedSystem.isStopped) Destroy(_CachedSystem.gameObject, 2f);
+  }
+  #endregion
+
+  public async UniTask AddChar()
+  {
+    Vector3 initialScale = initScale;
+    Vector3 initialPosition = initPosition;
+    Vector3 upScale = new Vector3(1.5f, 1.5f, 0);
+
+    float elapsedTime = 0f;
+    float duration = .2f;
+    float startTime = Time.time;
+
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addToColba);
+    while (elapsedTime < duration)
+    {
+      float progress = (Time.time - startTime) / duration;
+      spritesObject.transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
+      await UniTask.Yield();
+      elapsedTime += Time.deltaTime;
+    }
+    RunEffect();
+
+    SetDefault();
   }
 
 }

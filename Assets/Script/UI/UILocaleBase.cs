@@ -47,7 +47,7 @@ public abstract class UILocaleBase : MonoBehaviour
   private async void Localize()
   {
 
-    // await LocalizationSettings.InitializationOperation.Task;
+    await LocalizationSettings.InitializationOperation.Task;
 
     var op = _localization.GetTableAsync();
     await op.Task;

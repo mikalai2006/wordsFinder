@@ -137,7 +137,7 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
   {
     if (_levelManager.ManagerHiddenWords.listChoosedGameObjects.Count != 0)
     {
-      await UniTask.Delay(_gameManager.AppInfo.userSettings.td, cancellationToken: cancellationToken);
+      await UniTask.Delay(_gameManager.AppInfo.setting.td, cancellationToken: cancellationToken);
     }
 
     if (!cancellationToken.IsCancellationRequested && _inputManager.Dragging)

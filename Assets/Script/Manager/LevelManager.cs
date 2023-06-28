@@ -21,8 +21,9 @@ public class LevelManager : Singleton<LevelManager>
   public TopSide topSide;
   public DialogLevel dialogLevel;
   public ButtonStar buttonStar;
-  public ButtonHint buttonHint;
+  public ButtonFrequency buttonFrequency;
   public ButtonBomb buttonBomb;
+  public ButtonDirectory buttonDirectory;
   public ButtonLighting buttonLighting;
   public ButtonShuffle buttonShuffle;
   public Stat stat;
@@ -65,8 +66,8 @@ public class LevelManager : Singleton<LevelManager>
 
     CreateChars(ManagerHiddenWords.WordForChars);
 
-    // GameManager.Instance.DataManager.Save();
-    GameManager.Instance.StateManager.RefreshData();
+    // TODO
+    // GameManager.Instance.StateManager.RefreshData();
 
     // Show start info.
     _gameManager.InputManager.Disable();
@@ -192,8 +193,8 @@ public class LevelManager : Singleton<LevelManager>
       case TypeEntity.Coin:
         entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Coin);
         break;
-      case TypeEntity.Hint:
-        entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Hint);
+      case TypeEntity.Frequency:
+        entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Frequency);
         break;
     }
 

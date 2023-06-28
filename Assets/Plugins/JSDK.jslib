@@ -1,41 +1,54 @@
 var plugin = {
   Loaded: function () {},
   SaveExtern: function (data) {
+    console.group("SaveExtern");
     var dataString = UTF8ToString(data);
-    var myObj = JSON.parse(dataString);
+    var jsonUserData = JSON.parse(dataString);
 
-    // player.setData(myObj);
-    console.group("Save");
-    console.log(myObj);
+    player.setData(jsonUserData);
+
+    console.log(jsonUserData);
     console.groupEnd();
   },
   LoadExtern: function () {
-    console.log("Load data");
-    // player.getData().then((_data) => {
-    //   const myJSON = JSON.stringify(_data);
-    //   myGameInstance.SendMessage("DataManager", "SetPlayerData", myJSON);
-    // });
-    myGameInstance.SendMessage(
-      "DataManager",
-      "SetPlayerData",
-      JSON.stringify({})
-    );
+    console.group("LoadExtern");
+    player.getData().then((jsonUserData) => {
+      const stringUserData = JSON.stringify(jsonUserData);
+      myGameInstance.SendMessage(
+        "DataManager",
+        "SetPlayerData",
+        stringUserData
+      );
+      console.log(jsonUserData);
+      console.log(stringUserData);
+    });
+    // myGameInstance.SendMessage(
+    //   "DataManager",
+    //   "SetPlayerData",
+    //   JSON.stringify({})
+    // );
+    console.groupEnd();
   },
-  GetPhoto: function () {
-    console.log("GetPhoto");
-    // player.getPhoto().then((_data) => {
-    //   const myJSON = JSON.stringify(_data);
-    //   myGameInstance.SendMessage("DataManager", "SetPhoto", myJSON);
-    // });
-    myGameInstance.SendMessage("DataManager", "SetPhoto", "photo");
-  },
-  GetName: function () {
-    console.log("GetName");
-    // player.getName().then((_data) => {
-    //   const myJSON = JSON.stringify(_data);
-    //   myGameInstance.SendMessage("DataManager", "SetName", myJSON);
-    // });
-    myGameInstance.SendMessage("DataManager", "SetName", "Mikki");
+  GetUserInfo: function () {
+    console.group("GetUserInfo");
+    // const myJSON = { name: "TestName", photo: "TestPhoto" };
+    const jsonUserInfo = {
+      name: player.getName(),
+      photo: player.getPhoto("medium"),
+    };
+
+    const stringUserInfo = JSON.stringify(jsonUserInfo);
+
+    console.log(jsonUserInfo);
+    console.log(stringUserInfo);
+
+    myGameInstance.SendMessage("DataManager", "SetUserInfo", stringUserInfo);
+    // myGameInstance.SendMessage(
+    //   "DataManager",
+    //   "SetUserInfo",
+    //   JSON.stringify(myJSON)
+    // );
+    console.groupEnd();
   },
 };
 

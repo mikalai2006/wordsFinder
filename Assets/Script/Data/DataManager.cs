@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using User;
 
 public class DataManager : Singleton<DataManager>
 {
@@ -10,13 +11,11 @@ public class DataManager : Singleton<DataManager>
   [DllImport("__Internal")]
   private static extern void LoadExtern();
   [DllImport("__Internal")]
-  private static extern void GetName();
-  [DllImport("__Internal")]
-  private static extern void GetPhoto();
+  private static extern void GetUserInfo();
 
   public static event System.Action<DataGame> OnLoadData;
-  public static event System.Action<string> OnLoadName;
-  public static event System.Action<string> OnLoadPhoto;
+  public static event System.Action<UserInfo> OnLoadUserInfo;
+
   [Header("File Storage Config")]
   [SerializeField] private string fileNameGame;
   [SerializeField] private string fileNameMap;
@@ -59,28 +58,17 @@ public class DataManager : Singleton<DataManager>
     return _dataGame;
   }
 
-  public void LoadNameAsYsdk()
+  public void LoadUserInfoAsYsdk()
   {
-    GetName();
+    GetUserInfo();
   }
 
-  public void SetName(string name)
+  public void SetUserInfo(string stringUserInfo)
   {
-    Debug.Log($"{name}::: YSDK ::: SetName {name}");
+    UserInfo userInfo = JsonUtility.FromJson<UserInfo>(stringUserInfo);
+    Debug.Log($"{name}::: YSDK ::: SetUserInfo {stringUserInfo}");
 
-    OnLoadName?.Invoke(name);
-  }
-
-  public void LoadPhotoAsYsdk()
-  {
-    GetPhoto();
-  }
-
-  public void SetPhoto(string photo)
-  {
-    Debug.Log($"{name}::: YSDK ::: SetPhoto {photo}");
-
-    OnLoadPhoto?.Invoke(photo);
+    OnLoadUserInfo?.Invoke(userInfo);
   }
 
   public void Save()
@@ -108,13 +96,19 @@ public class DataManager : Singleton<DataManager>
       _fileDataHandler.SaveData(_dataGame);
 #endif
 
-#if ysdk && !UNITY_EDITOR
+
       string jsonString = JsonUtility.ToJson(_dataGame);
+#if ysdk && !UNITY_EDITOR
       SaveExtern(jsonString);
 #endif
-
-
       Debug.Log("Saved complete successfully!");
     }
+  }
+
+  public void SaveSettings()
+  {
+    string appInfo = JsonUtility.ToJson(_gameManager.AppInfo);
+    PlayerPrefs.SetString(_gameManager.namePlayPref, appInfo);
+    // Debug.Log($"SaveSettings::: appInfo=[{appInfo}");
   }
 }

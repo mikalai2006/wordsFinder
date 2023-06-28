@@ -33,17 +33,21 @@ MonoBehaviour:
       m_WaitForCompletion: 0
       m_LocalVariables: []
   coefDifficulty: 0.2
-  countFindWordsForUp: 100
+  countFindWordsForUp: 500
   maxLengthWord: 6
-  maxFindWords: 100
-  coefHint: 0.222
-  coefStar: 0.268
+  maxFindWords: 50
+  coefHint: 0.12
+  coefStar: 0.2
   bonusCount:
-    charBonus: 40
-    errorClear: 20
+    charInOrder: 50
+    wordInOrder: 20
+    charBonus: 100
+    charStar: 30
+    charHint: 50
+    charBomb: 70
+    charLighting: 90
     charCoin: 10
-    charStar: 20
-    charHint: 20
+    errorNullBonus: 20
   references:
     version: 2
     RefIds: []

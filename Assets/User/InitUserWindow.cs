@@ -79,7 +79,7 @@ public class InitUserWindow : UILocaleBase
       return;
     }
 
-    _result.UserInfo.Name = _fieldName.text;
+    _result.UserInfo.name = _fieldName.text;
 
     _loginCompletionSource.SetResult(_result);
 

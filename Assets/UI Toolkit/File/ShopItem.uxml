@@ -4,13 +4,16 @@
     <ui:VisualElement class="m-05" style="flex-grow: 1;">
         <ui:VisualElement name="ShopItem" class="rounded font box_item" style="flex-grow: 1;">
             <ui:VisualElement name="ImgWrapper" class="p-1 rounded-t" style="background-color: rgba(255, 255, 255, 0.13); align-items: center;">
-                <ui:VisualElement name="Img" style="width: 60px; height: 60px; background-image: url(&apos;project://database/Assets/Sprites/128/Star128.png?fileID=2800000&amp;guid=9acb7af3c836f054793808cec7dac127&amp;type=3#Star128&apos;); -unity-background-image-tint-color: rgb(255, 255, 255);" />
+                <ui:VisualElement name="Img" style="width: 80px; height: 80px; background-image: url(&apos;project://database/Assets/Sprites/128/Star128.png?fileID=2800000&amp;guid=9acb7af3c836f054793808cec7dac127&amp;type=3#Star128&apos;); -unity-background-image-tint-color: rgb(255, 255, 255);" />
+                <ui:Button display-tooltip-when-elided="true" name="InfoBtn" class="button_circle" style="position: absolute; right: 0;">
+                    <ui:VisualElement name="InfoImg" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/128/Cog128.png?fileID=2800000&amp;guid=fe7f28583815e944993cdb808f259b29&amp;type=3#Cog128&apos;);" />
+                </ui:Button>
             </ui:VisualElement>
             <ui:VisualElement class="p-1" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
                 <ui:VisualElement style="flex-grow: 1; align-items: center;">
                     <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="Name" class="font-bold p-0 m-0 text-primary" style="flex-shrink: 1;" />
                     <ui:Label tabindex="-1" text="500" display-tooltip-when-elided="true" name="Price" class="font-bold p-0 m-0 text-lg text-primary" style="flex-shrink: 1; display: none;" />
-                    <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="Description" class="p-0 m-0 text-xs text-secondary" style="flex-shrink: 1; flex-grow: 1; white-space: normal;" />
+                    <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="Description" class="p-0 m-0 text-xs text-secondary" style="flex-shrink: 1; flex-grow: 1; white-space: normal; display: none;" />
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement class="p-1" style="align-items: stretch; justify-content: space-between;">

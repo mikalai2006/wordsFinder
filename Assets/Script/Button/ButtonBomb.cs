@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 
 public class ButtonBomb : BaseButton
 {
@@ -24,6 +25,14 @@ public class ButtonBomb : BaseButton
   {
     value = data.hints.GetValueOrDefault(TypeEntity.Bomb);
     base.SetValue(data);
+  }
+
+  public override void SetValueProgressBar(DataGame data)
+  {
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)data.activeLevel.bonusCount.charBomb / _gameManager.PlayerSetting.bonusCount.charBomb;
+    spriteProgress.transform
+      .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
+      .SetEase(Ease.OutBounce);
   }
 
   public async override void RunHint()

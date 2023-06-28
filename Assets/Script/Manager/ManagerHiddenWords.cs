@@ -68,7 +68,7 @@ public class ManagerHiddenWords : MonoBehaviour
 
     _levelManager.buttonShuffle.gameObject.SetActive(true);
     _levelManager.buttonStar.gameObject.SetActive(true);
-    _levelManager.buttonHint.gameObject.SetActive(true);
+    _levelManager.buttonFrequency.gameObject.SetActive(true);
     HiddenWords.Clear();
 
     var data = _stateManager.dataGame.activeLevel;
@@ -356,7 +356,10 @@ public class ManagerHiddenWords : MonoBehaviour
           if (NeedWords.ContainsKey(choosedWord))
           {
             OpenNeedWords.Add(choosedWord, 1);
-            _levelManager.CreateCoin(_levelManager.buttonStar.transform.position, _levelManager.topSide.spriteCoinPosition).Forget();
+            _levelManager.CreateCoin(
+              _levelManager.buttonDirectory.transform.position,
+              _levelManager.topSide.spriteCoinPosition
+            ).Forget();
           }
         }
       }
@@ -498,7 +501,7 @@ public class ManagerHiddenWords : MonoBehaviour
     // _levelManager.stat.Hide();
     // _levelManager.ResetSymbols();
 
-    _stateManager.RefreshData();
+    // _stateManager.RefreshData();
     foreach (var wordItem in HiddenWords)
     {
       wordItem.Value.gameObject.SetActive(false);
@@ -529,7 +532,7 @@ public class ManagerHiddenWords : MonoBehaviour
     _stateManager.dataGame.activeLevel.hints.Clear();
 
     var countHint = (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefHint);
-    _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Hint, countHint);
+    _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Frequency, countHint);
 
     var countStar = (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefStar);
     _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Star, countHint);

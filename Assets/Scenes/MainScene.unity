@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00cd07d439803f74480c70d38d21cec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  namePlayPref: playState
   GameSettings: {fileID: 11400000, guid: 3ed9298ad7c339d4c8436891370ed992, type: 2}
   StateManager: {fileID: 153567558}
   PlayerSetting: {fileID: 0}

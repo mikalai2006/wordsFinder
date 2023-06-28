@@ -3,22 +3,22 @@ namespace User
   [System.Serializable]
   public class AppInfoContainer
   {
-    public string DeviceId;
+    public string uid;
     public UserInfo UserInfo;
-    public UserSettings userSettings;
+    public UserSettings setting;
 
     public AppInfoContainer()
     {
       UserInfo = new UserInfo();
-      userSettings = new();
+      setting = new();
     }
 
     public override string ToString()
     {
       return string.Format(
         "name={0}\r\nDeviceId={1}",
-        UserInfo.Name,
-        DeviceId
+        UserInfo.name,
+        uid
         );
     }
   }
@@ -29,8 +29,8 @@ namespace User
     // public string Id { get; set; }
     // public string Name { get; set; }
     // public string Lang { get; set; }
-    public string Name;
-    public string Photo;
+    public string name;
+    public string photo;
     // public string userId { get; set; }
     public UserInfoAuth UserInfoAuth;
     public UserInfo()

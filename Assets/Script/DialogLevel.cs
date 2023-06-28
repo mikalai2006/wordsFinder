@@ -148,25 +148,23 @@ public class DialogLevel : MonoBehaviour
 
       var indexBonus = _levelManager.topSide.Bonuses.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value;
 
+      int valueIndexBonus = _stateManager.dataGame.bonus.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value + 1;
+
+      int _countTotalOfByIndex = valueIndexBonus * countCoinLevel;
+
+      _countTotalCoins = _countTotalOfByIndex;
+
       if (indexBonus != null)
       {
         indexBonus.gameObject.transform
           .DOMove(spriteCoin.transform.localPosition + new Vector3(0, 3.5f), duration)
           .OnComplete(async () =>
           {
-            int valueIndexBonus = _stateManager.dataGame.bonus.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value + 1;
-
-            int _countTotalOfByIndex = valueIndexBonus * countCoinLevel;
-
-            // _textTotalCoin.text = _countTotalCoins.ToString();
-
             for (int i = countCoinLevel; i <= _countTotalOfByIndex; i++)
             {
               _textTotalCoin.text = i.ToString();
               await UniTask.Delay(10);
             }
-
-            _countTotalCoins = _countTotalOfByIndex;
 
             AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
           });
@@ -319,10 +317,10 @@ public class DialogLevel : MonoBehaviour
         newEntityStar.counterText.text = valueStar.ToString();
         countHints += valueStar;
       }
-      if (_stateManager.dataGame.activeLevel.hints.ContainsKey(TypeEntity.Hint))
+      if (_stateManager.dataGame.activeLevel.hints.ContainsKey(TypeEntity.Frequency))
       {
-        var valueHint = _stateManager.dataGame.activeLevel.hints.GetValueOrDefault(TypeEntity.Hint);
-        var newEntity = await _levelManager.buttonHint.CreateEntity(Vector3.zero, _hintObject);
+        var valueHint = _stateManager.dataGame.activeLevel.hints.GetValueOrDefault(TypeEntity.Frequency);
+        var newEntity = await _levelManager.buttonFrequency.CreateEntity(Vector3.zero, _hintObject);
         _hintsRound.Add(newEntity, valueHint);
         newEntity.counterObject.transform.DOScale(1, duration);
         newEntity.counterText.text = valueHint.ToString();
@@ -401,8 +399,8 @@ public class DialogLevel : MonoBehaviour
         case TypeEntity.Star:
           targetMoveHint = _levelManager.buttonStar.gameObject;
           break;
-        case TypeEntity.Hint:
-          targetMoveHint = _levelManager.buttonHint.gameObject;
+        case TypeEntity.Frequency:
+          targetMoveHint = _levelManager.buttonFrequency.gameObject;
           break;
       }
       item.Key.gameObject.transform

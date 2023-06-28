@@ -164,6 +164,7 @@ public class GridHelper
         t.StateNode.HasFlag(StateNode.Occupied)
         && !t.StateNode.HasFlag(StateNode.Open)
         && !t.StateNode.HasFlag(StateNode.Entity)
+        && !t.StateNode.HasFlag(StateNode.Hint)
       )
       .OrderBy(t => UnityEngine.Random.value)
       .FirstOrDefault();

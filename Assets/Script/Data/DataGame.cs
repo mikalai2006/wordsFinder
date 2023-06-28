@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Localization.Settings;
-using User;
 
 [System.Serializable]
 public class DataGame
@@ -16,31 +13,13 @@ public class DataGame
   [System.NonSerialized] public DataLevel activeLevel;
   public string lastWord;
   public string rank;
-  public UserSettings setting;
 
   public DataGame()
   {
     levels = new();
     completed = new();
-    setting = new();
     hints = new();
     bonus = new();
-  }
-
-  public async UniTask SetDefaultSettings()
-  {
-    var gameSettings = GameManager.Instance.GameSettings;
-
-    await LocalizationSettings.InitializationOperation.Task;
-
-    setting = new()
-    {
-      auv = gameSettings.Audio.volumeEffect,
-      lang = LocalizationSettings.SelectedLocale.name,
-      muv = gameSettings.Audio.volumeMusic,
-      theme = gameSettings.ThemeDefault.name,
-      td = 50 // time delay
-    };
   }
 }
 
@@ -51,7 +30,7 @@ public class DataLevel
   public string id;
   public float index;
   public int coins;
-  public StatePerk statePerk;
+  public BonusCount bonusCount;
   public SerializableDictionary<Vector2, string> openChars;
   public SerializableDictionary<TypeEntity, int> hints; // [System.NonSerialized]
   public SerializeEntity ent;
@@ -70,6 +49,6 @@ public class DataLevel
     openChars = new();
     ent = new();
     hints = new();
-    statePerk = new();
+    bonusCount = new();
   }
 }

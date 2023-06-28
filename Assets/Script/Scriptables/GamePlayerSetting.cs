@@ -37,14 +37,29 @@ public class GamePlayerSetting : ScriptableObject
 [System.Serializable]
 public struct BonusCount
 {
-  [Tooltip("Количество найденных символов для получения бонуса")]
-  [Range(1, 100)] public int charBonus;
-  [Tooltip("Сколько ошибок в угадывании слова - обнуляют бонусный прогресс")]
-  [Range(1, 20)] public int errorClear;
-  [Tooltip("Количество букв последовательно открытых для добавления доп. коина на поле слов")]
-  [Range(1, 100)] public int charCoin;
-  [Tooltip("Количество букв последовательно открытых для добавления доп. звезды на поле слов")]
-  [Range(1, 100)] public int charStar;
-  [Tooltip("Количество букв последовательно открытых для добавления подсказки")]
-  [Range(1, 100)] public int charHint;
+  public int charInOrder;
+  public int wordInOrder;
+  public int charBonus;
+  public int charStar;
+  public int charHint;
+  public int charBomb;
+  public int charLighting;
+  public int charCoin;
+  public int errorNullBonus;
+  // public int needCreateCoin;
 }
+
+// [System.Serializable]
+// public struct BonusCount
+// {
+//   [Tooltip("Количество найденных символов для получения бонуса")]
+//   [Range(1, 100)] public int charBonus;
+//   [Tooltip("Сколько ошибок в угадывании слова - обнуляют бонусный прогресс")]
+//   [Range(1, 20)] public int errorClear;
+//   [Tooltip("Количество букв последовательно открытых для добавления доп. коина на поле слов")]
+//   [Range(1, 100)] public int charCoin;
+//   [Tooltip("Количество букв последовательно открытых для добавления доп. звезды на поле слов")]
+//   [Range(1, 100)] public int charStar;
+//   [Tooltip("Количество букв последовательно открытых для добавления подсказки")]
+//   [Range(1, 100)] public int charHint;
+// }

@@ -49,9 +49,9 @@ public class GameSetting : ScriptableObject
   // public GameObject PrefabLighting;
   public Sprite spriteRate;
   public Sprite spriteShop;
-  public Sprite spriteCart;
   public Sprite spriteAdv;
   public Sprite spriteBuy;
+  public Sprite spriteInfo;
 
   [Space(5)]
   [Header("System")]

@@ -91,12 +91,33 @@ public class UIShop : UILocaleBase
         );
       // blokItem.Q<Label>("Price").text = string.Format("{0} <size=12>{1}</size>", item.cost, textCost);
 
-      var description = await Helpers.GetLocaledString(item.entity.text.description);
-      blokItem.Q<Label>("Description").text = string.Format(
-        "{0}",
-        // textCountWords,
-        description
-        );
+      // var description = await Helpers.GetLocaledString(item.entity.text.description);
+      // blokItem.Q<Label>("Description").text = string.Format(
+      //   "{0}",
+      //   // textCountWords,
+      //   description
+      //   );
+
+      // Button info.
+      var buttonInfo = blokItem.Q<Button>("InfoBtn");
+      buttonInfo.Q<VisualElement>("InfoImg").style.backgroundImage = new StyleBackground(_gameSettings.spriteInfo);
+      buttonInfo.clickable.clicked += async () =>
+        {
+          AudioManager.Instance.Click();
+
+          _gameManager.InputManager.Disable();
+
+          var message = await Helpers.GetLocaledString(item.entity.text.description);
+          var dialog = new DialogProvider(new DataDialog()
+          {
+            headerText = title,
+            messageText = message
+          });
+
+          await dialog.ShowAndHide();
+          _gameManager.InputManager.Enable();
+
+        };
 
       blokItem.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(item.entity.sprite);
 
@@ -185,12 +206,33 @@ public class UIShop : UILocaleBase
           }
         );
 
-      var description = await Helpers.GetLocaledString(item.entity.text.description);
-      blokItem.Q<Label>("Description").text = string.Format(
-        "{0}",
-        // textCountWords,
-        description
-        );
+      // var description = await Helpers.GetLocaledString(item.entity.text.description);
+      // blokItem.Q<Label>("Description").text = string.Format(
+      //   "{0}",
+      //   // textCountWords,
+      //   description
+      //   );
+
+      // Button info.
+      var buttonInfo = blokItem.Q<Button>("InfoBtn");
+      buttonInfo.Q<VisualElement>("InfoImg").style.backgroundImage = new StyleBackground(_gameSettings.spriteInfo);
+      buttonInfo.clickable.clicked += async () =>
+        {
+          AudioManager.Instance.Click();
+
+          _gameManager.InputManager.Disable();
+
+          var message = await Helpers.GetLocaledString(item.entity.text.description);
+          var dialog = new DialogProvider(new DataDialog()
+          {
+            headerText = title,
+            messageText = message
+          });
+
+          await dialog.ShowAndHide();
+          _gameManager.InputManager.Enable();
+
+        };
 
       blokItem.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(item.entity.sprite);
 

@@ -34,9 +34,9 @@ MonoBehaviour:
   spriteCog: {fileID: 21300000, guid: fe7f28583815e944993cdb808f259b29, type: 3}
   spriteRate: {fileID: 21300000, guid: 54e35f220d7347e4f99f199862e81c5e, type: 3}
   spriteShop: {fileID: 21300000, guid: 1ab9b49f9f0ed954fbbc36f707b39d3e, type: 3}
-  spriteCart: {fileID: 21300000, guid: 8018f3c2bacf80d45a8fa1de3aeab85b, type: 3}
   spriteAdv: {fileID: 21300000, guid: 492308d20a1450b47a5bc631a8dbfacd, type: 3}
-  spriteBuy: {fileID: 21300000, guid: 8018f3c2bacf80d45a8fa1de3aeab85b, type: 3}
+  spriteBuy: {fileID: 21300000, guid: 3c7959c56fe59aa43a320d194c7962a3, type: 3}
+  spriteInfo: {fileID: 21300000, guid: 4650a140dc17cae45bd840ee53efe598, type: 3}
   debounceTime: 1000
   timeDelayOverChar: 47
   GameLevels:

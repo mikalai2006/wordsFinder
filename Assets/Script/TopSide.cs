@@ -120,9 +120,9 @@ public class TopSide : MonoBehaviour
 
     string status = await Helpers.GetLocaledString(_gameManager.PlayerSetting.text.title);
 
-    string name = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.Name)
+    string name = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.name)
       ? await Helpers.GetLocaledString(_gameManager.GameSettings.noName.title)
-      : _gameManager.AppInfo.UserInfo.Name;
+      : _gameManager.AppInfo.UserInfo.name;
 
     _statusText.text = string.Format("{0} <size=.2>{1}</size>", name, status);
   }

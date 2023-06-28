@@ -33,7 +33,7 @@ public class ButtonStar : BaseButton
     _countChars.text = string.Format(
       "{0}--{1}",
       data.activeLevel.countOpenChars,
-      data.activeLevel.statePerk.countCharForAddStar
+      data.activeLevel.bonusCount.charStar
     );
   }
 
@@ -65,61 +65,10 @@ public class ButtonStar : BaseButton
   //   }
   // }
 
-  #region Effects
-  public virtual void RunEffect()
-  {
-    var _CachedSystem = GameObject.Instantiate(
-      _gameSetting.Boom,
-      transform.position,
-      Quaternion.identity
-    );
-
-    var main = _CachedSystem.main;
-    main.startSize = new ParticleSystem.MinMaxCurve(0.05f, _levelManager.ManagerHiddenWords.scaleGrid / 2);
-
-    var col = _CachedSystem.colorOverLifetime;
-    col.enabled = true;
-
-    Gradient grad = new Gradient();
-    grad.SetKeys(new GradientColorKey[] {
-      new GradientColorKey(_gameManager.Theme.bgFindAllowWord, 1.0f),
-      new GradientColorKey(_gameManager.Theme.bgHiddenWord, 0.0f)
-      }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
-    });
-
-    col.color = grad;
-    _CachedSystem.Play();
-    if (_CachedSystem.isPlaying || _CachedSystem.isStopped) Destroy(_CachedSystem.gameObject, 2f);
-  }
-  #endregion
-
-
-  public async UniTask AddChar()
-  {
-    Vector3 initialScale = initScale;
-    Vector3 initialPosition = initPosition;
-    Vector3 upScale = new Vector3(1.5f, 1.5f, 0);
-
-    float elapsedTime = 0f;
-    float duration = .2f;
-    float startTime = Time.time;
-
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addToColba);
-    while (elapsedTime < duration)
-    {
-      float progress = (Time.time - startTime) / duration;
-      spritesObject.transform.localScale = Vector3.Lerp(initialScale, upScale, progress);
-      await UniTask.Yield();
-      elapsedTime += Time.deltaTime;
-    }
-    RunEffect();
-
-    SetDefault();
-  }
 
   public override void SetValueProgressBar(DataGame data)
   {
-    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)data.activeLevel.statePerk.countCharForAddStar / _gameManager.PlayerSetting.bonusCount.charStar;
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)data.activeLevel.bonusCount.charStar / _gameManager.PlayerSetting.bonusCount.charStar;
     // spriteProgress.transform.localPosition
     //   = new Vector3(spriteProgress.transform.localPosition.x, newPosition);
     spriteProgress.transform

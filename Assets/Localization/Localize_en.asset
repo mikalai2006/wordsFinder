@@ -77,8 +77,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1563663732473856
-    m_Localized: Found {count} {count:word|words} of {count2}. All may be  {count3}
-      {count3:word|words}
+    m_Localized: 'Found {count} bonus {count:word|words} of {count2}. '
     m_Metadata:
       m_Items:
       - rid: 366247623133495314
@@ -169,7 +168,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3451218186895360
-    m_Localized: Lamp
+    m_Localized: Frequency
     m_Metadata:
       m_Items: []
   - m_Id: 3451377402675200
@@ -343,10 +342,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 366247623133495314
+  - m_Id: 5984530734415872
+    m_Localized: Total found {count} of {count2} possible word{count2:|s}
+    m_Metadata:
+      m_Items:
+      - rid: 366247623133495314
   references:
     version: 2
     RefIds:
     - rid: 366247623133495314
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 008012baef150200008052d5248e05000080d2ebf1590b00008092ea35400c000080925ecd430c000080521d7c300c00008052e12f620d00008052dfaf610d00008012091f860d0000801274d0f80f000080926f011210000080d2e208cc1200008012a39a300c000080d2b0f4ce1200008052a5fc410d00
+        m_Entries: 008012baef150200008052d5248e05000080d2ebf1590b00008092ea35400c000080925ecd430c000080521d7c300c00008052e12f620d00008052dfaf610d00008012091f860d0000801274d0f80f000080926f011210000080d2e208cc1200008012a39a300c000080d2b0f4ce1200008052a5fc410d0000809224e6421500

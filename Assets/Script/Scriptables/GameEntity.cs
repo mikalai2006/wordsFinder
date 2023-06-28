@@ -23,5 +23,5 @@ public enum TypeEntity
   Star = 3,
   Coin = 4,
   OpenWord = 5,
-  Hint = 6
+  Frequency = 6
 }

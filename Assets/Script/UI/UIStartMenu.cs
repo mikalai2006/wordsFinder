@@ -130,9 +130,9 @@ public class UIStartMenu : UILocaleBase
     blok.Q<VisualElement>("CoinImg").style.backgroundImage = new StyleBackground(configCoin.sprite);
 
 
-    name.text = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.Name)
+    name.text = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.name)
       ? await Helpers.GetLocaledString(_gameSettings.noName.title)
-      : _gameManager.AppInfo.UserInfo.Name;
+      : _gameManager.AppInfo.UserInfo.name;
 
 
     var percentFindWords = (dataState.rate * 100 / _gameManager.PlayerSetting.countFindWordsForUp);

@@ -11,10 +11,9 @@ namespace User
 {
   public class InitUserOperation : ILoadingOperation
   {
-    private AppInfoContainer _result;
-    private TaskCompletionSource<string> _getNameCompletionSource;
-    private TaskCompletionSource<string> _getPhotoCompletionSource;
-    private TaskCompletionSource<AppInfoContainer> _getUserDataCompletionSource;
+    private AppInfoContainer _playPrefData;
+    private TaskCompletionSource<UserInfo> _getUserInfoCompletionSource;
+    private TaskCompletionSource<DataGame> _getUserDataCompletionSource;
     private TaskCompletionSource<UserSettings> _getUserSettingCompletionSource;
     private Action<float> _onProgress;
     private Action<string> _onSetNotify;
@@ -26,7 +25,9 @@ namespace User
 
     public async UniTask Load(Action<float> onProgress, Action<string> onSetNotify)
     {
-      _result = new();
+      var _gameManager = GameManager.Instance;
+
+      _playPrefData = new();
 
       _onProgress = onProgress;
       _onSetNotify = onSetNotify;
@@ -35,104 +36,84 @@ namespace User
       _onSetNotify?.Invoke("...");
       _onProgress?.Invoke(0.3f);
 
-      _result.DeviceId = DeviceInfo.GetDeviceId();
+      string namePlaypref = GameManager.Instance.namePlayPref;
 
-      GameManager.Instance.DataManager.Init(_result.DeviceId);
+      GameManager.Instance.DataManager.Init(namePlaypref);
 
-      // Get user name.
-      DataManager.OnLoadName += SetName;
-      _onSetNotify?.Invoke("name ...");
-      _result.UserInfo.Name = await GetName();
-      DataManager.OnLoadName -= SetName;
+      if (PlayerPrefs.HasKey(namePlaypref))
+      {
+        _playPrefData = JsonUtility.FromJson<AppInfoContainer>(PlayerPrefs.GetString(namePlaypref));
+      }
+      else
+      {
+        Debug.Log("Not found playPref!");
+        _playPrefData.uid = Convert.ToBase64String(Guid.NewGuid().ToByteArray()); //DeviceInfo.GetDeviceId();
 
-      // Get user name.
-      DataManager.OnLoadPhoto += SetPhoto;
-      _onSetNotify?.Invoke("photo ...");
-      _result.UserInfo.Photo = await GetPhoto();
-      DataManager.OnLoadPhoto -= SetPhoto;
+        await LocalizationSettings.InitializationOperation.Task;
+        var setting = new UserSettings()
+        {
+          auv = _gameManager.GameSettings.Audio.volumeEffect,
+          lang = LocalizationSettings.SelectedLocale.name,
+          muv = _gameManager.GameSettings.Audio.volumeMusic,
+          theme = _gameManager.GameSettings.ThemeDefault.name,
+          td = _gameManager.GameSettings.timeDelayOverChar // time delay
+        };
+        _playPrefData.setting = setting;
+      }
 
+      // Get user info.
+      DataManager.OnLoadUserInfo += SetUserInfo;
+      _onSetNotify?.Invoke("get userinfo ...");
+      _playPrefData.UserInfo = await GetUserInfo();
+      DataManager.OnLoadUserInfo -= SetUserInfo;
+
+      // Get game data.
       DataManager.OnLoadData += InitData;
-      _onSetNotify?.Invoke("data ...");
-      var result = await GetUserData();
-      _result.userSettings = result.userSettings;
+      _onSetNotify?.Invoke("get user data ...");
+      var dataGame = await GetUserData();
       DataManager.OnLoadData -= InitData;
 
-      GameManager.Instance.SetAppInfo(_result);
+      await GameManager.Instance.SetAppInfo(_playPrefData);
+      // Set user setting to PlayPref.
+      // string jsonData = JsonUtility.ToJson(_playPrefData);
+      // PlayerPrefs.SetString(namePlaypref, jsonData);
 
-      // _appInfoContainer.UserInfo = res.UserInfo;
-      // _appInfoContainer.DeviceId = res.DeviceId;
-
-      // var t = await Helpers.GetLocaledString("loadconfig");
-      // onSetNotify?.Invoke(t);
 
       _onProgress?.Invoke(.5f);
     }
 
-    private void SetPhoto(string photo)
+
+    private void SetUserInfo(UserInfo userInfo)
     {
-      _result.UserInfo.Photo = photo;
-      _getPhotoCompletionSource.SetResult(photo);
+      _playPrefData.UserInfo = userInfo;
+      _getUserInfoCompletionSource.SetResult(userInfo);
     }
 
 
-    private void SetName(string name)
+    public async Task<UserInfo> GetUserInfo()
     {
-      _result.UserInfo.Name = name;
-      _getNameCompletionSource.SetResult(name);
-    }
-
-
-    public async Task<string> GetName()
-    {
-      _getNameCompletionSource = new TaskCompletionSource<string>();
+      _getUserInfoCompletionSource = new TaskCompletionSource<UserInfo>();
 
 #if android
-      string name;
-      if (PlayerPrefs.HasKey(_result.DeviceId))
-      {
-        var playerInfo = JsonUtility.FromJson<AppInfoContainer>(PlayerPrefs.GetString(_result.DeviceId));
-        name = playerInfo.UserInfo.Name;
-      }
-      else
+      UserInfo userInfo = _playPrefData.UserInfo;
+      if (string.IsNullOrEmpty(userInfo.name))
       {
         // Load form for input name.
         var result = await GameManager.Instance.InitUserProvider.ShowAndHide();
-        name = result.UserInfo.Name;
+        userInfo = result.UserInfo;
       }
-      SetName(name);
+      SetUserInfo(userInfo);
 #endif
 
 #if ysdk && !UNITY_EDITOR
-      GameManager.Instance.DataManager.LoadNameAsYsdk();
+      GameManager.Instance.DataManager.LoadUserInfoAsYsdk();
 #endif
 
-      return await _getNameCompletionSource.Task;
-    }
-
-    public async Task<string> GetPhoto()
-    {
-      _getPhotoCompletionSource = new TaskCompletionSource<string>();
-
-#if android
-      string photo = "";
-      if (PlayerPrefs.HasKey(_result.DeviceId))
-      {
-        var playerInfo = JsonUtility.FromJson<AppInfoContainer>(PlayerPrefs.GetString(_result.DeviceId));
-        photo = playerInfo.UserInfo.Photo;
-      }
-      SetPhoto(photo);
-#endif
-
-#if ysdk && !UNITY_EDITOR
-      GameManager.Instance.DataManager.LoadPhotoAsYsdk();
-#endif
-
-      return await _getPhotoCompletionSource.Task;
+      return await _getUserInfoCompletionSource.Task;
     }
 
 
-
-    private async UniTask<AppInfoContainer> GetUserData()
+    private async UniTask<DataGame> GetUserData()
     {
       _getUserDataCompletionSource = new();
 
@@ -155,60 +136,29 @@ namespace User
     {
       var _gameManager = GameManager.Instance;
 
-      GameManager.Instance.StateManager.Init(dataGame);
-
       GamePlayerSetting playerSetting;
-      if (string.IsNullOrEmpty(dataGame.rank))
+      // init new state.
+      if (dataGame == null || string.IsNullOrEmpty(dataGame.rank))
       {
         playerSetting = _gameManager.GameSettings.PlayerSetting
           .OrderBy(t => t.countFindWordsForUp)
           .First();
+        dataGame = new DataGame()
+        {
+          rank = playerSetting.idPlayerSetting,
+        };
       }
       else
       {
         playerSetting = _gameManager.GameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
       }
-
-      // Set player setting.
+      Debug.Log("InitData2");
       _gameManager.PlayerSetting = playerSetting;
 
-      _result.userSettings = dataGame.setting;
+      _gameManager.StateManager.Init(dataGame);
 
-      List<GameTheme> allThemes = _gameManager.ResourceSystem.GetAllTheme();
-
-      // Set theme.
-      if (!string.IsNullOrEmpty(dataGame.setting.theme))
-      {
-        GameTheme userTheme = allThemes.Where(t => t.name == dataGame.setting.theme).FirstOrDefault();
-
-        _gameManager.SetTheme(userTheme);
-      }
-
-      // Set user setting to PlayPref.
-      string jsonData = JsonUtility.ToJson(_result);
-
-      PlayerPrefs.SetString(_result.DeviceId, jsonData);
-
-      Debug.Log($"result=[{_result.ToString()}], jsonData={jsonData}");
-
-      _getUserDataCompletionSource.SetResult(new AppInfoContainer()
-      {
-        userSettings = dataGame.setting
-      });
+      _getUserDataCompletionSource.SetResult(dataGame);
     }
-
-
-
-    //   private async UniTask<AppInfoContainer> LoginAsDeviceId()
-    //   {
-    //     string deviceId = DeviceInfo.GetDeviceId();
-    //     var result = new AppInfoContainer()
-    //     {
-    //       DeviceId = deviceId
-    //     };
-    //     await UniTask.Yield();
-    //     return result;
-    //   }
 
   }
 }
