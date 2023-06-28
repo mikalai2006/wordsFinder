@@ -96,9 +96,7 @@ public class DialogLevel : MonoBehaviour
     _result = new();
 
     SetDefault();
-    _buttonNext.gameObject.SetActive(true);
     _buttonNext.onClick.AddListener(CloseDialogEndRound);
-    _buttonDouble.gameObject.SetActive(true);
 
     _textHeader.text = await Helpers.GetLocalizedPluralString(
       "roundresult",
@@ -107,18 +105,17 @@ public class DialogLevel : MonoBehaviour
       }
     );
 
-    int totalFindedWords = _stateManager.dataGame.activeLevel.countDopWords + _stateManager.dataGame.activeLevel.countNeedWords;
+    // int totalFindedWords = _stateManager.dataGame.activeLevel.countDopWords + _stateManager.dataGame.activeLevel.countNeedWords;
+    _countTotalCoins = 0;
 
     _textMessage.text = await Helpers.GetLocaledString("completelevel");
-
-    _countTotalCoins = totalFindedWords;
 
     _textTotalCoin.text = _countTotalCoins.ToString();
 
     _textMessageSmall.text = await Helpers.GetLocalizedPluralString(
           "completelevel_d",
            new Dictionary<string, object> {
-            {"count", totalFindedWords},
+            {"count", _stateManager.dataGame.activeLevel.countNeedWords},
           }
         );
 
@@ -169,6 +166,9 @@ public class DialogLevel : MonoBehaviour
             AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
           });
       }
+
+      _buttonNext.gameObject.SetActive(true);
+      _buttonDouble.gameObject.SetActive(true);
     });
     // );
 
