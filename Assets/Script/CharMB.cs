@@ -92,8 +92,9 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
       if (rayHit.collider.gameObject == gameObject)
       {
-        var control = context.control.ToString().Split('/');
         _inputManager.SetDragging(true);
+
+        var control = context.control.ToString().Split('/');
         if (control[1] == "Mouse")
         {
           cancelTokenSource = new CancellationTokenSource();

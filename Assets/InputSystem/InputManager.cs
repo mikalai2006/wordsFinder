@@ -44,10 +44,12 @@ public class InputManager
       _input.InputActions.Click.canceled -= value;
     }
   }
+
   public Vector2 clickPosition()
   {
     return _input.InputActions.Position.ReadValue<Vector2>();
   }
+
   public bool ClickedOnUi()
   {
     PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);

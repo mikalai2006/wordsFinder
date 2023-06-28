@@ -319,6 +319,8 @@ public class ManagerHiddenWords : MonoBehaviour
 
   public async UniTask CheckChoosedWord()
   {
+    _gameManager.InputManager.Disable();
+
     if (choosedWord.Length > 1)
     {
       if (HiddenWords.ContainsKey(choosedWord))
@@ -400,7 +402,9 @@ public class ManagerHiddenWords : MonoBehaviour
       // GameManager.Instance.DataManager.Save();
       if (choosedWord.Length > 1) _stateManager.RefreshData();
     }
+
     // OnChangeData?.Invoke();
+    _gameManager.InputManager.Enable();
   }
 
   // public async UniTask OpenNeighbours()
@@ -423,7 +427,7 @@ public class ManagerHiddenWords : MonoBehaviour
       listChoosedGameObjects.Add(charGameObject);
       _lineManager.DrawLine();
     }
-    else
+    else if (listChoosedGameObjects.Count > 1)
     {
       var lastSymbol = listChoosedGameObjects.ElementAt(listChoosedGameObjects.Count - 1);
       var preLastIndex = listChoosedGameObjects.Count == 1 ? 0 : listChoosedGameObjects.Count - 2;
