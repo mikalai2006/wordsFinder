@@ -157,7 +157,6 @@ public static class Helpers
 
     return result;
   }
-
   // public static Dictionary<string, List<string>> GetDictionaryCompleteLevel(List<string> list)
   // {
   //   Dictionary<string, List<string>> result = new();

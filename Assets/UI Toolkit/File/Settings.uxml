@@ -6,22 +6,24 @@
             <ui:Button display-tooltip-when-elided="true" name="MenuBtn" class="button_circle">
                 <ui:VisualElement name="ImgCog" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/128/Cog128.png?fileID=2800000&amp;guid=fe7f28583815e944993cdb808f259b29&amp;type=3#Cog128&apos;);" />
             </ui:Button>
-            <ui:VisualElement name="Ava" class="ava" style="background-image: url(&apos;project://database/Assets/Sprites/128/Cog128.png?fileID=2800000&amp;guid=fe7f28583815e944993cdb808f259b29&amp;type=3#Cog128&apos;);" />
-            <ui:VisualElement>
-                <ui:VisualElement>
-                    <ui:Label tabindex="-1" text="Mikalai2006" display-tooltip-when-elided="true" name="UserName" class="font-bold text-xs p-0 text-secondary m-0" style="padding-left: 5px;" />
-                </ui:VisualElement>
-                <ui:VisualElement class="font-bold" style="flex-direction: row; align-items: center;">
-                    <ui:VisualElement style="flex-direction: row; align-items: center;">
-                        <ui:VisualElement name="UserRateImg" class="w4 h-4" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/128/Rating128.png?fileID=2800000&amp;guid=54e35f220d7347e4f99f199862e81c5e&amp;type=3#Rating128&apos;);" />
-                        <ui:Label tabindex="-1" text="123456" display-tooltip-when-elided="true" name="UserRate" class="p-0 m-0 text-secondary" />
+            <ui:Button display-tooltip-when-elided="true" name="BtnUser" class="p-0 button_user button m-0">
+                <ui:VisualElement name="Ava" class="ava" style="background-image: url(&apos;project://database/Assets/Sprites/128/Cog128.png?fileID=2800000&amp;guid=fe7f28583815e944993cdb808f259b29&amp;type=3#Cog128&apos;);" />
+                <ui:VisualElement style="padding-left: 2px; padding-right: 2px;">
+                    <ui:VisualElement>
+                        <ui:Label tabindex="-1" text="Mikalai2006" display-tooltip-when-elided="true" name="UserName" class="font-bold text-xs p-0 text-secondary m-0" style="padding-left: 5px;" />
                     </ui:VisualElement>
-                    <ui:VisualElement style="flex-direction: row; align-items: center; margin-left: 5px;">
-                        <ui:VisualElement name="UserCoinImg" class="w4 h-4" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/128/Rating128.png?fileID=2800000&amp;guid=54e35f220d7347e4f99f199862e81c5e&amp;type=3#Rating128&apos;);" />
-                        <ui:Label tabindex="-1" text="123456" display-tooltip-when-elided="true" name="UserCoin" class="p-0 m-0 text-secondary" />
+                    <ui:VisualElement class="font-bold" style="flex-direction: row; align-items: center;">
+                        <ui:VisualElement style="flex-direction: row; align-items: center;">
+                            <ui:VisualElement name="UserRateImg" class="w4 h-4" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/128/Rating128.png?fileID=2800000&amp;guid=54e35f220d7347e4f99f199862e81c5e&amp;type=3#Rating128&apos;);" />
+                            <ui:Label tabindex="-1" text="123456" display-tooltip-when-elided="true" name="UserRate" class="p-0 m-0 text-secondary" />
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-direction: row; align-items: center; margin-left: 5px;">
+                            <ui:VisualElement name="UserCoinImg" class="w4 h-4" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/128/Rating128.png?fileID=2800000&amp;guid=54e35f220d7347e4f99f199862e81c5e&amp;type=3#Rating128&apos;);" />
+                            <ui:Label tabindex="-1" text="123456" display-tooltip-when-elided="true" name="UserCoin" class="p-0 m-0 text-secondary" />
+                        </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
-            </ui:VisualElement>
+            </ui:Button>
             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
             <ui:Button display-tooltip-when-elided="true" name="ShopBtn" class="button_circle">
                 <ui:VisualElement name="ImgShop" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/128/Shop128.png?fileID=2800000&amp;guid=1ab9b49f9f0ed954fbbc36f707b39d3e&amp;type=3#Shop128&apos;);" />
@@ -31,7 +33,7 @@
             </ui:Button>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="MenuBlok" class="font text-primary" style="background-color: rgba(0, 0, 0, 0.71); position: absolute; left: 0; top: 0; right: 0; bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; display: flex; flex-grow: 1;">
+    <ui:VisualElement name="MenuBlok" class="font text-primary" style="background-color: rgba(0, 0, 0, 0.71); position: absolute; left: 0; top: 0; right: 0; bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; display: none; flex-grow: 1;">
         <ui:VisualElement name="MenuBlokWrapper" class="b-rounded" style="background-color: rgb(164, 164, 164); align-items: stretch; max-width: 600px; align-self: center; flex-grow: 0; width: 380px;">
             <ui:VisualElement class="header" style="flex-grow: 1;">
                 <ui:VisualElement class="p-1" style="flex-shrink: 0; align-items: stretch; flex-grow: 1;">
@@ -44,25 +46,29 @@
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="Menu" style="background-color: rgba(0, 0, 0, 0); padding-left: 20px; padding-right: 20px; padding-top: 20px; padding-bottom: 20px;">
-                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); margin-bottom: 20px; flex-direction: row;">
+                <ui:VisualElement class="row" style="background-color: rgba(0, 0, 0, 0); flex-direction: row;">
                     <ui:Label tabindex="-1" text="#volumeEffect" display-tooltip-when-elided="true" class="text-primary" />
                     <ui:Slider picking-mode="Ignore" value="0.2" high-value="1" name="VolumeEffect" class="text-primary" style="flex-grow: 1;" />
                 </ui:VisualElement>
-                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); padding-bottom: 20px; flex-direction: row;">
+                <ui:VisualElement class="row" style="background-color: rgba(0, 0, 0, 0); flex-direction: row;">
                     <ui:Label tabindex="-1" text="#volumeMusic" display-tooltip-when-elided="true" class="text-primary" />
                     <ui:Slider picking-mode="Ignore" value="0.2" high-value="1" name="VolumeMusic" class="text-primary" style="flex-grow: 1;" />
                 </ui:VisualElement>
-                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); padding-bottom: 20px;">
+                <ui:VisualElement class="row" style="background-color: rgba(0, 0, 0, 0);">
                     <ui:Label tabindex="-1" text="#timedelay" display-tooltip-when-elided="true" class="text-primary" />
                     <ui:SliderInt picking-mode="Ignore" value="50" high-value="500" name="TimeDelay" low-value="5" class="text-primary" />
                 </ui:VisualElement>
-                <ui:VisualElement name="LanguageBlock" style="background-color: rgba(0, 0, 0, 0); flex-direction: row;">
+                <ui:VisualElement name="LanguageBlock" class="row" style="background-color: rgba(0, 0, 0, 0); flex-direction: row;">
                     <ui:Label tabindex="-1" text="#language" display-tooltip-when-elided="true" class="text-primary" />
                     <ui:DropdownField index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Language" class="text-primary" style="flex-grow: 1;" />
                 </ui:VisualElement>
-                <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-direction: row;">
+                <ui:VisualElement class="row" style="background-color: rgba(0, 0, 0, 0); flex-direction: row;">
                     <ui:Label tabindex="-1" text="#theme" display-tooltip-when-elided="true" class="text-primary" />
                     <ui:DropdownField index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Theme" class="text-primary" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="row" style="background-color: rgba(0, 0, 0, 0); flex-direction: row;">
+                    <ui:Label tabindex="-1" text="#dodialog" display-tooltip-when-elided="true" class="text-primary" style="flex-grow: 1; flex-shrink: 1; white-space: normal;" />
+                    <ui:Toggle name="DoDialog" />
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement style="margin-left: 20px; margin-right: 20px; margin-top: 20px; margin-bottom: 20px; flex-direction: row; justify-content: space-between;">

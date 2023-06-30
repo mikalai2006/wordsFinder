@@ -26,6 +26,6 @@ public class Constants
 
   public class LanguageTable
   {
-    public const string LANG_TABLE_LOCALIZE = "Localize";
+    public const string LANG_TABLE_LOCALIZE = "localize";
   }
 }

@@ -47,8 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _localization:
     m_TableReference:
-      m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+      m_TableCollectionName: GUID:f9a9052fe3a3e0948889bf1b4a32b1ae
   _uiDoc: {fileID: 2419955862590935822}
+  _entityItem: {fileID: 9197481963319205126, guid: 3784b972c0197bd419bdac2aedb9672d, type: 3}
   processAction:
     m_PersistentCalls:
       m_Calls: []

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _localization:
     m_TableReference:
-      m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+      m_TableCollectionName: GUID:f9a9052fe3a3e0948889bf1b4a32b1ae
   _uiDoc: {fileID: 7423244571743716900}
   _shopItem: {fileID: 9197481963319205126, guid: d921a872ae6113748b5fe6edbe98167d, type: 3}
   _userBalanceItem: {fileID: 9197481963319205126, guid: 9648ce58a6190ed46a99bca20efe418b, type: 3}

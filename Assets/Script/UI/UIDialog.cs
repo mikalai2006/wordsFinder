@@ -2,11 +2,15 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 public class UIDialog : UILocaleBase
 {
   [SerializeField] private UIDocument _uiDoc;
+  [SerializeField] private VisualTreeAsset _entityItem;
   private VisualElement _wrap;
+  private VisualElement _sprite;
+  private VisualElement _listEntity;
   private Label _headerText;
   private Label _messageText;
   private Button _buttonOk;
@@ -33,6 +37,9 @@ public class UIDialog : UILocaleBase
 
     _headerText = _root.Q<Label>("HeaderText");
     _messageText = _root.Q<Label>("MessageText");
+    _sprite = _root.Q<VisualElement>("Sprite");
+    _listEntity = _root.Q<VisualElement>("ListEntity");
+    _listEntity.Clear();
 
 
     _buttonOk = _root.Q<Button>("Ok");
@@ -50,6 +57,7 @@ public class UIDialog : UILocaleBase
   private void ChangeTheme()
   {
     _root.Q<VisualElement>("DialogWrapper").style.backgroundColor = new StyleColor(_gameManager.Theme.bgColor);
+    _sprite.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.entityColor);
   }
 
   public async Task<DataDialogResult> ProcessAction(DataDialog dataDialog)
@@ -57,13 +65,62 @@ public class UIDialog : UILocaleBase
     _dataResultDialog = new DataDialogResult();
     _dataDialog = dataDialog;
 
-    if (!string.IsNullOrEmpty(_dataDialog.headerText)) _headerText.text = _dataDialog.headerText;
-    if (!string.IsNullOrEmpty(_dataDialog.messageText)) _messageText.text = _dataDialog.messageText;
+    if (!string.IsNullOrEmpty(_dataDialog.title)) _headerText.text = _dataDialog.title;
+    if (!string.IsNullOrEmpty(_dataDialog.message)) _messageText.text = _dataDialog.message;
 
     if (_dataDialog.showCancelButton)
     {
       _buttonCancel.style.display = DisplayStyle.Flex;
     }
+
+    if (_dataDialog.sprite != null)
+    {
+      _sprite.style.display = DisplayStyle.Flex;
+      _sprite.style.backgroundImage = new StyleBackground(_dataDialog.sprite);
+    }
+    else
+    {
+      _sprite.style.display = DisplayStyle.None;
+    }
+
+    _listEntity.Clear();
+    if (_dataDialog.entities != null && _dataDialog.entities.Count > 0)
+    {
+      foreach (var entityItem in _dataDialog.entities)
+      {
+
+        var entityEl = _entityItem.Instantiate();
+
+        entityEl.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(entityItem.entity.sprite);
+        entityEl.Q<VisualElement>("Img").style.unityBackgroundImageTintColor = _gameManager.Theme.entityColor;
+
+        entityEl.Q<Label>("Count").text = entityItem.count.ToString();
+        entityEl.Q<Label>("Count").style.color = _gameManager.Theme.entityColor;
+        // entityEl.Q<Label>("Name").text = await Helpers.GetLocaledString(entityItem.configEntity.text.title);
+        entityEl.Q<Button>().clickable.clicked += async () =>
+        {
+
+          AudioManager.Instance.Click();
+          _gameManager.InputManager.Disable();
+
+          var title = await Helpers.GetLocaledString(entityItem.entity.text.title);
+          var message = await Helpers.GetLocaledString(entityItem.entity.text.description);
+          var dialog = new DialogProvider(new DataDialog()
+          {
+            title = title,
+            sprite = entityItem.entity.sprite,
+            message = message,
+            showCancelButton = true
+          });
+
+          await dialog.ShowAndHide();
+          _gameManager.InputManager.Enable();
+        };
+
+        _listEntity.Add(entityEl);
+      }
+    }
+
 
     _processCompletionSource = new TaskCompletionSource<DataDialogResult>();
 

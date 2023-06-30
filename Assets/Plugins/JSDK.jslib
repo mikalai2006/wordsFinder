@@ -63,14 +63,43 @@ var plugin = {
     });
   },
   GetLeaderBoard: function () {
-    ysdk
-      .getLeaderboards()
-      .then((lb) => lb.getLeaderboardDescription("Rate"))
-      .then((res) => {
+    const result = {};
+    ysdk.getLeaderboards().then((lb) => {
+      // Получение 10 топов и 3 записей возле пользователя
+      lb.getLeaderboardEntries("Rate", {
+        quantityTop: 10,
+        includeUser: true,
+        quantityAround: 3,
+      }).then((res) => {
+        result.leaderboard = {
+          title: res.leaderboard.title,
+        };
+        result.userRank = res.userRank;
+        result.entries = [];
+
+        for (let i = 0; i < res.entries.length; i++) {
+          const userData = res.entries[i];
+          result.entries.push({
+            rank: userData.rank,
+            score: userData.score,
+            name: userData.player.publicName,
+            lang: userData.player.lang,
+            photo: userData.player.getAvatarSrc("middle"),
+          });
+        }
+
         console.group("GetLeaderBoard");
-        console.log(res);
+        console.log(result);
         console.groupEnd();
+
+        const stringResult = JSON.stringify(result);
+        myGameInstance.SendMessage(
+          "UIStartMenu",
+          "DrawLeaderListBlok",
+          stringResult
+        );
       });
+    });
   },
 };
 

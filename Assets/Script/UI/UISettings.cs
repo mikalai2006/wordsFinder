@@ -14,6 +14,7 @@ public class UISettings : UILocaleBase
   private VisualElement _userCoinImg;
   private VisualElement _languageBlock;
   private VisualElement _userRateImg;
+  private Toggle _doDialog;
   private Label _userRate;
   private Label _userCoin;
   private Label _userName;
@@ -46,7 +47,7 @@ public class UISettings : UILocaleBase
     DialogLevel.OnShowDialog -= HideAside;
   }
 
-  public async virtual void Start()
+  public virtual void Start()
   {
     _aside = _uiDoc.rootVisualElement.Q<VisualElement>("AsideBlok");
     _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
@@ -61,6 +62,7 @@ public class UISettings : UILocaleBase
     _sliderVolumeMusic = menuBlok.Q<Slider>("VolumeMusic");
     _sliderVolumeEffect = menuBlok.Q<Slider>("VolumeEffect");
     _dropdownTheme = menuBlok.Q<DropdownField>("Theme");
+    _doDialog = menuBlok.Q<Toggle>("DoDialog");
 
 
     _exitButton = _aside.Q<Button>("ExitBtn");
@@ -114,9 +116,6 @@ public class UISettings : UILocaleBase
 
     _userName = _aside.Q<Label>("UserName");
 
-    _userName.text = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.name)
-      ? await Helpers.GetLocaledString(_gameSettings.noName.title)
-      : _gameManager.AppInfo.UserInfo.name;
 
     ChangeTheme(null);
     SetValue(_gameManager.StateManager.stateGame);
@@ -166,6 +165,13 @@ public class UISettings : UILocaleBase
     imgShop.style.backgroundImage = new StyleBackground(_gameSettings.spriteShop);
     imgShop.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
 
+    string userName = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.name)
+      ? await Helpers.GetLocaledString(_gameSettings.noName.title)
+      : _gameManager.AppInfo.UserInfo.name;
+    // string status = await Helpers.GetLocaledString(_gameSettings.noName.title);
+    _userName.text = string.Format("{0}", userName);
+
+
     base.Theming(_uiDoc.rootVisualElement);
   }
 
@@ -213,6 +219,8 @@ public class UISettings : UILocaleBase
     }
 
     _dropdownLanguage.RegisterValueChangedCallback(ChooseLanguage);
+    _dropdownTheme.RegisterValueChangedCallback(ChangeTheme);
+    _doDialog.RegisterValueChangedCallback(ChangeDoDialog);
   }
 
   private void HideMenu()
@@ -220,6 +228,8 @@ public class UISettings : UILocaleBase
     _menu.style.display = DisplayStyle.None;
 
     _dropdownLanguage.UnregisterValueChangedCallback(ChooseLanguage);
+    _dropdownTheme.UnregisterValueChangedCallback(ChangeTheme);
+    _doDialog.UnregisterValueChangedCallback(ChangeDoDialog);
   }
 
   private void ClickToStartMenuButton()
@@ -295,7 +305,6 @@ public class UISettings : UILocaleBase
 
 
     // Theme.
-
     var allThemes = _gameManager.ResourceSystem.GetAllTheme();
 
     _dropdownTheme.choices.Clear();
@@ -305,8 +314,17 @@ public class UISettings : UILocaleBase
       _dropdownTheme.choices.Add(theme.name);
     }
     _dropdownTheme.value = userSettings.theme;
-    _dropdownTheme.RegisterValueChangedCallback(ChangeTheme);
 
+
+    // DoDialog.
+    _doDialog.value = userSettings.dod;
+  }
+
+  private void ChangeDoDialog(ChangeEvent<bool> evt)
+  {
+    var userSettings = _gameManager.AppInfo.setting;
+    userSettings.dod = evt.newValue;
+    _gameManager.DataManager.SaveSettings();
   }
 
   private async void ChooseLanguage(ChangeEvent<string> evt)

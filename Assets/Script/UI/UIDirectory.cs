@@ -118,7 +118,7 @@ public class UIDirectory : UILocaleBase
       var message = await Helpers.GetLocaledString("disconnect");
       var dialog = new DialogProvider(new DataDialog()
       {
-        messageText = message,
+        message = message,
         showCancelButton = false
       });
       await dialog.ShowAndHide();
@@ -134,8 +134,8 @@ public class UIDirectory : UILocaleBase
         var message = Helpers.StripHTML(responseText.extract);
         var dialog = new DialogProvider(new DataDialog()
         {
-          headerText = _activeWord,
-          messageText = message,
+          title = _activeWord,
+          message = message,
           showCancelButton = false
         });
         await dialog.ShowAndHide();
@@ -145,7 +145,7 @@ public class UIDirectory : UILocaleBase
         var message = await Helpers.GetLocaledString("nofoundword");
         var dialog = new DialogProvider(new DataDialog()
         {
-          messageText = message,
+          message = message,
           showCancelButton = false
         });
         await dialog.ShowAndHide();

@@ -114,8 +114,9 @@ public class UIShop : UILocaleBase
           var message = await Helpers.GetLocaledString(item.entity.text.description);
           var dialog = new DialogProvider(new DataDialog()
           {
-            headerText = title,
-            messageText = message
+            sprite = item.entity.sprite,
+            title = title,
+            message = message
           });
 
           await dialog.ShowAndHide();
@@ -133,25 +134,9 @@ public class UIShop : UILocaleBase
       buttonForCoin.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
         = new StyleColor(_gameManager.Theme.entityColor);
       buttonForCoin.clickable.clicked += async () =>
-        {
-          // TODO Buy for coin.
-          AudioManager.Instance.Click();
-          _gameManager.StateManager.BuyHint(item);
-          _gameManager.InputManager.Disable();
-
-          var message = await Helpers.GetLocalizedPluralString("successbuy", new Dictionary<string, int>() {
-            {"count", item.count}
-          });
-          var dialog = new DialogProvider(new DataDialog()
-          {
-            messageText = message,
-            showCancelButton = true
-          });
-
-          await dialog.ShowAndHide();
-          _gameManager.InputManager.Enable();
-
-        };
+      {
+        await BuyEnity(item);
+      };
 
       var textPriceCoin = await Helpers.GetLocalizedPluralString(
           "costitemtext",
@@ -237,8 +222,9 @@ public class UIShop : UILocaleBase
           var message = await Helpers.GetLocaledString(item.entity.text.description);
           var dialog = new DialogProvider(new DataDialog()
           {
-            headerText = title,
-            messageText = message
+            sprite = item.entity.sprite,
+            title = title,
+            message = message
           });
 
           await dialog.ShowAndHide();
@@ -254,13 +240,10 @@ public class UIShop : UILocaleBase
       buttonForCoin.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteBuy);
       buttonForCoin.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
         = new StyleColor(_gameManager.Theme.entityColor);
-      buttonForCoin.clickable.clicked += () =>
-        {
-          // TODO Buy for coin.
-          AudioManager.Instance.Click();
-          _gameManager.StateManager.BuyBonus(item);
-
-        };
+      buttonForCoin.clickable.clicked += async () =>
+      {
+        await BuyBonus(item);
+      };
 
       var textPriceCoin = await Helpers.GetLocalizedPluralString(
           "costitemtext",
@@ -288,7 +271,6 @@ public class UIShop : UILocaleBase
         );
       }
 
-      // Button buy for coin.
       var buttonForAdv = blokItem.Q<Button>("Adv");
       buttonForAdv.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteAdv);
       buttonForAdv.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
@@ -309,6 +291,118 @@ public class UIShop : UILocaleBase
     }
 
 
+  }
+
+  private async UniTask BuyBonus(ShopItem<GameBonus> item)
+  {
+    // TODO Buy for coin.
+    AudioManager.Instance.Click();
+    _gameManager.InputManager.Disable();
+
+
+    DataDialogResult resultConfirm = new()
+    {
+      isOk = true,
+    };
+
+    // DoDialog.
+    if (_gameManager.AppInfo.setting.dod)
+    {
+      _gameManager.InputManager.Disable();
+
+      var nameConfirm = await Helpers.GetLocaledString(item.entity.text.title);
+      var messageConfirm = await Helpers.GetLocalizedPluralString("confirm_buybonus", new Dictionary<string, object>() {
+            {"name", nameConfirm},
+            {"count", item.count},
+            {"count2", item.cost * item.count}
+          });
+      var title = await Helpers.GetLocaledString("confirm_title");
+      var dialogConfirm = new DialogProvider(new DataDialog()
+      {
+        title = title,
+        sprite = item.entity.sprite,
+        message = messageConfirm,
+        showCancelButton = true
+      });
+
+      resultConfirm = await dialogConfirm.ShowAndHide();
+      _gameManager.InputManager.Enable();
+    }
+
+    if (resultConfirm.isOk)
+    {
+
+      _gameManager.StateManager.BuyBonus(item);
+
+      var message = await Helpers.GetLocalizedPluralString("successbuy", new Dictionary<string, int>() {
+      {"count", item.count}
+    });
+      var dialog = new DialogProvider(new DataDialog()
+      {
+        sprite = item.entity.sprite,
+        message = message,
+        showCancelButton = true
+      });
+
+      await dialog.ShowAndHide();
+    }
+
+    _gameManager.InputManager.Enable();
+  }
+
+  private async UniTask BuyEnity(ShopItem<GameEntity> item)
+  {
+    // TODO Buy for coin.
+    AudioManager.Instance.Click();
+    _gameManager.InputManager.Disable();
+
+    DataDialogResult resultConfirm = new()
+    {
+      isOk = true,
+    };
+
+    // DoDialog.
+    if (_gameManager.AppInfo.setting.dod)
+    {
+      _gameManager.InputManager.Disable();
+
+      var nameConfirm = await Helpers.GetLocaledString(item.entity.text.title);
+      var messageConfirm = await Helpers.GetLocalizedPluralString("confirm_runbuyhint", new Dictionary<string, object>() {
+            {"name", nameConfirm},
+            {"count", item.count},
+            {"count2", item.cost * item.count}
+          });
+      var title = await Helpers.GetLocaledString("confirm_title");
+      var dialogConfirm = new DialogProvider(new DataDialog()
+      {
+        title = title,
+        sprite = item.entity.sprite,
+        message = messageConfirm,
+        showCancelButton = true
+      });
+
+      resultConfirm = await dialogConfirm.ShowAndHide();
+      _gameManager.InputManager.Enable();
+    }
+
+    if (resultConfirm.isOk)
+    {
+      _gameManager.StateManager.BuyHint(item);
+
+      var message = await Helpers.GetLocalizedPluralString("successbuy", new Dictionary<string, int>() {
+            {"count", item.count}
+          });
+      var dialog = new DialogProvider(new DataDialog()
+      {
+        sprite = item.entity.sprite,
+        message = message,
+        showCancelButton = true
+      });
+
+      await dialog.ShowAndHide();
+    }
+
+    _gameManager.InputManager.Enable();
   }
 
   private void ClickClose()

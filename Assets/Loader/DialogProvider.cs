@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Assets;
 
 using Cysharp.Threading.Tasks;
@@ -12,11 +13,13 @@ public struct DataDialogResult
 
 public struct DataDialog
 {
-  public string headerText;
-  public string messageText;
+  public string title;
+  public string message;
   public Sprite sprite;
   public bool showCancelButton;
+  public List<ShopItem<GameEntity>> entities;
 }
+
 
 public class DialogProvider : LocalAssetLoader
 {

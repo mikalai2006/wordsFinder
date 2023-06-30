@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -211,7 +212,41 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 
     if (value != 0)
     {
-      RunHint();
+      DataDialogResult result = new()
+      {
+        isOk = true,
+      };
+
+      // DoDialog.
+      if (_gameManager.AppInfo.setting.dod)
+      {
+        _gameManager.InputManager.Disable();
+
+        var name = await Helpers.GetLocaledString(configEntity.text.title);
+        var message = await Helpers.GetLocalizedPluralString("confirm_runhint", new Dictionary<string, string>() {
+        {"name", name}
+      });
+        var title = await Helpers.GetLocaledString("confirm_title");
+        var dialog = new DialogProvider(new DataDialog()
+        {
+          title = title,
+          sprite = configEntity.sprite,
+          message = message,
+          showCancelButton = true
+        });
+
+        result = await dialog.ShowAndHide();
+        _gameManager.InputManager.Enable();
+      }
+
+      if (result.isOk)
+      {
+        RunHint();
+      }
+      else
+      {
+        _gameManager.ChangeState(GameState.StopEffect);
+      }
     }
     else
     {
@@ -224,7 +259,8 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
       });
       var dialog = new DialogProvider(new DataDialog()
       {
-        messageText = message,
+        sprite = configEntity.sprite,
+        message = message,
         showCancelButton = true
       });
 

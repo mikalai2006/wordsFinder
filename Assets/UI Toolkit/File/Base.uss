@@ -267,14 +267,23 @@
 .ava {
     width: 35px;
     height: 35px;
-    border-top-left-radius: 50%;
-    border-bottom-left-radius: 50%;
-    border-top-right-radius: 50%;
-    border-bottom-right-radius: 50%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .button_close {
     font-size: 22px;
     -unity-text-align: middle-center;
     -unity-font-style: bold;
+}
+
+.button_user {
+    flex-direction: row;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }

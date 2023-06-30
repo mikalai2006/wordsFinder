@@ -39,7 +39,8 @@ public class ButtonFrequency : BaseButton
       var message = await Helpers.GetLocaledString("notfoundnodehiddenchar");
       var dialog = new DialogProvider(new DataDialog()
       {
-        messageText = message,
+        sprite = configEntity.sprite,
+        message = message,
         showCancelButton = false
       });
 

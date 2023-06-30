@@ -61,11 +61,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aac99f63b32f694a8522c1bf512d5a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uiDoc: {fileID: 3182381881307154169}
   _localization:
     m_TableReference:
-      m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
-  _urlLogin: https://storydata.ru/api/v1/auth
+      m_TableCollectionName: GUID:f9a9052fe3a3e0948889bf1b4a32b1ae
+  _uiDoc: {fileID: 3182381881307154169}
   loginAction:
     m_PersistentCalls:
       m_Calls: []

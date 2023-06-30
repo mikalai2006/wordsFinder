@@ -9,6 +9,8 @@ public class ManagerHiddenWords : MonoBehaviour
 {
   [DllImport("__Internal")]
   private static extern void SetToLeaderBoard(int value);
+  [DllImport("__Internal")]
+  private static extern void GetLeaderBoard();
   // public static event Action OnChangeData;
   [SerializeField] public Tilemap tilemap;
   [SerializeField] public Tilemap tilemapEntities;
@@ -518,9 +520,11 @@ public class ManagerHiddenWords : MonoBehaviour
 
     if (result.isOk)
     {
+
 #if ysdk
       SetToLeaderBoard(_stateManager.dataGame.rate);
 #endif
+
       // Check next level status player.
       await _levelManager.CheckNextLevelPlayer();
 
@@ -528,6 +532,9 @@ public class ManagerHiddenWords : MonoBehaviour
 
       _stateManager.UseBonus(-1, TypeBonus.OpenNeighbours);
 
+#if ysdk
+      GetLeaderBoard();
+#endif
       _levelManager.InitLevel(newConfigWord);
     }
 

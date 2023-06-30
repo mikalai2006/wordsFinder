@@ -207,8 +207,9 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
     var message = await Helpers.GetLocaledString(configEntity.text.description);
     var dialog = new DialogProvider(new DataDialog()
     {
-      headerText = title,
-      messageText = message,
+      sprite = configEntity.sprite,
+      title = title,
+      message = message,
       showCancelButton = false
     });
 

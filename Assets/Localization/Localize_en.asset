@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: Localize_en
+  m_Name: localize_en
   m_EditorClassIdentifier: 
   m_LocaleId:
     m_Code: en
-  m_SharedData: {fileID: 11400000, guid: f5c9743175ccc03429548cfaca7a4395, type: 2}
+  m_SharedData: {fileID: 11400000, guid: f9a9052fe3a3e0948889bf1b4a32b1ae, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 366247623133495314
+    - rid: 366248018379538446
   m_TableData:
   - m_Id: 4188194111488
     m_Localized: Exit
@@ -67,7 +67,7 @@ MonoBehaviour:
     m_Localized: '{count} {count:word|words} of {count2}'
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 662165112651776
     m_Localized: Load config game
     m_Metadata:
@@ -80,7 +80,7 @@ MonoBehaviour:
     m_Localized: 'Found {count} bonus {count:word|words} of {count2}. '
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 1568783467708416
     m_Localized: Continue
     m_Metadata:
@@ -109,12 +109,8 @@ MonoBehaviour:
     m_Localized: Actual progress
     m_Metadata:
       m_Items: []
-  - m_Id: 3189738174578688
-    m_Localized: senior
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3189713814061056
-    m_Localized: major
+  - m_Id: 3189624831901696
+    m_Localized: begin
     m_Metadata:
       m_Items: []
   - m_Id: 3189652749189120
@@ -125,15 +121,19 @@ MonoBehaviour:
     m_Localized: middle
     m_Metadata:
       m_Items: []
-  - m_Id: 3189624831901696
-    m_Localized: begin
+  - m_Id: 3189713814061056
+    m_Localized: major
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3189738174578688
+    m_Localized: senior
     m_Metadata:
       m_Items: []
   - m_Id: 3195120322248704
     m_Localized: Found {count} word{count:|s}
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 3213003978866688
     m_Localized: Settings
     m_Metadata:
@@ -150,19 +150,19 @@ MonoBehaviour:
     m_Localized: Buy {count} for {cost} coin{cost:|s}
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 3431140439523328
     m_Localized: Get {count} per view ads
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 3448300033441792
     m_Localized: "\u0412\u0430\u043C \u0431\u0443\u0434\u0435\u0442 \u043D\u0430\u0447\u0438\u0441\u043B\u0435\u043D\u043E
       {count} \u043F\u043E\u0434\u0441\u043A\u0430\u0437{count:\u043E\u043A|\u043A\u0430|\u043A\u0438}
       {name} \u0437\u0430 {cost} \u043C\u043E\u043D\u0435\u0442{cost:|\u0430|\u044B}. "
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 3451102625431552
     m_Localized: Star
     m_Metadata:
@@ -179,7 +179,7 @@ MonoBehaviour:
     m_Localized: coin{count:|s|}
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 3458438974832640
     m_Localized: Lightning
     m_Metadata:
@@ -215,13 +215,19 @@ MonoBehaviour:
   - m_Id: 3476387282452480
     m_Localized: When opening words on the scoreboard, the vertical neighbors of
       each letter are opened if they contain the same letter. It's an effect! If
-      it is available, it is applied immediately. Validity - 1 round.
+      it is available, it is applied immediately. Validity - 1 round. Has no penalty
+      - the prompted letter still produces a coin.
     m_Metadata:
       m_Items: []
   - m_Id: 3730866485493760
     m_Localized: Complete round successfully!
     m_Metadata:
       m_Items: []
+  - m_Id: 3731728058449920
+    m_Localized: '{count} bonus word{count:|s} successfully found!'
+    m_Metadata:
+      m_Items:
+      - rid: 366248018379538446
   - m_Id: 3766257527717888
     m_Localized: Round conditions
     m_Metadata:
@@ -230,12 +236,12 @@ MonoBehaviour:
     m_Localized: 'It is necessary to find {count} word{count:|s|} from {count2} possible. '
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 3767132480503808
     m_Localized: Result of {value} round
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 3769140453212160
     m_Localized: Round
     m_Metadata:
@@ -244,7 +250,7 @@ MonoBehaviour:
     m_Localized: You will be given {count} hint{count:|s}
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 3806768712024064
     m_Localized: You start this round without prompts.
     m_Metadata:
@@ -276,7 +282,7 @@ MonoBehaviour:
       word{count2:|s}.'
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 4517829861867520
     m_Localized: Unknown
     m_Metadata:
@@ -290,7 +296,7 @@ MonoBehaviour:
       complex words are available to you.
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 4600095082446848
     m_Localized: Directory
     m_Metadata:
@@ -331,30 +337,64 @@ MonoBehaviour:
       shop window. Do you want to open a window?
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 5294099914719232
     m_Localized: Successfully received {count} hint{count:|s}
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
-  - m_Id: 3731728058449920
-    m_Localized: '{count} bonus word{count:|s} successfully found!'
-    m_Metadata:
-      m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 5984530734415872
     m_Localized: Total found {count} of {count2} possible word{count2:|s}
     m_Metadata:
       m_Items:
-      - rid: 366247623133495314
+      - rid: 366248018379538446
   - m_Id: 6374939935539200
     m_Localized: English words
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6699709965172736
+    m_Localized: Random gift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6700294437240832
+    m_Localized: As a thank you for visiting the game, you receive a random gift.
+      The next gift will be ready in {count} hour{count:|s}
+    m_Metadata:
+      m_Items:
+      - rid: 366248018379538446
+  - m_Id: 6713619946569728
+    m_Localized: Show an explanation dialog before performing an action
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6741078280667136
+    m_Localized: Do you really want to use the hint {name}?
+    m_Metadata:
+      m_Items:
+      - rid: 366248018379538446
+  - m_Id: 6741702284050432
+    m_Localized: Action confirmation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6748302013005824
+    m_Localized: Are you sure you want to buy a {count} hint{count:|s} ({name}) with
+      {count2} coin{count2:|s}?
+    m_Metadata:
+      m_Items:
+      - rid: 366248018379538446
+  - m_Id: 6751560454537216
+    m_Localized: Are you sure you want to buy {count} effect{count:|s} ({name}) for
+      {count2} coin{count2:|s}?
+    m_Metadata:
+      m_Items:
+      - rid: 366248018379538446
+  - m_Id: 6780731931131904
+    m_Localized: Russian words
     m_Metadata:
       m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 366247623133495314
+    - rid: 366248018379538446
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 008012baef150200008052d5248e05000080d2ebf1590b00008092ea35400c000080925ecd430c000080521d7c300c00008052e12f620d00008052dfaf610d00008012091f860d0000801274d0f80f000080926f011210000080d2e208cc1200008012a39a300c000080d2b0f4ce1200008052a5fc410d0000809224e6421500
+        m_Entries: 008012091f860d00008052e12f620d0000801274d0f80f000080926f011210000080d2e208cc12000080d2b0f4ce120000809224e64215000080d2dde1cd170000805298f9f21700008052808bf917000080922a82fc1700008012baef150200008052d5248e05000080d2ebf1590b000080521d7c300c00008012a39a300c00008092ea35400c000080925ecd430c00008052a5fc410d00008052dfaf610d00

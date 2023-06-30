@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: Localize Shared Data
+  m_Name: localize Shared Data
   m_EditorClassIdentifier: 
-  m_TableCollectionName: Localize
-  m_TableCollectionNameGuidString: f5c9743175ccc03429548cfaca7a4395
+  m_TableCollectionName: localize
+  m_TableCollectionNameGuidString: f9a9052fe3a3e0948889bf1b4a32b1ae
   m_Entries:
   - m_Id: 4188194111488
     m_Key: exit
@@ -312,17 +312,49 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6374939935539200
-    m_Key: title_words
+    m_Key: title_word_en
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6699709965172736
+    m_Key: dailycoins_t
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6700294437240832
+    m_Key: dailycoins_d
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6713619946569728
+    m_Key: dodialog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6741078280667136
+    m_Key: confirm_runhint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6741702284050432
+    m_Key: confirm_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6748302013005824
+    m_Key: confirm_runbuyhint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6751560454537216
+    m_Key: confirm_buybonus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6780731931131904
+    m_Key: title_word_ru
     m_Metadata:
       m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    rid: 366247592156987392
+    rid: 366248018188435480
   references:
     version: 2
     RefIds:
-    - rid: 366247592156987392
+    - rid: 366248018188435480
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
       data:
-        m_CustomEpoch: 1686517143124
+        m_CustomEpoch: 1688142417928

@@ -12,6 +12,28 @@
     background-color: rgb(255, 255, 255);
 }
 
+.unity-toggle__checkmark {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+.row {
+    border-left-color: rgba(255, 255, 255, 0.1);
+    border-right-color: rgba(255, 255, 255, 0.1);
+    border-top-color: rgba(255, 255, 255, 0.1);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+    border-bottom-width: 1px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 .unity-base-field__label {
     color: rgb(255, 255, 255);
 }

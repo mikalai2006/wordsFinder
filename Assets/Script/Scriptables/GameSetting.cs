@@ -14,6 +14,7 @@ public class GameSetting : ScriptableObject
 
   [Space(5)]
   [Header("Game")]
+  public int countHoursDailyGift;
   [Range(0.1f, 1f)] public float lineWidth;
   [Range(0.5f, 3f)] public float radius;
   [Range(0, 3)] public int addinitiallyRow;
@@ -73,9 +74,9 @@ public class GameSetting : ScriptableObject
   [Header("API Directory")]
   public APIDirectory APIDirectory;
 
-  // [Space(5)]
-  // [Header("Directory words")]
-  // public List<WordsFile> files;
+  [Space(5)]
+  [Header("Directory words")]
+  public List<WordsFile> wordFiles;
 }
 
 [System.Serializable]

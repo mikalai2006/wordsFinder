@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _localization:
     m_TableReference:
-      m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+      m_TableCollectionName: GUID:f9a9052fe3a3e0948889bf1b4a32b1ae
   _uiDoc: {fileID: 6983915193956139606}
 --- !u!114 &6983915193956139606
 MonoBehaviour:
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _localization:
     m_TableReference:
-      m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+      m_TableCollectionName: GUID:f9a9052fe3a3e0948889bf1b4a32b1ae
   _uiDoc: {fileID: 6983915194019067610}
   UserInfoDoc: {fileID: 9197481963319205126, guid: 4726e78bebeb9d7499da1ecf16bbccf7, type: 3}
   LeaderDoc: {fileID: 9197481963319205126, guid: 9757e6dc2949782429ee42fb4930b862, type: 3}
@@ -180,6 +180,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _localization:
     m_TableReference:
-      m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+      m_TableCollectionName: GUID:f9a9052fe3a3e0948889bf1b4a32b1ae
   _uiMenuApp: {fileID: 6983915194019067610}
   _uiSettings: {fileID: 6983915193956139606}

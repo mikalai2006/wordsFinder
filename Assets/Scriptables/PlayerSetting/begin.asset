@@ -16,7 +16,7 @@ MonoBehaviour:
   text:
     title:
       m_TableReference:
-        m_TableCollectionName: GUID:f5c9743175ccc03429548cfaca7a4395
+        m_TableCollectionName: GUID:f9a9052fe3a3e0948889bf1b4a32b1ae
       m_TableEntryReference:
         m_KeyId: 3189624831901696
         m_Key: 

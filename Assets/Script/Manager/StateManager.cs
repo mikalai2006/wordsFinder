@@ -118,21 +118,6 @@ public class StateManager : MonoBehaviour
     OnChangeState.Invoke(stateGame);
   }
 
-  // public void RefreshData()
-  // {
-  //   ActuallityData();
-  //   Save
-  // }
-
-  // public void IncrementRate(int quantity)
-  // {
-  //   dataGame.rate += quantity;
-  //   // if (_levelManager.ManagerHiddenWords.OpenWords.Keys.Count > 10)
-  //   // {
-  //   //   dataGame.activeLevel.hint++;
-  //   // }
-  //   RefreshData();
-  // }
 
   public void IncrementCoin(int quantity)
   {
@@ -142,6 +127,8 @@ public class StateManager : MonoBehaviour
 
     RefreshData();
   }
+
+
   public void IncrementTotalCoin(int quantity)
   {
     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addCoin);
@@ -149,14 +136,11 @@ public class StateManager : MonoBehaviour
     // dataGame.coins += quantity;
     stateGame.coins += quantity;
 
-    RefreshData();
+    // RefreshData();
+    _gameManager.DataManager.Save();
+    OnChangeState?.Invoke(stateGame);
   }
-  // public void IncrementWord(string word)
-  // {
-  //   statePerk.countWordInOrder += 1;
 
-  //   RefreshData();
-  // }
 
   public void OpenHiddenWord(string word)
   {
@@ -270,15 +254,23 @@ public class StateManager : MonoBehaviour
   }
 
 
-  public List<string> GetAllowNotCompleteWords()
+  public List<ItemWord> GetAllowNotCompleteWords()
   {
     var allAllowLevelWords = _gameManager.GameSettings.GameLevels
       .Where(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code && t.minRate <= dataGame.rate)
       .ToList();
-    List<string> allAllowWords = new();
+    List<ItemWord> allAllowWords = new();
     foreach (var el in allAllowLevelWords)
     {
-      allAllowWords.AddRange(el.levelWords);
+      for (int i = 0; i < el.levelWords.Count; i++)
+      {
+        allAllowWords.Add(new ItemWord()
+        {
+          word = el.levelWords[i],
+          rate = el.minRate
+        });
+      }
+      // allAllowWords.AddRange(el.levelWords);
     };
 
     return allAllowWords.ToList();
@@ -299,11 +291,11 @@ public class StateManager : MonoBehaviour
         var allAllowWords = GetAllowNotCompleteWords();
 
         // Find not completed word.
-        var notCompletedWords = allAllowWords.Where(t => !dataGame.completed.Contains(t));
+        var notCompletedWords = allAllowWords.Where(t => !dataGame.completed.Contains(t.word));
 
         if (notCompletedWords.Count() > 0)
         {
-          wordConfig = notCompletedWords.ElementAt(0);
+          wordConfig = notCompletedWords.OrderBy(t => t.rate).ThenBy(t => t.word.Length).ElementAt(0).word;
         }
       }
     }
@@ -373,11 +365,11 @@ public class StateManager : MonoBehaviour
 
     var allAllowWords = GetAllowNotCompleteWords();
 
-    var notCompletedWords = allAllowWords.Where(t => !dataGame.completed.Contains(t));
+    var notCompletedWords = allAllowWords.Where(t => !dataGame.completed.Contains(t.word));
 
     if (notCompletedWords.Count() > 0)
     {
-      result = notCompletedWords.ElementAt(0);
+      result = notCompletedWords.OrderBy(t => t.rate).ThenBy(t => t.word.Length).ElementAt(0).word;
     }
 
     return result;
@@ -450,7 +442,18 @@ public class StateManager : MonoBehaviour
     // if (_levelManager != null)
     UseBonus(item.count, item.entity.typeBonus);
     _gameManager.DataManager.Save();
-    OnChangeState?.Invoke(stateGame);
+    // OnChangeState?.Invoke(stateGame);
   }
 
+  public void SetLastTime()
+  {
+    stateGame.lastTime = System.DateTime.Now.ToString();
+  }
+}
+
+
+public struct ItemWord
+{
+  public string word;
+  public int rate;
 }

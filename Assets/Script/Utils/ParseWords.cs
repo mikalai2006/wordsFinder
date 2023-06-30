@@ -6,14 +6,14 @@ using UnityEngine.Localization.Settings;
 [System.Serializable]
 public class ParseWords : MonoBehaviour
 {
-  [SerializeField] public List<WordsFile> files;
+  // [SerializeField] public List<WordsFile> files;
   async void Start()
   {
     await LocalizationSettings.InitializationOperation.Task;
 
     List<Words> words = new();
 
-    foreach (var file in files)
+    foreach (var file in GameManager.Instance.GameSettings.wordFiles)
     {
       var wordsFile = JsonUtility.FromJson<Words>(file.file.text);
 

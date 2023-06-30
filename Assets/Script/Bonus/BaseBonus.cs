@@ -63,6 +63,7 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
   {
     spriteBg.color = _gameManager.Theme.colorPrimary;
     spriteProgress.color = _gameManager.Theme.colorAccent;
+    counterText.color = _gameManager.Theme.bgColor;
   }
 
 
@@ -137,8 +138,9 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
     var message = await Helpers.GetLocaledString(configBonus.text.description);
     var dialog = new DialogProvider(new DataDialog()
     {
-      headerText = title,
-      messageText = message,
+      sprite = configBonus.sprite,
+      title = title,
+      message = message,
       showCancelButton = false
     });
 
