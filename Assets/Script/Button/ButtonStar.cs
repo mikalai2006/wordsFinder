@@ -25,15 +25,15 @@ public class ButtonStar : BaseButton
   #endregion
 
 
-  public override void SetValue(DataGame data)
+  public override void SetValue(StateGame state)
   {
-    value = data.hints.GetValueOrDefault(TypeEntity.Star);
+    value = state.activeDataGame.hints.GetValueOrDefault(TypeEntity.Star);
 
-    base.SetValue(data);
+    base.SetValue(state);
     _countChars.text = string.Format(
       "{0}--{1}",
-      data.activeLevel.countOpenChars,
-      data.activeLevel.bonusCount.charStar
+      state.activeDataGame.activeLevel.countOpenChars,
+      state.activeDataGame.activeLevel.bonusCount.charStar
     );
   }
 
@@ -66,9 +66,9 @@ public class ButtonStar : BaseButton
   // }
 
 
-  public override void SetValueProgressBar(DataGame data)
+  public override void SetValueProgressBar(StateGame state)
   {
-    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)data.activeLevel.bonusCount.charStar / _gameManager.PlayerSetting.bonusCount.charStar;
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)state.activeDataGame.activeLevel.bonusCount.charStar / _gameManager.PlayerSetting.bonusCount.charStar;
     // spriteProgress.transform.localPosition
     //   = new Vector3(spriteProgress.transform.localPosition.x, newPosition);
     spriteProgress.transform

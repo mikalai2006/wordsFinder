@@ -112,11 +112,11 @@ public class TopSide : MonoBehaviour
     SetDefault();
   }
 
-  public async void SetValue(DataGame data)
+  public async void SetValue(StateGame state)
   {
-    _rate.text = data.rate.ToString();
+    _rate.text = state.activeDataGame.rate.ToString();
 
-    _coins.text = data.activeLevel.coins.ToString();
+    _coins.text = state.activeDataGame.activeLevel.coins.ToString();
 
     string status = await Helpers.GetLocaledString(_gameManager.PlayerSetting.text.title);
 

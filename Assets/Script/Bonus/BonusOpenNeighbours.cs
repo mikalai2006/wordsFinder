@@ -8,27 +8,28 @@ public class BonusOpenNeighbours : BaseBonus
   protected override void Awake()
   {
     configBonus = _gameManager.ResourceSystem.GetAllBonus().Find(t => t.typeBonus == TypeBonus.OpenNeighbours);
+    order.sortingOrder = 25;
 
     base.Awake();
   }
   #endregion
 
-  public override void SetValue(DataGame data)
+  public override void SetValue(StateGame state)
   {
-    value = data.bonus.GetValueOrDefault(TypeBonus.OpenNeighbours);
+    value = state.activeDataGame.bonus.GetValueOrDefault(TypeBonus.OpenNeighbours);
 
     // counterText.text = string.Format("{0}", value);
 
-    base.SetValue(data);
+    base.SetValue(state);
 
     if (value == 0) return;
 
-    SetValueProgressBar(data);
+    SetValueProgressBar(state);
   }
 
-  public override void SetValueProgressBar(DataGame data)
+  public override void SetValueProgressBar(StateGame state)
   {
-    var valueBonus = data.bonus.Where(t => t.Key == configBonus.typeBonus);
+    var valueBonus = state.activeDataGame.bonus.Where(t => t.Key == configBonus.typeBonus);
     if (valueBonus != null)
     {
 

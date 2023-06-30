@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
-  m_Name: GameLevel10-30
+  m_Name: level_1_ru_10-30
   m_EditorClassIdentifier: 
   idLevel: 1
   text:
@@ -33,6 +33,7 @@ MonoBehaviour:
       m_WaitForCompletion: 0
       m_LocalVariables: []
   minRate: 0
+  locale: {fileID: 11400000, guid: ee9ad60cf3206d14fa33f59ed209a706, type: 2}
   levelWords:
   - "\u0442\u043E\u0440\u0433"
   - "\u0430\u043C\u043F\u0438\u0440"

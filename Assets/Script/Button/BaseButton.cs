@@ -79,6 +79,8 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 
   public virtual void ChangeTheme()
   {
+    spriteProgress.color = _gameManager.Theme.colorAccent;
+
     if (!pointer.enabled)
     {
       spriteBg.color = _gameManager.Theme.colorDisable;
@@ -87,16 +89,15 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 
     if (statusShowCounter)
     {
-      spriteBg.color = _gameManager.Theme.colorPrimary;
+      spriteBg.color = _gameManager.Theme.entityColor;
     }
     else
     {
       spriteBg.color = _gameManager.Theme.colorDisable;
     }
-    spriteProgress.color = _gameManager.Theme.entityActiveColor;
   }
 
-  public virtual void SetValue(DataGame data)
+  public virtual void SetValue(StateGame state)
   {
     // Debug.Log($"star={data.activeLevel.star}/status={_statusShowCounter}");
     if (value > 0)
@@ -128,7 +129,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 
     // TODO animation get hit.
 
-    SetValueProgressBar(data);
+    SetValueProgressBar(state);
   }
 
 
@@ -170,7 +171,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
     //gameObject.SetActive(false);
   }
 
-  public virtual void SetValueProgressBar(DataGame data)
+  public virtual void SetValueProgressBar(StateGame state)
   {
   }
 

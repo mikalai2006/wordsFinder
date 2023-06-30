@@ -3,26 +3,92 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 public class StateManager : MonoBehaviour
 {
-  public static event Action<DataGame> OnChangeState;
+  public static event Action<StateGame> OnChangeState;
   // public static event Action<GameTheme> OnChangeUserSetting;
   public DataGame dataGame;
+  public StateGame stateGame;
   public string ActiveWordConfig;
 
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   private GameManager _gameManager => GameManager.Instance;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
 
-  public void Init(DataGame data)
+  public async UniTask<StateGame> Init(StateGame _stateGame)
   {
-    dataGame = data;
+    await LocalizationSettings.InitializationOperation.Task;
+    string codeCurrentLang = LocalizationSettings.SelectedLocale.Identifier.Code;
+
+    GamePlayerSetting playerSetting;
+    DataGame dataGame;
+    StateGameItem stateGameItemCurrentLang = _stateGame != null && _stateGame.items.Count > 0
+      ? _stateGame.items.Find(t => t.lang == codeCurrentLang)
+      : null;
+
+    // init new state.
+    if (_stateGame == null) _stateGame = new();
+
+    if (_stateGame.items.Count == 0 || stateGameItemCurrentLang == null) // string.IsNullOrEmpty(dataGame.rank)
+    {
+      // Debug.Log($"{name} ::: Init new gamedata for [{LocalizationSettings.SelectedLocale.Identifier.Code}]");
+
+      playerSetting = _gameManager.GameSettings.PlayerSetting
+        .OrderBy(t => t.countFindWordsForUp)
+        .First();
+
+      dataGame = new DataGame()
+      {
+        rank = playerSetting.idPlayerSetting
+      };
+
+      var newStateGame = new StateGameItem()
+      {
+        dataGame = dataGame,
+        lang = LocalizationSettings.SelectedLocale.Identifier.Code,
+      };
+
+      _stateGame.items.Add(newStateGame);
+    }
+    else
+    {
+      dataGame = _stateGame.items.Find(t => t.lang == codeCurrentLang).dataGame;
+      playerSetting = _gameManager.GameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
+    }
+
+    _gameManager.PlayerSetting = playerSetting;
+
+    stateGame = _stateGame;
+
+    await SetActiveDataGame();
+
+    return _stateGame;
   }
+
+  public async UniTask SetActiveDataGame()
+  {
+    var localeStateGameItem = stateGame.items.Find(t => t.lang == LocalizationSettings.SelectedLocale.Identifier.Code);
+    if (localeStateGameItem != null)
+    {
+      // Debug.Log($"{name} ::: Set localeStateGameItem for [{LocalizationSettings.SelectedLocale.Identifier.Code}]");
+      stateGame.activeDataGame = dataGame = localeStateGameItem.dataGame;
+    }
+    else
+    {
+      await Init(stateGame);
+    };
+    // Debug.Log($"{name} ::: Init lastWord[{LocalizationSettings.SelectedLocale.Identifier.Code}] = {dataGame.lastWord}");
+  }
+
 
   public void RefreshData()
   {
     var managerHiddenWords = _levelManager.ManagerHiddenWords;
+
+    stateGame.rate = stateGame.items.Select(t => t.dataGame.rate).Sum();
+    // stateGame.coins = stateGame.items.Select(t => t.dataGame.coins).Sum();
 
     dataGame.activeLevel.word = managerHiddenWords.WordForChars;
 
@@ -49,7 +115,7 @@ public class StateManager : MonoBehaviour
     dataGame.activeLevel.countOpenChars = managerHiddenWords.OpenWords.Select(t => t.Key.Length).Sum();
 
     _gameManager.DataManager.Save();
-    OnChangeState.Invoke(dataGame);
+    OnChangeState.Invoke(stateGame);
   }
 
   // public void RefreshData()
@@ -73,17 +139,15 @@ public class StateManager : MonoBehaviour
     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addCoin);
 
     dataGame.activeLevel.coins += quantity;
-    // if (_levelManager.ManagerHiddenWords.OpenWords.Keys.Count > 10)
-    // {
-    //   dataGame.activeLevel.hint++;
-    // }
+
     RefreshData();
   }
   public void IncrementTotalCoin(int quantity)
   {
     AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addCoin);
 
-    dataGame.coins += quantity;
+    // dataGame.coins += quantity;
+    stateGame.coins += quantity;
 
     RefreshData();
   }
@@ -209,7 +273,7 @@ public class StateManager : MonoBehaviour
   public List<string> GetAllowNotCompleteWords()
   {
     var allAllowLevelWords = _gameManager.GameSettings.GameLevels
-      .Where(t => t.minRate <= dataGame.rate)
+      .Where(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code && t.minRate <= dataGame.rate)
       .ToList();
     List<string> allAllowWords = new();
     foreach (var el in allAllowLevelWords)
@@ -319,11 +383,14 @@ public class StateManager : MonoBehaviour
     return result;
   }
 
-  public DataGame GetData()
-  {
 
-    return dataGame;
+
+  public StateGame GetData()
+  {
+    return stateGame;
   }
+
+
 
   public void UseBonus(int count, TypeBonus typeBonus)
   {
@@ -336,7 +403,7 @@ public class StateManager : MonoBehaviour
     // await _levelManager.topSide.AddBonus(typeBonus);
 
     // RefreshData();
-    OnChangeState?.Invoke(dataGame);
+    OnChangeState?.Invoke(stateGame);
   }
 
   public void UseHint(int count, TypeEntity typeEntity)
@@ -348,7 +415,7 @@ public class StateManager : MonoBehaviour
     dataGame.hints[typeEntity] = currentCount + count;
 
     // RefreshData();
-    OnChangeState?.Invoke(dataGame);
+    OnChangeState?.Invoke(stateGame);
   }
 
 
@@ -362,10 +429,10 @@ public class StateManager : MonoBehaviour
 
     dataGame.hints[item.entity.typeEntity] = item.count + currentCount;
 
-    dataGame.coins -= item.cost;
+    stateGame.coins -= item.cost;
     // if (_levelManager != null)
     _gameManager.DataManager.Save();
-    OnChangeState?.Invoke(dataGame);
+    OnChangeState?.Invoke(stateGame);
   }
 
 
@@ -383,7 +450,7 @@ public class StateManager : MonoBehaviour
     // if (_levelManager != null)
     UseBonus(item.count, item.entity.typeBonus);
     _gameManager.DataManager.Save();
-    OnChangeState?.Invoke(dataGame);
+    OnChangeState?.Invoke(stateGame);
   }
 
 }

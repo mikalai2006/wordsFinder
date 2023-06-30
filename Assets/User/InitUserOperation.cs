@@ -13,7 +13,7 @@ namespace User
   {
     private AppInfoContainer _playPrefData;
     private TaskCompletionSource<UserInfo> _getUserInfoCompletionSource;
-    private TaskCompletionSource<DataGame> _getUserDataCompletionSource;
+    private TaskCompletionSource<StateGame> _getUserDataCompletionSource;
     private TaskCompletionSource<UserSettings> _getUserSettingCompletionSource;
     private Action<float> _onProgress;
     private Action<string> _onSetNotify;
@@ -46,7 +46,6 @@ namespace User
       }
       else
       {
-        Debug.Log("Not found playPref!");
         _playPrefData.uid = Convert.ToBase64String(Guid.NewGuid().ToByteArray()); //DeviceInfo.GetDeviceId();
 
         await LocalizationSettings.InitializationOperation.Task;
@@ -63,13 +62,11 @@ namespace User
 
       // Get user info.
       DataManager.OnLoadUserInfo += SetUserInfo;
-      _onSetNotify?.Invoke("get userinfo ...");
       _playPrefData.UserInfo = await GetUserInfo();
       DataManager.OnLoadUserInfo -= SetUserInfo;
 
       // Get game data.
       DataManager.OnLoadData += InitData;
-      _onSetNotify?.Invoke("get user data ...");
       var dataGame = await GetUserData();
       DataManager.OnLoadData -= InitData;
 
@@ -105,7 +102,7 @@ namespace User
       SetUserInfo(userInfo);
 #endif
 
-#if ysdk && !UNITY_EDITOR
+#if ysdk
       GameManager.Instance.DataManager.LoadUserInfoAsYsdk();
 #endif
 
@@ -113,51 +110,71 @@ namespace User
     }
 
 
-    private async UniTask<DataGame> GetUserData()
+    private async UniTask<StateGame> GetUserData()
     {
       _getUserDataCompletionSource = new();
 
       //AppInfoContainer result = null;
 
 #if android
-      DataGame dataGame;
-      dataGame = await GameManager.Instance.DataManager.Load();
+      StateGame stateGame;
+      stateGame = await GameManager.Instance.DataManager.Load();
       // InitData(dataGame);
 #endif
 
-#if ysdk && !UNITY_EDITOR
-    GameManager.Instance.DataManager.LoadAsYsdk();
+#if ysdk
+      GameManager.Instance.DataManager.LoadAsYsdk();
 #endif
 
       return await _getUserDataCompletionSource.Task;
     }
 
-    private void InitData(DataGame dataGame)
+    private async void InitData(StateGame stateGame)
     {
       var _gameManager = GameManager.Instance;
 
-      GamePlayerSetting playerSetting;
-      // init new state.
-      if (dataGame == null || string.IsNullOrEmpty(dataGame.rank))
-      {
-        playerSetting = _gameManager.GameSettings.PlayerSetting
-          .OrderBy(t => t.countFindWordsForUp)
-          .First();
-        dataGame = new DataGame()
-        {
-          rank = playerSetting.idPlayerSetting,
-        };
-      }
-      else
-      {
-        playerSetting = _gameManager.GameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
-      }
-      Debug.Log("InitData2");
-      _gameManager.PlayerSetting = playerSetting;
+      Debug.Log("InitData1");
 
-      _gameManager.StateManager.Init(dataGame);
+      stateGame = await _gameManager.StateManager.Init(stateGame);
 
-      _getUserDataCompletionSource.SetResult(dataGame);
+      // GamePlayerSetting playerSetting;
+      // DataGame dataGame;
+      // StateGameItem stateGameItemCurrentLang = stateGame != null && stateGame.items.Count > 0
+      //   ? stateGame.items.Find(t => t.lang == codeCurrentLang)
+      //   : null;
+
+      // // init new state.
+      // if (stateGame == null || stateGame.items.Count == 0 || stateGameItemCurrentLang == null) // string.IsNullOrEmpty(dataGame.rank)
+      // {
+      //   stateGame = new();
+
+      //   playerSetting = _gameManager.GameSettings.PlayerSetting
+      //     .OrderBy(t => t.countFindWordsForUp)
+      //     .First();
+
+      //   dataGame = new DataGame()
+      //   {
+      //     rank = playerSetting.idPlayerSetting
+      //   };
+
+      //   var newStateGame = new StateGameItem()
+      //   {
+      //     dataGame = dataGame,
+      //     lang = LocalizationSettings.SelectedLocale.Identifier.Code,
+      //   };
+
+      //   stateGame.items.Add(newStateGame);
+      // }
+      // else
+      // {
+      //   dataGame = stateGame.items.Find(t => t.lang == codeCurrentLang).dataGame;
+      //   playerSetting = _gameManager.GameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
+      // }
+
+      // Debug.Log("InitData2");
+      // _gameManager.PlayerSetting = playerSetting;
+
+      _getUserDataCompletionSource.SetResult(stateGame);
     }
 
   }

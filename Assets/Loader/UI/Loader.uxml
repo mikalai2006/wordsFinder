@@ -4,7 +4,7 @@
     <ui:VisualElement name="Loader" class="loader font">
         <ui:VisualElement name="OverBG" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.9);" />
         <ui:VisualElement name="ProgressBarSection" class="progress-bar__section" style="font-size: 20px;">
-            <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="ProgressBarText" text="loading ..." class="text-md" style="color: rgb(0, 0, 0);" />
+            <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="ProgressBarText" text="..." class="text-md" style="color: rgb(0, 0, 0);" />
             <ui:VisualElement name="ProgressBarBox" class="progress-bar__box">
                 <ui:VisualElement name="ProgressBar" class="progress-bar" style="background-color: rgb(245, 242, 242);" />
             </ui:VisualElement>

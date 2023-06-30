@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class DialogLevel : MonoBehaviour
 {
+  public static event Action OnShowDialog;
+  public static event Action OnHideDialog;
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   private StateManager _stateManager => GameManager.Instance.StateManager;
@@ -79,19 +81,29 @@ public class DialogLevel : MonoBehaviour
 
   private void ChangeTheme()
   {
+    _buttonDouble.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = _gameManager.Theme.colorPrimary;
+    _buttonNext.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = _gameManager.Theme.colorPrimary;
+    _buttonOk.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = _gameManager.Theme.colorPrimary;
+
+    _textTotalCoin.color = _gameManager.Theme.colorPrimary;
+    spriteCoin.color = _gameManager.Theme.colorPrimary;
+
     _wrapperSprite.color = _gameManager.Theme.bgColor;
 
     _textMessageSmall.color = _gameManager.Theme.colorSecondary;
 
     _textMessage.color = _gameManager.Theme.colorPrimary;
 
-    _textHeader.color = _gameManager.Theme.colorSecondary;
+    _textHeader.color = _gameManager.Theme.colorAccent;
 
     _textMessageSmall.color = _gameManager.Theme.colorPrimary;
   }
 
   public async UniTask<DataDialogResult> ShowDialogEndRound()
   {
+    OnShowDialog?.Invoke();
+    _gameManager.ChangeState(GameState.StartEffect);
+
     _processCompletionSource = new();
     _result = new();
 
@@ -279,6 +291,8 @@ public class DialogLevel : MonoBehaviour
         _buttonNext.gameObject.SetActive(false);
         _buttonDouble.gameObject.SetActive(false);
         _totalObject.SetActive(false);
+        OnHideDialog?.Invoke();
+        _gameManager.ChangeState(GameState.StopEffect);
       });
 
     await UniTask.Delay(1000);
@@ -290,6 +304,9 @@ public class DialogLevel : MonoBehaviour
 
   public async UniTask<DataDialogResult> ShowDialogStartRound()
   {
+    OnShowDialog?.Invoke();
+    _gameManager.ChangeState(GameState.StartEffect);
+
     _processCompletionSource = new();
     _result = new();
 
@@ -423,6 +440,9 @@ public class DialogLevel : MonoBehaviour
       {
         SetDefault();
 
+        OnHideDialog?.Invoke();
+        _gameManager.ChangeState(GameState.StopEffect);
+
         _result.isOk = true;
         _processCompletionSource.SetResult(_result);
       });
@@ -433,6 +453,8 @@ public class DialogLevel : MonoBehaviour
 
   public async UniTask<DataDialogResult> ShowDialogNewRankUser()
   {
+    OnShowDialog?.Invoke();
+    _gameManager.ChangeState(GameState.StartEffect);
     _processCompletionSource = new();
     _result = new();
 
@@ -480,6 +502,9 @@ public class DialogLevel : MonoBehaviour
         _bg.SetActive(false);
         SetDefault();
         _bg.SetActive(false);
+
+        OnHideDialog?.Invoke();
+        _gameManager.ChangeState(GameState.StopEffect);
 
         _result.isOk = true;
         _processCompletionSource.SetResult(_result);

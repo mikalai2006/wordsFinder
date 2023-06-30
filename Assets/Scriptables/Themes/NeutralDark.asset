@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87ab369d9f7c175498a033c6688b4df2, type: 3}
-  m_Name: Default
+  m_Name: NeutralDark
   m_EditorClassIdentifier: 
-  bgHiddenWord: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 1}
-  bgOpentHiddenWord: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
-  textOpentHiddenWord: {r: 0.45098042, g: 0.45098042, b: 0.45098042, a: 1}
+  bgHiddenWord: {r: 0.4245283, g: 0.42252582, b: 0.42252582, a: 1}
+  bgOpentHiddenWord: {r: 0.17532927, g: 0.17532927, b: 0.18867922, a: 1}
+  textOpentHiddenWord: {r: 0.3207547, g: 0.31016374, b: 0.31016374, a: 1}
   bgImageHiddenWord: {fileID: 21300000, guid: 81bc87243f22f9747bf7cbd46d867efe, type: 3}
-  bgOpenNeiHiddenWord: {r: 0.27450982, g: 0.27450982, b: 0.27450982, a: 1}
-  textOpenNeiHiddenWord: {r: 0.9843138, g: 0.7490196, b: 0.14117648, a: 0.6039216}
+  bgOpenNeiHiddenWord: {r: 0.42352942, g: 0.42352942, b: 0.42352942, a: 1}
+  textOpenNeiHiddenWord: {r: 0.6142755, g: 0.6142755, b: 0.6415094, a: 1}
   bgChoosedWord: {r: 0.6392157, g: 0.6392157, b: 0.6392157, a: 1}
   textChoosedWord: {r: 0.14901961, g: 0.14901961, b: 0.14901961, a: 1}
   bgFindAllowWord: {r: 0.9843138, g: 0.7490196, b: 0.14117648, a: 1}
@@ -38,5 +38,4 @@ MonoBehaviour:
   colorSecondary: {r: 0.6313726, g: 0.6313726, b: 0.6666667, a: 1}
   colorAccent: {r: 0.8666667, g: 0.64705884, b: 0, a: 0.87058824}
   entityColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
-  entityActiveColor: {r: 0.8666667, g: 0.64705884, b: 0, a: 0.87058824}
   colorDisable: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}

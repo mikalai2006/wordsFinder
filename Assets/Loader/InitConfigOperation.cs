@@ -1,14 +1,47 @@
 using System;
-
+using System.Runtime.InteropServices;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
+using User;
 
 namespace Loader
 {
   public class InitConfigOperation : ILoadingOperation
   {
+    [DllImport("__Internal")]
+    private static extern string GetLang();
+
     public async UniTask Load(Action<float> onProgress, Action<string> onSetNotify)
     {
-      onSetNotify?.Invoke("...");
+
+      await LocalizationSettings.InitializationOperation.Task;
+
+      string langString = "";
+
+#if ysdk
+      langString = GetLang();
+#endif
+
+      AppInfoContainer playPrefData = new();
+      if (PlayerPrefs.HasKey(GameManager.Instance.namePlayPref))
+      {
+        playPrefData = JsonUtility.FromJson<AppInfoContainer>(PlayerPrefs.GetString(GameManager.Instance.namePlayPref));
+        langString = playPrefData.setting.lang;
+      }
+
+      if (!string.IsNullOrEmpty(langString))
+      {
+        Locale needSetLocale = LocalizationSettings.AvailableLocales.Locales.Find(t => t.Identifier.Code == langString);
+        if (langString != LocalizationSettings.SelectedLocale.Identifier.Code)
+        {
+          LocalizationSettings.SelectedLocale = needSetLocale;
+        }
+      }
+
+      string t = await Helpers.GetLocaledString("loading");
+      onSetNotify?.Invoke(t);
 
       onProgress?.Invoke(0.1f);
       GameManager.Instance.ResourceSystem = ResourceSystem.Instance;

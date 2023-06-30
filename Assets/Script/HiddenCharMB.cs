@@ -98,8 +98,11 @@ public class HiddenCharMB : MonoBehaviour
   {
     Vector3 initialScale = transform.localScale;
 
+    int valueBonusOpenNeighbours;
+    _stateManager.dataGame.bonus.TryGetValue(TypeBonus.OpenNeighbours, out valueBonusOpenNeighbours);
+
     // Add coin.
-    if (runEffect && !OccupiedNode.StateNode.HasFlag(StateNode.Hint))
+    if (runEffect && (!OccupiedNode.StateNode.HasFlag(StateNode.Hint) || valueBonusOpenNeighbours > 0))
     {
       _levelManager.CreateCoin(transform.position, _levelManager.topSide.spriteCoinPosition).Forget();
 

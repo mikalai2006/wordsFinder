@@ -22,15 +22,15 @@ public class ButtonLighting : BaseButton
   }
   #endregion
 
-  public override void SetValue(DataGame data)
+  public override void SetValue(StateGame state)
   {
-    value = data.hints.GetValueOrDefault(TypeEntity.Lighting);
-    base.SetValue(data);
+    value = state.activeDataGame.hints.GetValueOrDefault(TypeEntity.Lighting);
+    base.SetValue(state);
   }
 
-  public override void SetValueProgressBar(DataGame data)
+  public override void SetValueProgressBar(StateGame state)
   {
-    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)data.activeLevel.bonusCount.charLighting / _gameManager.PlayerSetting.bonusCount.charLighting;
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)state.activeDataGame.activeLevel.bonusCount.charLighting / _gameManager.PlayerSetting.bonusCount.charLighting;
     spriteProgress.transform
       .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
       .SetEase(Ease.OutBounce);

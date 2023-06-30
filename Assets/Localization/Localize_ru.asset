@@ -254,7 +254,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3731728058449920
-    m_Localized: "\u041D\u0430\u0439\u0434\u0435\u043D\u043E {count} \u0441\u043B\u043E\u0432{count:\u043E|\u0430|}!"
+    m_Localized: "{count} \u0431\u043E\u043D\u0443\u0441\u043D{count:\u043E\u0435|\u044B\u0445|\u044B\u0445}
+      \u0441\u043B\u043E\u0432{count:\u043E|\u0430|} \u0443\u0441\u043F\u0435\u0448\u043D\u043E
+      \u043D\u0430\u0439\u0434\u0435\u043D{count:\u043E|\u044B|\u044B}!"
     m_Metadata:
       m_Items:
       - rid: 366247623133495315
@@ -413,6 +415,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 366247623133495315
+  - m_Id: 6374939935539200
+    m_Localized: "\u0421\u043B\u043E\u0432\u0430 \\r\\n\u0440\u0443\u0441\u0441\u043A\u043E\u0433\u043E
+      \u044F\u0437\u044B\u043A\u0430"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

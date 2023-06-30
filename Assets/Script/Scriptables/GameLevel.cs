@@ -10,6 +10,7 @@ public class GameLevel : ScriptableObject
   [Space(10)]
   [Header("---Difficulty settings")]
   public int minRate;
+  public Locale locale;
 
   [Space(10)]
   [Header("Word settings")]

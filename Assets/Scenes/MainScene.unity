@@ -228,12 +228,6 @@ MonoBehaviour:
     completed: []
     lastWord: 
     rank: 
-    setting:
-      lang: 
-      muv: 0
-      auv: 0
-      td: 0
-      theme: 
   ActiveWordConfig: 
 --- !u!1 &516352404
 GameObject:
@@ -924,7 +918,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33ef2abdd9df9e642a338c19672faa50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jsonFile: {fileID: 4900000, guid: 256722d1ee7dff744a9764a500a69d62, type: 3}
+  files:
+  - locale: {fileID: 11400000, guid: ee9ad60cf3206d14fa33f59ed209a706, type: 2}
+    file: {fileID: 4900000, guid: 256722d1ee7dff744a9764a500a69d62, type: 3}
+  - locale: {fileID: 11400000, guid: 412d369c71b907b428fb4041588eeb85, type: 2}
+    file: {fileID: 4900000, guid: 7d6956f25003465479a81103aab1600d, type: 3}
 --- !u!4 &1957392315
 Transform:
   m_ObjectHideFlags: 0

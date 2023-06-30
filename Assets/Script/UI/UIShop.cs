@@ -66,7 +66,9 @@ public class UIShop : UILocaleBase
     var blokBalance = _userBalanceItem.Instantiate();
     var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
     blokBalance.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(configCoin.sprite);
-    blokBalance.Q<Label>("Coin").text = string.Format("{0}", _gameManager.StateManager.dataGame.coins);
+    blokBalance.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
+      = _gameManager.Theme.colorPrimary;
+    blokBalance.Q<Label>("Coin").text = string.Format("{0}", _gameManager.StateManager.stateGame.coins);
     wrapperBalance.Add(blokBalance);
 
 
@@ -101,6 +103,8 @@ public class UIShop : UILocaleBase
       // Button info.
       var buttonInfo = blokItem.Q<Button>("InfoBtn");
       buttonInfo.Q<VisualElement>("InfoImg").style.backgroundImage = new StyleBackground(_gameSettings.spriteInfo);
+      buttonInfo.Q<VisualElement>("InfoImg").style.unityBackgroundImageTintColor
+        = new StyleColor(_gameManager.Theme.colorSecondary);
       buttonInfo.clickable.clicked += async () =>
         {
           AudioManager.Instance.Click();
@@ -120,10 +124,14 @@ public class UIShop : UILocaleBase
         };
 
       blokItem.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(item.entity.sprite);
+      blokItem.Q<VisualElement>("Img").style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.entityColor);
+
 
       // Button buy for coin.
       var buttonForCoin = blokItem.Q<Button>("Buy");
       buttonForCoin.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteBuy);
+      buttonForCoin.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
+        = new StyleColor(_gameManager.Theme.entityColor);
       buttonForCoin.clickable.clicked += async () =>
         {
           // TODO Buy for coin.
@@ -154,7 +162,7 @@ public class UIShop : UILocaleBase
           }
         );
       var textButtonForCoin = buttonForCoin.Q<Label>("Text");
-      if (_gameManager.StateManager.dataGame.coins < item.cost)
+      if (_gameManager.StateManager.stateGame.coins < item.cost)
       {
         buttonForCoin.SetEnabled(false);
         textButtonForCoin.text = await Helpers.GetLocaledString("lackscoin");
@@ -174,6 +182,8 @@ public class UIShop : UILocaleBase
       // Button buy for coin.
       var buttonForAdv = blokItem.Q<Button>("Adv");
       buttonForAdv.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteAdv);
+      buttonForAdv.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
+        = new StyleColor(_gameManager.Theme.entityColor);
       buttonForAdv.Q<Label>("Text").text = await Helpers.GetLocalizedPluralString(
         "buyadv",
          new Dictionary<string, object> {
@@ -216,6 +226,8 @@ public class UIShop : UILocaleBase
       // Button info.
       var buttonInfo = blokItem.Q<Button>("InfoBtn");
       buttonInfo.Q<VisualElement>("InfoImg").style.backgroundImage = new StyleBackground(_gameSettings.spriteInfo);
+      buttonInfo.Q<VisualElement>("InfoImg").style.unityBackgroundImageTintColor
+        = new StyleColor(_gameManager.Theme.colorSecondary);
       buttonInfo.clickable.clicked += async () =>
         {
           AudioManager.Instance.Click();
@@ -235,10 +247,13 @@ public class UIShop : UILocaleBase
         };
 
       blokItem.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(item.entity.sprite);
+      blokItem.Q<VisualElement>("Img").style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.entityColor);
 
       // Button buy for coin.
       var buttonForCoin = blokItem.Q<Button>("Buy");
       buttonForCoin.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteBuy);
+      buttonForCoin.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
+        = new StyleColor(_gameManager.Theme.entityColor);
       buttonForCoin.clickable.clicked += () =>
         {
           // TODO Buy for coin.
@@ -256,7 +271,7 @@ public class UIShop : UILocaleBase
           }
         );
       var textButtonForCoin = buttonForCoin.Q<Label>("Text");
-      if (_gameManager.StateManager.dataGame.coins < item.cost)
+      if (_gameManager.StateManager.stateGame.coins < item.cost)
       {
         buttonForCoin.SetEnabled(false);
         textButtonForCoin.text = await Helpers.GetLocaledString("lackscoin");
@@ -276,6 +291,8 @@ public class UIShop : UILocaleBase
       // Button buy for coin.
       var buttonForAdv = blokItem.Q<Button>("Adv");
       buttonForAdv.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteAdv);
+      buttonForAdv.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
+        = new StyleColor(_gameManager.Theme.entityColor);
       buttonForAdv.Q<Label>("Text").text = await Helpers.GetLocalizedPluralString(
         "buyadv",
          new Dictionary<string, object> {

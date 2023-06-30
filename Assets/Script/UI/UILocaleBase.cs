@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -17,10 +17,10 @@ public abstract class UILocaleBase : MonoBehaviour
   protected GameManager _gameManager => GameManager.Instance;
   protected GameSetting _gameSettings => GameManager.Instance.GameSettings;
 
-  public void Initialize(VisualElement root)
+  public async void Initialize(VisualElement root)
   {
     _box = root;
-    Localize();
+    await Localize();
     Theming(_box);
   }
 
@@ -42,9 +42,15 @@ public abstract class UILocaleBase : MonoBehaviour
       item.style.color = _gameManager.Theme.colorSecondary;
     }
 
+    UQueryBuilder<VisualElement> builderDrag = new UQueryBuilder<VisualElement>(_box);
+    List<VisualElement> listDragEl = builderDrag.Class("unity-base-slider__dragger").ToList();
+    foreach (var item in listDragEl)
+    {
+      item.style.backgroundColor = _gameManager.Theme.entityColor;
+    }
   }
 
-  private async void Localize()
+  private async UniTask Localize()
   {
 
     await LocalizationSettings.InitializationOperation.Task;

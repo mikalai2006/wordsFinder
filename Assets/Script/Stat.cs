@@ -31,22 +31,22 @@ public class Stat : MonoBehaviour
 
   private void ChangeTheme()
   {
-    _countWords.color = _gameManager.Theme.colorSecondary;
+    _countWords.color = _gameManager.Theme.colorPrimary;
   }
 
-  public void SetValue(DataGame data)
+  public void SetValue(StateGame state)
   {
     Localize();
 
-    SetProgressValue(data);
+    SetProgressValue(state);
   }
 
-  private void SetProgressValue(DataGame data)
+  private void SetProgressValue(StateGame state)
   {
     float width = 0;
-    if (data.activeLevel.countNeedWords > 0)
+    if (state.activeDataGame.activeLevel.countNeedWords > 0)
     {
-      width = ((data.activeLevel.openWords.Count - data.activeLevel.countDopWords) * 100f / data.activeLevel.countNeedWords) * (maxWidthProgress / 100f);
+      width = ((state.activeDataGame.activeLevel.openWords.Count - state.activeDataGame.activeLevel.countDopWords) * 100f / state.activeDataGame.activeLevel.countNeedWords) * (maxWidthProgress / 100f);
     }
 
     spriteProgress.DOSizeDelta(new Vector3(width, 1f), _gameSetting.timeGeneralAnimation);

@@ -13,15 +13,16 @@
     <script>
       window.ysdk = null;
       var player;
+      var lb;
 
       YaGames.init().then((ysdk) => {
         console.log("Yandex SDK initialized");
         window.ysdk = ysdk;
 
-        initUser();
+        initializeLib();
       });
 
-      function initUser() {
+      function initializeLib() {
         ysdk
           .getPlayer()
           .then((_player) => {
@@ -31,6 +32,8 @@
           .catch((err) => {
             // Ошибка при инициализации объекта Player.
           });
+
+        ysdk.getLeaderboards().then((_lb) => (lb = _lb));
       }
     </script>
   </head>

@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Loader;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
 
 public class UIStartMenu : UILocaleBase
 {
+  [DllImport("__Internal")]
+  private static extern void GetLeaderBoard();
   [SerializeField] private UIDocument _uiDoc;
   [SerializeField] private VisualTreeAsset UserInfoDoc;
   [SerializeField] private VisualTreeAsset LeaderDoc;
@@ -14,24 +18,24 @@ public class UIStartMenu : UILocaleBase
   private Button _exitButton;
   private Button _newGameButton;
   private VisualElement _userInfoBlok;
-  private VisualElement _leaderList;
+  private VisualElement _otherBlock;
   private Button _loadGameMenuButton;
   [SerializeField] private AudioManager _audioManager => GameManager.Instance.audioManager;
 
   private void Awake()
   {
-    UISettings.OnChangeLocale += ChangeLocale;
+    UISettings.OnChangeLocale += RefreshMenu;
     GameManager.OnAfterStateChanged += AfterStateChanged;
     LevelManager.OnInitLevel += HideMenu;
-    GameManager.OnChangeTheme += ChangeTheme;
+    GameManager.OnChangeTheme += RefreshMenu;
   }
 
   private void OnDestroy()
   {
-    UISettings.OnChangeLocale -= ChangeLocale;
+    UISettings.OnChangeLocale -= RefreshMenu;
     GameManager.OnAfterStateChanged -= AfterStateChanged;
     LevelManager.OnInitLevel -= HideMenu;
-    GameManager.OnChangeTheme -= ChangeTheme;
+    GameManager.OnChangeTheme -= RefreshMenu;
   }
 
   private void AfterStateChanged(GameState state)
@@ -49,7 +53,9 @@ public class UIStartMenu : UILocaleBase
   {
     _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
     _userInfoBlok = _uiDoc.rootVisualElement.Q<VisualElement>("UserInfoBlok");
-    _leaderList = _uiDoc.rootVisualElement.Q<VisualElement>("LeaderList");
+
+    _otherBlock = _uiDoc.rootVisualElement.Q<VisualElement>("OtherBlock");
+    _otherBlock.Clear();
 
     _exitButton = _menu.Q<Button>("ExitBtn");
     _exitButton.clickable.clicked += () =>
@@ -69,15 +75,21 @@ public class UIStartMenu : UILocaleBase
       ClickLoadGameButton();
     };
 
-    ChangeTheme();
+    // DrawLeaderListBlok();
+
+#if ysdk
+    GetLeaderBoard();
+#endif
+    RefreshMenu();
+
   }
 
 
-  private void ChangeTheme()
+  private void RefreshMenu()
   {
+    Debug.Log("RefreshMenu");
     DrawMenu();
     DrawUserInfoBlok();
-    DrawLeaderListBlok();
 
     base.Initialize(_uiDoc.rootVisualElement);
   }
@@ -86,7 +98,8 @@ public class UIStartMenu : UILocaleBase
   private void DrawLeaderListBlok()
   {
     var dataState = _gameManager.StateManager.dataGame;
-    _leaderList.Clear();
+    // _otherBlock = _uiDoc.rootVisualElement.Q<VisualElement>("LeaderList");
+    _otherBlock.Clear();
 
     for (int i = 0; i < 5; i++)
     {
@@ -95,16 +108,17 @@ public class UIStartMenu : UILocaleBase
       var count = blok.Q<Label>("count");
 
       // blok.Q<Label>("Ava").style.backgroundImage = new StyleBackground(avaSprite);
-      _leaderList.Add(blok);
+      _otherBlock.Add(blok);
     }
 
   }
 
   private async void DrawUserInfoBlok()
   {
-    var dataState = _gameManager.StateManager.dataGame;
-    if (string.IsNullOrEmpty(dataState.rank)) return;
+    var stateGame = _gameManager.StateManager.stateGame;
+    var dataGame = _gameManager.StateManager.dataGame;
     _userInfoBlok.Clear();
+    if (string.IsNullOrEmpty(dataGame.rank)) return;
 
 
     var blok = UserInfoDoc.Instantiate();
@@ -116,41 +130,38 @@ public class UIStartMenu : UILocaleBase
     var status = blok.Q<Label>("Status");
     var foundWords = blok.Q<Label>("FoundWords");
 
-    blok.Q<Label>("Rate").text = string.Format("{0}", dataState.rate);
-    blok.Q<VisualElement>("RateImg").style.backgroundImage = new StyleBackground(_gameSettings.spriteRate);
+    // blok.Q<Label>("Rate").text = string.Format("{0}", stateGame.rate);
+    // blok.Q<VisualElement>("RateImg").style.backgroundImage = new StyleBackground(_gameSettings.spriteRate);
 
-    var textCoin = await Helpers.GetLocalizedPluralString(
-          "coin",
-           new Dictionary<string, object> {
-            {"count",  dataState.coins},
-          }
-        );
-    blok.Q<Label>("Coin").text = string.Format("{0} <size=12>{1}</size>", dataState.coins, textCoin);
-    var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
-    blok.Q<VisualElement>("CoinImg").style.backgroundImage = new StyleBackground(configCoin.sprite);
-
-
-    name.text = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.name)
-      ? await Helpers.GetLocaledString(_gameSettings.noName.title)
-      : _gameManager.AppInfo.UserInfo.name;
+    // var textCoin = await Helpers.GetLocalizedPluralString(
+    //       "coin",
+    //        new Dictionary<string, object> {
+    //         {"count",  stateGame.coins},
+    //       }
+    //     );
+    // blok.Q<Label>("Coin").text = string.Format("{0} <size=12>{1}</size>", dataGame.activeLevel.coins, textCoin);
+    // var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+    // blok.Q<VisualElement>("CoinImg").style.backgroundImage = new StyleBackground(configCoin.sprite);
 
 
-    var percentFindWords = (dataState.rate * 100 / _gameManager.PlayerSetting.countFindWordsForUp);
+    name.text = await Helpers.GetLocaledString("title_words");
+
+    var percentFindWords = (dataGame.rate * 100 / _gameManager.PlayerSetting.countFindWordsForUp);
     progress.style.width = new StyleLength(new Length(percentFindWords, LengthUnit.Percent));
 
-    var playerSettings = _gameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataState.rank);
+    var playerSettings = _gameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
     status.text = await Helpers.GetLocaledString(playerSettings.text.title);
 
     var textCountWords = await Helpers.GetLocalizedPluralString(
           "foundwords",
            new Dictionary<string, object> {
-            {"count",  dataState.rate},
+            {"count",  dataGame.rate},
           }
         );
     foundWords.text = string.Format("{0}", textCountWords);
 
     _userInfoBlok.Add(blok);
-    base.Initialize(_userInfoBlok);
+    //base.Initialize(_userInfoBlok);
   }
 
   private void DrawMenu()
@@ -176,8 +187,7 @@ public class UIStartMenu : UILocaleBase
   }
   private void ShowMenu()
   {
-    DrawMenu();
-    DrawUserInfoBlok();
+    RefreshMenu();
     _menu.style.display = DisplayStyle.Flex;
   }
 
@@ -205,14 +215,16 @@ public class UIStartMenu : UILocaleBase
   private async void ClickNewGameButton()
   {
     AudioManager.Instance.Click();
+    await LocalizationSettings.InitializationOperation.Task;
+
     HideMenu();
     var operations = new Queue<ILoadingOperation>();
     operations.Enqueue(new GameInitOperation());
     await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
 
-    var firstLevel = _gameSettings.GameLevels.GroupBy(t => t.minRate).First();
-
-    var activeLastLevelWord = firstLevel.ElementAt(0).levelWords.ElementAt(0);
+    GameLevel firstLevel = _gameSettings.GameLevels.Where(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code).OrderBy(t => t.minRate).First();
+    Debug.Log($"firstLevel={firstLevel.name} for locale {LocalizationSettings.SelectedLocale.name}");
+    var activeLastLevelWord = firstLevel.levelWords.ElementAt(0);
 
     _gameManager.LevelManager.InitLevel(activeLastLevelWord);
   }
@@ -223,8 +235,4 @@ public class UIStartMenu : UILocaleBase
     Debug.Log("ClickExitButton");
   }
 
-  private void ChangeLocale()
-  {
-    base.Initialize(_uiDoc.rootVisualElement);
-  }
 }

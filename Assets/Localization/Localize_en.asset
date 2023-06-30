@@ -338,7 +338,7 @@ MonoBehaviour:
       m_Items:
       - rid: 366247623133495314
   - m_Id: 3731728058449920
-    m_Localized: Found {count} word{count:|s}!
+    m_Localized: '{count} bonus word{count:|s} successfully found!'
     m_Metadata:
       m_Items:
       - rid: 366247623133495314
@@ -347,6 +347,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 366247623133495314
+  - m_Id: 6374939935539200
+    m_Localized: English words
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

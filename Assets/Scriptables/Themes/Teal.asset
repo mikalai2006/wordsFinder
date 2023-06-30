@@ -33,10 +33,10 @@ MonoBehaviour:
   bgImageChar: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgImageCharChoose: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgColor: {r: 0.3137255, g: 0.47058827, b: 0.40784317, a: 1}
-  entityColor: {r: 1, g: 1, b: 1, a: 1}
   colorLine: {r: 1, g: 1, b: 1, a: 1}
-  entityActiveColor: {r: 1, g: 0.88915, b: 0, a: 1}
   colorPrimary: {r: 0.9150943, g: 0.9150943, b: 0.9150943, a: 1}
-  colorSecondary: {r: 0.098039225, g: 0.18823531, b: 0.18823531, a: 1}
-  colorAccent: {r: 1, g: 0.8901961, b: 0, a: 1}
+  colorSecondary: {r: 0.7152901, g: 0.8867924, b: 0.81819147, a: 1}
+  colorAccent: {r: 0.8666667, g: 0.64705884, b: 0, a: 0.87058824}
+  entityColor: {r: 1, g: 1, b: 1, a: 1}
+  entityActiveColor: {r: 0.8666667, g: 0.64705884, b: 0, a: 0.87058824}
   colorDisable: {r: 1, g: 1, b: 1, a: 0.29803923}

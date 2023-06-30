@@ -12,20 +12,20 @@ public class BonusIndex : BaseBonus
   }
   #endregion
 
-  public override void SetValue(DataGame data)
+  public override void SetValue(StateGame state)
   {
-    value = data.bonus.GetValueOrDefault(TypeBonus.Index);
+    value = state.activeDataGame.bonus.GetValueOrDefault(TypeBonus.Index);
 
     counterText.text = string.Format("x{0}", value + 1);
 
-    base.SetValue(data);
+    base.SetValue(state);
 
     if (value == 0) return;
 
-    SetValueProgressBar(data);
+    SetValueProgressBar(state);
   }
 
-  public override void SetValueProgressBar(DataGame data)
+  public override void SetValueProgressBar(StateGame state)
   {
     var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY;
 

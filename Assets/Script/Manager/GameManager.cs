@@ -7,6 +7,7 @@ using Loader;
 using System.Linq;
 using UnityEngine.Localization.Settings;
 using Cysharp.Threading.Tasks;
+using UnityEngine.Localization;
 
 public class GameManager : StaticInstance<GameManager>
 {
@@ -21,6 +22,7 @@ public class GameManager : StaticInstance<GameManager>
   public DataManager DataManager { get; private set; }
   public StateManager StateManager;
 
+  [HideInInspector] public List<Words> WordsAll { get; private set; }
   [HideInInspector] public Words Words { get; private set; }
   public LoadingScreenProvider LoadingScreenProvider { get; private set; }
   public InitUserProvider InitUserProvider { get; private set; }
@@ -129,6 +131,7 @@ public class GameManager : StaticInstance<GameManager>
   }
   private async void HandleCloseLevel()
   {
+    LevelManager = null;
     await AssetProvider.UnloadAdditiveScene(environment);
   }
   private async void HandleCreateGame()
@@ -150,6 +153,8 @@ public class GameManager : StaticInstance<GameManager>
 
   public void SetTheme(GameTheme newTheme)
   {
+    if (newTheme == null) newTheme = GameSettings.ThemeDefault;
+
     if (AppInfo != null && AppInfo.setting != null)
     {
       AppInfo.setting.theme = newTheme.name;
@@ -170,29 +175,45 @@ public class GameManager : StaticInstance<GameManager>
     this.environment = environment;
   }
 
-  public void InitWords(Words words)
+  public void InitWords(List<Words> words)
   {
-    this.Words = words;
+    this.WordsAll = words;
   }
 
   public async UniTask SetAppInfo(AppInfoContainer dataInfo)
   {
     AppInfo = dataInfo;
 
-    // set language.
-    await LocalizationSettings.InitializationOperation.Task;
-    int indexLocale = LocalizationSettings.AvailableLocales.Locales.FindIndex(t => t.name == AppInfo.setting.lang);
-    if (AppInfo.setting.lang != LocalizationSettings.SelectedLocale.name && indexLocale != -1)
-    {
-      LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[indexLocale];
-    }
+
+    // Locale needSetLocale = LocalizationSettings.AvailableLocales.Locales.Find(t => t.Identifier.Code == AppInfo.setting.lang);
+    // if (AppInfo.setting.lang != LocalizationSettings.SelectedLocale.Identifier.Code)
+    // {
+    //   LocalizationSettings.SelectedLocale = needSetLocale;
+    // }
+
+    await SetActiveWords();
 
     // Set theme.
     List<GameTheme> allThemes = ResourceSystem.GetAllTheme();
     GameTheme userTheme = allThemes.Where(t => t.name == AppInfo.setting.theme).FirstOrDefault();
     SetTheme(userTheme);
 
+    DataManager.SaveSettings();
+
     await UniTask.Yield();
+  }
+
+  public async UniTask SetActiveWords()
+  {
+    // set language.
+    await LocalizationSettings.InitializationOperation.Task;
+    Debug.Log($"Current Locale - {LocalizationSettings.SelectedLocale.Identifier.Code}");
+    Words words = WordsAll.Find(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code);
+
+    Debug.Log($"Words data count - {words.data.Count()}");
+    Debug.Log($"Set word - {LocalizationSettings.SelectedLocale.Identifier.Code}");
+    Words = words; // WordsAll.Find(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code);
+    Debug.Log($"Set words for {Words.locale.Identifier.Code} |<{words.data.Count()}> |[{Words.localeCode}] [{LocalizationSettings.SelectedLocale.Identifier.Code}]");
   }
 }
 

@@ -23,11 +23,11 @@ public class ButtonFrequency : BaseButton
   }
   #endregion
 
-  public override void SetValue(DataGame data)
+  public override void SetValue(StateGame state)
   {
-    value = data.hints.GetValueOrDefault(TypeEntity.Frequency);
+    value = state.activeDataGame.hints.GetValueOrDefault(TypeEntity.Frequency);
 
-    base.SetValue(data);
+    base.SetValue(state);
   }
 
   public async override void RunHint()
@@ -63,9 +63,9 @@ public class ButtonFrequency : BaseButton
     _stateManager.UseHint(-1, configEntity.typeEntity);
   }
 
-  public override void SetValueProgressBar(DataGame data)
+  public override void SetValueProgressBar(StateGame state)
   {
-    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)data.activeLevel.bonusCount.charHint / _gameManager.PlayerSetting.bonusCount.charHint;
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)state.activeDataGame.activeLevel.bonusCount.charHint / _gameManager.PlayerSetting.bonusCount.charHint;
     // spriteProgress.transform.localPosition
     //   = new Vector3(spriteProgress.transform.localPosition.x, newPosition);
     spriteProgress.transform

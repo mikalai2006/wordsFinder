@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class ManagerHiddenWords : MonoBehaviour
 {
+  [DllImport("__Internal")]
+  private static extern void SetToLeaderBoard(int value);
   // public static event Action OnChangeData;
   [SerializeField] public Tilemap tilemap;
   [SerializeField] public Tilemap tilemapEntities;
@@ -515,6 +518,9 @@ public class ManagerHiddenWords : MonoBehaviour
 
     if (result.isOk)
     {
+#if ysdk
+      SetToLeaderBoard(_stateManager.dataGame.rate);
+#endif
       // Check next level status player.
       await _levelManager.CheckNextLevelPlayer();
 

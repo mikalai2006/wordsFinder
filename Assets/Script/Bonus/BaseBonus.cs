@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
 {
@@ -20,6 +21,7 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
   [SerializeField] protected SpriteMask spriteMask;
   [SerializeField] protected SpriteRenderer spriteProgress;
   [SerializeField] protected TMPro.TextMeshProUGUI counterText;
+  [SerializeField] protected SortingGroup order;
   protected float progressBasePositionY = -1.4f;
   protected bool statusShowCounter = false;
   protected int valueCounter;
@@ -60,7 +62,7 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
   private void ChangeTheme()
   {
     spriteBg.color = _gameManager.Theme.colorPrimary;
-    spriteProgress.color = _gameManager.Theme.entityActiveColor;
+    spriteProgress.color = _gameManager.Theme.colorAccent;
   }
 
 
@@ -70,7 +72,7 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
   }
 
 
-  public virtual void SetValue(DataGame data)
+  public virtual void SetValue(StateGame state)
   {
     if (valueCounter == value) return;
 
@@ -113,7 +115,7 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
       });
   }
 
-  public virtual void SetValueProgressBar(DataGame data)
+  public virtual void SetValueProgressBar(StateGame state)
   {
   }
 

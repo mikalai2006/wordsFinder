@@ -11,27 +11,22 @@ var plugin = {
     console.groupEnd();
   },
   LoadExtern: function () {
-    console.group("LoadExtern");
     player.getData().then((jsonUserData) => {
       const stringUserData = JSON.stringify(jsonUserData);
+
+      console.group("LoadExtern");
+      console.log(jsonUserData);
+      console.log(stringUserData);
+      console.groupEnd();
+
       myGameInstance.SendMessage(
         "DataManager",
         "SetPlayerData",
         stringUserData
       );
-      console.log(jsonUserData);
-      console.log(stringUserData);
     });
-    // myGameInstance.SendMessage(
-    //   "DataManager",
-    //   "SetPlayerData",
-    //   JSON.stringify({})
-    // );
-    console.groupEnd();
   },
   GetUserInfo: function () {
-    console.group("GetUserInfo");
-    // const myJSON = { name: "TestName", photo: "TestPhoto" };
     const jsonUserInfo = {
       name: player.getName(),
       photo: player.getPhoto("medium"),
@@ -39,16 +34,43 @@ var plugin = {
 
     const stringUserInfo = JSON.stringify(jsonUserInfo);
 
+    console.group("GetUserInfo");
     console.log(jsonUserInfo);
-    console.log(stringUserInfo);
+    console.groupEnd();
 
     myGameInstance.SendMessage("DataManager", "SetUserInfo", stringUserInfo);
-    // myGameInstance.SendMessage(
-    //   "DataManager",
-    //   "SetUserInfo",
-    //   JSON.stringify(myJSON)
-    // );
-    console.groupEnd();
+  },
+  GetLang: function () {
+    var lang = ysdk.environment.i18n.lang;
+    var bufferSize = lengthBytesUTF8(lang) + 1;
+    var buffer = _malloc(bufferSize);
+    stringToUTF8(lang, buffer, bufferSize);
+
+    console.log("GetLang ", lang);
+
+    return buffer;
+  },
+  SetToLeaderBoard: function (value) {
+    console.log("SetToLeaderBoard", value);
+    ysdk.getLeaderboards().then((lb) => {
+      ysdk
+        .isAvailableMethod("leaderboards.setLeaderboardScore")
+        .then((status) => {
+          if (status) {
+            lb.setLeaderboardScore("Rate", value);
+          }
+        });
+    });
+  },
+  GetLeaderBoard: function () {
+    ysdk
+      .getLeaderboards()
+      .then((lb) => lb.getLeaderboardDescription("Rate"))
+      .then((res) => {
+        console.group("GetLeaderBoard");
+        console.log(res);
+        console.groupEnd();
+      });
   },
 };
 

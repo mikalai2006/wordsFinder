@@ -21,15 +21,15 @@ public class ButtonBomb : BaseButton
   }
   #endregion
 
-  public override void SetValue(DataGame data)
+  public override void SetValue(StateGame state)
   {
-    value = data.hints.GetValueOrDefault(TypeEntity.Bomb);
-    base.SetValue(data);
+    value = state.activeDataGame.hints.GetValueOrDefault(TypeEntity.Bomb);
+    base.SetValue(state);
   }
 
-  public override void SetValueProgressBar(DataGame data)
+  public override void SetValueProgressBar(StateGame state)
   {
-    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)data.activeLevel.bonusCount.charBomb / _gameManager.PlayerSetting.bonusCount.charBomb;
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)state.activeDataGame.activeLevel.bonusCount.charBomb / _gameManager.PlayerSetting.bonusCount.charBomb;
     spriteProgress.transform
       .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
       .SetEase(Ease.OutBounce);

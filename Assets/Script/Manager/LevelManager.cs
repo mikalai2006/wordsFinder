@@ -66,8 +66,8 @@ public class LevelManager : Singleton<LevelManager>
 
     CreateChars(ManagerHiddenWords.WordForChars);
 
-    // TODO
-    // GameManager.Instance.StateManager.RefreshData();
+    // GameManager.Instance.DataManager.Save();
+    GameManager.Instance.StateManager.RefreshData();
 
     // Show start info.
     _gameManager.InputManager.Disable();
@@ -236,7 +236,7 @@ public class LevelManager : Singleton<LevelManager>
     var newObj = await asset.Task;
     var newEntity = newObj.GetComponent<BaseEntity>();
     newEntity.InitStandalone(asset);
-    newEntity.SetColor(_gameManager.Theme.entityActiveColor);
+    newEntity.SetColor(_gameManager.Theme.colorAccent);
     var positionFrom = pos;
     // var positionTo = topSide.spriteCoinPosition;
     Vector3[] waypoints = {

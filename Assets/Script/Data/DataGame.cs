@@ -2,10 +2,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+public class StateGame
+{
+  public int rate;
+  public List<StateGameItem> items;
+  [System.NonSerialized] public DataGame activeDataGame;
+  public int coins;
+
+  public StateGame()
+  {
+    items = new();
+  }
+}
+
+[System.Serializable]
+public class StateGameItem
+{
+  public string lang;
+  public DataGame dataGame;
+}
+
+[System.Serializable]
 public class DataGame
 {
   public int rate;
-  public int coins;
+  // public int coins;
   public SerializableDictionary<TypeEntity, int> hints;
   public SerializableDictionary<TypeBonus, int> bonus;
   public List<DataLevel> levels;

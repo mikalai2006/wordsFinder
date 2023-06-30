@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35974bb0cc8ee974892209109b7321d1, type: 3}
-  m_Name: GameLevel2
+  m_Name: level_
   m_EditorClassIdentifier: 
-  idLevel: 
+  idLevel: 6
   text:
     title:
       m_TableReference:
@@ -33,7 +33,9 @@ MonoBehaviour:
       m_WaitForCompletion: 0
       m_LocalVariables: []
   minRate: 0
+  locale: {fileID: 11400000, guid: ee9ad60cf3206d14fa33f59ed209a706, type: 2}
   levelWords:
+  - "\u0442\u0432\u043E\u0440\u0447\u0435\u0441\u0442\u0432\u043E"
   - "\u044D\u043B\u0435\u043A\u0442\u0440\u043E\u0437\u0430\u0432\u043E\u0434"
   references:
     version: 2

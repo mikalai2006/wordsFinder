@@ -35,7 +35,7 @@ MonoBehaviour:
   coefDifficulty: 0.9
   countFindWordsForUp: 250
   maxLengthWord: 5
-  maxFindWords: 20
+  maxFindWords: 15
   coefHint: 0.15
   coefStar: 0.2
   bonusCount:

@@ -12,6 +12,7 @@ public class UISettings : UILocaleBase
   private VisualElement _aside;
   private VisualElement _menu;
   private VisualElement _userCoinImg;
+  private VisualElement _languageBlock;
   private VisualElement _userRateImg;
   private Label _userRate;
   private Label _userCoin;
@@ -22,17 +23,27 @@ public class UISettings : UILocaleBase
   private Button _shopButton;
   private Button _toMenuAppButton;
   private Button _okButton;
+  private DropdownField _dropdownLanguage;
+  private SliderInt _sliderTimeDelay;
+  private Slider _sliderVolumeMusic;
+  private Slider _sliderVolumeEffect;
+  private DropdownField _dropdownTheme;
+
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   [SerializeField] private AudioManager _audioManager => GameManager.Instance.audioManager;
 
   private void Awake()
   {
     StateManager.OnChangeState += SetValue;
+    DialogLevel.OnHideDialog += ShowAside;
+    DialogLevel.OnShowDialog += HideAside;
   }
 
   private void OnDestroy()
   {
     StateManager.OnChangeState -= SetValue;
+    DialogLevel.OnHideDialog -= ShowAside;
+    DialogLevel.OnShowDialog -= HideAside;
   }
 
   public async virtual void Start()
@@ -40,6 +51,17 @@ public class UISettings : UILocaleBase
     _aside = _uiDoc.rootVisualElement.Q<VisualElement>("AsideBlok");
     _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
     _menu.style.display = DisplayStyle.None;
+
+    _languageBlock = _menu.Q<VisualElement>("LanguageBlock");
+
+
+    var menuBlok = _menu.Q<VisualElement>("Menu");
+    _dropdownLanguage = menuBlok.Q<DropdownField>("Language");
+    _sliderTimeDelay = menuBlok.Q<SliderInt>("TimeDelay");
+    _sliderVolumeMusic = menuBlok.Q<Slider>("VolumeMusic");
+    _sliderVolumeEffect = menuBlok.Q<Slider>("VolumeEffect");
+    _dropdownTheme = menuBlok.Q<DropdownField>("Theme");
+
 
     _exitButton = _aside.Q<Button>("ExitBtn");
     _openMenuButton = _aside.Q<Button>("MenuBtn");
@@ -96,36 +118,61 @@ public class UISettings : UILocaleBase
       ? await Helpers.GetLocaledString(_gameSettings.noName.title)
       : _gameManager.AppInfo.UserInfo.name;
 
-    ChangeTheme();
-    SetValue(_gameManager.StateManager.dataGame);
+    ChangeTheme(null);
+    SetValue(_gameManager.StateManager.stateGame);
 
     base.Initialize(_uiDoc.rootVisualElement);
   }
 
 
-  private void ChangeTheme()
+  private async void ChangeTheme(ChangeEvent<string> evt)
   {
+    if (evt != null)
+    {
+      var allThemes = _gameManager.ResourceSystem.GetAllTheme();
+      GameTheme chooseTheme = allThemes.Find(t => t.name == evt.newValue);
+
+      _gameManager.SetTheme(chooseTheme);
+      _gameManager.DataManager.SaveSettings();
+    }
+
 
     var imgCog = _aside.Q<VisualElement>("ImgCog");
     imgCog.style.backgroundImage = new StyleBackground(_gameSettings.spriteCog);
-    imgCog.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorPrimary);
+    imgCog.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
 
-    _userCoinImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.entityColor);
-    _userRateImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.entityColor);
+    // load avatar
+    string placeholder = _gameManager.AppInfo.UserInfo.photo;
+#if UNITY_EDITOR
+    placeholder = "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/CGIB4J3KPRTV5JCX6JLC6TAKLL6GYPN27SBYCQDUWEUW2QFCBB5ZNTCHKPVHHHKLTSBRYYIEMFB2C3CB37T4S7GIXKUP4KEL4CHGRPVOLHVSPIW77Z5TUSEOVQK5NDDSPJTVMAJAODQ4DXD6UEKJV4VLEUOPWOPU2Y664NQ5NIQUT2UBNRMVVWCQN52FYLVEI4DWLSZQ4FG6AZWBGKYTD5VJWXXAL46Z7B5XDCI=/islands-retina-medium";
+#endif
+    var imgAva = _aside.Q<VisualElement>("Ava");
+    Texture2D avatarTexture = await Helpers.LoadTexture(placeholder);
+    if (avatarTexture != null)
+    {
+      imgAva.style.backgroundImage = new StyleBackground(avatarTexture);
+    }
+    else
+    {
+      imgAva.style.display = DisplayStyle.None;
+    }
+
+    _userCoinImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
+    _userRateImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
 
     _menu.Q<VisualElement>("MenuBlokWrapper").style.backgroundColor = new StyleColor(_gameManager.Theme.bgColor);
 
     var imgShop = _aside.Q<VisualElement>("ImgShop");
     imgShop.style.backgroundImage = new StyleBackground(_gameSettings.spriteShop);
-    imgShop.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorPrimary);
+    imgShop.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
 
     base.Theming(_uiDoc.rootVisualElement);
   }
 
-  private void SetValue(DataGame data)
+  private void SetValue(StateGame state)
   {
-    _userCoin.text = string.Format("{0}", data.coins);
-    _userRate.text = string.Format("{0}", data.rate);
+    _userCoin.text = string.Format("{0}", state.coins);
+    _userRate.text = string.Format("{0}", state.rate);
   }
 
   private async void ClickOpenShop()
@@ -137,9 +184,23 @@ public class UISettings : UILocaleBase
     _gameManager.InputManager.Enable();
   }
 
+  private void ShowAside()
+  {
+    // _aside.style.display = DisplayStyle.Flex;
+    _openMenuButton.style.visibility = Visibility.Visible;
+    _shopButton.style.visibility = Visibility.Visible;
+  }
+  private void HideAside()
+  {
+    // _aside.style.display = DisplayStyle.None;
+    _openMenuButton.style.visibility = Visibility.Hidden;
+    _shopButton.style.visibility = Visibility.Hidden;
+  }
+
   private void ShowMenu()
   {
     base.Theming(_uiDoc.rootVisualElement);
+
     _menu.style.display = DisplayStyle.Flex;
 
     if (_gameManager.LevelManager == null)
@@ -150,10 +211,15 @@ public class UISettings : UILocaleBase
     {
       _toMenuAppButton.style.display = DisplayStyle.Flex;
     }
+
+    _dropdownLanguage.RegisterValueChangedCallback(ChooseLanguage);
   }
+
   private void HideMenu()
   {
     _menu.style.display = DisplayStyle.None;
+
+    _dropdownLanguage.UnregisterValueChangedCallback(ChooseLanguage);
   }
 
   private void ClickToStartMenuButton()
@@ -182,89 +248,92 @@ public class UISettings : UILocaleBase
   {
     var userSettings = _gameManager.AppInfo.setting;
 
-    var menuBlok = _menu.Q<VisualElement>("Menu");
-    var sliderVolumeEffect = menuBlok.Q<Slider>("VolumeEffect");
-    sliderVolumeEffect.value = userSettings.auv;
-    _audioManager.EffectSource.volume = sliderVolumeEffect.value;
-    sliderVolumeEffect.RegisterValueChangedCallback((ChangeEvent<float> evt) =>
+    _sliderVolumeEffect.value = userSettings.auv;
+    _audioManager.EffectSource.volume = _sliderVolumeEffect.value;
+    _sliderVolumeEffect.RegisterValueChangedCallback((ChangeEvent<float> evt) =>
     {
       _audioManager.EffectSource.volume = evt.newValue;
       userSettings.auv = evt.newValue;
       _gameManager.DataManager.SaveSettings();
     });
 
-    var sliderVolumeMusic = menuBlok.Q<Slider>("VolumeMusic");
-    sliderVolumeMusic.value = userSettings.muv;
-    _audioManager.MusicSource.volume = sliderVolumeMusic.value;
-    sliderVolumeMusic.RegisterValueChangedCallback((ChangeEvent<float> evt) =>
+    _sliderVolumeMusic.value = userSettings.muv;
+    _audioManager.MusicSource.volume = _sliderVolumeMusic.value;
+    _sliderVolumeMusic.RegisterValueChangedCallback((ChangeEvent<float> evt) =>
     {
       _audioManager.MusicSource.volume = evt.newValue;
       userSettings.muv = evt.newValue;
       _gameManager.DataManager.SaveSettings();
     });
 
-    var sliderTimeDelay = menuBlok.Q<SliderInt>("TimeDelay");
-    sliderTimeDelay.value = userSettings.td;
-    sliderTimeDelay.RegisterValueChangedCallback((ChangeEvent<int> evt) =>
+    _sliderTimeDelay.value = userSettings.td;
+    _sliderTimeDelay.RegisterValueChangedCallback((ChangeEvent<int> evt) =>
     {
       userSettings.td = evt.newValue;
       _gameManager.DataManager.SaveSettings();
     });
 
-    var dropdownLanguage = menuBlok.Q<DropdownField>("Language");
 
-    dropdownLanguage.value = LocalizationSettings.SelectedLocale.name;
-    dropdownLanguage.choices.Clear();
+
+    _dropdownLanguage.value = LocalizationSettings.SelectedLocale.LocaleName;
+    _dropdownLanguage.choices.Clear();
     for (int i = 0; i < LocalizationSettings.AvailableLocales.Locales.Count; i++)
     {
       Locale locale = LocalizationSettings.AvailableLocales.Locales[i];
-      dropdownLanguage.choices.Add(locale.name);
+      _dropdownLanguage.choices.Add(locale.LocaleName);
     }
-    dropdownLanguage.RegisterValueChangedCallback(async (ChangeEvent<string> evt) =>
+
+
+    if (_gameManager.LevelManager != null)
     {
-      await ChooseLanguage(evt.newValue);
-    });
+      _languageBlock.style.display = DisplayStyle.None;
+    }
+    else
+    {
+      _languageBlock.style.display = DisplayStyle.Flex;
+    }
 
 
     // Theme.
-    var dropdownTheme = menuBlok.Q<DropdownField>("Theme");
 
     var allThemes = _gameManager.ResourceSystem.GetAllTheme();
 
-    dropdownTheme.choices.Clear();
+    _dropdownTheme.choices.Clear();
     for (int i = 0; i < allThemes.Count; i++)
     {
       GameTheme theme = allThemes[i];
-      dropdownTheme.choices.Add(theme.name);
+      _dropdownTheme.choices.Add(theme.name);
     }
-    dropdownTheme.value = userSettings.theme;
-    dropdownTheme.RegisterValueChangedCallback((ChangeEvent<string> evt) =>
-    {
-      GameTheme chooseTheme = allThemes.Find(t => t.name == evt.newValue);
-
-      _gameManager.SetTheme(chooseTheme);
-      _gameManager.DataManager.SaveSettings();
-
-      ChangeTheme();
-    });
+    _dropdownTheme.value = userSettings.theme;
+    _dropdownTheme.RegisterValueChangedCallback(ChangeTheme);
 
   }
 
-  private async UniTask ChooseLanguage(string nameLanguage)
+  private async void ChooseLanguage(ChangeEvent<string> evt)
   {
+    string nameLanguage = evt.newValue;
+
     var userSettings = _gameManager.AppInfo.setting;
 
     await LocalizationSettings.InitializationOperation.Task;
 
     // Debug.Log($"Choose lang={nameLanguage} | {selectedLocale} | {selectedLocale == nameLanguage}");
-    int indexLocale = LocalizationSettings.AvailableLocales.Locales.FindIndex(t => t.name == nameLanguage);
-    if (nameLanguage != LocalizationSettings.SelectedLocale.name && indexLocale != -1)
+    Locale currentLocale = LocalizationSettings.AvailableLocales.Locales.Find(t => t.LocaleName == nameLanguage);
+    if (currentLocale.Identifier.Code != LocalizationSettings.SelectedLocale.Identifier.Code)
     {
-      LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[indexLocale];
-      userSettings.lang = nameLanguage;
+      LocalizationSettings.SelectedLocale = currentLocale;//LocalizationSettings.AvailableLocales.Locales[indexLocale];
+      userSettings.lang = currentLocale.Identifier.Code;
       _gameManager.DataManager.SaveSettings();
       base.Initialize(_uiDoc.rootVisualElement);
+      // Words words = _gameManager.WordsAll.Find(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code);
+      await _gameManager.SetActiveWords();
+
+      await _gameManager.StateManager.SetActiveDataGame();
+
+      // await UniTask.Delay(500);
     }
+
+
     OnChangeLocale?.Invoke();
   }
 

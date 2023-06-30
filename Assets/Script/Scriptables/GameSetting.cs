@@ -72,6 +72,10 @@ public class GameSetting : ScriptableObject
   [Space(5)]
   [Header("API Directory")]
   public APIDirectory APIDirectory;
+
+  // [Space(5)]
+  // [Header("Directory words")]
+  // public List<WordsFile> files;
 }
 
 [System.Serializable]

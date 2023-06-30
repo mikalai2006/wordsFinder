@@ -24,17 +24,17 @@ public class ButtonDirectory : BaseButton
   }
   #endregion
 
-  public override void ChangeTheme()
+  // public override void ChangeTheme()
+  // {
+  //   spriteBg.color = _gameManager.Theme.colorPrimary;
+  // }
+
+
+  public override void SetValue(StateGame state)
   {
-    spriteBg.color = _gameManager.Theme.colorPrimary;
-  }
+    value = state.activeDataGame.activeLevel.openWords.Count;
 
-
-  public override void SetValue(DataGame data)
-  {
-    value = data.activeLevel.openWords.Count;
-
-    base.SetValue(data);
+    base.SetValue(state);
   }
 
 
@@ -49,9 +49,9 @@ public class ButtonDirectory : BaseButton
   }
 
 
-  public override void SetValueProgressBar(DataGame data)
+  public override void SetValueProgressBar(StateGame state)
   {
-    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)data.activeLevel.openWords.Count / (float)_levelManager.ManagerHiddenWords.AllowPotentialWords.Count;
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)state.activeDataGame.activeLevel.openWords.Count / (float)_levelManager.ManagerHiddenWords.AllowPotentialWords.Count;
     spriteProgress.transform
       .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
       .SetEase(Ease.OutBounce);

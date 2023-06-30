@@ -4,6 +4,8 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 /// <summary>
 /// A static class for general helpful methods
@@ -131,6 +133,29 @@ public static class Helpers
   public static string StripHTML(string input)
   {
     return System.Text.RegularExpressions.Regex.Replace(input, "<.*?>", String.Empty);
+  }
+
+
+  public static async UniTask<Texture2D> LoadTexture(string path)
+  {
+    Texture2D result = null;
+
+    if (string.IsNullOrEmpty(path)) return result;
+
+    UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(path);
+    await webRequest.SendWebRequest();
+
+    if (webRequest.result == UnityWebRequest.Result.ConnectionError)
+    {
+      Debug.Log(webRequest.error);
+    }
+    else
+    {
+      Texture2D texture = ((DownloadHandlerTexture)webRequest.downloadHandler).texture;
+      result = texture;
+    }
+
+    return result;
   }
 
   // public static Dictionary<string, List<string>> GetDictionaryCompleteLevel(List<string> list)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -18,11 +19,11 @@ public class FileDataHandler
     this._nameFile = _fileName;
   }
 
-  public async UniTask<DataGame> LoadData()
+  public async UniTask<StateGame> LoadData()
   {
     string fullPath = Path.Combine(_dataDirPath, _nameFile);
 
-    DataGame loadedData = null;
+    StateGame loadedData = null;
 
     if (File.Exists(fullPath))
     {
@@ -38,7 +39,7 @@ public class FileDataHandler
           }
         }
 
-        loadedData = JsonUtility.FromJson<DataGame>(dataToLoad);
+        loadedData = JsonUtility.FromJson<StateGame>(dataToLoad);
 
         if (_useEncryption)
         {
@@ -55,7 +56,7 @@ public class FileDataHandler
     return loadedData;
   }
 
-  public void SaveData(DataGame data)
+  public void SaveData(StateGame data)
   {
     string fullPath = Path.Combine(_dataDirPath, _nameFile);
 
