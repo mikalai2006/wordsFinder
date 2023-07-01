@@ -31,6 +31,12 @@ public class ButtonShuffle : BaseButton
   {
     base.OnPointerDown(eventData);
 
+    await RefreshChars();
+  }
+
+
+  public async UniTask RefreshChars()
+  {
     var existChars = _levelManager.Symbols;
 
     // get all positions.
@@ -59,6 +65,7 @@ public class ButtonShuffle : BaseButton
     // GameManager.Instance.DataManager.Save();
     _stateManager.RefreshData();
   }
+
 
   private void RotateButton()
   {

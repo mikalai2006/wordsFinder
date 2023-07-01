@@ -91,12 +91,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b809c9b06a6d095478521064eb3da1b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 1963567993293100870}
   spritesObject: {fileID: 2279400681055502426}
   spriteBg: {fileID: 7278856706409721545}
   spriteMask: {fileID: 1538067733900309128}
   spriteProgress: {fileID: 1971598724187337345}
   counterObject: {fileID: 761469204496176561}
   counterText: {fileID: 4767953084660889024}
+  counterImage: {fileID: 7360584077253048548}
+--- !u!114 &1963567993293100870 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 684271425995895367, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
+  m_PrefabInstance: {fileID: 1315327700790977793}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &1971598724187337345 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 656537105214478208, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
@@ -123,3 +136,14 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 8593793943117089736, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
   m_PrefabInstance: {fileID: 1315327700790977793}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7360584077253048548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8387663671193558501, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
+  m_PrefabInstance: {fileID: 1315327700790977793}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

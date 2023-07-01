@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Stat : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Stat : MonoBehaviour
   private GameManager _gameManager => GameManager.Instance;
   private float maxWidthProgress = 10f;
   [SerializeField] private RectTransform spriteProgress;
+  [SerializeField] private Image _bar;
 
   private void Awake()
   {
@@ -32,6 +34,7 @@ public class Stat : MonoBehaviour
   private void ChangeTheme()
   {
     _countWords.color = _gameManager.Theme.colorPrimary;
+    _bar.color = _gameManager.Theme.colorAccent;
   }
 
   public void SetValue(StateGame state)

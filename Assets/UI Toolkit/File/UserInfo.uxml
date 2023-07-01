@@ -1,9 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="BtnUserShortInfo" src="project://database/Assets/UI%20Toolkit/File/BtnUserShortInfo.uxml?fileID=9197481963319205126&amp;guid=8621f5f7b62642b47adeedb4dbb5cba7&amp;type=3#BtnUserShortInfo" />
     <Style src="project://database/Assets/UI%20Toolkit/File/Base.uss?fileID=7433441132597879392&amp;guid=47ab2fccdf66be0488c7b62162e81d51&amp;type=3#Base" />
-    <ui:VisualElement name="VisualElement" class="b-rounded p-2" style="background-color: rgba(0, 0, 0, 0.05); margin-bottom: 10px;">
+    <ui:VisualElement name="VisualElement" class="b-rounded" style="background-color: rgba(0, 0, 0, 0.05); margin-bottom: 10px; padding-left: 20px; padding-right: 20px; padding-top: 20px; padding-bottom: 20px;">
+        <ui:VisualElement class="p-2 b-rounded" style="flex-grow: 1; background-color: rgba(255, 255, 255, 0.1); margin-bottom: 10px; align-items: center;">
+            <ui:Instance template="BtnUserShortInfo" name="BtnUserShortInfo" />
+        </ui:VisualElement>
         <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-grow: 0;">
             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-                <ui:Label tabindex="-1" text="Слова \r\nрусского языка" display-tooltip-when-elided="true" name="Name" class="m-0 text-primary" style="-unity-text-align: upper-center; -unity-font-style: bold; font-size: 25px; padding-bottom: 0; white-space: normal;" />
+                <ui:Label tabindex="-1" text="Слова \r\nрусского языка" display-tooltip-when-elided="true" name="NameFile" class="m-0 text-primary text-lg" style="-unity-text-align: upper-center; -unity-font-style: bold; padding-bottom: 0; white-space: normal;" />
                 <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center; justify-content: center; display: none;">
                     <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: center; margin-bottom: 10px; align-items: center;">
                         <ui:VisualElement name="RateImg" style="background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/128/CoinN128.png?fileID=2800000&amp;guid=0d7fbaa06b460124595e8bbb89f88339&amp;type=3#CoinN128&apos;); width: 20px; height: 20px;" />
@@ -14,7 +18,7 @@
                         <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="Coin" class="text-primary font-bold p-0 m-0" />
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:Label tabindex="-1" text="#actualprogress" display-tooltip-when-elided="true" class="m-0 p-0 text-secondary" style="font-size: 12px; -unity-text-align: upper-center; display: flex; padding-top: 20px;" />
+                <ui:Label tabindex="-1" text="#actualprogress" display-tooltip-when-elided="true" class="m-0 p-0 text-secondary" style="font-size: 12px; -unity-text-align: upper-center; display: flex;" />
                 <ui:Label tabindex="-1" text="Major2" display-tooltip-when-elided="true" name="Status" class="m-0 p-0 text-md text-secondary" style="-unity-font-style: bold; -unity-text-align: upper-center; margin-bottom: 5px;" />
                 <ui:Label tabindex="-1" text="Found 1212 words. Found 1212 words. Found 1212 words." display-tooltip-when-elided="true" name="FoundWords" class="m-0 p-0 text-md text-secondary" style="-unity-text-align: upper-center; white-space: normal;" />
             </ui:VisualElement>

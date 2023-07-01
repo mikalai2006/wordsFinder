@@ -157,6 +157,16 @@ public static class Helpers
 
     return result;
   }
+
+  public static async UniTask<string> GetName()
+  {
+    var _gameManager = GameManager.Instance;
+
+    string userName = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.name)
+  ? await Helpers.GetLocaledString(_gameManager.GameSettings.noName.title)
+  : _gameManager.AppInfo.UserInfo.name;
+    return userName;
+  }
   // public static Dictionary<string, List<string>> GetDictionaryCompleteLevel(List<string> list)
   // {
   //   Dictionary<string, List<string>> result = new();

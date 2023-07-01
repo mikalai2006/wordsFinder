@@ -72,8 +72,15 @@ var plugin = {
         quantityAround: 3,
       }).then((res) => {
         result.leaderboard = {
-          title: res.leaderboard.title,
+          title: [],
         };
+        for (var key of Object.keys(res.leaderboard.title)) {
+          result.leaderboard.title.push({
+            lang: key,
+            value: res.leaderboard.title[key],
+          });
+        }
+
         result.userRank = res.userRank;
         result.entries = [];
 
@@ -94,8 +101,8 @@ var plugin = {
 
         const stringResult = JSON.stringify(result);
         myGameInstance.SendMessage(
-          "UIStartMenu",
-          "DrawLeaderListBlok",
+          "DataManager",
+          "GetLeaderBoard",
           stringResult
         );
       });

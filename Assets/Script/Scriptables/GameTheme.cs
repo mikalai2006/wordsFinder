@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 [CreateAssetMenu]
@@ -39,6 +40,7 @@ public class GameTheme : ScriptableObject
   [Space(5)]
   [Header("Game")]
   public Color bgColor;
+  public Color colorBgGrid;
   public Color colorLine;
   public Color colorPrimary;
   public Color colorSecondary;
@@ -51,4 +53,12 @@ public class GameTheme : ScriptableObject
   // public Color entityActiveColor;
   public Color colorDisable;
 
+  [Space(5)]
+  [Header("Hint")]
+  public Color colorBgHint;
+  public Color colorTextHint;
+
+  [Space(5)]
+  [Header("Button")]
+  public Color colorBgButton;
 }

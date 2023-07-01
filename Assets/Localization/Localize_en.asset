@@ -77,7 +77,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1563663732473856
-    m_Localized: 'Found {count} bonus {count:word|words} of {count2}. '
+    m_Localized: Found {count} bonus {count:word|words} of {count2}
     m_Metadata:
       m_Items:
       - rid: 366248018379538446
@@ -130,7 +130,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3195120322248704
-    m_Localized: Found {count} word{count:|s}
+    m_Localized: Found {count} of {count2} word{count2:|s}
     m_Metadata:
       m_Items:
       - rid: 366248018379538446
@@ -224,7 +224,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3731728058449920
-    m_Localized: '{count} bonus word{count:|s} successfully found!'
+    m_Localized: '{count} word{count:|s} found during the round! For each word, an
+      additional coin is awarded.'
     m_Metadata:
       m_Items:
       - rid: 366248018379538446
@@ -349,7 +350,7 @@ MonoBehaviour:
       m_Items:
       - rid: 366248018379538446
   - m_Id: 6374939935539200
-    m_Localized: English words
+    m_Localized: English dictionary
     m_Metadata:
       m_Items: []
   - m_Id: 6699709965172736
@@ -367,7 +368,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6741078280667136
-    m_Localized: Do you really want to use the hint {name}?
+    m_Localized: Do you really want to use the hint - {name}?
     m_Metadata:
       m_Items:
       - rid: 366248018379538446
@@ -388,7 +389,7 @@ MonoBehaviour:
       m_Items:
       - rid: 366248018379538446
   - m_Id: 6780731931131904
-    m_Localized: Russian words
+    m_Localized: Russian Dictionary
     m_Metadata:
       m_Items: []
   references:

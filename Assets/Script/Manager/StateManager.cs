@@ -254,44 +254,67 @@ public class StateManager : MonoBehaviour
   }
 
 
-  public List<ItemWord> GetAllowNotCompleteWords()
+  public List<ItemWord> GetAllowNotCompleteWords(List<string> completedWords)
   {
     var allAllowLevelWords = _gameManager.GameSettings.GameLevels
-      .Where(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code && t.minRate <= dataGame.rate)
+      .Where(t =>
+        t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code
+        && t.minRate <= dataGame.rate
+      )
       .ToList();
     List<ItemWord> allAllowWords = new();
     foreach (var el in allAllowLevelWords)
     {
-      for (int i = 0; i < el.levelWords.Count; i++)
+      var allLevelWords = el.levelWords.Where(t => !completedWords.Contains(t)).ToList();
+      for (int i = 0; i < allLevelWords.Count; i++)
       {
         allAllowWords.Add(new ItemWord()
         {
-          word = el.levelWords[i],
+          word = allLevelWords[i],
           rate = el.minRate
         });
       }
       // allAllowWords.AddRange(el.levelWords);
     };
 
+    // if not found not competed word.
+    if (allAllowWords.Count == 0)
+    {
+      var alllWords = _gameManager.Words.data
+        .Where(t =>
+          t.Length > 4
+          && t.Length <= 12
+        )
+        .OrderBy(t => UnityEngine.Random.value)
+        .ToList();
+
+      // generate random word.
+      string randomWord = alllWords.ElementAt(0);
+      allAllowWords.Add(new ItemWord()
+      {
+        word = randomWord,
+        rate = 0
+      });
+    }
+
     return allAllowWords.ToList();
   }
 
   public void SetActiveLevel(string wordConfig)
   {
-    if (wordConfig == null)
+    // if (wordConfig == null)
+    // {
+    //   //TODO Not found new level - GAME OVER
+    //   return;
+    // }
+    if (dataGame.levels.Count == 0 || string.IsNullOrEmpty(wordConfig))
     {
-      //TODO Not found new level - GAME OVER
-      return;
-    }
-
-    if (dataGame.levels.Count == 0)
-    {
-      if (dataGame.completed.Contains(wordConfig))
+      if (dataGame.completed.Contains(wordConfig) || string.IsNullOrEmpty(wordConfig))
       {
-        var allAllowWords = GetAllowNotCompleteWords();
+        var notCompletedWords = GetAllowNotCompleteWords(dataGame.completed);
 
         // Find not completed word.
-        var notCompletedWords = allAllowWords.Where(t => !dataGame.completed.Contains(t.word));
+        // var notCompletedWords = allAllowWords.Where(t => !dataGame.completed.Contains(t.word));
 
         if (notCompletedWords.Count() > 0)
         {
@@ -300,10 +323,12 @@ public class StateManager : MonoBehaviour
       }
     }
 
-    ActiveWordConfig = wordConfig;
-    // ActiveWordConfig = word;
-    // dataGame.lastLevelWord = wordConfig.idLevel;
-    dataGame.lastWord = wordConfig;
+    Debug.Log($"wordConfig={wordConfig}");
+
+    dataGame.lastWord = ActiveWordConfig = wordConfig;
+    // // ActiveWordConfig = word;
+    // // dataGame.lastLevelWord = wordConfig.idLevel;
+    // dataGame.lastWord = wordConfig;
 
     if (dataGame.levels.Find(t => t.id == wordConfig) == null)
     {
@@ -363,9 +388,9 @@ public class StateManager : MonoBehaviour
     // Find not completed word.
     string result = null;
 
-    var allAllowWords = GetAllowNotCompleteWords();
+    var notCompletedWords = GetAllowNotCompleteWords(dataGame.completed);
 
-    var notCompletedWords = allAllowWords.Where(t => !dataGame.completed.Contains(t.word));
+    // var notCompletedWords = allAllowWords.Where(t => !dataGame.completed.Contains(t.word));
 
     if (notCompletedWords.Count() > 0)
     {

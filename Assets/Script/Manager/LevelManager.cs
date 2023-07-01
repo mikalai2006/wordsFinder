@@ -51,10 +51,11 @@ public class LevelManager : Singleton<LevelManager>
 
     await ManagerHiddenWords.Init(); // levelConfig, wordConfig
 
+    var currentLevel = _stateManager.dataGame.levels.Find(t => t.id == _stateManager.dataGame.lastWord);
+
     // Check complete level.
     if (_stateManager.dataGame.levels.Count > 0)
     {
-      var currentLevel = _stateManager.dataGame.levels.Find(t => t.id == wordConfig);
       bool isEndLevel = currentLevel.openWords.Count - currentLevel.countDopWords == currentLevel.countNeedWords && currentLevel.openWords.Count > 0;
       if (isEndLevel)
       {
@@ -65,6 +66,7 @@ public class LevelManager : Singleton<LevelManager>
     }
 
     CreateChars(ManagerHiddenWords.WordForChars);
+    if (currentLevel.openWords.Count == 0) await buttonShuffle.RefreshChars();
 
     // GameManager.Instance.DataManager.Save();
     GameManager.Instance.StateManager.RefreshData();

@@ -74,6 +74,17 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 656537105214478208, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
   m_PrefabInstance: {fileID: 78026299494110562}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &606351787721713445 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 684271425995895367, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
+  m_PrefabInstance: {fileID: 78026299494110562}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &844777536184994695 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 769117390024040165, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
@@ -91,12 +102,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f0fedd85922683449e316c75cec89f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 606351787721713445}
   spritesObject: {fileID: 934428499815723065}
   spriteBg: {fileID: 8527142095978880682}
   spriteMask: {fileID: 436180002833335019}
   spriteProgress: {fileID: 579074863785837282}
   counterObject: {fileID: 1856757551077025234}
   counterText: {fileID: 5872380566773171619}
+  counterImage: {fileID: 8463322713548441735}
 --- !u!1 &934428499815723065 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1000631741917455707, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
@@ -116,6 +129,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8463322713548441735 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8387663671193558501, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
+  m_PrefabInstance: {fileID: 78026299494110562}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &8527142095978880682 stripped

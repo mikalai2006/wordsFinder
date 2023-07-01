@@ -118,16 +118,16 @@ public class DialogLevel : MonoBehaviour
     );
 
     // int totalFindedWords = _stateManager.dataGame.activeLevel.countDopWords + _stateManager.dataGame.activeLevel.countNeedWords;
-    _countTotalCoins = 0;
+    _countTotalCoins = _stateManager.dataGame.activeLevel.openWords.Count;
 
-    _textMessage.text = await Helpers.GetLocaledString("completelevel");
+    // _textMessage.text = await Helpers.GetLocaledString("completelevel");
 
     _textTotalCoin.text = _countTotalCoins.ToString();
 
     _textMessageSmall.text = await Helpers.GetLocalizedPluralString(
           "completelevel_d",
-           new Dictionary<string, object> {
-            {"count", _stateManager.dataGame.activeLevel.countNeedWords},
+           new Dictionary<string, int> {
+            {"count", _stateManager.dataGame.activeLevel.openWords.Count},
           }
         );
 
@@ -151,7 +151,7 @@ public class DialogLevel : MonoBehaviour
       for (int i = _countTotalCoins; i <= countCoinLevel; i++)
       {
         _textTotalCoin.text = i.ToString();// _countTotalCoins.ToString();
-        await UniTask.Delay(10);
+        await UniTask.Delay(1);
       }
       AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
 
@@ -166,13 +166,13 @@ public class DialogLevel : MonoBehaviour
       if (indexBonus != null)
       {
         indexBonus.gameObject.transform
-          .DOMove(spriteCoin.transform.localPosition + new Vector3(0, 3.5f), duration)
+          .DOMove(spriteCoin.transform.localPosition + new Vector3(0, 4.3f), duration)
           .OnComplete(async () =>
           {
             for (int i = countCoinLevel; i <= _countTotalOfByIndex; i++)
             {
               _textTotalCoin.text = i.ToString();
-              await UniTask.Delay(10);
+              await UniTask.Delay(1);
             }
 
             AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
@@ -237,7 +237,7 @@ public class DialogLevel : MonoBehaviour
     {
       _textTotalCoin.text = i.ToString();
 
-      await UniTask.Delay(10);
+      await UniTask.Delay(1);
     }
   }
 
@@ -359,8 +359,8 @@ public class DialogLevel : MonoBehaviour
           }
         );
       }
-      _textMessageSmall.text = string.Format("{0}\r\n{1}\r\n{2}",
-        await Helpers.GetLocaledString("policyround"),
+      _textMessageSmall.text = string.Format("{0}\r\n{1}",
+        // await Helpers.GetLocaledString("policyround"),
         await Helpers.GetLocalizedPluralString(
           "roundconditdesc",
           new Dictionary<string, object> {
@@ -373,8 +373,8 @@ public class DialogLevel : MonoBehaviour
     }
     else
     {
-      _textMessageSmall.text = string.Format("{0}\r\n{1}\r\n{2}",
-        await Helpers.GetLocaledString("policyround"),
+      _textMessageSmall.text = string.Format("{0}\r\n{1}",
+        // await Helpers.GetLocaledString("policyround"),
         await Helpers.GetLocalizedPluralString(
           "roundconditdesc",
           new Dictionary<string, object> {
@@ -466,7 +466,7 @@ public class DialogLevel : MonoBehaviour
 
     string newRank = await Helpers.GetLocaledString(_gameManager.PlayerSetting.text.title);
 
-    _textMessage.text = newRank;
+    _textHeader.text = newRank;
 
     _textMessageSmall.text = string.Format("{0}",
       await Helpers.GetLocalizedPluralString(

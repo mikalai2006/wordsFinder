@@ -133,8 +133,6 @@ namespace User
     {
       var _gameManager = GameManager.Instance;
 
-      Debug.Log("InitData1");
-
       stateGame = await _gameManager.StateManager.Init(stateGame);
 
       // GamePlayerSetting playerSetting;

@@ -54,8 +54,6 @@ namespace Loader
       onProgress?.Invoke(0.3f);
       GameManager.Instance.ResourceSystem = ResourceSystem.Instance;
       await ResourceSystem.Instance.LoadCollectionsAsset<GameTheme>(Constants.Labels.LABEL_THEME);
-
-      UnityEngine.Debug.Log("InitConfigOperation completed!");
     }
   }
 }

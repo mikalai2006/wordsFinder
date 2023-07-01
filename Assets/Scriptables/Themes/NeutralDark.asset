@@ -17,7 +17,7 @@ MonoBehaviour:
   textOpentHiddenWord: {r: 0.3207547, g: 0.31016374, b: 0.31016374, a: 1}
   bgImageHiddenWord: {fileID: 21300000, guid: 81bc87243f22f9747bf7cbd46d867efe, type: 3}
   bgOpenNeiHiddenWord: {r: 0.42352942, g: 0.42352942, b: 0.42352942, a: 1}
-  textOpenNeiHiddenWord: {r: 0.6142755, g: 0.6142755, b: 0.6415094, a: 1}
+  textOpenNeiHiddenWord: {r: 0.26415092, g: 0.25542894, b: 0.25542894, a: 1}
   bgChoosedWord: {r: 0.6392157, g: 0.6392157, b: 0.6392157, a: 1}
   textChoosedWord: {r: 0.14901961, g: 0.14901961, b: 0.14901961, a: 1}
   bgFindAllowWord: {r: 0.9843138, g: 0.7490196, b: 0.14117648, a: 1}
@@ -39,3 +39,5 @@ MonoBehaviour:
   colorAccent: {r: 0.8666667, g: 0.64705884, b: 0, a: 0.87058824}
   entityColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
   colorDisable: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
+  colorBgHint: {r: 0.23669456, g: 0.23669456, b: 0.254717, a: 1}
+  colorTextHint: {r: 0.8313726, g: 0.8313726, b: 0.8470589, a: 1}

@@ -14,6 +14,7 @@ public class UISettings : UILocaleBase
   private VisualElement _userCoinImg;
   private VisualElement _languageBlock;
   private VisualElement _userRateImg;
+  private VisualElement _userShortInfo;
   private Toggle _doDialog;
   private Label _userRate;
   private Label _userCoin;
@@ -38,6 +39,7 @@ public class UISettings : UILocaleBase
     StateManager.OnChangeState += SetValue;
     DialogLevel.OnHideDialog += ShowAside;
     DialogLevel.OnShowDialog += HideAside;
+    GameManager.OnAfterStateChanged += AfterStateChanged;
   }
 
   private void OnDestroy()
@@ -45,11 +47,13 @@ public class UISettings : UILocaleBase
     StateManager.OnChangeState -= SetValue;
     DialogLevel.OnHideDialog -= ShowAside;
     DialogLevel.OnShowDialog -= HideAside;
+    GameManager.OnAfterStateChanged -= AfterStateChanged;
   }
 
   public virtual void Start()
   {
     _aside = _uiDoc.rootVisualElement.Q<VisualElement>("AsideBlok");
+    _userShortInfo = _uiDoc.rootVisualElement.Q<VisualElement>("UserShortInfo");
     _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
     _menu.style.display = DisplayStyle.None;
 
@@ -100,10 +104,9 @@ public class UISettings : UILocaleBase
     {
       ClickToStartMenuButton();
     };
-    if (_gameManager.LevelManager == null)
-    {
-      _toMenuAppButton.style.display = DisplayStyle.None;
-    }
+
+    _toMenuAppButton.style.display = DisplayStyle.None;
+    _userShortInfo.style.display = DisplayStyle.None;
 
     _userCoin = _aside.Q<Label>("UserCoin");
     _userCoinImg = _aside.Q<VisualElement>("UserCoinImg");
@@ -120,7 +123,34 @@ public class UISettings : UILocaleBase
     ChangeTheme(null);
     SetValue(_gameManager.StateManager.stateGame);
 
+    Refresh();
+
     base.Initialize(_uiDoc.rootVisualElement);
+  }
+
+
+  private void AfterStateChanged(GameState state)
+  {
+    switch (state)
+    {
+      case GameState.CloseLevel:
+      case GameState.LoadLevel:
+        Refresh();
+        break;
+    }
+  }
+
+  private void Refresh()
+  {
+    Debug.Log($"{name}::: Refresh");
+    if (_gameManager.LevelManager != null)
+    {
+      _userShortInfo.style.display = DisplayStyle.Flex;
+    }
+    else
+    {
+      _userShortInfo.style.display = DisplayStyle.None;
+    }
   }
 
 
@@ -165,11 +195,7 @@ public class UISettings : UILocaleBase
     imgShop.style.backgroundImage = new StyleBackground(_gameSettings.spriteShop);
     imgShop.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
 
-    string userName = string.IsNullOrEmpty(_gameManager.AppInfo.UserInfo.name)
-      ? await Helpers.GetLocaledString(_gameSettings.noName.title)
-      : _gameManager.AppInfo.UserInfo.name;
-    // string status = await Helpers.GetLocaledString(_gameSettings.noName.title);
-    _userName.text = string.Format("{0}", userName);
+    _userName.text = await Helpers.GetName();
 
 
     base.Theming(_uiDoc.rootVisualElement);
@@ -237,6 +263,7 @@ public class UISettings : UILocaleBase
     AudioManager.Instance.Click();
     HideMenu();
     GameManager.Instance.ChangeState(GameState.CloseLevel);
+
   }
 
   private void ClickCloseMenuButton()

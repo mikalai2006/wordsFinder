@@ -99,7 +99,7 @@ public class GameManager : StaticInstance<GameManager>
       case GameState.ShowMenu:
         break;
       case GameState.LoadLevel:
-        HandleLoadLevel();
+        // HandleLoadLevel();
         break;
       default:
         // throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -141,14 +141,15 @@ public class GameManager : StaticInstance<GameManager>
     await LoadingScreenProvider.LoadAndDestroy(operations);
     // LevelManager.CreateLevel();
   }
-  private async void HandleLoadLevel()
-  {
-    var operations = new Queue<ILoadingOperation>();
-    operations.Enqueue(new GameInitOperation());
-    await LoadingScreenProvider.LoadAndDestroy(operations);
-    //var dataGame = DataManager.Load();
-    // LevelManager.LoadLevel();
-  }
+  // private async void HandleLoadLevel()
+  // {
+  //   // var operations = new Queue<ILoadingOperation>();
+  //   // operations.Enqueue(new GameInitOperation());
+  //   // await LoadingScreenProvider.LoadAndDestroy(operations);
+  //   // //var dataGame = DataManager.Load();
+  //   // // LevelManager.LoadLevel();
+
+  // }
 
 
   public void SetTheme(GameTheme newTheme)
@@ -207,12 +208,9 @@ public class GameManager : StaticInstance<GameManager>
   {
     // set language.
     await LocalizationSettings.InitializationOperation.Task;
-    Debug.Log($"Current Locale - {LocalizationSettings.SelectedLocale.Identifier.Code}");
     Words words = WordsAll.Find(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code);
 
-    Debug.Log($"Words data count - {words.data.Count()}");
-    Debug.Log($"Set word - {LocalizationSettings.SelectedLocale.Identifier.Code}");
-    Words = words; // WordsAll.Find(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code);
+    Words = words;
     Debug.Log($"Set words for {Words.locale.Identifier.Code} |<{words.data.Count()}> |[{Words.localeCode}] [{LocalizationSettings.SelectedLocale.Identifier.Code}]");
   }
 }

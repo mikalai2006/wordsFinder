@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 
+[System.Serializable]
 public struct LeaderBoard
 {
   public LeaderBoardInfo leaderboard;
@@ -8,10 +9,13 @@ public struct LeaderBoard
   public List<LeaderUser> entries;
 }
 
+[System.Serializable]
 public struct LeaderBoardInfo
 {
-  public LeaderBoardInfoTitle title;
+  public List<LeaderBoardInfoTitle> title;
 }
+
+[System.Serializable]
 public struct LeaderUser
 {
   public int rank;
@@ -21,8 +25,9 @@ public struct LeaderUser
   public string photo;
 }
 
+[System.Serializable]
 public struct LeaderBoardInfoTitle
 {
-  public string ru;
-  public string en;
+  public string lang;
+  public string value;
 }

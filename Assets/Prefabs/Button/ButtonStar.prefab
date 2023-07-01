@@ -305,6 +305,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: -945329460151259267}
   m_SourcePrefab: {fileID: 100100000, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
+--- !u!114 &47609043196974273 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8387663671193558501, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
+  m_PrefabInstance: {fileID: 8417178807419193636}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &255748089578455788 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 8593793943117089736, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
@@ -341,6 +352,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1000631741917455707, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
   m_PrefabInstance: {fileID: 8417178807419193636}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9056974953437838179 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 684271425995895367, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
+  m_PrefabInstance: {fileID: 8417178807419193636}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &9066782355460906660 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 656537105214478208, guid: a675ded3f4875ee48b5473418fe67de2, type: 3}
@@ -363,10 +385,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b9b7909cd66faf43a86cad58319698c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 9056974953437838179}
   spritesObject: {fileID: 8731677875743403135}
   spriteBg: {fileID: 255748089578455788}
   spriteMask: {fileID: 8347272789078859437}
   spriteProgress: {fileID: 9066782355460906660}
   counterObject: {fileID: 7790770101500688788}
   counterText: {fileID: 2640239704678259173}
+  counterImage: {fileID: 47609043196974273}
   _countChars: {fileID: 5001660934015231738}

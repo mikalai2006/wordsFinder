@@ -33,7 +33,7 @@ MonoBehaviour:
       m_WaitForCompletion: 0
       m_LocalVariables: []
   minRate: 0
-  locale: {fileID: 11400000, guid: ee9ad60cf3206d14fa33f59ed209a706, type: 2}
+  locale: {fileID: 11400000, guid: 64a3977be13583547bee7545b3c13f3f, type: 2}
   levelWords:
   - "\u0442\u043E\u0440\u0433"
   - "\u0430\u043C\u043F\u0438\u0440"

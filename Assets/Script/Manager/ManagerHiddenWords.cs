@@ -218,7 +218,7 @@ public class ManagerHiddenWords : MonoBehaviour
     // Calculate count hidden chars.
     int countChars = Mathf.RoundToInt(((float)_stateManager.dataGame.rate / (float)_gameManager.PlayerSetting.countFindWordsForUp) * _gameSetting.maxCountHiddenChar);
     if (countChars < _gameSetting.minCountHiddenChar) countChars = _gameSetting.minCountHiddenChar;
-    Debug.Log($"Max count hidden char={countChars}");
+    // Debug.Log($"Max count hidden char={countChars}");
 
     var countHiddenChars = 0;
     foreach (var word in NeedWords)
@@ -357,17 +357,17 @@ public class ManagerHiddenWords : MonoBehaviour
         {
           // open new allow word.
           OpenWords.Add(choosedWord, 1);
-          await _choosedWordMB.OpenAllowWord();
-          _stateManager.OpenAllowWord(choosedWord);
-
           if (NeedWords.ContainsKey(choosedWord))
           {
             OpenNeedWords.Add(choosedWord, 1);
-            _levelManager.CreateCoin(
-              _levelManager.buttonDirectory.transform.position,
-              _levelManager.topSide.spriteCoinPosition
-            ).Forget();
           }
+          await _choosedWordMB.OpenAllowWord();
+          _stateManager.OpenAllowWord(choosedWord);
+
+          // _levelManager.CreateCoin(
+          //   _levelManager.buttonDirectory.transform.position,
+          //   _levelManager.topSide.spriteCoinPosition
+          // ).Forget();
         }
       }
       else
@@ -530,7 +530,13 @@ public class ManagerHiddenWords : MonoBehaviour
 
       var newConfigWord = _stateManager.GetNextWord();
 
-      _stateManager.UseBonus(-1, TypeBonus.OpenNeighbours);
+      // dicrement bonus ope neighbours.
+      int valueBonusOpenNeighbours;
+      _stateManager.dataGame.bonus.TryGetValue(TypeBonus.OpenNeighbours, out valueBonusOpenNeighbours);
+      if (valueBonusOpenNeighbours > 0)
+      {
+        _stateManager.UseBonus(-1, TypeBonus.OpenNeighbours);
+      }
 
 #if ysdk
       GetLeaderBoard();

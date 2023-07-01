@@ -33,7 +33,7 @@ MonoBehaviour:
       m_WaitForCompletion: 0
       m_LocalVariables: []
   minRate: 50
-  locale: {fileID: 11400000, guid: 412d369c71b907b428fb4041588eeb85, type: 2}
+  locale: {fileID: 11400000, guid: f796f6838dd00ce4a8ab6567f20572b0, type: 2}
   levelWords:
   - aster
   - artist

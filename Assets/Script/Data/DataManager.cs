@@ -16,6 +16,7 @@ public class DataManager : Singleton<DataManager>
 
   public static event System.Action<StateGame> OnLoadData;
   public static event System.Action<UserInfo> OnLoadUserInfo;
+  public static event System.Action<LeaderBoard> OnLoadLeaderBoard;
 
   [Header("File Storage Config")]
   [SerializeField] private string fileNameGame;
@@ -38,7 +39,7 @@ public class DataManager : Singleton<DataManager>
   public async UniTask<StateGame> Load()
   {
     _stateGame = await _fileDataHandler.LoadData();
-    Debug.Log($"{name}::: JSON ::: Load {JsonUtility.ToJson(_stateGame)}");
+    // Debug.Log($"{name}::: JSON ::: Load {JsonUtility.ToJson(_stateGame)}");
 
     OnLoadData?.Invoke(_stateGame);
     return _stateGame;
@@ -53,7 +54,7 @@ public class DataManager : Singleton<DataManager>
   public StateGame SetPlayerData(string data)
   {
     _stateGame = JsonUtility.FromJson<StateGame>(data);
-    Debug.Log($"{name}::: YSDK ::: LoadPlayerData {JsonUtility.ToJson(_stateGame)}");
+    // Debug.Log($"{name}::: YSDK ::: LoadPlayerData {JsonUtility.ToJson(_stateGame)}");
 
     OnLoadData?.Invoke(_stateGame);
     return _stateGame;
@@ -67,9 +68,17 @@ public class DataManager : Singleton<DataManager>
   public void SetUserInfo(string stringUserInfo)
   {
     UserInfo userInfo = JsonUtility.FromJson<UserInfo>(stringUserInfo);
-    Debug.Log($"{name}::: YSDK ::: SetUserInfo {stringUserInfo}");
+    // Debug.Log($"{name}::: YSDK ::: SetUserInfo {stringUserInfo}");
 
     OnLoadUserInfo?.Invoke(userInfo);
+  }
+
+  public void GetLeaderBoard(string stringLeaderBoard)
+  {
+    LeaderBoard leaderBoard = JsonUtility.FromJson<LeaderBoard>(stringLeaderBoard);
+    // Debug.Log($"{name}::: YSDK ::: GetLeaderBoard {stringLeaderBoard}");
+
+    OnLoadLeaderBoard?.Invoke(leaderBoard);
   }
 
   public void Save()

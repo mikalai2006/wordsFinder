@@ -19,7 +19,6 @@ public class ButtonDirectory : BaseButton
   protected override void OnDestroy()
   {
     base.OnDestroy();
-
     StateManager.OnChangeState -= SetValue;
   }
   #endregion

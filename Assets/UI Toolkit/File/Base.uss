@@ -281,9 +281,10 @@
 
 .button_user {
     flex-direction: row;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, 0);
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+    -unity-font-style: normal;
 }

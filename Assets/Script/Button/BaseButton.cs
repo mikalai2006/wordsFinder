@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 {
@@ -18,12 +19,14 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   protected Vector3 initPosition;
   protected Vector3 initScaleCounterObject;
   protected GameEntity configEntity;
+  [SerializeField] protected Button button;
   [SerializeField] protected GameObject spritesObject;
   [SerializeField] protected SpriteRenderer spriteBg;
   [SerializeField] protected SpriteMask spriteMask;
   [SerializeField] protected SpriteRenderer spriteProgress;
   [SerializeField] protected GameObject counterObject;
   [SerializeField] protected TMPro.TextMeshProUGUI counterText;
+  [SerializeField] protected Image counterImage;
   protected float progressBasePositionY = -1.4f;
   protected bool statusShowCounter = false;
   protected int valueCounter;
@@ -80,7 +83,10 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 
   public virtual void ChangeTheme()
   {
+    counterImage.color = _gameManager.Theme.colorBgHint;
+    counterText.color = _gameManager.Theme.colorTextHint;
     spriteProgress.color = _gameManager.Theme.colorAccent;
+    button.image.color = _gameManager.Theme.colorBgButton;
 
     if (!pointer.enabled)
     {
@@ -108,7 +114,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
         ShowCounter();
         // AddChar();
       }
-      else if (value != valueCounter)
+      else if (value != valueCounter && isShowCounter)
       {
         counterObject.transform
           .DOPunchScale(new Vector3(.5f, .5f, 0), _gameSetting.timeGeneralAnimation)
