@@ -20,6 +20,8 @@ public class UIDashboard : UILocaleBase
   private Button _exitButton;
   // private Button _newGameButton;
   private VisualElement _userInfoBlok;
+  private Label _userCoin;
+  private Label _userRate;
   private VisualElement _leaderBoard;
   // private Button _loadGameMenuButton;
   private TaskCompletionSource<DataDialogResult> _processCompletionSource;
@@ -29,12 +31,14 @@ public class UIDashboard : UILocaleBase
   {
     UISettings.OnChangeLocale += RefreshMenu;
     GameManager.OnChangeTheme += RefreshMenu;
+    StateManager.OnChangeState += SetValue;
   }
 
   private void OnDestroy()
   {
     UISettings.OnChangeLocale -= RefreshMenu;
     GameManager.OnChangeTheme -= RefreshMenu;
+    StateManager.OnChangeState -= SetValue;
   }
 
   public virtual void Start()
@@ -72,6 +76,12 @@ public class UIDashboard : UILocaleBase
     }
 
     base.Initialize(_uiDoc.rootVisualElement);
+  }
+
+  private void SetValue(StateGame state)
+  {
+    _userCoin.text = string.Format("{0}", state.coins);
+    _userRate.text = string.Format("{0}", state.rate);
   }
 
   public async UniTask<DataDialogResult> ProcessAction()
@@ -285,13 +295,13 @@ public class UIDashboard : UILocaleBase
     // Set short info user.
     var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
 
-    var userCoin = blok.Q<Label>("UserCoin");
-    userCoin.text = _gameManager.StateManager.stateGame.coins.ToString();
+    _userCoin = blok.Q<Label>("UserCoin");
+    _userCoin.text = _gameManager.StateManager.stateGame.coins.ToString();
     var userCoinImg = blok.Q<VisualElement>("UserCoinImg");
     userCoinImg.style.backgroundImage = new StyleBackground(configCoin.sprite);
 
-    var userRate = blok.Q<Label>("UserRate");
-    userRate.text = _gameManager.StateManager.stateGame.rate.ToString();
+    _userRate = blok.Q<Label>("UserRate");
+    _userRate.text = _gameManager.StateManager.stateGame.rate.ToString();
     var userRateImg = blok.Q<VisualElement>("UserRateImg");
     userRateImg.style.backgroundImage = new StyleBackground(_gameSetting.spriteRate);
 

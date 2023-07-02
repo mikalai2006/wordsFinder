@@ -18,6 +18,7 @@ public struct DataDialog
   public Sprite sprite;
   public bool showCancelButton;
   public List<ShopItem<GameEntity>> entities;
+  public List<ShopItem<GameBonus>> bonuses;
 }
 
 

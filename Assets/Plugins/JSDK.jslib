@@ -109,13 +109,15 @@ var plugin = {
     });
   },
   AddCoinsExtern: function (value) {
+    console.log("AddCoinsExtern", value);
+
     ysdk.adv.showRewardedVideo({
       callbacks: {
         onOpen: () => {
           console.log("Video ad open.");
         },
         onRewarded: () => {
-          console.log("Rewarded!");
+          console.log("Rewarded add coin!");
           myGameInstance.SendMessage("DataManager", "AddCoins", value);
         },
         onClose: () => {
@@ -127,15 +129,21 @@ var plugin = {
       },
     });
   },
-  AddHintExtern: function (value) {
+  AddHintExtern: function (data) {
+    var dataString = UTF8ToString(data);
+    console.log("AddHintExtern", dataString);
+
     ysdk.adv.showRewardedVideo({
       callbacks: {
         onOpen: () => {
           console.log("Video ad open.");
         },
         onRewarded: () => {
-          console.log("Rewarded!");
-          myGameInstance.SendMessage("DataManager", "AddHint", value);
+          console.log("Rewarded from hint!");
+          var dataJson = JSON.parse(dataString);
+          const stringResponse = JSON.stringify(dataJson);
+
+          myGameInstance.SendMessage("DataManager", "AddHint", stringResponse);
         },
         onClose: () => {
           console.log("Video ad closed.");
@@ -146,21 +154,39 @@ var plugin = {
       },
     });
   },
-  AddBonusExtern: function (value) {
+  AddBonusExtern: function (data) {
+    var dataString = UTF8ToString(data);
+    console.log("AddBonusExtern", dataString);
+
     ysdk.adv.showRewardedVideo({
       callbacks: {
         onOpen: () => {
           console.log("Video ad open.");
         },
         onRewarded: () => {
-          console.log("Rewarded!");
-          myGameInstance.SendMessage("DataManager", "AddBonus", value);
+          console.log("Rewarded from bonus!");
+          var dataJson = JSON.parse(dataString);
+          const stringResponse = JSON.stringify(dataJson);
+
+          myGameInstance.SendMessage("DataManager", "AddBonus", stringResponse);
         },
         onClose: () => {
           console.log("Video ad closed.");
         },
         onError: (e) => {
           console.log("Error while open video ad:", e);
+        },
+      },
+    });
+  },
+  ShowAdvFullScreen: function () {
+    ysdk.adv.showFullscreenAdv({
+      callbacks: {
+        onClose: function (wasShown) {
+          // some action after close
+        },
+        onError: function (error) {
+          // some action on error
         },
       },
     });

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -8,6 +9,9 @@ using UnityEngine.AddressableAssets;
 
 public class LevelManager : Singleton<LevelManager>
 {
+  [DllImport("__Internal")]
+  private static extern void ShowAdvFullScreen();
+  private string lastTimeShowAdv;
   public static event Action OnInitLevel;
   private GameManager _gameManager => GameManager.Instance;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
@@ -32,6 +36,7 @@ public class LevelManager : Singleton<LevelManager>
   {
     base.Awake();
     _symbols = new();
+    lastTimeShowAdv = System.DateTime.Now.ToString();
   }
 
   public async void InitLevel(string wordConfig)
@@ -136,6 +141,20 @@ public class LevelManager : Singleton<LevelManager>
   //   await UniTask.WhenAll(tasks);
   //   GameManager.Instance.DataManager.Save();
   // }
+
+  public void ShowAdv()
+  {
+    var diffDate = DateTime.Now - DateTime.Parse(lastTimeShowAdv);
+    Debug.Log($"diffDate={diffDate}|||[{DateTime.Now}:::::{lastTimeShowAdv}]");
+
+    if (diffDate.TotalMinutes > 5)
+    {
+#if ysdk
+      ShowAdvFullScreen();
+#endif
+      lastTimeShowAdv = System.DateTime.Now.ToString();
+    }
+  }
 
   public void ResetSymbols()
   {

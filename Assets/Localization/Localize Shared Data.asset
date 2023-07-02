@@ -347,6 +347,10 @@ MonoBehaviour:
     m_Key: title_word_ru
     m_Metadata:
       m_Items: []
+  - m_Id: 604976465477632
+    m_Key: successgetbonus
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

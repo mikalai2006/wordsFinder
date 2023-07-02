@@ -229,7 +229,7 @@ public class DialogLevel : MonoBehaviour
   {
     _buttonDouble.gameObject.SetActive(false);
     DataManager.OnAddCoins += OnDoubleCoins;
-    DataManager.AddCoinsExtern(_countTotalCoins);
+    _gameManager.DataManager.AddCoinsByAdv(_countTotalCoins);
 
     // OnDoubleCoins();
   }

@@ -217,7 +217,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataGame:
     rate: 0
-    coins: 0
     hints:
       keys: 
       values: 
@@ -228,7 +227,56 @@ MonoBehaviour:
     completed: []
     lastWord: 
     rank: 
+  stateGame:
+    rate: 0
+    items: []
+    coins: 0
+    lastTime: 
   ActiveWordConfig: 
+--- !u!1 &345780797
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 345780798}
+  - component: {fileID: 345780799}
+  m_Layer: 0
+  m_Name: EntityManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &345780798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345780797}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1957392315}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &345780799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345780797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed0d0c1c55f6fa1488c4c464c8f9f20b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &516352404
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,6 +937,11 @@ MonoBehaviour:
   fileNameGame: 
   fileNameMap: 
   useEncryption: 0
+  _stateGame:
+    rate: 0
+    items: []
+    coins: 0
+    lastTime: 
 --- !u!1 &1957392313
 GameObject:
   m_ObjectHideFlags: 0
@@ -918,11 +971,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33ef2abdd9df9e642a338c19672faa50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  files:
-  - locale: {fileID: 11400000, guid: ee9ad60cf3206d14fa33f59ed209a706, type: 2}
-    file: {fileID: 4900000, guid: 256722d1ee7dff744a9764a500a69d62, type: 3}
-  - locale: {fileID: 11400000, guid: 412d369c71b907b428fb4041588eeb85, type: 2}
-    file: {fileID: 4900000, guid: 7d6956f25003465479a81103aab1600d, type: 3}
 --- !u!4 &1957392315
 Transform:
   m_ObjectHideFlags: 0
@@ -939,6 +987,7 @@ Transform:
   - {fileID: 1869053858}
   - {fileID: 1877038002}
   - {fileID: 153567557}
+  - {fileID: 345780798}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -408,6 +408,8 @@ public class ManagerHiddenWords : MonoBehaviour
       if (choosedWord.Length > 1) _stateManager.RefreshData();
     }
 
+    _levelManager.ShowAdv();
+
     // OnChangeData?.Invoke();
     _gameManager.InputManager.Enable();
   }

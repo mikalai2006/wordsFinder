@@ -110,7 +110,44 @@ public class UIDialog : UILocaleBase
             title = title,
             sprite = entityItem.entity.sprite,
             message = message,
-            showCancelButton = true
+            showCancelButton = false
+          });
+
+          await dialog.ShowAndHide();
+          _gameManager.InputManager.Enable();
+        };
+
+        _listEntity.Add(entityEl);
+      }
+    }
+
+    if (_dataDialog.bonuses != null && _dataDialog.bonuses.Count > 0)
+    {
+      foreach (var bonusItem in _dataDialog.bonuses)
+      {
+
+        var entityEl = _entityItem.Instantiate();
+
+        entityEl.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(bonusItem.entity.sprite);
+        entityEl.Q<VisualElement>("Img").style.unityBackgroundImageTintColor = _gameManager.Theme.entityColor;
+
+        entityEl.Q<Label>("Count").text = bonusItem.count.ToString();
+        entityEl.Q<Label>("Count").style.color = _gameManager.Theme.entityColor;
+        // entityEl.Q<Label>("Name").text = await Helpers.GetLocaledString(entityItem.configEntity.text.title);
+        entityEl.Q<Button>().clickable.clicked += async () =>
+        {
+
+          AudioManager.Instance.Click();
+          _gameManager.InputManager.Disable();
+
+          var title = await Helpers.GetLocaledString(bonusItem.entity.text.title);
+          var message = await Helpers.GetLocaledString(bonusItem.entity.text.description);
+          var dialog = new DialogProvider(new DataDialog()
+          {
+            title = title,
+            sprite = bonusItem.entity.sprite,
+            message = message,
+            showCancelButton = false
           });
 
           await dialog.ShowAndHide();

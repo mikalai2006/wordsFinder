@@ -180,12 +180,12 @@ public class UIShop : UILocaleBase
           // TODO Buy for adv.
           AudioManager.Instance.Click();
 
-          DataManager.AddHintExtern(JsonUtility.ToJson(new ShopAdvBuyItem<TypeEntity>()
+          var addedHint = new ShopAdvBuyItem<TypeEntity>()
           {
             typeItem = item.entity.typeEntity,
             count = item.count,
-          }));
-
+          };
+          _gameManager.DataManager.AddHintByAdv(addedHint);
         };
 
       _listItems.Add(blokItem);
@@ -290,14 +290,15 @@ public class UIShop : UILocaleBase
       );
       buttonForAdv.clickable.clicked += () =>
         {
-          // TODO Buy for adv.
+          // Buy bonus for adv.
           AudioManager.Instance.Click();
 
-          DataManager.AddHintExtern(JsonUtility.ToJson(new ShopAdvBuyItem<TypeBonus>()
+          var addedBonus = new ShopAdvBuyItem<TypeBonus>()
           {
             typeItem = item.entity.typeBonus,
             count = item.count,
-          }));
+          };
+          _gameManager.DataManager.AddBonusByAdv(addedBonus);
         };
 
       _listItems.Add(blokItem);
@@ -347,7 +348,7 @@ public class UIShop : UILocaleBase
 
       _gameManager.StateManager.BuyBonus(item);
 
-      var message = await Helpers.GetLocalizedPluralString("successbuy", new Dictionary<string, int>() {
+      var message = await Helpers.GetLocalizedPluralString("successgetbonus", new Dictionary<string, int>() {
       {"count", item.count}
     });
       var dialog = new DialogProvider(new DataDialog()

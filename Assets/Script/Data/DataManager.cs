@@ -16,7 +16,7 @@ public class DataManager : Singleton<DataManager>
   [DllImport("__Internal")]
   public static extern void AddCoinsExtern(int value);
   [DllImport("__Internal")]
-  public static extern void AddHintExtern(string data);
+  private static extern void AddHintExtern(string data);
   [DllImport("__Internal")]
   public static extern void AddBonusExtern(string data);
 
@@ -81,6 +81,20 @@ public class DataManager : Singleton<DataManager>
     OnAddCoins?.Invoke(value);
   }
 
+  public void AddHintByAdv(ShopAdvBuyItem<TypeEntity> data)
+  {
+    string stringAddedHint = JsonUtility.ToJson(data);
+    Debug.Log($"AddHintByAdv {stringAddedHint}");
+
+    AddHintExtern(stringAddedHint);
+  }
+  public void AddBonusByAdv(ShopAdvBuyItem<TypeBonus> data)
+  {
+    string stringAddedBonus = JsonUtility.ToJson(data);
+    Debug.Log($"AddBonusByAdv {stringAddedBonus}");
+
+    AddBonusExtern(stringAddedBonus);
+  }
 
   public void AddHint(string data)
   {
@@ -88,6 +102,10 @@ public class DataManager : Singleton<DataManager>
     OnAddHintExtern?.Invoke(value);
   }
 
+  public void AddCoinsByAdv(int value)
+  {
+    AddCoinsExtern(value);
+  }
 
   public void AddBonus(string data)
   {

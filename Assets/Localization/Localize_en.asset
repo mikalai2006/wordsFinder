@@ -364,7 +364,7 @@ MonoBehaviour:
       m_Items:
       - rid: 366248018379538446
   - m_Id: 6713619946569728
-    m_Localized: Show an explanation dialog before performing an action
+    m_Localized: Show confirmation dialogs before performing actions
     m_Metadata:
       m_Items: []
   - m_Id: 6741078280667136
@@ -392,10 +392,15 @@ MonoBehaviour:
     m_Localized: Russian Dictionary
     m_Metadata:
       m_Items: []
+  - m_Id: 604976465477632
+    m_Localized: Successfully received {count} bonus{count:|es}!
+    m_Metadata:
+      m_Items:
+      - rid: 366248018379538446
   references:
     version: 2
     RefIds:
     - rid: 366248018379538446
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 008012091f860d00008052e12f620d0000801274d0f80f000080926f011210000080d2e208cc12000080d2b0f4ce120000809224e64215000080d2dde1cd170000805298f9f21700008052808bf917000080922a82fc1700008012baef150200008052d5248e05000080d2ebf1590b000080521d7c300c00008012a39a300c00008092ea35400c000080925ecd430c00008052a5fc410d00008052dfaf610d00
+        m_Entries: 008012091f860d00008052e12f620d0000801274d0f80f000080926f011210000080d2e208cc12000080d2b0f4ce120000809224e64215000080d2dde1cd170000805298f9f21700008052808bf917000080922a82fc1700008012baef150200008052d5248e05000080d2ebf1590b000080521d7c300c00008012a39a300c00008092ea35400c000080925ecd430c00008052a5fc410d00008052dfaf610d000080520f39260200
