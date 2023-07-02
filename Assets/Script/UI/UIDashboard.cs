@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Loader;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UIElements;
 
-public class UIStartMenu : UILocaleBase
+public class UIDashboard : UILocaleBase
 {
   [DllImport("__Internal")]
   private static extern void GetLeaderBoard();
@@ -20,43 +22,19 @@ public class UIStartMenu : UILocaleBase
   private VisualElement _userInfoBlok;
   private VisualElement _leaderBoard;
   // private Button _loadGameMenuButton;
-  [SerializeField] private AudioManager _audioManager => GameManager.Instance.audioManager;
+  private TaskCompletionSource<DataDialogResult> _processCompletionSource;
+  private DataDialogResult _result;
 
   private void Awake()
   {
     UISettings.OnChangeLocale += RefreshMenu;
-    GameManager.OnAfterStateChanged += AfterStateChanged;
-    LevelManager.OnInitLevel += HideMenu;
     GameManager.OnChangeTheme += RefreshMenu;
-    DataManager.OnLoadLeaderBoard += DrawLeaderListBlok;
-    StateManager.OnChangeState += SetValue;
   }
 
   private void OnDestroy()
   {
     UISettings.OnChangeLocale -= RefreshMenu;
-    GameManager.OnAfterStateChanged -= AfterStateChanged;
-    LevelManager.OnInitLevel -= HideMenu;
     GameManager.OnChangeTheme -= RefreshMenu;
-    DataManager.OnLoadLeaderBoard -= DrawLeaderListBlok;
-    StateManager.OnChangeState -= SetValue;
-  }
-
-  private void SetValue(StateGame state)
-  {
-    _userInfoBlok.Q<Label>("UserCoin").text = string.Format("{0}", state.coins);
-    _userInfoBlok.Q<Label>("UserRate").text = string.Format("{0}", state.rate);
-  }
-
-  private void AfterStateChanged(GameState state)
-  {
-    switch (state)
-    {
-      case GameState.ShowMenu:
-      case GameState.CloseLevel:
-        ShowMenu();
-        break;
-    }
   }
 
   public virtual void Start()
@@ -78,7 +56,9 @@ public class UIStartMenu : UILocaleBase
 #if ysdk
     GetLeaderBoard();
 #endif
-    // _gameManager.DataManager.GetLeaderBoard("{\"leaderboard\":{\"title\":[{\"lang\":\"ru\",\"value\":\"Лидеры по количеству слов\"}]},\"userRank\":1,\"entries\":[{\"rank\":1,\"score\":90,\"name\":\"Mikalai P.\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"}]}");
+#if UNITY_EDITOR
+    _gameManager.DataManager.GetLeaderBoard("{\"leaderboard\":{\"title\":[{\"lang\":\"ru\",\"value\":\"Лидеры по количеству слов\"}]},\"userRank\":25,\"entries\":[{\"rank\":24,\"score\":90,\"name\":\"Mikalai P.\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"},{\"rank\":25,\"score\":80,\"name\":\"Mikalai P.2\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"},{\"rank\":26,\"score\":70,\"name\":\"Mikalai P.3\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"}]}");
+#endif
 
     RefreshMenu();
 
@@ -86,18 +66,28 @@ public class UIStartMenu : UILocaleBase
       ? (DateTime.Now - DateTime.Now)
       : (DateTime.Now - DateTime.Parse(_gameManager.StateManager.stateGame.lastTime));
     // Debug.Log($"diffDate={diffDate}|||[{DateTime.Now}:::::{_gameManager.StateManager.stateGame.lastTime}]");
-    if (string.IsNullOrEmpty(_gameManager.StateManager.stateGame.lastTime) || diffDate.TotalHours > _gameSettings.countHoursDailyGift)
+    if (string.IsNullOrEmpty(_gameManager.StateManager.stateGame.lastTime) || diffDate.TotalHours > _gameSetting.countHoursDailyGift)
     {
       ShowDailyDialog();
     }
 
+    base.Initialize(_uiDoc.rootVisualElement);
+  }
+
+  public async UniTask<DataDialogResult> ProcessAction()
+  {
+    _result = new DataDialogResult();
+
+    _processCompletionSource = new TaskCompletionSource<DataDialogResult>();
+
+    return await _processCompletionSource.Task;
   }
 
   private async void ShowDailyDialog()
   {
     var title = await Helpers.GetLocaledString("dailycoins_t");
     var message = await Helpers.GetLocalizedPluralString("dailycoins_d", new Dictionary<string, object>() {
-      { "count", _gameSettings.countHoursDailyGift },
+      { "count", _gameSetting.countHoursDailyGift },
     });
     var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
     var configStar = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Star);
@@ -142,18 +132,23 @@ public class UIStartMenu : UILocaleBase
     _gameManager.InputManager.Enable();
   }
 
-  private void RefreshMenu()
+  private async void RefreshMenu()
   {
-    DrawUserInfoBlok();
 
-    // DrawMenu();
+    await DrawUserInfoBlok();
+
+    // await DrawLeaderListBlok();
 
     base.Initialize(_uiDoc.rootVisualElement);
   }
 
 
-  private async void DrawLeaderListBlok(LeaderBoard leaderBoard)
+  private async UniTask DrawLeaderListBlok()
   {
+    LeaderBoard leaderBoard = _gameManager.DataManager.leaderBoard;
+
+    if (leaderBoard == null) return;
+
     if (leaderBoard.entries.Count == 0)
     {
       _leaderBoard.style.display = DisplayStyle.None;
@@ -209,10 +204,9 @@ public class UIStartMenu : UILocaleBase
 
   }
 
-  private async void DrawUserInfoBlok()
+  private async UniTask DrawUserInfoBlok()
   {
     await LocalizationSettings.InitializationOperation.Task;
-    _userInfoBlok.Clear();
 
     var stateGame = _gameManager.StateManager.stateGame;
     var dataGame = _gameManager.StateManager.dataGame;
@@ -248,7 +242,7 @@ public class UIStartMenu : UILocaleBase
     var percentFindWords = (dataGame.rate * 100 / _gameManager.PlayerSetting.countFindWordsForUp);
     progress.style.width = new StyleLength(new Length(percentFindWords, LengthUnit.Percent));
 
-    var playerSettings = _gameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
+    var playerSettings = _gameSetting.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
     status.text = await Helpers.GetLocaledString(playerSettings.text.title);
 
     var textCountWords = await Helpers.GetLocalizedPluralString(
@@ -299,7 +293,7 @@ public class UIStartMenu : UILocaleBase
     var userRate = blok.Q<Label>("UserRate");
     userRate.text = _gameManager.StateManager.stateGame.rate.ToString();
     var userRateImg = blok.Q<VisualElement>("UserRateImg");
-    userRateImg.style.backgroundImage = new StyleBackground(_gameSettings.spriteRate);
+    userRateImg.style.backgroundImage = new StyleBackground(_gameSetting.spriteRate);
 
     var userName = blok.Q<Label>("UserName");
     userName.text = await Helpers.GetName();
@@ -323,69 +317,29 @@ public class UIStartMenu : UILocaleBase
       imgAva.style.display = DisplayStyle.None;
     }
 
+    _userInfoBlok.Clear();
     _userInfoBlok.Add(blok);
     base.Initialize(_userInfoBlok);
   }
 
-  // private void DrawMenu()
-  // {
-  //   var _newGameButton = _userInfoBlok.Q<Button>("NewGameBtn");
-  //   _newGameButton.clickable.clicked += () =>
-  //   {
-  //     ClickNewGameButton();
-  //   };
-  //   _newGameButton.style.display = DisplayStyle.None;
-
-  //   var _loadGameMenuButton = _userInfoBlok.Q<Button>("LoadGameBtn");
-  //   _loadGameMenuButton.clickable.clicked += () =>
-  //   {
-  //     ClickLoadGameButton();
-  //   };
-  //   _loadGameMenuButton.style.display = DisplayStyle.None;
-
-  //   // _userInfoBlok.style.display = DisplayStyle.None;
-  //   if (_gameManager.StateManager.dataGame.completed.Count == 0 && _gameManager.StateManager.dataGame.levels.Count == 0)
-  //   {
-  //     _newGameButton.style.display = DisplayStyle.Flex;
-  //   }
-  //   else
-  //   // if (_gameManager.StateManager.dataGame.levels.Count != 0 || _gameManager.StateManager.dataGame.sl.Count != 0)
-  //   {
-  //     _loadGameMenuButton.style.display = DisplayStyle.Flex;
-  //     // _userInfoBlok.style.display = DisplayStyle.Flex;
-  //   }
-  // }
-
-  private void HideMenu()
-  {
-    _menu.style.display = DisplayStyle.None;
-  }
-  private void ShowMenu()
-  {
-    RefreshMenu();
-    _menu.style.display = DisplayStyle.Flex;
-  }
 
   private async void ClickLoadGameButton()
   {
     AudioManager.Instance.Click();
-    HideMenu();
+
     var operations = new Queue<ILoadingOperation>();
     operations.Enqueue(new GameInitOperation());
     await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
 
     var activeLastWord = _gameManager.StateManager.dataGame.lastWord;
-    // _gameSettings.GameLevels.levelWords
-    //   .Find(t => t.name == _gameManager.DataManager.DataGame.lastLevelWord);
-    // // var activeLastLevelWord = activeLastWord
-    // //   .words
-    // //   .Find(t => t == _gameManager.DataManager.DataGame.lastWord);
 
     _gameManager.LevelManager.InitLevel(activeLastWord);
 
-    // var dialogWindow = new UILevelsOperation();
-    // var result = await dialogWindow.ShowAndHide();
     _gameManager.ChangeState(GameState.LoadLevel);
+
+    _result.isOk = true;
+
+    _processCompletionSource.SetResult(_result);
   }
 
   private async void ClickNewGameButton()
@@ -393,21 +347,25 @@ public class UIStartMenu : UILocaleBase
     AudioManager.Instance.Click();
     await LocalizationSettings.InitializationOperation.Task;
 
-    HideMenu();
+
     var operations = new Queue<ILoadingOperation>();
     operations.Enqueue(new GameInitOperation());
     await _gameManager.LoadingScreenProvider.LoadAndDestroy(operations);
 
-    GameLevel firstLevel = _gameSettings.GameLevels.Where(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code).OrderBy(t => t.minRate).FirstOrDefault();
+    GameLevel firstLevel = _gameSetting.GameLevels.Where(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code).OrderBy(t => t.minRate).FirstOrDefault();
     string activeLastLevelWord = "";
     if (firstLevel != null)
     {
-      Debug.Log($"firstLevel={firstLevel.name} for locale {LocalizationSettings.SelectedLocale.name}");
       activeLastLevelWord = firstLevel.levelWords.ElementAt(0);
     }
 
     _gameManager.LevelManager.InitLevel(activeLastLevelWord);
+
     _gameManager.ChangeState(GameState.LoadLevel);
+
+    _result.isOk = true;
+
+    _processCompletionSource.SetResult(_result);
   }
 
   private void ClickExitButton()
@@ -415,5 +373,4 @@ public class UIStartMenu : UILocaleBase
     AudioManager.Instance.Click();
     Debug.Log("ClickExitButton");
   }
-
 }

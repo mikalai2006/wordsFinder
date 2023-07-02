@@ -14,7 +14,9 @@ public class GameManager : StaticInstance<GameManager>
   public static event Action OnChangeTheme;
   public static event Action<GameState> OnBeforeStateChanged;
   public static event Action<GameState> OnAfterStateChanged;
-  public string namePlayPref;
+  [SerializeField] private string namePlayPref;
+  private string langCodePlayPref;
+  public string KeyPlayPref => string.Format("{0}_{1}", namePlayPref, langCodePlayPref);
   public AppInfoContainer AppInfo { get; private set; }
   public GameSetting GameSettings;
   public GameTheme Theme { get; private set; }
@@ -212,6 +214,12 @@ public class GameManager : StaticInstance<GameManager>
 
     Words = words;
     Debug.Log($"Set words for {Words.locale.Identifier.Code} |<{words.data.Count()}> |[{Words.localeCode}] [{LocalizationSettings.SelectedLocale.Identifier.Code}]");
+  }
+
+  public void SetLangCodePlayPref(string code)
+  {
+    langCodePlayPref = code;
+    Debug.Log($"Init key playpref as {code}");
   }
 }
 

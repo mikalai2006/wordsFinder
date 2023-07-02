@@ -26,7 +26,7 @@ var plugin = {
       );
     });
   },
-  GetUserInfo: function () {
+  GetUserInfoExtern: function () {
     const jsonUserInfo = {
       name: player.getName(),
       photo: player.getPhoto("medium"),
@@ -34,7 +34,7 @@ var plugin = {
 
     const stringUserInfo = JSON.stringify(jsonUserInfo);
 
-    console.group("GetUserInfo");
+    console.group("GetUserInfoExtern");
     console.log(jsonUserInfo);
     console.groupEnd();
 
@@ -106,6 +106,63 @@ var plugin = {
           stringResult
         );
       });
+    });
+  },
+  AddCoinsExtern: function (value) {
+    ysdk.adv.showRewardedVideo({
+      callbacks: {
+        onOpen: () => {
+          console.log("Video ad open.");
+        },
+        onRewarded: () => {
+          console.log("Rewarded!");
+          myGameInstance.SendMessage("DataManager", "AddCoins", value);
+        },
+        onClose: () => {
+          console.log("Video ad closed.");
+        },
+        onError: (e) => {
+          console.log("Error while open video ad:", e);
+        },
+      },
+    });
+  },
+  AddHintExtern: function (value) {
+    ysdk.adv.showRewardedVideo({
+      callbacks: {
+        onOpen: () => {
+          console.log("Video ad open.");
+        },
+        onRewarded: () => {
+          console.log("Rewarded!");
+          myGameInstance.SendMessage("DataManager", "AddHint", value);
+        },
+        onClose: () => {
+          console.log("Video ad closed.");
+        },
+        onError: (e) => {
+          console.log("Error while open video ad:", e);
+        },
+      },
+    });
+  },
+  AddBonusExtern: function (value) {
+    ysdk.adv.showRewardedVideo({
+      callbacks: {
+        onOpen: () => {
+          console.log("Video ad open.");
+        },
+        onRewarded: () => {
+          console.log("Rewarded!");
+          myGameInstance.SendMessage("DataManager", "AddBonus", value);
+        },
+        onClose: () => {
+          console.log("Video ad closed.");
+        },
+        onError: (e) => {
+          console.log("Error while open video ad:", e);
+        },
+      },
     });
   },
 };

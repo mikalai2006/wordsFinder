@@ -61,4 +61,9 @@ public class GameTheme : ScriptableObject
   [Space(5)]
   [Header("Button")]
   public Color colorBgButton;
+
+  [Space(5)]
+  [Header("Form")]
+  public Color colorBgInput;
+  public Color colorTextInput;
 }

@@ -95,3 +95,10 @@ public struct ShopItem<T>
   public int count;
   public int cost;
 }
+
+[System.Serializable]
+public struct ShopAdvBuyItem<T>
+{
+  public T typeItem;
+  public int count;
+}

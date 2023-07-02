@@ -222,12 +222,19 @@ public class DialogLevel : MonoBehaviour
     return await _processCompletionSource.Task;
   }
 
+  /// <summary>
+  /// Double coins (run from unity action of by button double)
+  /// </summary>
   public void OnClickDoubleButton()
   {
-    OnDoubleCoins();
+    _buttonDouble.gameObject.SetActive(false);
+    DataManager.OnAddCoins += OnDoubleCoins;
+    DataManager.AddCoinsExtern(_countTotalCoins);
+
+    // OnDoubleCoins();
   }
 
-  public async void OnDoubleCoins()
+  public async void OnDoubleCoins(int value)
   {
     int startCoins = _countTotalCoins;
 
@@ -254,6 +261,8 @@ public class DialogLevel : MonoBehaviour
 
   public async void CloseDialogEndRound()
   {
+    DataManager.OnAddCoins -= OnDoubleCoins;
+
     int valueIndexBonus = _stateManager.dataGame.bonus.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value;
 
     BaseBonus bonusIndexObject;

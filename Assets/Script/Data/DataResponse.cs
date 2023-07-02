@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 
 [System.Serializable]
-public struct LeaderBoard
+public class LeaderBoard
 {
   public LeaderBoardInfo leaderboard;
   public int userRank;
   public List<LeaderUser> entries;
+
+  public LeaderBoard()
+  {
+    entries = new();
+  }
 }
 
 [System.Serializable]

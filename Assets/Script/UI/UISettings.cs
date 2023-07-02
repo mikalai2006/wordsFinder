@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -9,20 +10,10 @@ public class UISettings : UILocaleBase
 {
   [SerializeField] private UIDocument _uiDoc;
   public static event Action OnChangeLocale;
-  private VisualElement _aside;
-  private VisualElement _menu;
-  private VisualElement _userCoinImg;
+  private VisualElement _root;
   private VisualElement _languageBlock;
-  private VisualElement _userRateImg;
-  private VisualElement _userShortInfo;
   private Toggle _doDialog;
-  private Label _userRate;
-  private Label _userCoin;
-  private Label _userName;
-  private Button _exitButton;
-  private Button _openMenuButton;
-  private Button _closeMenuButton;
-  private Button _shopButton;
+  private Button _closeButton;
   private Button _toMenuAppButton;
   private Button _okButton;
   private DropdownField _dropdownLanguage;
@@ -31,36 +22,16 @@ public class UISettings : UILocaleBase
   private Slider _sliderVolumeEffect;
   private DropdownField _dropdownTheme;
 
-  private GameSetting _gameSetting => GameManager.Instance.GameSettings;
-  [SerializeField] private AudioManager _audioManager => GameManager.Instance.audioManager;
-
-  private void Awake()
-  {
-    StateManager.OnChangeState += SetValue;
-    DialogLevel.OnHideDialog += ShowAside;
-    DialogLevel.OnShowDialog += HideAside;
-    GameManager.OnAfterStateChanged += AfterStateChanged;
-  }
-
-  private void OnDestroy()
-  {
-    StateManager.OnChangeState -= SetValue;
-    DialogLevel.OnHideDialog -= ShowAside;
-    DialogLevel.OnShowDialog -= HideAside;
-    GameManager.OnAfterStateChanged -= AfterStateChanged;
-  }
+  private TaskCompletionSource<DataDialogResult> _processCompletionSource;
+  private DataDialogResult _result;
 
   public virtual void Start()
   {
-    _aside = _uiDoc.rootVisualElement.Q<VisualElement>("AsideBlok");
-    _userShortInfo = _uiDoc.rootVisualElement.Q<VisualElement>("UserShortInfo");
-    _menu = _uiDoc.rootVisualElement.Q<VisualElement>("MenuBlok");
-    _menu.style.display = DisplayStyle.None;
+    _root = _uiDoc.rootVisualElement.Q<VisualElement>("SettingsBlok");
 
-    _languageBlock = _menu.Q<VisualElement>("LanguageBlock");
+    _languageBlock = _root.Q<VisualElement>("LanguageBlock");
 
-
-    var menuBlok = _menu.Q<VisualElement>("Menu");
+    var menuBlok = _root.Q<VisualElement>("Menu");
     _dropdownLanguage = menuBlok.Q<DropdownField>("Language");
     _sliderTimeDelay = menuBlok.Q<SliderInt>("TimeDelay");
     _sliderVolumeMusic = menuBlok.Q<Slider>("VolumeMusic");
@@ -68,93 +39,52 @@ public class UISettings : UILocaleBase
     _dropdownTheme = menuBlok.Q<DropdownField>("Theme");
     _doDialog = menuBlok.Q<Toggle>("DoDialog");
 
+    _okButton = _root.Q<Button>("Ok");
+    _closeButton = _root.Q<Button>("CloseMenuBtn");
 
-    _exitButton = _aside.Q<Button>("ExitBtn");
-    _openMenuButton = _aside.Q<Button>("MenuBtn");
-    _shopButton = _aside.Q<Button>("ShopBtn");
-
-    _okButton = _menu.Q<Button>("Ok");
-    _closeMenuButton = _menu.Q<Button>("CloseMenuBtn");
-
-    _shopButton.clickable.clicked += () =>
-    {
-      ClickOpenShop();
-    };
-    _exitButton.clickable.clicked += () =>
-    {
-      ClickExitButton();
-    };
     _okButton.clickable.clicked += () =>
     {
-      ClickCloseMenuButton();
+      CloseSettings();
     };
 
-    _openMenuButton.clickable.clicked += () =>
+    _closeButton.clickable.clicked += () =>
     {
-      ClickOpenMenuButton();
+      CloseSettings();
     };
 
-    _closeMenuButton.clickable.clicked += () =>
-    {
-      ClickCloseMenuButton();
-    };
-
-    _toMenuAppButton = _menu.Q<Button>("ToStartMenuBtn");
+    _toMenuAppButton = _root.Q<Button>("ToStartMenuBtn");
     _toMenuAppButton.clickable.clicked += () =>
     {
       ClickToStartMenuButton();
     };
+    if (_gameManager.LevelManager == null)
+    {
+      _toMenuAppButton.style.display = DisplayStyle.None;
+    }
+    else
+    {
+      _toMenuAppButton.style.display = DisplayStyle.Flex;
+    }
 
-    _toMenuAppButton.style.display = DisplayStyle.None;
-    _userShortInfo.style.display = DisplayStyle.None;
 
-    _userCoin = _aside.Q<Label>("UserCoin");
-    _userCoinImg = _aside.Q<VisualElement>("UserCoinImg");
-    var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
-    _userCoinImg.style.backgroundImage = new StyleBackground(configCoin.sprite);
-
-    _userRate = _aside.Q<Label>("UserRate");
-    _userRateImg = _aside.Q<VisualElement>("UserRateImg");
-    _userRateImg.style.backgroundImage = new StyleBackground(_gameSetting.spriteRate);
-
-    _userName = _aside.Q<Label>("UserName");
-
+    CreateListSettings();
 
     ChangeTheme(null);
-    SetValue(_gameManager.StateManager.stateGame);
-
-    Refresh();
 
     base.Initialize(_uiDoc.rootVisualElement);
   }
 
 
-  private void AfterStateChanged(GameState state)
+  public async UniTask<DataDialogResult> ProcessAction()
   {
-    switch (state)
-    {
-      case GameState.CloseLevel:
-      case GameState.LoadLevel:
-        Refresh();
-        break;
-    }
+    _result = new DataDialogResult();
+
+    _processCompletionSource = new TaskCompletionSource<DataDialogResult>();
+
+    return await _processCompletionSource.Task;
   }
 
-  private void Refresh()
-  {
-    Debug.Log($"{name}::: Refresh");
-    if (_gameManager.LevelManager != null)
-    {
-      _userShortInfo.style.display = DisplayStyle.Flex;
-    }
-    else
-    {
-      _userShortInfo.style.display = DisplayStyle.None;
-    }
-  }
-
-
-  private async void ChangeTheme(ChangeEvent<string> evt)
+  private void ChangeTheme(ChangeEvent<string> evt)
   {
     if (evt != null)
     {
@@ -165,123 +95,35 @@ public class UISettings : UILocaleBase
       _gameManager.DataManager.SaveSettings();
     }
 
-
-    var imgCog = _aside.Q<VisualElement>("ImgCog");
-    imgCog.style.backgroundImage = new StyleBackground(_gameSettings.spriteCog);
-    imgCog.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
-
-    // load avatar
-    string placeholder = _gameManager.AppInfo.UserInfo.photo;
-#if UNITY_EDITOR
-    placeholder = "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/CGIB4J3KPRTV5JCX6JLC6TAKLL6GYPN27SBYCQDUWEUW2QFCBB5ZNTCHKPVHHHKLTSBRYYIEMFB2C3CB37T4S7GIXKUP4KEL4CHGRPVOLHVSPIW77Z5TUSEOVQK5NDDSPJTVMAJAODQ4DXD6UEKJV4VLEUOPWOPU2Y664NQ5NIQUT2UBNRMVVWCQN52FYLVEI4DWLSZQ4FG6AZWBGKYTD5VJWXXAL46Z7B5XDCI=/islands-retina-medium";
-#endif
-    var imgAva = _aside.Q<VisualElement>("Ava");
-    Texture2D avatarTexture = await Helpers.LoadTexture(placeholder);
-    if (avatarTexture != null)
-    {
-      imgAva.style.backgroundImage = new StyleBackground(avatarTexture);
-    }
-    else
-    {
-      imgAva.style.display = DisplayStyle.None;
-    }
-
-    _userCoinImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
-    _userRateImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
-
-    _menu.Q<VisualElement>("MenuBlokWrapper").style.backgroundColor = new StyleColor(_gameManager.Theme.bgColor);
-
-    var imgShop = _aside.Q<VisualElement>("ImgShop");
-    imgShop.style.backgroundImage = new StyleBackground(_gameSettings.spriteShop);
-    imgShop.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
-
-    _userName.text = await Helpers.GetName();
-
+    _root.Q<VisualElement>("MenuBlokWrapper").style.backgroundColor = new StyleColor(_gameManager.Theme.bgColor);
 
     base.Theming(_uiDoc.rootVisualElement);
-  }
-
-  private void SetValue(StateGame state)
-  {
-    _userCoin.text = string.Format("{0}", state.coins);
-    _userRate.text = string.Format("{0}", state.rate);
-  }
-
-  private async void ClickOpenShop()
-  {
-    AudioManager.Instance.Click();
-    _gameManager.InputManager.Disable();
-    var dialogWindow = new UIShopOperation();
-    var result = await dialogWindow.ShowAndHide();
-    _gameManager.InputManager.Enable();
-  }
-
-  private void ShowAside()
-  {
-    // _aside.style.display = DisplayStyle.Flex;
-    _openMenuButton.style.visibility = Visibility.Visible;
-    _shopButton.style.visibility = Visibility.Visible;
-  }
-  private void HideAside()
-  {
-    // _aside.style.display = DisplayStyle.None;
-    _openMenuButton.style.visibility = Visibility.Hidden;
-    _shopButton.style.visibility = Visibility.Hidden;
-  }
-
-  private void ShowMenu()
-  {
-    base.Theming(_uiDoc.rootVisualElement);
-
-    _menu.style.display = DisplayStyle.Flex;
-
-    if (_gameManager.LevelManager == null)
-    {
-      _toMenuAppButton.style.display = DisplayStyle.None;
-    }
-    else
-    {
-      _toMenuAppButton.style.display = DisplayStyle.Flex;
-    }
-
-    _dropdownLanguage.RegisterValueChangedCallback(ChooseLanguage);
-    _dropdownTheme.RegisterValueChangedCallback(ChangeTheme);
-    _doDialog.RegisterValueChangedCallback(ChangeDoDialog);
-  }
-
-  private void HideMenu()
-  {
-    _menu.style.display = DisplayStyle.None;
-
-    _dropdownLanguage.UnregisterValueChangedCallback(ChooseLanguage);
-    _dropdownTheme.UnregisterValueChangedCallback(ChangeTheme);
-    _doDialog.UnregisterValueChangedCallback(ChangeDoDialog);
   }
 
   private void ClickToStartMenuButton()
   {
     AudioManager.Instance.Click();
-    HideMenu();
+
     GameManager.Instance.ChangeState(GameState.CloseLevel);
 
+
+    _result.isOk = false;
+
+    _processCompletionSource.SetResult(_result);
+
+    var dialogDashboard = new UIDashboardOperation();
+    dialogDashboard.ShowAndHide().Forget();
   }
 
-  private void ClickCloseMenuButton()
-  {
-    AudioManager.Instance.Click();
-    _gameManager.InputManager.Enable();
-    HideMenu();
-  }
+  // private void ClickOpenMenuButton()
+  // {
+  //   AudioManager.Instance.Click();
+  //   _gameManager.InputManager.Disable();
+  //   ShowMenu();
+  //   CreateMenu();
+  // }
 
-  private void ClickOpenMenuButton()
-  {
-    AudioManager.Instance.Click();
-    _gameManager.InputManager.Disable();
-    ShowMenu();
-    CreateMenu();
-  }
-
-  private void CreateMenu()
+  private void CreateListSettings()
   {
     var userSettings = _gameManager.AppInfo.setting;
 
@@ -310,8 +152,6 @@ public class UISettings : UILocaleBase
       _gameManager.DataManager.SaveSettings();
     });
 
-
-
     _dropdownLanguage.value = LocalizationSettings.SelectedLocale.LocaleName;
     _dropdownLanguage.choices.Clear();
     for (int i = 0; i < LocalizationSettings.AvailableLocales.Locales.Count; i++)
@@ -319,7 +159,7 @@ public class UISettings : UILocaleBase
       Locale locale = LocalizationSettings.AvailableLocales.Locales[i];
       _dropdownLanguage.choices.Add(locale.LocaleName);
     }
-
+    _dropdownLanguage.RegisterValueChangedCallback(ChooseLanguage);
 
     if (_gameManager.LevelManager != null)
     {
@@ -333,7 +173,6 @@ public class UISettings : UILocaleBase
 
     // Theme.
     var allThemes = _gameManager.ResourceSystem.GetAllTheme();
-
     _dropdownTheme.choices.Clear();
     for (int i = 0; i < allThemes.Count; i++)
     {
@@ -341,10 +180,11 @@ public class UISettings : UILocaleBase
       _dropdownTheme.choices.Add(theme.name);
     }
     _dropdownTheme.value = userSettings.theme;
-
+    _dropdownTheme.RegisterValueChangedCallback(ChangeTheme);
 
     // DoDialog.
     _doDialog.value = userSettings.dod;
+    _doDialog.RegisterValueChangedCallback(ChangeDoDialog);
   }
 
   private void ChangeDoDialog(ChangeEvent<bool> evt)
@@ -382,10 +222,14 @@ public class UISettings : UILocaleBase
     OnChangeLocale?.Invoke();
   }
 
-  private void ClickExitButton()
+  private void CloseSettings()
   {
-    // throw new NotImplementedException();
+    AudioManager.Instance.Click();
+
+    _result.isOk = true;
+
+    _processCompletionSource.SetResult(_result);
+
+    // _gameManager.InputManager.Enable();
   }
-
-
 }

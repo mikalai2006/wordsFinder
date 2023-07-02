@@ -23,7 +23,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 291c30463dfb7584aaaad41e43b17a02
-    m_Address: UIMenuApp
+    m_Address: UIApp
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -74,6 +74,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - theme
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: abae52a9a31accb49a12ca3bca0b1ba9
+    m_Address: UISettings
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1be91df87efbd4b43938a006405f3669
+    m_Address: UIDashboard
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 912e5358d86a0b7449e455fba5359f6c, type: 2}

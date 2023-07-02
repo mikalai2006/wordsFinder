@@ -97,8 +97,8 @@ public class UIDirectory : UILocaleBase
   {
     string path = string.Format(
       "{0}{1}{2}",
-      _gameSettings.APIDirectory.host,
-      _gameSettings.APIDirectory.expression,
+      _gameSetting.APIDirectory.host,
+      _gameSetting.APIDirectory.expression,
       word
     );
     UnityWebRequest webRequest = UnityWebRequest.Get(path);

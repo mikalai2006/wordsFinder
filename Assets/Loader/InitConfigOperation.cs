@@ -25,9 +25,12 @@ namespace Loader
 #endif
 
       AppInfoContainer playPrefData = new();
-      if (PlayerPrefs.HasKey(GameManager.Instance.namePlayPref))
+
+      GameManager.Instance.SetLangCodePlayPref(LocalizationSettings.SelectedLocale.Identifier.Code);
+      string namePlayPref = GameManager.Instance.KeyPlayPref;
+      if (PlayerPrefs.HasKey(namePlayPref))
       {
-        playPrefData = JsonUtility.FromJson<AppInfoContainer>(PlayerPrefs.GetString(GameManager.Instance.namePlayPref));
+        playPrefData = JsonUtility.FromJson<AppInfoContainer>(PlayerPrefs.GetString(namePlayPref));
         langString = playPrefData.setting.lang;
       }
 

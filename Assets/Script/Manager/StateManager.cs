@@ -451,6 +451,20 @@ public class StateManager : MonoBehaviour
     _gameManager.DataManager.Save();
     OnChangeState?.Invoke(stateGame);
   }
+  public void BuyHintByForAdv(ShopAdvBuyItem<TypeEntity> item)
+  {
+    Debug.Log($"Buy hint for adv {item.typeItem}");
+
+    int currentCount;
+
+    dataGame.hints.TryGetValue(item.typeItem, out currentCount);
+
+    dataGame.hints[item.typeItem] = item.count + currentCount;
+
+    _gameManager.DataManager.Save();
+
+    OnChangeState?.Invoke(stateGame);
+  }
 
 
   public void BuyBonus(ShopItem<GameBonus> item)
@@ -468,6 +482,15 @@ public class StateManager : MonoBehaviour
     UseBonus(item.count, item.entity.typeBonus);
     _gameManager.DataManager.Save();
     // OnChangeState?.Invoke(stateGame);
+  }
+
+  public void BuyBonusForAdv(ShopAdvBuyItem<TypeBonus> item)
+  {
+    Debug.Log($"Buy bonus for adv {item.typeItem}");
+
+    UseBonus(item.count, item.typeItem);
+
+    _gameManager.DataManager.Save();
   }
 
   public void SetLastTime()

@@ -1,25 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="BtnUserShortInfo" src="project://database/Assets/UI%20Toolkit/File/BtnUserShortInfo.uxml?fileID=9197481963319205126&amp;guid=8621f5f7b62642b47adeedb4dbb5cba7&amp;type=3#BtnUserShortInfo" />
     <Style src="project://database/Assets/UI%20Toolkit/File/Base.uss?fileID=7433441132597879392&amp;guid=47ab2fccdf66be0488c7b62162e81d51&amp;type=3#Base" />
     <Style src="project://database/Assets/UI%20Toolkit/File/Settings.uss?fileID=7433441132597879392&amp;guid=88dfc651dba86d4488abaaa61bc6b672&amp;type=3#Settings" />
-    <ui:VisualElement name="AsideBlok" class="font" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); position: absolute; left: 0; right: 0; align-items: center; top: 10px;">
-        <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center; justify-content: space-between; max-width: 400px; width: 380px;">
-            <ui:Button display-tooltip-when-elided="true" name="MenuBtn" class="button_circle">
-                <ui:VisualElement name="ImgCog" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/128/Cog128.png?fileID=2800000&amp;guid=fe7f28583815e944993cdb808f259b29&amp;type=3#Cog128&apos;);" />
-            </ui:Button>
-            <ui:VisualElement name="UserShortInfo" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0);">
-                <ui:Instance template="BtnUserShortInfo" />
-            </ui:VisualElement>
-            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
-            <ui:Button display-tooltip-when-elided="true" name="ShopBtn" class="button_circle">
-                <ui:VisualElement name="ImgShop" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Sprites/128/Shop128.png?fileID=2800000&amp;guid=1ab9b49f9f0ed954fbbc36f707b39d3e&amp;type=3#Shop128&apos;);" />
-            </ui:Button>
-            <ui:Button display-tooltip-when-elided="true" name="ExitBtn" class="button_circle" style="display: none;">
-                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/128/Close128.png?fileID=2800000&amp;guid=403f4819152989949a0b60620e8ee754&amp;type=3#Close128&apos;); -unity-background-scale-mode: scale-and-crop;" />
-            </ui:Button>
-        </ui:VisualElement>
-    </ui:VisualElement>
-    <ui:VisualElement name="MenuBlok" class="font text-primary" style="background-color: rgba(0, 0, 0, 0.71); position: absolute; left: 0; top: 0; right: 0; bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; display: none; flex-grow: 1;">
+    <ui:VisualElement name="SettingsBlok" class="font text-primary" style="background-color: rgba(0, 0, 0, 0.71); position: absolute; left: 0; top: 0; right: 0; bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; display: flex; flex-grow: 1;">
         <ui:VisualElement name="MenuBlokWrapper" class="b-rounded" style="background-color: rgb(164, 164, 164); align-items: stretch; max-width: 600px; align-self: center; flex-grow: 0; width: 380px;">
             <ui:VisualElement class="header" style="flex-grow: 1;">
                 <ui:VisualElement class="p-1" style="flex-shrink: 0; align-items: stretch; flex-grow: 1;">
@@ -36,7 +18,7 @@
                     <ui:Label tabindex="-1" text="#volumeEffect" display-tooltip-when-elided="true" class="text-primary" />
                     <ui:Slider picking-mode="Ignore" value="0.2" high-value="1" name="VolumeEffect" class="text-primary" style="flex-grow: 1;" />
                 </ui:VisualElement>
-                <ui:VisualElement class="row" style="background-color: rgba(0, 0, 0, 0); flex-direction: row;">
+                <ui:VisualElement class="row" style="background-color: rgba(0, 0, 0, 0); flex-direction: row; display: none;">
                     <ui:Label tabindex="-1" text="#volumeMusic" display-tooltip-when-elided="true" class="text-primary" />
                     <ui:Slider picking-mode="Ignore" value="0.2" high-value="1" name="VolumeMusic" class="text-primary" style="flex-grow: 1;" />
                 </ui:VisualElement>

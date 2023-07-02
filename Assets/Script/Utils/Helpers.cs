@@ -4,6 +4,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -129,6 +130,18 @@ public static class Helpers
     await t.Task;
     return t.Result;
   }
+
+
+  // public async static UniTask<string> GetPlayPrefKey()
+  // {
+  //   await LocalizationSettings.InitializationOperation.Task;
+
+  //   return string.Format("{0}_{1}",
+  //     GameManager.Instance.namePlayPref,
+  //     LocalizationSettings.SelectedLocale.Identifier.Code
+  //   );
+  // }
+
 
   public static string StripHTML(string input)
   {

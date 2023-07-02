@@ -74,7 +74,7 @@ public class UIShop : UILocaleBase
 
     _listItems.Clear();
 
-    foreach (var item in _gameSettings.ShopItems)
+    foreach (var item in _gameSetting.ShopItems)
     {
       var blokItem = _shopItem.Instantiate();
       blokItem.style.flexGrow = 1;
@@ -102,7 +102,7 @@ public class UIShop : UILocaleBase
 
       // Button info.
       var buttonInfo = blokItem.Q<Button>("InfoBtn");
-      buttonInfo.Q<VisualElement>("InfoImg").style.backgroundImage = new StyleBackground(_gameSettings.spriteInfo);
+      buttonInfo.Q<VisualElement>("InfoImg").style.backgroundImage = new StyleBackground(_gameSetting.spriteInfo);
       buttonInfo.Q<VisualElement>("InfoImg").style.unityBackgroundImageTintColor
         = new StyleColor(_gameManager.Theme.colorSecondary);
       buttonInfo.clickable.clicked += async () =>
@@ -130,7 +130,7 @@ public class UIShop : UILocaleBase
 
       // Button buy for coin.
       var buttonForCoin = blokItem.Q<Button>("Buy");
-      buttonForCoin.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteBuy);
+      buttonForCoin.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSetting.spriteBuy);
       buttonForCoin.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
         = new StyleColor(_gameManager.Theme.entityColor);
       buttonForCoin.clickable.clicked += async () =>
@@ -166,7 +166,7 @@ public class UIShop : UILocaleBase
 
       // Button buy for coin.
       var buttonForAdv = blokItem.Q<Button>("Adv");
-      buttonForAdv.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteAdv);
+      buttonForAdv.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSetting.spriteAdv);
       buttonForAdv.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
         = new StyleColor(_gameManager.Theme.entityColor);
       buttonForAdv.Q<Label>("Text").text = await Helpers.GetLocalizedPluralString(
@@ -179,13 +179,20 @@ public class UIShop : UILocaleBase
         {
           // TODO Buy for adv.
           AudioManager.Instance.Click();
+
+          DataManager.AddHintExtern(JsonUtility.ToJson(new ShopAdvBuyItem<TypeEntity>()
+          {
+            typeItem = item.entity.typeEntity,
+            count = item.count,
+          }));
+
         };
 
       _listItems.Add(blokItem);
     }
 
 
-    foreach (var item in _gameSettings.ShopItemsBonus)
+    foreach (var item in _gameSetting.ShopItemsBonus)
     {
       var blokItem = _shopItem.Instantiate();
       blokItem.style.flexGrow = 1;
@@ -210,7 +217,7 @@ public class UIShop : UILocaleBase
 
       // Button info.
       var buttonInfo = blokItem.Q<Button>("InfoBtn");
-      buttonInfo.Q<VisualElement>("InfoImg").style.backgroundImage = new StyleBackground(_gameSettings.spriteInfo);
+      buttonInfo.Q<VisualElement>("InfoImg").style.backgroundImage = new StyleBackground(_gameSetting.spriteInfo);
       buttonInfo.Q<VisualElement>("InfoImg").style.unityBackgroundImageTintColor
         = new StyleColor(_gameManager.Theme.colorSecondary);
       buttonInfo.clickable.clicked += async () =>
@@ -237,7 +244,7 @@ public class UIShop : UILocaleBase
 
       // Button buy for coin.
       var buttonForCoin = blokItem.Q<Button>("Buy");
-      buttonForCoin.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteBuy);
+      buttonForCoin.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSetting.spriteBuy);
       buttonForCoin.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
         = new StyleColor(_gameManager.Theme.entityColor);
       buttonForCoin.clickable.clicked += async () =>
@@ -272,7 +279,7 @@ public class UIShop : UILocaleBase
       }
 
       var buttonForAdv = blokItem.Q<Button>("Adv");
-      buttonForAdv.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSettings.spriteAdv);
+      buttonForAdv.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSetting.spriteAdv);
       buttonForAdv.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
         = new StyleColor(_gameManager.Theme.entityColor);
       buttonForAdv.Q<Label>("Text").text = await Helpers.GetLocalizedPluralString(
@@ -285,6 +292,12 @@ public class UIShop : UILocaleBase
         {
           // TODO Buy for adv.
           AudioManager.Instance.Click();
+
+          DataManager.AddHintExtern(JsonUtility.ToJson(new ShopAdvBuyItem<TypeBonus>()
+          {
+            typeItem = item.entity.typeBonus,
+            count = item.count,
+          }));
         };
 
       _listItems.Add(blokItem);

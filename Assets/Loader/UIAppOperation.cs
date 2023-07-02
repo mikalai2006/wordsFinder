@@ -17,7 +17,7 @@ namespace Loader
 
       onProgress?.Invoke(0.9f);
 
-      var environment = await GameManager.Instance.AssetProvider.LoadAsset("UIMenuApp");
+      var environment = await GameManager.Instance.AssetProvider.LoadAsset(Constants.UILabels.UI_APP);
 
       if (environment.TryGetComponent(out UIApp component) == false)
         throw new NullReferenceException("Object of type UIApp is null");

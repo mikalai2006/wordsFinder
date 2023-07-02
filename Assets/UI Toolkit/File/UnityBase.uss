@@ -67,3 +67,16 @@
 .unity-base-field__label {
     color: rgb(255, 255, 255);
 }
+
+.unity-base-text-field__input {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: rgba(255, 13, 13, 0.29);
+    color: rgb(255, 255, 255);
+}

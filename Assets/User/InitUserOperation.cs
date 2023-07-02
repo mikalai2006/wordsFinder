@@ -36,7 +36,7 @@ namespace User
       _onSetNotify?.Invoke("...");
       _onProgress?.Invoke(0.3f);
 
-      string namePlaypref = GameManager.Instance.namePlayPref;
+      string namePlaypref = GameManager.Instance.KeyPlayPref;
 
       GameManager.Instance.DataManager.Init(namePlaypref);
 
@@ -55,6 +55,7 @@ namespace User
           lang = LocalizationSettings.SelectedLocale.name,
           muv = _gameManager.GameSettings.Audio.volumeMusic,
           theme = _gameManager.GameSettings.ThemeDefault.name,
+          dod = true,
           td = _gameManager.GameSettings.timeDelayOverChar // time delay
         };
         _playPrefData.setting = setting;

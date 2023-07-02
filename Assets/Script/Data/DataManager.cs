@@ -12,11 +12,21 @@ public class DataManager : Singleton<DataManager>
   [DllImport("__Internal")]
   private static extern void LoadExtern();
   [DllImport("__Internal")]
-  private static extern void GetUserInfo();
+  private static extern void GetUserInfoExtern();
+  [DllImport("__Internal")]
+  public static extern void AddCoinsExtern(int value);
+  [DllImport("__Internal")]
+  public static extern void AddHintExtern(string data);
+  [DllImport("__Internal")]
+  public static extern void AddBonusExtern(string data);
 
+  public static event System.Action<int> OnAddCoins;
   public static event System.Action<StateGame> OnLoadData;
+  public static event System.Action<ShopAdvBuyItem<TypeEntity>> OnAddHintExtern;
+  public static event System.Action<ShopAdvBuyItem<TypeBonus>> OnAddBonusExtern;
   public static event System.Action<UserInfo> OnLoadUserInfo;
   public static event System.Action<LeaderBoard> OnLoadLeaderBoard;
+  public LeaderBoard leaderBoard { get; private set; }
 
   [Header("File Storage Config")]
   [SerializeField] private string fileNameGame;
@@ -62,8 +72,29 @@ public class DataManager : Singleton<DataManager>
 
   public void LoadUserInfoAsYsdk()
   {
-    GetUserInfo();
+    GetUserInfoExtern();
   }
+
+
+  public void AddCoins(int value)
+  {
+    OnAddCoins?.Invoke(value);
+  }
+
+
+  public void AddHint(string data)
+  {
+    ShopAdvBuyItem<TypeEntity> value = JsonUtility.FromJson<ShopAdvBuyItem<TypeEntity>>(data);
+    OnAddHintExtern?.Invoke(value);
+  }
+
+
+  public void AddBonus(string data)
+  {
+    ShopAdvBuyItem<TypeBonus> value = JsonUtility.FromJson<ShopAdvBuyItem<TypeBonus>>(data);
+    OnAddBonusExtern?.Invoke(value);
+  }
+
 
   public void SetUserInfo(string stringUserInfo)
   {
@@ -73,11 +104,12 @@ public class DataManager : Singleton<DataManager>
     OnLoadUserInfo?.Invoke(userInfo);
   }
 
+
   public void GetLeaderBoard(string stringLeaderBoard)
   {
     LeaderBoard leaderBoard = JsonUtility.FromJson<LeaderBoard>(stringLeaderBoard);
     // Debug.Log($"{name}::: YSDK ::: GetLeaderBoard {stringLeaderBoard}");
-
+    this.leaderBoard = leaderBoard;
     OnLoadLeaderBoard?.Invoke(leaderBoard);
   }
 
@@ -118,7 +150,10 @@ public class DataManager : Singleton<DataManager>
   public void SaveSettings()
   {
     string appInfo = JsonUtility.ToJson(_gameManager.AppInfo);
-    PlayerPrefs.SetString(_gameManager.namePlayPref, appInfo);
+
+    string namePlayPref = _gameManager.KeyPlayPref;
+
+    PlayerPrefs.SetString(namePlayPref, appInfo);
     // Debug.Log($"SaveSettings::: appInfo=[{appInfo}");
   }
 }
