@@ -36,9 +36,15 @@ public class DialogLevel : MonoBehaviour
   // private TMPro.TextMeshProUGUI _textCountHint;
   // private TMPro.TextMeshProUGUI _indexCountHint;
   // [SerializeField] private TMPro.TextMeshProUGUI _textHintTotalCoin;
+  [Space(10)]
+  [Header("Buttons")]
   [SerializeField] private Button _buttonNext;
+  [SerializeField] private TMPro.TextMeshProUGUI _textButtonNext;
   [SerializeField] private Button _buttonDouble;
+  [SerializeField] private TMPro.TextMeshProUGUI _textButtonDouble;
+  [SerializeField] private Image _pictoButtonDouble;
   [SerializeField] private Button _buttonOk;
+  [SerializeField] private TMPro.TextMeshProUGUI _textButtonOk;
 
   [Space(10)]
   [Header("Hints")]
@@ -49,6 +55,13 @@ public class DialogLevel : MonoBehaviour
   [SerializeField] private GameObject _totalObject;
   [SerializeField] private SpriteRenderer spriteCoin;
   [SerializeField] private TMPro.TextMeshProUGUI _textTotalCoin;
+
+  [Space(10)]
+  [Header("Progress")]
+  [SerializeField] private GameObject _progressObject;
+  [SerializeField] private Image _progressImageBar;
+  [SerializeField] private TMPro.TextMeshProUGUI _progressText;
+  private float maxWidthProgress = 8f;
 
   private TaskCompletionSource<DataDialogResult> _processCompletionSource;
   private DataDialogResult _result;
@@ -97,6 +110,14 @@ public class DialogLevel : MonoBehaviour
     _textHeader.color = _gameManager.Theme.colorAccent;
 
     _textMessageSmall.color = _gameManager.Theme.colorPrimary;
+
+    _progressImageBar.color = _gameManager.Theme.colorAccent;
+
+    _progressText.color = _gameManager.Theme.colorPrimary;
+
+    _pictoButtonDouble.sprite = _gameSetting.spriteDouble;
+
+    _pictoButtonDouble.color = _gameManager.Theme.colorPrimary;
   }
 
   public async UniTask<DataDialogResult> ShowDialogEndRound()
@@ -109,6 +130,7 @@ public class DialogLevel : MonoBehaviour
 
     SetDefault();
     _buttonNext.onClick.AddListener(CloseDialogEndRound);
+    SetProgressValue(_stateManager.stateGame.activeDataGame.rate, 0.1f);
 
     _textHeader.text = await Helpers.GetLocalizedPluralString(
       "roundresult",
@@ -118,7 +140,7 @@ public class DialogLevel : MonoBehaviour
     );
 
     // int totalFindedWords = _stateManager.dataGame.activeLevel.countDopWords + _stateManager.dataGame.activeLevel.countNeedWords;
-    _countTotalCoins = _stateManager.dataGame.activeLevel.openWords.Count;
+    _countTotalCoins = 0; // _stateManager.dataGame.activeLevel.openWords.Count;
 
     // _textMessage.text = await Helpers.GetLocaledString("completelevel");
 
@@ -135,14 +157,15 @@ public class DialogLevel : MonoBehaviour
     _bg.SetActive(true);
     _totalObject.SetActive(true);
     gameObject.SetActive(true);
+    _progressObject.SetActive(true);
 
     // var initScale = transform.localScale;
     // Sequence mySequence = DOTween.Sequence();
     // mySequence.Append(
     transform
-    .DOMove(visiblePositionWrapper, duration * 2)
+    .DOMove(visiblePositionWrapper, duration)
     .From(defaultPositionWrapper, true)
-    .SetEase(Ease.OutBack)
+    .SetEase(Ease.OutCubic)
     .OnComplete(async () =>
     {
 
@@ -151,7 +174,7 @@ public class DialogLevel : MonoBehaviour
       for (int i = _countTotalCoins; i <= countCoinLevel; i++)
       {
         _textTotalCoin.text = i.ToString();// _countTotalCoins.ToString();
-        await UniTask.Delay(1);
+        await UniTask.DelayFrame(1);
       }
       AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
 
@@ -165,17 +188,21 @@ public class DialogLevel : MonoBehaviour
 
       if (indexBonus != null)
       {
+        indexBonus.SetSortOrder(60);
         indexBonus.gameObject.transform
-          .DOMove(spriteCoin.transform.localPosition + new Vector3(0, 4.3f), duration)
+          .DOMove(spriteCoin.transform.localPosition + new Vector3(0.4f, 4f), duration)
           .OnComplete(async () =>
           {
             for (int i = countCoinLevel; i <= _countTotalOfByIndex; i++)
             {
               _textTotalCoin.text = i.ToString();
-              await UniTask.Delay(1);
+              await UniTask.DelayFrame(1);
             }
 
             AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
+
+            SetProgressValue(_stateManager.stateGame.activeDataGame.rate + _stateManager.stateGame.activeDataGame.activeLevel.openWords.Count, _gameSetting.timeGeneralAnimation);
+
           });
       }
 
@@ -248,15 +275,16 @@ public class DialogLevel : MonoBehaviour
     }
   }
 
-  private async UniTask GoCoins()
+  private void GoCoins()
   {
     GameEntity configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
 
-    await _levelManager.CreateCoin(
-      spriteCoin.transform.position,
-      _levelManager.topSide.targetTotalCoinObject.transform.position,
-      _countTotalCoins
-    );
+    _stateManager.IncrementTotalCoin(_countTotalCoins);
+    // await _levelManager.CreateCoin(
+    //   spriteCoin.transform.position,
+    //   _levelManager.topSide.targetTotalCoinObject.transform.position,
+    //   _countTotalCoins
+    // );
   }
 
   public async void CloseDialogEndRound()
@@ -278,7 +306,8 @@ public class DialogLevel : MonoBehaviour
 
     _gameManager.audioManager.Click();
 
-    await GoCoins();
+    GoCoins();
+    await UniTask.Delay(500);
 
     // _levelManager.buttonHint.gameObject.transform
     //   .DOJump(_initPositionHint, 2, 1, duration)
@@ -291,10 +320,12 @@ public class DialogLevel : MonoBehaviour
 
     // await UniTask.Delay(500);
     transform
-      .DOMove(defaultPositionWrapper, duration * 2)
-      .SetEase(Ease.InBack)
+      .DOMove(defaultPositionWrapper, duration)
+      .SetEase(Ease.Linear)
       .OnComplete(() =>
       {
+        _stateManager.IncrementRate(_stateManager.stateGame.activeDataGame.activeLevel.openWords.Count);
+
         // gameObject.SetActive(false);
         // transform.localPosition = defaultPositionWrapper;
         _buttonNext.gameObject.SetActive(false);
@@ -302,12 +333,12 @@ public class DialogLevel : MonoBehaviour
         _totalObject.SetActive(false);
         OnHideDialog?.Invoke();
         _gameManager.ChangeState(GameState.StopEffect);
+
+        _result.isOk = true;
+        _processCompletionSource.SetResult(_result);
       });
 
-    await UniTask.Delay(1000);
 
-    _result.isOk = true;
-    _processCompletionSource.SetResult(_result);
   }
 
 
@@ -406,9 +437,9 @@ public class DialogLevel : MonoBehaviour
     gameObject.SetActive(true);
 
     transform
-      .DOMove(visiblePositionWrapper, duration * 2)
+      .DOMove(visiblePositionWrapper, duration)
       .From(defaultPositionWrapper, true)
-      .SetEase(Ease.OutBack);
+      .SetEase(Ease.OutQuart);
 
     return await _processCompletionSource.Task;
   }
@@ -416,6 +447,8 @@ public class DialogLevel : MonoBehaviour
   public void CloseDialogStartRound()
   {
     _gameManager.audioManager.Click();
+
+    int countHints = _hintsRound.Count;
 
     foreach (var item in _hintsRound)
     {
@@ -430,7 +463,7 @@ public class DialogLevel : MonoBehaviour
           break;
       }
       item.Key.gameObject.transform
-        .DOMove(targetMoveHint.transform.position, duration * 1.5f)
+        .DOMove(targetMoveHint.transform.position, duration)
         .SetEase(Ease.InBack)
         .OnComplete(() =>
         {
@@ -442,9 +475,10 @@ public class DialogLevel : MonoBehaviour
 
     _stateManager.dataGame.activeLevel.hints.Clear();
 
+    float koef = countHints == 0 ? 1 : 1.5f;
     transform
-      .DOMove(defaultPositionWrapper, duration * 2f)
-      .SetEase(Ease.InBack)
+      .DOMove(defaultPositionWrapper, duration * koef)
+      .SetEase(Ease.Linear)
       .OnComplete(() =>
       {
         SetDefault();
@@ -537,6 +571,8 @@ public class DialogLevel : MonoBehaviour
 
     _buttonOk.gameObject.SetActive(false);
     _buttonOk.onClick.RemoveAllListeners();
+
+    _progressObject.SetActive(false);
     // _textCountStar.text = "";
     // _textCountHint.text = "";
     // _indexCountStar.text = "?";
@@ -548,6 +584,34 @@ public class DialogLevel : MonoBehaviour
     // _wrapHint.SetActive(false);
   }
 
+  private void SetProgressValue(int value, float delay)
+  {
+    float width = 0;
+    if (value > 0)
+    {
+      width = ((value) * 100f / _gameManager.PlayerSetting.countFindWordsForUp) * (maxWidthProgress / 100f);
+    }
+
+    RectTransform progressRect = _progressImageBar.GetComponent<RectTransform>();
+
+    if (progressRect != null)
+    {
+      progressRect.DOSizeDelta(new Vector3(width, progressRect.rect.height), delay).OnComplete(async () =>
+      {
+        string nameStatus = await Helpers.GetLocaledString(_gameManager.PlayerSetting.text.title);
+        int countNeedOpenWords = _gameManager.PlayerSetting.countFindWordsForUp - _gameManager.StateManager.stateGame.activeDataGame.rate;
+        int procent = 100 - Mathf.RoundToInt(countNeedOpenWords * 100f / (float)_gameManager.PlayerSetting.countFindWordsForUp);
+
+        _progressText.text = await Helpers.GetLocalizedPluralString("foundwords_dialog", new Dictionary<string, object>() {
+          { "name", nameStatus},
+          { "count", countNeedOpenWords},
+          { "procent", procent}
+        });
+
+      });
+    }
+    //.sizeDelta = new Vector3(width, 1f);
+  }
 
   //   var positionTo = _spriteStar.transform.position;
   //   Vector3[] waypoints = new[] {

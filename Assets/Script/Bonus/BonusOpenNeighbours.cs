@@ -8,7 +8,7 @@ public class BonusOpenNeighbours : BaseBonus
   protected override void Awake()
   {
     configBonus = _gameManager.ResourceSystem.GetAllBonus().Find(t => t.typeBonus == TypeBonus.OpenNeighbours);
-    order.sortingOrder = 25;
+    // order.sortingOrder = 25;
 
     base.Awake();
   }

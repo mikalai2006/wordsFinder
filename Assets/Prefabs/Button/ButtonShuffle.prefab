@@ -91,6 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b809c9b06a6d095478521064eb3da1b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  configButton: {fileID: 11400000, guid: 95b62f261b36fe14ea021faf7a64411e, type: 2}
   button: {fileID: 1963567993293100870}
   spritesObject: {fileID: 2279400681055502426}
   spriteBg: {fileID: 7278856706409721545}

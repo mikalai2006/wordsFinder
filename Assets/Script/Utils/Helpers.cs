@@ -131,6 +131,10 @@ public static class Helpers
     return t.Result;
   }
 
+  public static bool HasValueDouble(this double value)
+  {
+    return !Double.IsNaN(value) && !Double.IsInfinity(value);
+  }
 
   // public async static UniTask<string> GetPlayPrefKey()
   // {
@@ -201,18 +205,45 @@ public static class Helpers
 
   //   return result;
   // }
+  /// <summary>
+  ///  Get the probability of getting an item
+  /// </summary>
+  /// <param name="item">Items for search</param>
+  /// <returns>result item or first item<T></returns>
+  public static ResultProbabiliti<T> GetProbabilityItem<T>(List<ItemProbabiliti<T>> items)
+  {
+    double p = new System.Random().NextDouble();
+    double accumulator = 0.0;
+    var result = new ResultProbabiliti<T>()
+    {
+      Item = items[0].Item,
+      index = 0
+    };
+    for (int i = 0; i < items.Count; i++)
+    {
+      ItemProbabiliti<T> item = items[i];
+      accumulator += item.probability;
+      if (p <= accumulator)
+      {
+        result.Item = item.Item;
+        result.index = i;
+        break;
+      }
+    }
+    return result;
+  }
 }
 
-// [System.Serializable]
-// public struct ItemProbabiliti<T>
-// {
-//     public T Item;
-//     [Range(0, 1)] public double probability;
-// }
+[System.Serializable]
+public struct ItemProbabiliti<T>
+{
+  public T Item;
+  [Range(0, 1)] public double probability;
+}
 
-// [System.Serializable]
-// public struct ResultProbabiliti<T>
-// {
-//     public T Item;
-//     public int index;
-// }
+[System.Serializable]
+public struct ResultProbabiliti<T>
+{
+  public T Item;
+  public int index;
+}

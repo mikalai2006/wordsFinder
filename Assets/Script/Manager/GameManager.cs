@@ -30,6 +30,7 @@ public class GameManager : StaticInstance<GameManager>
   public InitUserProvider InitUserProvider { get; private set; }
   public AssetProvider AssetProvider { get; private set; }
   public GameState State { get; private set; }
+  public AdManager AdManager;
   public ResourceSystem ResourceSystem { get; internal set; }
 
   public LevelManager LevelManager { get; private set; }
@@ -201,7 +202,7 @@ public class GameManager : StaticInstance<GameManager>
     GameTheme userTheme = allThemes.Where(t => t.name == AppInfo.setting.theme).FirstOrDefault();
     SetTheme(userTheme);
 
-    DataManager.SaveSettings();
+    AppInfo.SaveSettings();
 
     await UniTask.Yield();
   }
@@ -221,6 +222,7 @@ public class GameManager : StaticInstance<GameManager>
     langCodePlayPref = code;
     Debug.Log($"Init key playpref as {code}");
   }
+
 }
 
 [Serializable]

@@ -11,6 +11,7 @@ public class GameEntity : ScriptableObject
   [SerializeField] public AssetReferenceGameObject prefab;
   public ParticleSystem activateEffect;
   public ParticleSystem MoveEffect;
+  public bool isUseGenerator;
 }
 
 
@@ -23,5 +24,6 @@ public enum TypeEntity
   Star = 3,
   Coin = 4,
   OpenWord = 5,
-  Frequency = 6
+  Frequency = 6,
+  Letter = 7
 }

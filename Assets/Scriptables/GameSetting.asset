@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Audio: {fileID: 11400000, guid: 8f34d19db11906f4b8a97ad95ea85df1, type: 2}
   PrefabSymbol: {fileID: 7149879278780047571, guid: e7419d168977efa48a744d43a95bae4e, type: 3}
-  ThemeDefault: {fileID: 11400000, guid: 523cefe3a73243e47b0457cff73ee60b, type: 2}
+  ThemeDefault: {fileID: 11400000, guid: 0f339b6dd6dd46244ae9c9d8e6d537ab, type: 2}
   PlayerSetting:
   - {fileID: 11400000, guid: b57b9e953e14d084dbf1e284147084c7, type: 2}
   - {fileID: 11400000, guid: c74f5f99da2ab024b85faf3c9958078f, type: 2}
@@ -30,14 +30,16 @@ MonoBehaviour:
   timeGeneralAnimation: 0.5
   Boom: {fileID: 4370175670826504157, guid: 0d64c2d06fc2020488bed46426152725, type: 3}
   BoomLarge: {fileID: 5387774378321571289, guid: d3e641e39ca10654fab4ca2a25b477b3, type: 3}
-  spriteShuffle: {fileID: 21300000, guid: 430bfd9bcbe976346ae4a660d7bd2672, type: 3}
-  spriteDirectory: {fileID: 21300000, guid: 9093ed3c83657b946b62ce16e789e873, type: 3}
+  spriteShuffle: {fileID: 21300000, guid: 0eb98c0f30cc22e4d9d2268f100fc94a, type: 3}
+  spriteFlask: {fileID: 0}
+  spriteDirectory: {fileID: 21300000, guid: 7615abb3c84eacc4ca79f706c06bbe55, type: 3}
   spriteCog: {fileID: 21300000, guid: fe7f28583815e944993cdb808f259b29, type: 3}
   spriteRate: {fileID: 21300000, guid: 54e35f220d7347e4f99f199862e81c5e, type: 3}
   spriteShop: {fileID: 21300000, guid: 1ab9b49f9f0ed954fbbc36f707b39d3e, type: 3}
   spriteAdv: {fileID: 21300000, guid: 492308d20a1450b47a5bc631a8dbfacd, type: 3}
   spriteBuy: {fileID: 21300000, guid: 3c7959c56fe59aa43a320d194c7962a3, type: 3}
   spriteInfo: {fileID: 21300000, guid: 4650a140dc17cae45bd840ee53efe598, type: 3}
+  spriteDouble: {fileID: 21300000, guid: 2450c012d2d6c24468b89adeb1918e62, type: 3}
   debounceTime: 1000
   timeDelayOverChar: 47
   GameLevels:
@@ -54,18 +56,21 @@ MonoBehaviour:
   ShopItems:
   - entity: {fileID: 11400000, guid: 2be5099a5ef97d84db2786c20dfcafde, type: 2}
     count: 1
-    cost: 20
+    cost: 200
+  - entity: {fileID: 11400000, guid: 44b0831f1b50a3e45a0355ae33c073c2, type: 2}
+    count: 1
+    cost: 400
   - entity: {fileID: 11400000, guid: 7dd3f4fc6b9f65840a29682e241374d7, type: 2}
     count: 1
-    cost: 200
+    cost: 500
   - entity: {fileID: 11400000, guid: 4029cdca5db16194890ed31906de574b, type: 2}
     count: 1
     cost: 500
-  - entity: {fileID: 11400000, guid: 44b0831f1b50a3e45a0355ae33c073c2, type: 2}
-    count: 1
-    cost: 250
   ShopItemsBonus:
   - entity: {fileID: 11400000, guid: 257080754fd05bf478e8de6f8b9b610b, type: 2}
+    count: 1
+    cost: 0
+  - entity: {fileID: 11400000, guid: a01ec9408590b6b4f8ff0abb0aa4f9a1, type: 2}
     count: 1
     cost: 0
   noName:
@@ -88,9 +93,8 @@ MonoBehaviour:
       m_WaitForCompletion: 0
       m_LocalVariables: []
   APIDirectory:
-    host: https://ru.wikipedia.org/api/rest_v1/page/summary/
     token: 
-    expression: 
+    pathExpression: https://ru.wikipedia.org/api/rest_v1/page/summary/{0}?origin=*
   wordFiles:
   - text:
       title:

@@ -33,6 +33,7 @@ MonoBehaviour:
   bgImageChar: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgImageCharChoose: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgColor: {r: 0.15294118, g: 0.15294118, b: 0.16470589, a: 1}
+  colorBgGrid: {r: 0.13149695, g: 0.13149695, b: 0.14150941, a: 1}
   colorLine: {r: 0.8313726, g: 0.8313726, b: 0.8470589, a: 1}
   colorPrimary: {r: 0.8313726, g: 0.8313726, b: 0.8470589, a: 1}
   colorSecondary: {r: 0.6313726, g: 0.6313726, b: 0.6666667, a: 1}
@@ -41,3 +42,6 @@ MonoBehaviour:
   colorDisable: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
   colorBgHint: {r: 0.23669456, g: 0.23669456, b: 0.254717, a: 1}
   colorTextHint: {r: 0.8313726, g: 0.8313726, b: 0.8470589, a: 1}
+  colorBgButton: {r: 0, g: 0, b: 0, a: 0}
+  colorBgInput: {r: 0.121568635, g: 0.121568635, b: 0.12941177, a: 1}
+  colorTextInput: {r: 0.83137256, g: 0.83137256, b: 0.84705883, a: 1}

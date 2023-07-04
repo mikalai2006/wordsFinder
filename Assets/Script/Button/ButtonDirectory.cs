@@ -23,11 +23,12 @@ public class ButtonDirectory : BaseButton
   }
   #endregion
 
-  // public override void ChangeTheme()
-  // {
-  //   spriteBg.color = _gameManager.Theme.colorPrimary;
-  // }
+  public override void ChangeTheme()
+  {
+    base.ChangeTheme();
 
+    spriteBg.color = _gameManager.Theme.colorPrimary;
+  }
 
   public override void SetValue(StateGame state)
   {

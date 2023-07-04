@@ -60,10 +60,10 @@ public class GridNode
   {
     StateNode |= StateNode.Open;
 
-    if (StateNode.HasFlag(StateNode.Hint))
-    {
-      StateNode &= ~StateNode.Hint;
-    }
+    // if (StateNode.HasFlag(StateNode.Hint))
+    // {
+    //   StateNode &= ~StateNode.Hint;
+    // }
   }
 
   public GridNode SetOccupiedEntity(BaseEntity _entity)
@@ -81,9 +81,16 @@ public class GridNode
   }
 
 
-  public void SetHint()
+  public void SetHint(bool status = true)
   {
-    StateNode |= StateNode.Hint;
+    if (status)
+    {
+      StateNode |= StateNode.Hint;
+    }
+    else
+    {
+      StateNode &= ~StateNode.Hint;
+    }
   }
 
 

@@ -2,16 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.UI;
 
 public class LevelManager : Singleton<LevelManager>
 {
-  [DllImport("__Internal")]
-  private static extern void ShowAdvFullScreen();
-  private string lastTimeShowAdv;
   public static event Action OnInitLevel;
   private GameManager _gameManager => GameManager.Instance;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
@@ -22,6 +21,7 @@ public class LevelManager : Singleton<LevelManager>
   private List<CharMB> _symbols;
   public List<CharMB> Symbols => _symbols;
   public GameObject SymbolsField;
+  public GameObject Pointer;
   public TopSide topSide;
   public DialogLevel dialogLevel;
   public ButtonStar buttonStar;
@@ -30,13 +30,15 @@ public class LevelManager : Singleton<LevelManager>
   public ButtonDirectory buttonDirectory;
   public ButtonLighting buttonLighting;
   public ButtonShuffle buttonShuffle;
+  public ButtonFlask buttonFlask;
   public Stat stat;
 
   protected override void Awake()
   {
     base.Awake();
     _symbols = new();
-    lastTimeShowAdv = System.DateTime.Now.ToString();
+    Pointer.GetComponent<SpriteRenderer>().color = _gameManager.Theme.colorPrimary;
+    Pointer.SetActive(false);
   }
 
   public async void InitLevel(string wordConfig)
@@ -71,10 +73,11 @@ public class LevelManager : Singleton<LevelManager>
     }
 
     CreateChars(ManagerHiddenWords.WordForChars);
+
     if (currentLevel.openWords.Count == 0) await buttonShuffle.RefreshChars();
 
     // GameManager.Instance.DataManager.Save();
-    GameManager.Instance.StateManager.RefreshData();
+    GameManager.Instance.StateManager.RefreshData(false);
 
     // Show start info.
     _gameManager.InputManager.Disable();
@@ -82,7 +85,9 @@ public class LevelManager : Singleton<LevelManager>
     if (result.isOk)
     {
       _gameManager.InputManager.Enable();
+      await AutoChooseWord();
     }
+
 
 #if UNITY_EDITOR
     stopWatch.Stop();
@@ -114,46 +119,86 @@ public class LevelManager : Singleton<LevelManager>
       _symbols.Add(symbolGO);
     }
   }
-  // public async void ShuffleChars()
-  // {
-  //   var existChars = Symbols;
 
-  //   // get all positions.
-  //   Dictionary<CharMB, char> existPositionsChars = new();
-  //   for (int i = 0; i < existChars.Count; i++)
-  //   {
-  //     existPositionsChars.Add(existChars[i], existChars[i].charTextValue);
-  //   }
-  //   // shuffle positions.
-  //   existChars = existChars.OrderBy(t => UnityEngine.Random.value).ToList();
-
-  //   // set new position.
-  //   List<UniTask> tasks = new();
-  //   string newWord = "";
-  //   for (int i = 0; i < existChars.Count; i++)
-  //   {
-  //     tasks.Add(existChars[i].SetPosition(existPositionsChars.ElementAt(i).Key.transform.position));
-  //     newWord += existChars.ElementAt(i).charTextValue;
-  //   }
-
-  //   ManagerHiddenWords.SetWordForChars(newWord);
-
-  //   await UniTask.WhenAll(tasks);
-  //   GameManager.Instance.DataManager.Save();
-  // }
-
-  public void ShowAdv()
+  public async UniTask AutoChooseWord()
   {
-    var diffDate = DateTime.Now - DateTime.Parse(lastTimeShowAdv);
-    Debug.Log($"diffDate={diffDate}|||[{DateTime.Now}:::::{lastTimeShowAdv}]");
+    var isShow = _gameManager.AppInfo.helps.Find(t => t == Constants.Helps.HELP_CHOOSE_CHAR);
+    if (!string.IsNullOrEmpty(isShow)) return;
 
-    if (diffDate.TotalMinutes > 5)
+    _gameManager.InputManager.Disable();
+
+    float duration = _gameSetting.timeGeneralAnimation;
+    var activeLevel = _stateManager.dataGame.activeLevel;
+    Pointer.SetActive(true);
+
+    string ranWordForHelp = activeLevel.hiddenWords
+      .Where(t => !activeLevel.openWords.Contains(t))
+      .ElementAt(0);
+
+    foreach (var _char in ranWordForHelp)
     {
-#if ysdk
-      ShowAdvFullScreen();
-#endif
-      lastTimeShowAdv = System.DateTime.Now.ToString();
+      var symb = _symbols.Find(t => t.charTextValue == _char);
+      Pointer.transform
+        .DOMove(symb.transform.position, duration)
+        .OnUpdate(() =>
+        {
+          LineManager.DrawLine(Pointer.transform.position);
+        })
+        .OnComplete(() =>
+        {
+          symb.ChooseSymbol();
+          // LineManager.AddPoint(symb.transform.position);
+          // ManagerHiddenWords.listChoosedGameObjects.Add(symb);
+        });
+
+      await UniTask.Delay((int)(duration * 1000));
     }
+
+
+    await UniTask.Delay(1000);
+
+    foreach (var obj in ManagerHiddenWords.listChoosedGameObjects)
+    {
+      obj.GetComponent<CharMB>().ResetObject();
+    }
+    LineManager.ResetLine();
+    ManagerHiddenWords.listChoosedGameObjects.Clear();
+
+    _gameManager.AppInfo.AddHelpItem(Constants.Helps.HELP_CHOOSE_CHAR);
+    Pointer.SetActive(false);
+    _gameManager.InputManager.Enable();
+  }
+
+
+  public async UniTask<bool> ShowHelp(string key)
+  {
+    var isShow = _gameManager.AppInfo.helps.Find(t => t == key);
+    if (!string.IsNullOrEmpty(isShow)) return false;
+
+    TaskCompletionSource<bool> _processCompletionSource = new();
+
+    _gameManager.InputManager.Disable();
+
+    var messageConfirm = await Helpers.GetLocaledString(key);
+    // var title = await Helpers.GetLocaledString("confirm_title");
+    var dialogConfirm = new DialogProvider(new DataDialog()
+    {
+      // title = title,
+      message = messageConfirm,
+      showCancelButton = false
+    });
+
+    var result = await dialogConfirm.ShowAndHide();
+    if (result.isOk)
+    {
+      _processCompletionSource.SetResult(true);
+      _gameManager.AppInfo.AddHelpItem(key);
+
+      _gameManager.InputManager.Enable();
+    }
+
+
+    return await _processCompletionSource.Task;
   }
 
   public void ResetSymbols()
@@ -259,7 +304,6 @@ public class LevelManager : Singleton<LevelManager>
     newEntity.InitStandalone(asset);
     newEntity.SetColor(_gameManager.Theme.colorAccent);
     var positionFrom = pos;
-    // var positionTo = topSide.spriteCoinPosition;
     Vector3[] waypoints = {
           positionFrom,
           positionFrom + new Vector2(1.5f, 0f),
@@ -272,19 +316,53 @@ public class LevelManager : Singleton<LevelManager>
       .SetEase(Ease.OutCubic)
       .OnComplete(() =>
       {
-        if (positionTo == topSide.spriteCoinPosition)
-        {
-          newEntity.AddCoins(quantity);
-        }
-        else
-        {
-          newEntity.AddTotalCoins(quantity);
-        }
+        newEntity.AddTotalCoins(quantity);
       }
       );
 
     return newObj;
   }
 
+
+  public async UniTask<GameObject> CreateLetter(Vector2 pos, Vector3 positionTo, char _char)
+  {
+    TaskCompletionSource<GameObject> _processCompletionSource = new();
+
+    var coinConfig = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Letter);
+    // var newObj = GameObject.Instantiate(
+    //    coinConfig.prefab,
+    //    transform.position,
+    //    Quaternion.identity
+    //  );
+    var asset = Addressables.InstantiateAsync(
+      coinConfig.prefab,
+      pos,
+      Quaternion.identity
+      );
+    var newObj = await asset.Task;
+    var newEntity = newObj.GetComponent<BaseEntity>();
+    newEntity.InitStandalone(asset);
+    newEntity.SetColor(_gameManager.Theme.colorAccent);
+    var positionFrom = pos;
+    // var positionTo = topSide.spriteCoinPosition;
+    Vector3[] waypoints = {
+          positionFrom,
+          positionFrom - new Vector2(1f, 0f),
+          positionTo - new Vector3(1f, 0.5f),
+          positionTo,
+        };
+
+    newObj.gameObject.transform
+      .DOPath(waypoints, 1f, PathType.CatmullRom)
+      .SetEase(Ease.OutCubic)
+      .OnComplete(() =>
+      {
+        _processCompletionSource.SetResult(newObj);
+        newEntity.AddLetter(_char);
+      }
+      );
+
+    return await _processCompletionSource.Task;
+  }
 
 }

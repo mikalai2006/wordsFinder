@@ -14,6 +14,9 @@ public class Stat : MonoBehaviour
   private float maxWidthProgress = 10f;
   [SerializeField] private RectTransform spriteProgress;
   [SerializeField] private Image _bar;
+  [SerializeField] private GameObject _effectometer;
+  [SerializeField] private RectTransform _spriteProgressOrderChar;
+  [SerializeField] private Image _barOrderChar;
 
   private void Awake()
   {
@@ -35,6 +38,8 @@ public class Stat : MonoBehaviour
   {
     _countWords.color = _gameManager.Theme.colorPrimary;
     _bar.color = _gameManager.Theme.colorAccent;
+
+    _barOrderChar.color = _gameManager.Theme.colorAccent;
   }
 
   public void SetValue(StateGame state)
@@ -52,7 +57,7 @@ public class Stat : MonoBehaviour
       width = ((state.activeDataGame.activeLevel.openWords.Count - state.activeDataGame.activeLevel.countDopWords) * 100f / state.activeDataGame.activeLevel.countNeedWords) * (maxWidthProgress / 100f);
     }
 
-    spriteProgress.DOSizeDelta(new Vector3(width, 1f), _gameSetting.timeGeneralAnimation);
+    spriteProgress.DOSizeDelta(new Vector3(width, spriteProgress.rect.height), _gameSetting.timeGeneralAnimation);
     //.sizeDelta = new Vector3(width, 1f);
   }
 

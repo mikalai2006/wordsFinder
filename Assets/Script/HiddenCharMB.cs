@@ -94,27 +94,36 @@ public class HiddenCharMB : MonoBehaviour
   }
 
 
-  public async UniTask ShowChar(bool runEffect)
+  public async UniTask ShowChar(bool runEffect, char _char)
   {
     Vector3 initialScale = transform.localScale;
 
-    int valueBonusOpenNeighbours;
-    _stateManager.dataGame.bonus.TryGetValue(TypeBonus.OpenNeighbours, out valueBonusOpenNeighbours);
-
-    // Add coin.
-    if (runEffect && (!OccupiedNode.StateNode.HasFlag(StateNode.Hint) || valueBonusOpenNeighbours > 0))
-    {
-      _levelManager.CreateCoin(transform.position, _levelManager.topSide.spriteCoinPosition).Forget();
-
-      // play sound.
-      _gameManager.audioManager.PlayClipEffect(_gameSetting.Audio.openHiddenChar);
-    }
+    int valueBonusSaveHintLetter;
+    _stateManager.dataGame.bonus.TryGetValue(TypeBonus.SaveHintLetter, out valueBonusSaveHintLetter);
 
     OccupiedNode.SetOpen();
 
     Open(runEffect);
 
     ChangeTheme();
+
+    // Add coin.
+    if (runEffect && (!OccupiedNode.StateNode.HasFlag(StateNode.Hint) || valueBonusSaveHintLetter > 0))
+    {
+      // play sound.
+      _gameManager.audioManager.PlayClipEffect(_gameSetting.Audio.openHiddenChar);
+
+      // _levelManager.CreateCoin(
+      //   transform.position,
+      //   _levelManager.topSide.spriteCoinPosition,
+      //   1
+      // ).Forget();
+      _stateManager.IncrementCoin(1);
+
+      _levelManager.CreateLetter(transform.position, _levelManager.buttonFlask.transform.position, charTextValue).Forget();
+    }
+
+    OccupiedNode.SetHint(false);
 
     if (runEffect)
     {

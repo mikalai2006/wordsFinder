@@ -19,13 +19,16 @@ public class UIGameBar : UILocaleBase
   private Label _userRate;
   private Label _userCoin;
   private Label _userName;
+  private Label _letterCount;
   private VisualElement _userCoinImg;
+  private VisualElement _letterImg;
   private VisualElement _userRateImg;
   private VisualElement _cogImg;
   private VisualElement _shopImg;
   private VisualElement _avaImg;
   private Button _settingsButton;
   private Button _shopButton;
+  private Button _letterButton;
   private void Awake()
   {
     GameManager.OnChangeTheme += ChangeTheme;
@@ -44,30 +47,24 @@ public class UIGameBar : UILocaleBase
     DialogLevel.OnShowDialog -= HideAside;
   }
 
-  // private void Awake()
-  // {
-  //   // UISettings.OnChangeLocale += RefreshMenu;
-  //   // GameManager.OnAfterStateChanged += AfterStateChanged;
-  //   // LevelManager.OnInitLevel += HideMenu;
-  //   // GameManager.OnChangeTheme += RefreshMenu;
-  //   // DataManager.OnLoadLeaderBoard += DrawLeaderListBlok;
-  //   // StateManager.OnChangeState += SetValue;
-  // }
-
-  // private void OnDestroy()
-  // {
-  //   // UISettings.OnChangeLocale -= RefreshMenu;
-  //   // GameManager.OnAfterStateChanged -= AfterStateChanged;
-  //   // LevelManager.OnInitLevel -= HideMenu;
-  //   // GameManager.OnChangeTheme -= RefreshMenu;
-  //   // DataManager.OnLoadLeaderBoard -= DrawLeaderListBlok;
-  //   // StateManager.OnChangeState -= SetValue;
-  // }
-
   private void SetValue(StateGame state)
   {
-    _userCoin.text = string.Format("{0}", state.coins);
-    _userRate.text = string.Format("{0}", state.rate);
+    if (state.activeDataGame.activeLevel != null)
+    {
+      if (_letterCount.text != state.activeDataGame.activeLevel.coins.ToString())
+      {
+        RunAnimateCoin(new Vector3(3, 9.2f));
+      }
+
+      if (_userCoin.text != state.coins.ToString())
+      {
+        RunAnimateCoin(new Vector3(-3, 9.2f)); // _userCoinImg.worldTransform.GetPosition()
+      }
+
+      _letterCount.text = string.Format("{0}", state.activeDataGame.activeLevel.coins);
+      _userCoin.text = string.Format("{0}", state.coins);
+      _userRate.text = string.Format("{0}", state.rate);
+    }
   }
 
   private void AfterStateChanged(GameState state)
@@ -86,7 +83,13 @@ public class UIGameBar : UILocaleBase
   public virtual void Start()
   {
     _root = _uiDoc.rootVisualElement;
-    _userShortInfo = _uiDoc.rootVisualElement.Q<VisualElement>("UserShortInfo");
+    _userShortInfo = _root.Q<VisualElement>("UserShortInfo");
+    _letterButton = _root.Q<Button>("BtnLetter");
+    _letterButton.clickable.clicked += ShowInfoLetter;
+
+    _letterCount = _root.Q<Label>("LetterCount");
+    _letterImg = _root.Q<VisualElement>("LetterImg");
+
     HideUserInfo();
 
     _userCoin = _root.Q<Label>("UserCoin");
@@ -135,10 +138,63 @@ public class UIGameBar : UILocaleBase
     base.Initialize(_uiDoc.rootVisualElement);
   }
 
+  private void RunAnimateCoin(Vector3 pos)
+  {
+    // var positionObject = Camera.main.ScreenToWorldPoint(pos);
+    // var pos3 = new Vector3(positionObject.x + 5, -positionObject.y, 0);
+    // Debug.Log($"{positionObject}|||{pos}|||{pos3}");
+    var configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+    var _CachedSystem = GameObject.Instantiate(
+      configEntity.activateEffect,
+      pos,
+      Quaternion.identity
+    );
+
+    var main = _CachedSystem.main;
+    main.startSize = new ParticleSystem.MinMaxCurve(0.05f, _gameManager.LevelManager.ManagerHiddenWords.scaleGrid / 2);
+
+    var col = _CachedSystem.colorOverLifetime;
+    col.enabled = true;
+
+    Gradient grad = new Gradient();
+    grad.SetKeys(new GradientColorKey[] {
+      new GradientColorKey(_gameManager.Theme.bgFindAllowWord, 1.0f),
+      new GradientColorKey(_gameManager.Theme.bgHiddenWord, 0.0f)
+      }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
+    });
+
+    col.color = grad;
+    _CachedSystem.Play();
+
+    Destroy(_CachedSystem, .5f);
+  }
+
+
+  private async void ShowInfoLetter()
+  {
+    _gameManager.InputManager.Disable();
+
+    var configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Letter);
+
+    var message = await Helpers.GetLocaledString("letter_desc");
+    var dialogConfirm = new DialogProvider(new DataDialog()
+    {
+      sprite = configEntity.sprite,
+      message = message
+    });
+
+    await dialogConfirm.ShowAndHide();
+    _gameManager.InputManager.Enable();
+  }
 
   private async void ChangeTheme()
   {
     var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+    var configLetter = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Letter);
+
+    _letterImg.style.backgroundImage = new StyleBackground(configLetter.sprite);
+    _letterImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
+    _letterCount.style.color = _gameManager.Theme.colorSecondary;
 
     _userCoinImg.style.backgroundImage = new StyleBackground(configCoin.sprite);
     _userRateImg.style.backgroundImage = new StyleBackground(_gameSetting.spriteRate);
@@ -229,11 +285,13 @@ public class UIGameBar : UILocaleBase
   private void HideUserInfo()
   {
     _userShortInfo.style.display = DisplayStyle.None;
+    _letterButton.style.display = DisplayStyle.None;
   }
 
   private void ShowUserInfo()
   {
     _userShortInfo.style.display = DisplayStyle.Flex;
+    _letterButton.style.display = DisplayStyle.Flex;
   }
 
   private async void ShowSettings()

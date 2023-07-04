@@ -36,8 +36,8 @@ MonoBehaviour:
   countFindWordsForUp: 5000
   maxLengthWord: 10
   maxFindWords: 40
-  coefHint: 0.1
-  coefStar: 0.2
+  coefFrequency: 0
+  coefStar: 0.15
   bonusCount:
     charInOrder: 30
     wordInOrder: 10

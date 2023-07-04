@@ -68,12 +68,11 @@ public class ChoosedCharMB : MonoBehaviour
       await UniTask.Yield();
       elapsedTime += Time.deltaTime;
     }
+    transform.localScale = new Vector3(0, 0, 0);
     // transform.localScale = initialScale;
     // AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.openWord);
-    await needHiddenChar.ShowChar(true); //.Forget();
 
-    transform.localScale = new Vector3(0, 0, 0);
-    // _stateManager.OpenCharHiddenWord(textChar);
+    await needHiddenChar.ShowChar(true, needHiddenChar.charTextValue); //.Forget();
   }
 
   public async UniTask OpenCharAllowWord(int delay)

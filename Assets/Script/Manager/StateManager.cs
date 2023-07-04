@@ -8,6 +8,7 @@ using UnityEngine.Localization.Settings;
 public class StateManager : MonoBehaviour
 {
   public static event Action<StateGame> OnChangeState;
+  public static event Action OnGenerateBonus;
   // public static event Action<GameTheme> OnChangeUserSetting;
   public DataGame dataGame;
   public StateGame stateGame;
@@ -39,9 +40,24 @@ public class StateManager : MonoBehaviour
         .OrderBy(t => t.countFindWordsForUp)
         .First();
 
+      // Add default bonuses.
+      var defaultBonuses = new SerializableDictionary<TypeBonus, int>();
+      var allBonuses = _gameManager.ResourceSystem.GetAllBonus();
+      if (allBonuses.Count > 0)
+      {
+        foreach (var bonus in _gameManager.ResourceSystem.GetAllBonus())
+        {
+          if (bonus.isAlways)
+          {
+            defaultBonuses.Add(bonus.typeBonus, 1);
+          }
+        }
+      }
+
       dataGame = new DataGame()
       {
-        rank = playerSetting.idPlayerSetting
+        rank = playerSetting.idPlayerSetting,
+        bonus = defaultBonuses
       };
 
       var newStateGame = new StateGameItem()
@@ -83,7 +99,7 @@ public class StateManager : MonoBehaviour
   }
 
 
-  public void RefreshData()
+  public void RefreshData(bool save = true)
   {
     var managerHiddenWords = _levelManager.ManagerHiddenWords;
 
@@ -121,7 +137,7 @@ public class StateManager : MonoBehaviour
 
   public void IncrementCoin(int quantity)
   {
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addCoin);
+    // AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addCoin);
 
     dataGame.activeLevel.coins += quantity;
 
@@ -144,7 +160,7 @@ public class StateManager : MonoBehaviour
 
   public void OpenHiddenWord(string word)
   {
-    dataGame.rate += 1;
+    // dataGame.rate += 1;
 
     dataGame.activeLevel.bonusCount.wordInOrder += 1;
     dataGame.activeLevel.bonusCount.errorNullBonus = 0;
@@ -152,10 +168,16 @@ public class StateManager : MonoBehaviour
     RefreshData();
   }
 
+  public void IncrementRate(int count)
+  {
+    dataGame.rate += count;
+
+    RefreshData();
+  }
 
   public void OpenAllowWord(string word)
   {
-    dataGame.rate += 1;
+    // dataGame.rate += 1;
 
     dataGame.activeLevel.bonusCount.wordInOrder += 1;
     dataGame.activeLevel.bonusCount.errorNullBonus = 0;
@@ -169,7 +191,7 @@ public class StateManager : MonoBehaviour
 
   public void OpenCharAllowWord(char textChar)
   {
-    dataGame.activeLevel.bonusCount.charInOrder += 1;
+    // dataGame.activeLevel.bonusCount.charInOrder += 1;
     dataGame.activeLevel.bonusCount.charBonus += 1;
     dataGame.activeLevel.bonusCount.charHint += 1;
     dataGame.activeLevel.bonusCount.charStar += 1;
@@ -220,6 +242,7 @@ public class StateManager : MonoBehaviour
   public void OpenCharHiddenWord(char _char)
   {
     dataGame.activeLevel.bonusCount.charCoin += 1;
+    dataGame.activeLevel.bonusCount.charInOrder += 1;
 
     // Check add coin to grid.
     if (dataGame.activeLevel.bonusCount.charCoin >= _gameManager.PlayerSetting.bonusCount.charCoin)
@@ -228,7 +251,17 @@ public class StateManager : MonoBehaviour
       // dataGame.activeLevel.bonusCount.needCreateCoin++;
     }
 
-    OpenCharAllowWord(_char);
+    if (dataGame.activeLevel.bonusCount.charInOrder >= _gameManager.PlayerSetting.bonusCount.charInOrder)
+    {
+      dataGame.activeLevel.bonusCount.charInOrder -= _gameManager.PlayerSetting.bonusCount.charInOrder;
+
+
+      // TODO create bonus
+      OnGenerateBonus?.Invoke();
+    }
+
+    RefreshData();
+    // OpenCharAllowWord(_char);
   }
 
   public void DeRunPerk(string word)
@@ -318,12 +351,12 @@ public class StateManager : MonoBehaviour
 
         if (notCompletedWords.Count() > 0)
         {
-          wordConfig = notCompletedWords.OrderBy(t => t.rate).ThenBy(t => t.word.Length).ElementAt(0).word;
+          wordConfig = notCompletedWords.OrderBy(t => t.rate).ElementAt(0).word; // .ThenBy(t => t.word.Length)
         }
       }
     }
 
-    Debug.Log($"wordConfig={wordConfig}");
+    // Debug.Log($"wordConfig={wordConfig}");
 
     dataGame.lastWord = ActiveWordConfig = wordConfig;
     // // ActiveWordConfig = word;
@@ -368,7 +401,7 @@ public class StateManager : MonoBehaviour
 
     dataGame.rank = allPlayerSettings[indexPlayerSetting].idPlayerSetting;
 
-    // _gameManager.PlayerSetting = allPlayerSettings[indexPlayerSetting];
+    _gameManager.PlayerSetting = allPlayerSettings[indexPlayerSetting];
 
     return result;
   }
@@ -394,7 +427,7 @@ public class StateManager : MonoBehaviour
 
     if (notCompletedWords.Count() > 0)
     {
-      result = notCompletedWords.OrderBy(t => t.rate).ThenBy(t => t.word.Length).ElementAt(0).word;
+      result = notCompletedWords.OrderBy(t => t.rate).ElementAt(0).word; // .ThenBy(t => t.word.Length)
     }
 
     return result;
@@ -477,7 +510,7 @@ public class StateManager : MonoBehaviour
 
     // dataGame.bonus[item.entity.typeBonus] = item.count + currentCount;
 
-    // dataGame.coins -= item.cost;
+    stateGame.coins -= item.cost;
     // if (_levelManager != null)
     UseBonus(item.count, item.entity.typeBonus);
     _gameManager.DataManager.Save();
@@ -496,6 +529,14 @@ public class StateManager : MonoBehaviour
   public void SetLastTime()
   {
     stateGame.lastTime = System.DateTime.Now.ToString();
+  }
+
+  public async UniTask Reset()
+  {
+    _gameManager.StateManager.stateGame = new StateGame();
+    await _gameManager.StateManager.Init(null);
+
+    OnChangeState?.Invoke(stateGame);
   }
 }
 

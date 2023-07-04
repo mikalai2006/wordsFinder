@@ -80,8 +80,10 @@ public class UIDashboard : UILocaleBase
 
   private void SetValue(StateGame state)
   {
-    _userCoin.text = string.Format("{0}", state.coins);
-    _userRate.text = string.Format("{0}", state.rate);
+    // _userCoin.text = string.Format("{0}", state.coins);
+    // _userRate.text = string.Format("{0}", state.rate);
+
+    RefreshMenu();
   }
 
   public async UniTask<DataDialogResult> ProcessAction()
@@ -253,13 +255,19 @@ public class UIDashboard : UILocaleBase
     progress.style.width = new StyleLength(new Length(percentFindWords, LengthUnit.Percent));
 
     var playerSettings = _gameSetting.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
-    status.text = await Helpers.GetLocaledString(playerSettings.text.title);
+
+    int countNeedOpenWords = _gameManager.PlayerSetting.countFindWordsForUp - _gameManager.StateManager.stateGame.activeDataGame.rate;
+    int procent = 100 - Mathf.RoundToInt(countNeedOpenWords * 100f / (float)_gameManager.PlayerSetting.countFindWordsForUp);
+
+    string nameStatus = await Helpers.GetLocaledString(playerSettings.text.title);
+    status.text = nameStatus;
 
     var textCountWords = await Helpers.GetLocalizedPluralString(
-          "foundwords",
+          "foundwords_dialog",
            new Dictionary<string, object> {
-            {"count",  dataGame.rate},
-            {"count2",  playerSettings.countFindWordsForUp},
+            {"name", nameStatus},
+            {"count",  countNeedOpenWords},
+            {"procent",  procent},
           }
         );
     foundWords.text = string.Format("{0}", textCountWords);
@@ -308,8 +316,8 @@ public class UIDashboard : UILocaleBase
     var userName = blok.Q<Label>("UserName");
     userName.text = await Helpers.GetName();
 
-    userCoinImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
-    userRateImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
+    userCoinImg.style.unityBackgroundImageTintColor = _gameManager.Theme.colorSecondary;
+    userRateImg.style.unityBackgroundImageTintColor = _gameManager.Theme.colorSecondary;
 
     // load avatar
     string placeholder = _gameManager.AppInfo.UserInfo.photo;
@@ -330,12 +338,16 @@ public class UIDashboard : UILocaleBase
     _userInfoBlok.Clear();
     _userInfoBlok.Add(blok);
     base.Initialize(_userInfoBlok);
+
+    nameFile.style.color = new StyleColor(_gameManager.Theme.colorAccent);
   }
 
 
   private async void ClickLoadGameButton()
   {
     AudioManager.Instance.Click();
+
+    StateManager.OnChangeState -= SetValue;
 
     var operations = new Queue<ILoadingOperation>();
     operations.Enqueue(new GameInitOperation());
@@ -355,8 +367,10 @@ public class UIDashboard : UILocaleBase
   private async void ClickNewGameButton()
   {
     AudioManager.Instance.Click();
-    await LocalizationSettings.InitializationOperation.Task;
 
+    StateManager.OnChangeState -= SetValue;
+
+    await LocalizationSettings.InitializationOperation.Task;
 
     var operations = new Queue<ILoadingOperation>();
     operations.Enqueue(new GameInitOperation());

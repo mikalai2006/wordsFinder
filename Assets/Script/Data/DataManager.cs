@@ -15,10 +15,6 @@ public class DataManager : Singleton<DataManager>
   private static extern void GetUserInfoExtern();
   [DllImport("__Internal")]
   public static extern void AddCoinsExtern(int value);
-  [DllImport("__Internal")]
-  private static extern void AddHintExtern(string data);
-  [DllImport("__Internal")]
-  public static extern void AddBonusExtern(string data);
 
   public static event System.Action<int> OnAddCoins;
   public static event System.Action<StateGame> OnLoadData;
@@ -81,20 +77,6 @@ public class DataManager : Singleton<DataManager>
     OnAddCoins?.Invoke(value);
   }
 
-  public void AddHintByAdv(ShopAdvBuyItem<TypeEntity> data)
-  {
-    string stringAddedHint = JsonUtility.ToJson(data);
-    Debug.Log($"AddHintByAdv {stringAddedHint}");
-
-    AddHintExtern(stringAddedHint);
-  }
-  public void AddBonusByAdv(ShopAdvBuyItem<TypeBonus> data)
-  {
-    string stringAddedBonus = JsonUtility.ToJson(data);
-    Debug.Log($"AddBonusByAdv {stringAddedBonus}");
-
-    AddBonusExtern(stringAddedBonus);
-  }
 
   public void AddHint(string data)
   {
@@ -163,15 +145,5 @@ public class DataManager : Singleton<DataManager>
 #endif
       Debug.Log("Saved complete successfully!");
     }
-  }
-
-  public void SaveSettings()
-  {
-    string appInfo = JsonUtility.ToJson(_gameManager.AppInfo);
-
-    string namePlayPref = _gameManager.KeyPlayPref;
-
-    PlayerPrefs.SetString(namePlayPref, appInfo);
-    // Debug.Log($"SaveSettings::: appInfo=[{appInfo}");
   }
 }

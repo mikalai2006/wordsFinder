@@ -16,9 +16,11 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 
   protected MonoBehaviour pointer;
   protected Vector3 initScale;
+  protected Vector3 initScaleSprites;
   protected Vector3 initPosition;
   protected Vector3 initScaleCounterObject;
   protected GameEntity configEntity;
+  [SerializeField] protected GameButton configButton;
   [SerializeField] protected Button button;
   [SerializeField] protected GameObject spritesObject;
   [SerializeField] protected SpriteRenderer spriteBg;
@@ -27,7 +29,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   [SerializeField] protected GameObject counterObject;
   [SerializeField] protected TMPro.TextMeshProUGUI counterText;
   [SerializeField] protected Image counterImage;
-  protected float progressBasePositionY = -1.4f;
+  protected float progressBasePositionY = -1.25f;
   protected bool statusShowCounter = false;
   protected int valueCounter;
   protected int value;
@@ -39,7 +41,8 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   {
     pointer = GetComponent<IPointerDownHandler>() as MonoBehaviour;
 
-    initScale = spritesObject.transform.localScale;
+    initScale = transform.localScale;
+    initScaleSprites = spritesObject.transform.localScale;
     initPosition = spritesObject.transform.position;
     initScaleCounterObject = counterObject.transform.localScale;
 
@@ -185,7 +188,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   public virtual void ResetProgressBar()
   {
     spriteProgress.transform
-      .DOMoveY(progressBasePositionY, _gameSetting.timeGeneralAnimation)
+      .DOLocalMoveY(progressBasePositionY, _gameSetting.timeGeneralAnimation)
       .SetEase(Ease.OutBack);
   }
 
@@ -299,9 +302,9 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
   }
 
 
-  protected void SetDefault()
+  protected virtual void SetDefault()
   {
-    spritesObject.transform.localScale = initScale;
+    spritesObject.transform.localScale = initScaleSprites;
     spritesObject.transform.position = initPosition;
   }
 
@@ -364,7 +367,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
 
   public async UniTask AddChar()
   {
-    Vector3 initialScale = initScale;
+    Vector3 initialScale = initScaleSprites;
     Vector3 initialPosition = initPosition;
     Vector3 upScale = new Vector3(1.5f, 1.5f, 0);
 

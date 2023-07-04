@@ -92,7 +92,7 @@ public class UISettings : UILocaleBase
       GameTheme chooseTheme = allThemes.Find(t => t.name == evt.newValue);
 
       _gameManager.SetTheme(chooseTheme);
-      _gameManager.DataManager.SaveSettings();
+      _gameManager.AppInfo.SaveSettings();
     }
 
     _root.Q<VisualElement>("MenuBlokWrapper").style.backgroundColor = new StyleColor(_gameManager.Theme.bgColor);
@@ -133,7 +133,7 @@ public class UISettings : UILocaleBase
     {
       _audioManager.EffectSource.volume = evt.newValue;
       userSettings.auv = evt.newValue;
-      _gameManager.DataManager.SaveSettings();
+      _gameManager.AppInfo.SaveSettings();
     });
 
     _sliderVolumeMusic.value = userSettings.muv;
@@ -142,14 +142,14 @@ public class UISettings : UILocaleBase
     {
       _audioManager.MusicSource.volume = evt.newValue;
       userSettings.muv = evt.newValue;
-      _gameManager.DataManager.SaveSettings();
+      _gameManager.AppInfo.SaveSettings();
     });
 
     _sliderTimeDelay.value = userSettings.td;
     _sliderTimeDelay.RegisterValueChangedCallback((ChangeEvent<int> evt) =>
     {
       userSettings.td = evt.newValue;
-      _gameManager.DataManager.SaveSettings();
+      _gameManager.AppInfo.SaveSettings();
     });
 
     _dropdownLanguage.value = LocalizationSettings.SelectedLocale.LocaleName;
@@ -191,7 +191,7 @@ public class UISettings : UILocaleBase
   {
     var userSettings = _gameManager.AppInfo.setting;
     userSettings.dod = evt.newValue;
-    _gameManager.DataManager.SaveSettings();
+    _gameManager.AppInfo.SaveSettings();
   }
 
   private async void ChooseLanguage(ChangeEvent<string> evt)
@@ -208,7 +208,7 @@ public class UISettings : UILocaleBase
     {
       LocalizationSettings.SelectedLocale = currentLocale;//LocalizationSettings.AvailableLocales.Locales[indexLocale];
       userSettings.lang = currentLocale.Identifier.Code;
-      _gameManager.DataManager.SaveSettings();
+      _gameManager.AppInfo.SaveSettings();
       base.Initialize(_uiDoc.rootVisualElement);
       // Words words = _gameManager.WordsAll.Find(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code);
       await _gameManager.SetActiveWords();

@@ -10,7 +10,7 @@
                     <ui:Instance template="UserInfoBalance" name="UserInfoBalance" />
                 </ui:VisualElement>
                 <ui:VisualElement class="p-1" style="flex-shrink: 0; align-items: stretch; flex-grow: 1;">
-                    <ui:Label tabindex="-1" text="#shop" display-tooltip-when-elided="true" class="p-2 text-primary" />
+                    <ui:Label tabindex="-1" text="#shop" display-tooltip-when-elided="true" class="p-2 text-primary" style="-unity-text-align: upper-left;" />
                 </ui:VisualElement>
                 <ui:VisualElement class="p-1" style="flex-shrink: 0; align-items: flex-end;">
                     <ui:Button display-tooltip-when-elided="true" name="ExitBtn" class="button_circle">

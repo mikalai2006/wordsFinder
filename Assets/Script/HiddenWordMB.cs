@@ -47,7 +47,7 @@ public class HiddenWordMB : MonoBehaviour
   {
     foreach (var charObj in Chars)
     {
-      await charObj.ShowChar(false);
+      await charObj.ShowChar(false, charObj.charTextValue);
       // OpenNeighbours(charObj).Forget();
     }
   }
@@ -60,9 +60,11 @@ public class HiddenWordMB : MonoBehaviour
     List<UniTask> tasks = new();
     foreach (var charObj in Chars)
     {
-      tasks.Add(charObj.ShowChar(true));
+      tasks.Add(charObj.ShowChar(true, charObj.charTextValue));
     }
     await UniTask.WhenAll(tasks);
+
+    await _managerHiddenWords.CheckStatusRound();
 
   }
 

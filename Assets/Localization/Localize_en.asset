@@ -94,7 +94,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1596861162094592
-    m_Localized: Words Finder
+    m_Localized: Looking for words
     m_Metadata:
       m_Items: []
   - m_Id: 2874372776951808
@@ -102,7 +102,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2878022177947648
-    m_Localized: Increase advertising bonus
+    m_Localized: Double the number of coins by watching ads
     m_Metadata:
       m_Items: []
   - m_Id: 3187166948786176
@@ -110,30 +110,25 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3189624831901696
-    m_Localized: begin
+    m_Localized: Newbie
     m_Metadata:
       m_Items: []
   - m_Id: 3189652749189120
-    m_Localized: junior
+    m_Localized: Journalist
     m_Metadata:
       m_Items: []
   - m_Id: 3189693752705024
-    m_Localized: middle
+    m_Localized: Writer
     m_Metadata:
       m_Items: []
   - m_Id: 3189713814061056
-    m_Localized: major
+    m_Localized: Poet
     m_Metadata:
       m_Items: []
   - m_Id: 3189738174578688
-    m_Localized: senior
+    m_Localized: Poet Laureate
     m_Metadata:
       m_Items: []
-  - m_Id: 3195120322248704
-    m_Localized: Found {count} of {count2} word{count2:|s}
-    m_Metadata:
-      m_Items:
-      - rid: 366248018379538446
   - m_Id: 3213003978866688
     m_Localized: Settings
     m_Metadata:
@@ -224,8 +219,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3731728058449920
-    m_Localized: '{count} word{count:|s} found during the round! For each word, an
-      additional coin is awarded.'
+    m_Localized: '{count} word{count:|s} found during the round!'
     m_Metadata:
       m_Items:
       - rid: 366248018379538446
@@ -397,10 +391,75 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 366248018379538446
+  - m_Id: 673687025123328
+    m_Localized: 'All hidden words on the field have been found! The bonus accrual
+      coefficient increases by 1.
+
+
+      At the end of the round, the coins received
+      in this round will be multiplied by the value of this coefficient.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 670509009371136
+    m_Localized: A word is found that can be formed, but it is not a bonus, which
+      gives a coin (at the end of the round) for this word.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 670482203574272
+    m_Localized: 'A bonus word is found that is not on the field, which gives a coin
+      (at the end of the round) for this word and +1 point to all hints.
+
+
+      When
+      tips reach the maximum number of points, a specific type of hint will be added.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 670107916468224
+    m_Localized: Found a bonus word that is on the field, which gives a coin for
+      each letter in this word.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 669462014623744
+    m_Localized: Click on the first letter and without releasing your finger, swipe
+      sequentially through the letters from the prompted word.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 767991596875776
+    m_Localized: Letter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 768016548790272
+    m_Localized: The number of open letters on the field with hidden words.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902854652100608
+    m_Localized: 'This is the score for the current round.
+
+
+
+      It works as follows:
+      If a word was found on the field, it is replenished by the number of letters
+      in this word; if a word was found that is not on the field, it is replenished
+      by 1.
+
+
+
+      If a letter is opened with a hint, it does not count towards
+      this score.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1095655025180672
+    m_Localized: 'The <b>{name}</b> section is {procent}% complete,
+
+      {count}
+      word{count:|s} to be found'
+    m_Metadata:
+      m_Items:
+      - rid: 366248018379538446
   references:
     version: 2
     RefIds:
     - rid: 366248018379538446
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 008012091f860d00008052e12f620d0000801274d0f80f000080926f011210000080d2e208cc12000080d2b0f4ce120000809224e64215000080d2dde1cd170000805298f9f21700008052808bf917000080922a82fc1700008012baef150200008052d5248e05000080d2ebf1590b000080521d7c300c00008012a39a300c00008092ea35400c000080925ecd430c00008052a5fc410d00008052dfaf610d000080520f39260200
+        m_Entries: 008012091f860d00008052e12f620d0000801274d0f80f000080926f011210000080d2e208cc12000080d2b0f4ce120000809224e64215000080d2dde1cd170000805298f9f21700008052808bf917000080922a82fc1700008012baef150200008052d5248e05000080d2ebf1590b000080521d7c300c00008012a39a300c00008092ea35400c000080925ecd430c00008052a5fc410d00008052dfaf610d000080520f392602000080d2b5f0d80300008092107ee40300

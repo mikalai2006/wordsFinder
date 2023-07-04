@@ -39,7 +39,8 @@ public class Coin : BaseEntity
   {
     _stateManager.IncrementCoin(count);
 
-    _levelManager.topSide.AddCoin().Forget();
+    // RunActivateEffect();
+    // _levelManager.topSide.AddCoin().Forget();
 
     Destroy(gameObject);
   }
@@ -47,6 +48,7 @@ public class Coin : BaseEntity
   {
     _stateManager.IncrementTotalCoin(count);
 
+    RunActivateEffect();
     // _levelManager.topSide.AddCoin().Forget();
 
     Destroy(gameObject);

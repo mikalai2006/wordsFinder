@@ -9,6 +9,7 @@ public class ChoosedWordMB : MonoBehaviour
   [SerializeField] private ChoosedCharMB charMB;
   private LevelManager _dataManager = LevelManager.Instance;
   private GameManager _gameManager => GameManager.Instance;
+  private LevelManager _levelManager => GameManager.Instance.LevelManager;
   private List<ChoosedCharMB> _chars;
   private List<ChoosedCharMB> _charsGameObject;
 
@@ -55,6 +56,8 @@ public class ChoosedWordMB : MonoBehaviour
 
   public async UniTask OpenHiddenWord(HiddenWordMB hiddenWordMB)
   {
+    await _levelManager.ShowHelp(Constants.Helps.HELP_FLASK_HIDDENBOARD);
+
     List<UniTask> listTasks = new();
     for (int i = 0; i < _charsGameObject.Count; i++)
     {
@@ -66,8 +69,9 @@ public class ChoosedWordMB : MonoBehaviour
 
       // needHiddenChar.OccupiedNode.SetOpen();
 
-      listTasks.Add(currentCharMB.OpenCharHiddenWord(needHiddenChar, i * (50 + i * 10)));
+      listTasks.Add(currentCharMB.OpenCharHiddenWord(needHiddenChar, i * (100 + i * 10)));
     }
+
     await UniTask.WhenAll(listTasks);
     // _gameManager.StateManager.IncrementRate(1);
   }
@@ -94,16 +98,34 @@ public class ChoosedWordMB : MonoBehaviour
 
   public async UniTask OpenAllowWord()
   {
+
+    char lastOpenChar = new char();
     List<UniTask> listTasks = new();
+
     for (int i = 0; i < _charsGameObject.Count; i++)
     {
       var currentCharMB = _charsGameObject.ElementAt(i);
 
-      listTasks.Add(currentCharMB.OpenCharAllowWord(i * (50 + i * 10)));
+      listTasks.Add(currentCharMB.OpenCharAllowWord(i * (100 + i * 10)));
       // await currentCharMB.OpenCharAllowWord();
-
+      lastOpenChar = currentCharMB.textChar;
     }
     await UniTask.WhenAll(listTasks);
+
+    // _levelManager.CreateCoin(
+    //   _levelManager.buttonDirectory.transform.position,
+    //   _levelManager.topSide.spriteCoinPosition,
+    //   1
+    // ).Forget();
+
+    _gameManager.StateManager.IncrementCoin(1);
+
+    _levelManager.CreateLetter(
+      _levelManager.buttonDirectory.transform.position,
+      _levelManager.buttonFlask.transform.position,
+      lastOpenChar
+    ).Forget();
+    // _gameManager.StateManager.OpenCharHiddenWord(lastOpenChar);
     // _gameManager.StateManager.IncrementRate(1);
   }
 

@@ -21,7 +21,7 @@ public class GamePlayerSetting : ScriptableObject
   // public int minLengthWordForChars;
   [Range(5, 200)] public int maxFindWords;
   [Tooltip("Коэффициент начисления начального количества подсказок - частая буква")]
-  [Range(0f, .3f)] public float coefHint;
+  [Range(0f, .3f)] public float coefFrequency;
   [Tooltip("Коэффициент начисления начального количества подсказок - случайная буква")]
   [Range(0f, .3f)] public float coefStar;
   // [Tooltip("Максимальное количество символов на поле")]
@@ -31,6 +31,7 @@ public class GamePlayerSetting : ScriptableObject
   [Header("---Bonuses")]
   [Space(3)]
   public BonusCount bonusCount;
+
 }
 
 

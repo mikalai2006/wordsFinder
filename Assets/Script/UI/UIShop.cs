@@ -185,7 +185,7 @@ public class UIShop : UILocaleBase
             typeItem = item.entity.typeEntity,
             count = item.count,
           };
-          _gameManager.DataManager.AddHintByAdv(addedHint);
+          _gameManager.AdManager.AddHintByAdv(addedHint);
         };
 
       _listItems.Add(blokItem);
@@ -298,7 +298,7 @@ public class UIShop : UILocaleBase
             typeItem = item.entity.typeBonus,
             count = item.count,
           };
-          _gameManager.DataManager.AddBonusByAdv(addedBonus);
+          _gameManager.AdManager.AddBonusByAdv(addedBonus);
         };
 
       _listItems.Add(blokItem);

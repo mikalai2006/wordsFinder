@@ -16,7 +16,7 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
   protected Vector3 initPosition;
   protected Vector3 initScaleCounterObject;
   protected GameBonus configBonus;
-  [SerializeField] protected GameObject spritesObject;
+  [SerializeField] protected Canvas canvasObject;
   [SerializeField] protected SpriteRenderer spriteBg;
   [SerializeField] protected SpriteMask spriteMask;
   [SerializeField] protected SpriteRenderer spriteProgress;
@@ -61,7 +61,7 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
 
   private void ChangeTheme()
   {
-    spriteBg.color = _gameManager.Theme.colorPrimary;
+    spriteBg.color = _gameManager.Theme.entityColor;
     spriteProgress.color = _gameManager.Theme.colorAccent;
     counterText.color = _gameManager.Theme.bgColor;
   }
@@ -90,7 +90,7 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
     valueCounter = value;
   }
 
-  private void Show()
+  public virtual void Show()
   {
     gameObject.SetActive(true);
 
@@ -153,7 +153,14 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
   public void SetDefault()
   {
     transform.localScale = initScale;
+    order.sortingOrder = 0;
+    canvasObject.sortingOrder = 0;
     // transform.localPosition = Vector3.zero;
   }
 
+  public void SetSortOrder(int value)
+  {
+    order.sortingOrder = value;
+    canvasObject.sortingOrder = value;
+  }
 }

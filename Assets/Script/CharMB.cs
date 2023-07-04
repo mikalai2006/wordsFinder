@@ -164,7 +164,7 @@ public class CharMB : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
   //   return false;
   // }
 
-  private void ChooseSymbol()
+  public void ChooseSymbol()
   {
     _levelManager.ManagerHiddenWords.AddChoosedChar(this);
     if (_gameManager.Theme.bgImageCharChoose != null) _image.sprite = _gameManager.Theme.bgImageCharChoose;

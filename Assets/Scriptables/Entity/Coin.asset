@@ -39,7 +39,7 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  activateEffect: {fileID: 0}
+  activateEffect: {fileID: 3313836544843697496, guid: b07eb7c005b95d242a68a99152cacddd, type: 3}
   MoveEffect: {fileID: 2774052391728124364, guid: f2cd3aa17054ce84f85ff5b1e7fdd2fd, type: 3}
   references:
     version: 2

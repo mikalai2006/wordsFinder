@@ -32,11 +32,11 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  minRate: 0
-  locale: {fileID: 11400000, guid: ee9ad60cf3206d14fa33f59ed209a706, type: 2}
+  minRate: -1
+  locale: {fileID: 11400000, guid: 64a3977be13583547bee7545b3c13f3f, type: 2}
   levelWords:
-  - "\u0442\u0432\u043E\u0440\u0447\u0435\u0441\u0442\u0432\u043E"
   - "\u044D\u043B\u0435\u043A\u0442\u0440\u043E\u0437\u0430\u0432\u043E\u0434"
+  - "\u0442\u0432\u043E\u0440\u0447\u0435\u0441\u0442\u0432\u043E"
   references:
     version: 2
     RefIds: []

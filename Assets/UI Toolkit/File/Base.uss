@@ -295,3 +295,40 @@
     border-bottom-right-radius: 5px;
     -unity-font-style: normal;
 }
+
+.button_circle_long {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    -unity-font-style: bold;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    color: rgb(255, 255, 255);
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 40px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+.button_circle_long:active {
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-color: rgba(0, 0, 0, 0.31);
+    border-top-color: rgba(0, 0, 0, 0.31);
+    border-right-color: rgba(0, 0, 0, 0.31);
+    border-bottom-color: rgba(0, 0, 0, 0.31);
+    scale: 0.9 0.9;
+    transition-duration: 50ms;
+    transition-property: scale;
+}

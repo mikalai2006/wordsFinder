@@ -33,7 +33,7 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  sprite: {fileID: 21300000, guid: f831fba5112cbe6448cc3654525e8673, type: 3}
+  sprite: {fileID: 21300000, guid: 62a08d82b96ad324497d445e39efb96d, type: 3}
   prefab:
     m_AssetGUID: a8d6cbc341b4f3941b97c0138e049426
     m_SubObjectName: 
@@ -41,6 +41,7 @@ MonoBehaviour:
     m_EditorAssetChanged: 0
   activateEffect: {fileID: 2774052391728124364, guid: f2cd3aa17054ce84f85ff5b1e7fdd2fd, type: 3}
   MoveEffect: {fileID: 2774052391728124364, guid: f2cd3aa17054ce84f85ff5b1e7fdd2fd, type: 3}
+  isUseGenerator: 1
   references:
     version: 2
     RefIds: []

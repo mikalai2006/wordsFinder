@@ -96,18 +96,16 @@ public class UIDirectory : UILocaleBase
   private async UniTask<string> GoRequest(string word)
   {
     string path = string.Format(
-      "{0}{1}{2}",
-      _gameSetting.APIDirectory.host,
-      _gameSetting.APIDirectory.expression,
+      _gameSetting.APIDirectory.pathExpression,
       word
     );
     UnityWebRequest webRequest = UnityWebRequest.Get(path);
     // webRequest.SetRequestHeader("Authorization", "Basic " + _gameSettings.APIDirectory.token);
     webRequest.SetRequestHeader("Content-Type", "application/json");
-    webRequest.SetRequestHeader("Access-Control-Allow-Credentials", "true");
-    webRequest.SetRequestHeader("Access-Control-Allow-Headers", "Accept, X-Access-Token, X-Application-Name, X-Request-Sent-Time");
-    webRequest.SetRequestHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-    webRequest.SetRequestHeader("Access-Control-Allow-Origin", "*");
+    // webRequest.SetRequestHeader("Access-Control-Allow-Credentials", "true");
+    // webRequest.SetRequestHeader("Access-Control-Allow-Headers", "Accept, X-Access-Token, X-Application-Name, X-Request-Sent-Time");
+    // webRequest.SetRequestHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    // webRequest.SetRequestHeader("Access-Control-Allow-Origin", "*");
 
     await Task.Yield();
 

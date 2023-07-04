@@ -105,7 +105,7 @@ Transform:
   m_GameObject: {fileID: 1000631741917455707}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6432468518917306393}
@@ -435,7 +435,7 @@ Transform:
   m_GameObject: {fileID: 1956359472996835391}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.95, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8565783256485949355}
@@ -482,7 +482,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f1673280693d7c44e8bd3c76791edf2d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 33601b5253543e749862cbcdacc60da0, type: 3}
   m_Color: {r: 1, g: 0.78683865, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -610,7 +610,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 4924891340603982130}
   m_OnClick:
     m_PersistentCalls:
@@ -823,7 +823,7 @@ SpriteMask:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9acb7af3c836f054793808cec7dac127, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f7694b5e22429c04caf153133e912871, type: 3}
   m_MaskAlphaCutoff: 0.2
   m_FrontSortingLayerID: 0
   m_BackSortingLayerID: 0
@@ -906,7 +906,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9acb7af3c836f054793808cec7dac127, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f7694b5e22429c04caf153133e912871, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

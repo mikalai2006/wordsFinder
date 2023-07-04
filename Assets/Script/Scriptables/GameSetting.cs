@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -36,6 +37,7 @@ public class GameSetting : ScriptableObject
   // public Sprite spriteStar;
   // public Sprite spriteBomb;
   public Sprite spriteShuffle;
+  public Sprite spriteFlask;
   public Sprite spriteDirectory;
   public Sprite spriteCog;
   // public Sprite spriteLevels;
@@ -53,6 +55,7 @@ public class GameSetting : ScriptableObject
   public Sprite spriteAdv;
   public Sprite spriteBuy;
   public Sprite spriteInfo;
+  public Sprite spriteDouble;
 
   [Space(5)]
   [Header("System")]
@@ -82,9 +85,10 @@ public class GameSetting : ScriptableObject
 [System.Serializable]
 public struct APIDirectory
 {
-  public string host;
+  // public string host;
   public string token;
-  public string expression;
+  // public string expression;
+  public string pathExpression;
 }
 
 

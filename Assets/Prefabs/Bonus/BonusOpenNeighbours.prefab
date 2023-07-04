@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23595d299de153f4abd2c04bb1372d5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spritesObject: {fileID: 8448615802999484539}
+  canvasObject: {fileID: 6373094532973828930}
   spriteBg: {fileID: 5209680064776850286}
   spriteMask: {fileID: 7699546080452801043}
   spriteProgress: {fileID: 6386222042597876062}
@@ -76,6 +76,11 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6032299253438232976, guid: 030fba84fde0e0744bec542a763d9879, type: 3}
   m_PrefabInstance: {fileID: 2016355201165783806}
   m_PrefabAsset: {fileID: 0}
+--- !u!223 &6373094532973828930 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 4866790211614206396, guid: 030fba84fde0e0744bec542a763d9879, type: 3}
+  m_PrefabInstance: {fileID: 2016355201165783806}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &6386222042597876062 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 4853722904144090016, guid: 030fba84fde0e0744bec542a763d9879, type: 3}
@@ -84,10 +89,5 @@ SpriteRenderer:
 --- !u!331 &7699546080452801043 stripped
 SpriteMask:
   m_CorrespondingSourceObject: {fileID: 8152007917812089069, guid: 030fba84fde0e0744bec542a763d9879, type: 3}
-  m_PrefabInstance: {fileID: 2016355201165783806}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8448615802999484539 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7981516603893629573, guid: 030fba84fde0e0744bec542a763d9879, type: 3}
   m_PrefabInstance: {fileID: 2016355201165783806}
   m_PrefabAsset: {fileID: 0}

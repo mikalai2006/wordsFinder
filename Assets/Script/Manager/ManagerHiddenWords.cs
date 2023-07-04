@@ -338,6 +338,8 @@ public class ManagerHiddenWords : MonoBehaviour
         }
         else
         {
+          await _levelManager.ShowHelp(Constants.Helps.HELP_FIND_HIDDEN_WORD);
+
           // open new hidden word.
           OpenWords.Add(choosedWord, 1);
           OpenNeedWords.Add(choosedWord, 1);
@@ -359,21 +361,25 @@ public class ManagerHiddenWords : MonoBehaviour
           OpenWords.Add(choosedWord, 1);
           if (NeedWords.ContainsKey(choosedWord))
           {
+            await _levelManager.ShowHelp(Constants.Helps.HELP_FIND_NEED_WORD);
+            await _levelManager.ShowHelp(Constants.Helps.HELP_FLASK_HIDDEN);
             OpenNeedWords.Add(choosedWord, 1);
+          }
+          else
+          {
+            await _levelManager.ShowHelp(Constants.Helps.HELP_FIND_ALLOW_WORD);
+            await _levelManager.ShowHelp(Constants.Helps.HELP_FLASK_ALLOW);
           }
           await _choosedWordMB.OpenAllowWord();
           _stateManager.OpenAllowWord(choosedWord);
 
-          // _levelManager.CreateCoin(
-          //   _levelManager.buttonDirectory.transform.position,
-          //   _levelManager.topSide.spriteCoinPosition
-          // ).Forget();
         }
       }
       else
       {
         // Debug.Log($"------Not found {choosedWord}");
         await _choosedWordMB.NoWord();
+        await _levelManager.ShowHelp(Constants.Helps.HELP_CHOOSE_ERROR);
         _stateManager.DeRunPerk(choosedWord);
       }
     }
@@ -389,6 +395,14 @@ public class ManagerHiddenWords : MonoBehaviour
     _lineManager.ResetLine();
     listChoosedGameObjects.Clear();
 
+    await CheckStatusRound();
+
+    // OnChangeData?.Invoke();
+    _gameManager.InputManager.Enable();
+  }
+
+  public async UniTask CheckStatusRound()
+  {
     bool isOpenAllNeedWords = OpenNeedWords.Count == Mathf.Min(_gameManager.PlayerSetting.maxFindWords, NeedWords.Count);// AllowWords.Count;
     bool isOpenAllHiddenWords = OpenWords.Keys.Intersect(HiddenWords.Keys).Count() == HiddenWords.Count();
     if (isOpenAllNeedWords)
@@ -400,6 +414,7 @@ public class ManagerHiddenWords : MonoBehaviour
     else if (isOpenAllHiddenWords)
     {
       Debug.Log("Refresh hiddenWords");
+      await _levelManager.ShowHelp(Constants.Helps.HELP_INDEX);
       RefreshHiddenWords();
     }
     else
@@ -408,10 +423,6 @@ public class ManagerHiddenWords : MonoBehaviour
       if (choosedWord.Length > 1) _stateManager.RefreshData();
     }
 
-    _levelManager.ShowAdv();
-
-    // OnChangeData?.Invoke();
-    _gameManager.InputManager.Enable();
   }
 
   // public async UniTask OpenNeighbours()
@@ -532,18 +543,24 @@ public class ManagerHiddenWords : MonoBehaviour
 
       var newConfigWord = _stateManager.GetNextWord();
 
-      // dicrement bonus ope neighbours.
-      int valueBonusOpenNeighbours;
-      _stateManager.dataGame.bonus.TryGetValue(TypeBonus.OpenNeighbours, out valueBonusOpenNeighbours);
-      if (valueBonusOpenNeighbours > 0)
+      // dicrement bonuses.
+      var keysBonuses = _stateManager.dataGame.bonus.Keys.ToList();
+      foreach (var bonusKey in keysBonuses)
       {
-        _stateManager.UseBonus(-1, TypeBonus.OpenNeighbours);
+        int valueBonus;
+        _stateManager.dataGame.bonus.TryGetValue(bonusKey, out valueBonus);
+        if (valueBonus > 0)
+        {
+          _stateManager.UseBonus(-1, bonusKey);
+        }
       }
 
 #if ysdk
       GetLeaderBoard();
 #endif
       _levelManager.InitLevel(newConfigWord);
+
+      _gameManager.AdManager.ShowAdvFullScr();
     }
 
     // _gameManager.InputManager.Enable();
@@ -556,11 +573,11 @@ public class ManagerHiddenWords : MonoBehaviour
 
     _stateManager.dataGame.activeLevel.hints.Clear();
 
-    var countHint = (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefHint);
-    _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Frequency, countHint);
+    var countFrequency = (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefFrequency);
+    _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Frequency, countFrequency);
 
     var countStar = (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefStar);
-    _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Star, countHint);
+    _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Star, countStar);
 
     // _stateManager.dataGame.hint += _stateManager.dataGame.activeLevel.hintLevel;
     // _stateManager.dataGame.star += _stateManager.dataGame.activeLevel.starLevel;
