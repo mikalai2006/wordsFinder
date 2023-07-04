@@ -149,7 +149,9 @@ public class UIDashboard : UILocaleBase
 
     await DrawUserInfoBlok();
 
-    // await DrawLeaderListBlok();
+#if ysdk && !UNITY_EDITOR
+    await DrawLeaderListBlok();
+#endif
 
     base.Initialize(_uiDoc.rootVisualElement);
   }

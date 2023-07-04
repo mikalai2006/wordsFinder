@@ -18,7 +18,7 @@
                         <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="Coin" class="text-primary font-bold p-0 m-0" />
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:Label tabindex="-1" text="#actualprogress" display-tooltip-when-elided="true" class="m-0 p-0 text-secondary" style="font-size: 12px; -unity-text-align: upper-center; display: none;" />
+                <ui:Label tabindex="-1" text="#actualprogress" display-tooltip-when-elided="true" class="m-0 p-0 text-secondary text-xss" style="-unity-text-align: upper-center;" />
                 <ui:Label tabindex="-1" text="Major2" display-tooltip-when-elided="true" name="Status" class="m-0 p-0 text-md text-secondary" style="-unity-font-style: bold; -unity-text-align: upper-center; margin-bottom: 5px; display: none;" />
                 <ui:Label tabindex="-1" text="Found 1212 words. Found 1212 words. Found 1212 words." display-tooltip-when-elided="true" name="FoundWords" class="m-0 p-0 text-md text-secondary" style="-unity-text-align: upper-center; white-space: normal;" />
             </ui:VisualElement>
