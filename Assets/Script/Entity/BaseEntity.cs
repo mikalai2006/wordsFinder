@@ -22,7 +22,7 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   [SerializeField] public GameObject counterObject;
   [SerializeField] public TMPro.TextMeshProUGUI counterText;
   public GridNode OccupiedNode;
-  protected List<GridNode> nodesForCascade = new();
+  public List<GridNode> nodesForCascade = new();
   private UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset;
   // [SerializeField] private TMPro.TextMeshProUGUI _countHintText;
 
@@ -49,16 +49,36 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
   private void ChangeTheme()
   {
     spriteRenderer.color = _gameManager.Theme.entityColor;
+
+    if (OccupiedNode != null && OccupiedNode.StateNode.HasFlag(StateNode.Bonus))
+    {
+      spriteRenderer.color = _gameManager.Theme.entityColorAsBonus;
+    }
   }
 
-  public virtual void Init(GridNode node, UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset)
+  public virtual void Init(
+    GridNode node,
+    UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset,
+    bool asBonus
+    )
   {
     this.asset = asset;
 
     OccupiedNode = node;
     transform.localPosition = initPosition = node.arrKey + new Vector2(.5f, .5f); //  = _position
     initScale = transform.localScale;
-    gameObject.SetActive(false);
+
+    if (asBonus)
+    {
+      OccupiedNode.SetBonusEntity(this);
+    }
+    else
+    {
+      OccupiedNode.SetOccupiedEntity(this);
+    }
+    // gameObject.SetActive(false);
+
+    ChangeTheme();
   }
 
   public virtual void InitStandalone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset)
@@ -199,6 +219,12 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
     //SetDefault();
   }
 
+  public virtual void Collect()
+  {
+
+    _levelManager.RemoveEntity(this);
+  }
+
   public async virtual UniTask RunCascadeEffect(Vector3 positionFrom, float duration = .5f)
   {
     gameObject.SetActive(true);
@@ -226,7 +252,7 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
 
   public async virtual UniTask Run()
   {
-    _levelManager.ManagerHiddenWords.RemoveEntity(this);
+    _levelManager.RemoveEntity(this);
 
     await UniTask.Yield();
   }

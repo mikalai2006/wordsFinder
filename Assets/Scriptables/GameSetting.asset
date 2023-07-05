@@ -57,15 +57,15 @@ MonoBehaviour:
   - entity: {fileID: 11400000, guid: 2be5099a5ef97d84db2786c20dfcafde, type: 2}
     count: 1
     cost: 200
-  - entity: {fileID: 11400000, guid: 44b0831f1b50a3e45a0355ae33c073c2, type: 2}
-    count: 1
-    cost: 400
-  - entity: {fileID: 11400000, guid: 7dd3f4fc6b9f65840a29682e241374d7, type: 2}
-    count: 1
-    cost: 500
   - entity: {fileID: 11400000, guid: 4029cdca5db16194890ed31906de574b, type: 2}
     count: 1
     cost: 500
+  - entity: {fileID: 11400000, guid: 44b0831f1b50a3e45a0355ae33c073c2, type: 2}
+    count: 1
+    cost: 500
+  - entity: {fileID: 11400000, guid: 7dd3f4fc6b9f65840a29682e241374d7, type: 2}
+    count: 1
+    cost: 1000
   ShopItemsBonus:
   - entity: {fileID: 11400000, guid: 257080754fd05bf478e8de6f8b9b610b, type: 2}
     count: 1

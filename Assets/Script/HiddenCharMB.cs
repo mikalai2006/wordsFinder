@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class HiddenCharMB : MonoBehaviour
+public class HiddenCharMB : MonoBehaviour, IPointerDownHandler
 {
   [SerializeField] private TMPro.TextMeshProUGUI _charText;
   public char charTextValue;
@@ -191,6 +192,11 @@ public class HiddenCharMB : MonoBehaviour
     }
     _charText.gameObject.SetActive(true);
 
+    // Check exist bonus of by node.
+    if (OccupiedNode.StateNode.HasFlag(StateNode.Bonus))
+    {
+      OccupiedNode.BonusEntity.Collect();
+    }
     // Check exist entity of by node.
     if (OccupiedNode.StateNode.HasFlag(StateNode.Entity))
     {
@@ -233,6 +239,28 @@ public class HiddenCharMB : MonoBehaviour
       await UniTask.Yield();
     }
     transform.localScale = initialScale;
+  }
+
+
+  public async void OnPointerDown(PointerEventData eventData)
+  {
+    // Show message
+    _gameManager.InputManager.Disable();
+
+    var message = await Helpers.GetLocaledString("openletterbyads");
+    var dialogConfirm = new DialogProvider(new DataDialog()
+    {
+      message = message,
+      showCancelButton = true,
+    });
+
+    var result = await dialogConfirm.ShowAndHide();
+    if (result.isOk)
+    {
+      // TODO run ads.
+
+    }
+    _gameManager.InputManager.Enable();
   }
 
 

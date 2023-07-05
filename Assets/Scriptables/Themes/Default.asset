@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Default
   m_EditorClassIdentifier: 
   bgHiddenWord: {r: 0.39215687, g: 0.3882353, b: 0.39607844, a: 1}
-  bgOpentHiddenWord: {r: 0.9803922, g: 0.97647065, b: 0.94117653, a: 1}
-  textOpentHiddenWord: {r: 0.3921569, g: 0.38823533, b: 0.39607847, a: 0}
+  bgOpentHiddenWord: {r: 0.90196085, g: 0.8941177, b: 0.85098046, a: 1}
+  textOpentHiddenWord: {r: 0.3921569, g: 0.38823533, b: 0.39607847, a: 0.28235295}
   bgImageHiddenWord: {fileID: 21300000, guid: 81bc87243f22f9747bf7cbd46d867efe, type: 3}
   bgOpenNeiHiddenWord: {r: 0.39215687, g: 0.3882353, b: 0.39607844, a: 1}
   textOpenNeiHiddenWord: {r: 0.7725491, g: 0.7490196, b: 0.7843138, a: 1}
@@ -33,13 +33,14 @@ MonoBehaviour:
   bgImageChar: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgImageCharChoose: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgColor: {r: 0.9490196, g: 0.9411765, b: 0.8980392, a: 1}
-  colorBgGrid: {r: 0.9811321, g: 0.9747241, b: 0.93948025, a: 1}
+  colorBgGrid: {r: 0.90196085, g: 0.8941177, b: 0.85098046, a: 1}
   colorLine: {r: 0.5019608, g: 0.28627452, b: 0.22745098, a: 0.57254905}
   colorPrimary: {r: 0.27058825, g: 0.26666668, b: 0.30980393, a: 1}
   colorSecondary: {r: 0.45463246, g: 0.44700074, b: 0.46226418, a: 1}
   colorAccent: {r: 0.5019608, g: 0.28627452, b: 0.22745098, a: 1}
   entityColor: {r: 0.654902, g: 0.48235294, b: 0.35686275, a: 1}
   colorDisable: {r: 0.72156864, g: 0.70980394, b: 0.7254902, a: 1}
+  entityColorAsBonus: {r: 0.82745105, g: 0.627451, b: 0.40784317, a: 1}
   colorBgHint: {r: 0.8773585, g: 0.87363386, b: 0.84011215, a: 1}
   colorTextHint: {r: 0.27058825, g: 0.26666668, b: 0.30980393, a: 1}
   colorBgButton: {r: 0, g: 0, b: 0, a: 0.101960786}

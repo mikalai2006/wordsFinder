@@ -47,6 +47,8 @@ public class DataManager : Singleton<DataManager>
     _stateGame = await _fileDataHandler.LoadData();
     // Debug.Log($"{name}::: JSON ::: Load {JsonUtility.ToJson(_stateGame)}");
 
+    PlayerPrefs.SetString("state", JsonUtility.ToJson(_stateGame));
+
     OnLoadData?.Invoke(_stateGame);
     return _stateGame;
   }
@@ -61,6 +63,8 @@ public class DataManager : Singleton<DataManager>
   {
     _stateGame = JsonUtility.FromJson<StateGame>(data);
     // Debug.Log($"{name}::: YSDK ::: LoadPlayerData {JsonUtility.ToJson(_stateGame)}");
+
+    PlayerPrefs.SetString("state", JsonUtility.ToJson(_stateGame));
 
     OnLoadData?.Invoke(_stateGame);
     return _stateGame;
@@ -113,7 +117,7 @@ public class DataManager : Singleton<DataManager>
     OnLoadLeaderBoard?.Invoke(leaderBoard);
   }
 
-  public void Save()
+  public void Save(bool saveDb)
   {
     if (!cancelTokenSource.Token.IsCancellationRequested)
     {
@@ -121,29 +125,51 @@ public class DataManager : Singleton<DataManager>
       cancelTokenSource.Dispose();
     }
     cancelTokenSource = new CancellationTokenSource();
-    Saved(cancelTokenSource.Token).Forget();
+    Saved(saveDb, cancelTokenSource.Token).Forget();
   }
 
-  private async UniTask Saved(CancellationToken cancellationToken)
+  private async UniTask Saved(bool saveDb, CancellationToken cancellationToken)
   {
     await UniTask.Delay(_gameManager.GameSettings.debounceTime);
 
     if (!cancellationToken.IsCancellationRequested)
     {
-      var levelManager = _gameManager.LevelManager;
+      _stateGame = _gameManager.StateManager.GetData();
 
-      _stateGame = _gameManager.StateManager.GetData(); //.dataGame;
+      PlayerPrefs.SetString("state", JsonUtility.ToJson(_stateGame));
+
+      Debug.Log("Save state completed!");
+
+      if (saveDb)
+      {
+        SavedExt();
+      }
+    }
+  }
+
+  public void SavedExt()
+  {
+    if (_gameManager == null) return;
+
+    _stateGame = _gameManager.StateManager.GetData();
 
 #if android
-      _fileDataHandler.SaveData(_stateGame);
+    _fileDataHandler.SaveData(_stateGame);
 #endif
 
-
-      string jsonString = JsonUtility.ToJson(_stateGame);
+    string jsonString = JsonUtility.ToJson(_stateGame);
 #if ysdk
       SaveExtern(jsonString);
 #endif
-      Debug.Log("Saved complete successfully!");
-    }
+    Debug.Log("Save state to DB completed!");
+  }
+
+  protected override void OnApplicationQuit()
+  {
+    SavedExt();
+
+    Debug.Log("Application ending after " + Time.time + " seconds");
+
+    base.OnApplicationQuit();
   }
 }

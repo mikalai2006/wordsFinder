@@ -171,7 +171,7 @@ MonoBehaviour:
   GameSettings: {fileID: 11400000, guid: 3ed9298ad7c339d4c8436891370ed992, type: 2}
   StateManager: {fileID: 153567558}
   AdManager: {fileID: 1562152719}
-  PlayerSetting: {fileID: 0}
+  _progressManager: {fileID: 1697227669}
 --- !u!1 &153567556
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,6 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataGame:
     rate: 0
+    rank: 
     hints:
       keys: 
       values: 
@@ -228,7 +229,6 @@ MonoBehaviour:
     levels: []
     completed: []
     lastWord: 
-    rank: 
   stateGame:
     rate: 0
     items: []
@@ -866,6 +866,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fa6139cae3fa0242b712130dd28ec5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1697227667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1697227668}
+  - component: {fileID: 1697227669}
+  m_Layer: 0
+  m_Name: ProgressManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1697227668
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697227667}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1957392315}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1697227669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697227667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebc0cbc3e14230e4dbedf59a899426b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  percent: 0
+  totalNeedWords: 0
+  countNeedOpenWords: 0
+  currentRate: 0
+  prevSetting: {fileID: 0}
+  playerSetting: {fileID: 0}
+  nextSetting: {fileID: 0}
 --- !u!1 &1737951708
 GameObject:
   m_ObjectHideFlags: 0
@@ -1047,6 +1098,7 @@ Transform:
   - {fileID: 153567557}
   - {fileID: 345780798}
   - {fileID: 1562152718}
+  - {fileID: 1697227668}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

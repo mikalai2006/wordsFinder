@@ -36,6 +36,7 @@ public class ManagerHiddenWords : MonoBehaviour
 
   public SerializableDictionary<Vector2, string> OpenChars = new();
   public SerializeEntity Entities = new();
+  public SerializeEntity EntitiesRuntime = new();
   // public List<GameObject> EntitiesGameObjects = new();
 
   public float scaleGrid;
@@ -69,6 +70,7 @@ public class ManagerHiddenWords : MonoBehaviour
   /// <param name="wordConfig">Config word</param>
   public async UniTask Init() // GameLevel levelConfig, GameLevelWord wordConfig
   {
+    bool newLevel = false;
     var word = _stateManager.ActiveWordConfig;
 
     _levelManager.buttonShuffle.gameObject.SetActive(true);
@@ -96,6 +98,7 @@ public class ManagerHiddenWords : MonoBehaviour
     else
     {
       SetWordForChars(word);
+      newLevel = true;
     }
 
     CreateAllowWords();
@@ -108,7 +111,7 @@ public class ManagerHiddenWords : MonoBehaviour
     else
     {
       _hiddenWords = CreateHiddenWords();
-      CreateHints();
+      // CreateHints();
     }
 
     SetScaleChars(_hiddenWords);
@@ -124,7 +127,7 @@ public class ManagerHiddenWords : MonoBehaviour
     var keysEntity = Entities.Keys.ToList();
     foreach (var item in keysEntity)
     {
-      _levelManager.AddEntity(item, Entities[item]).Forget();
+      _levelManager.AddEntity(item, Entities[item], true).Forget();
     }
 
     // Create bonuses.
@@ -135,21 +138,12 @@ public class ManagerHiddenWords : MonoBehaviour
       _stateManager.UseBonus(0, key);
     }
 
+    // Create bonus entities.
+    if (newLevel) await CreateEntities();
+
     await UniTask.Yield();
   }
 
-
-  public void RemoveEntity(BaseEntity entity)
-  {
-    if (Entities.ContainsKey(entity.OccupiedNode.arrKey))
-    {
-      Entities.Remove(entity.OccupiedNode.arrKey);
-      entity.OccupiedNode.SetOccupiedEntity(null);
-    }
-
-    // GameManager.Instance.DataManager.Save();
-    _stateManager.RefreshData();
-  }
 
   public void OpenOpenedChars()
   {
@@ -420,7 +414,7 @@ public class ManagerHiddenWords : MonoBehaviour
     else
     {
       // GameManager.Instance.DataManager.Save();
-      if (choosedWord.Length > 1) _stateManager.RefreshData();
+      if (choosedWord.Length > 1) _stateManager.RefreshData(false);
     }
 
   }
@@ -490,6 +484,7 @@ public class ManagerHiddenWords : MonoBehaviour
   private void RefreshHiddenWords()
   {
     Entities.Clear();
+    EntitiesRuntime.Clear();
 
     Helpers.DestroyChildren(tilemapEntities.transform);
     Helpers.DestroyChildren(tilemap.transform);
@@ -504,7 +499,7 @@ public class ManagerHiddenWords : MonoBehaviour
 
     CreateGameObjectHiddenWords(_hiddenWords);
 
-    _stateManager.RefreshData();
+    _stateManager.RefreshData(true);
     // CreateEntities();
     _stateManager.UseBonus(1, TypeBonus.Index);
   }
@@ -567,20 +562,62 @@ public class ManagerHiddenWords : MonoBehaviour
   }
 
 
-  private void CreateHints()
+  // private void CreateHints()
+  // {
+  //   var countNeedFindWords = NeedWords.Count;
+
+  //   _stateManager.dataGame.activeLevel.hints.Clear();
+
+  //   var countFrequency = (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefFrequency);
+  //   _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Frequency, countFrequency);
+
+  //   var countStar = (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefStar);
+  //   _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Star, countStar);
+
+  //   // _stateManager.dataGame.hint += _stateManager.dataGame.activeLevel.hintLevel;
+  //   // _stateManager.dataGame.star += _stateManager.dataGame.activeLevel.starLevel;
+  // }
+
+  private async UniTask CreateEntities()
   {
     var countNeedFindWords = NeedWords.Count;
 
     _stateManager.dataGame.activeLevel.hints.Clear();
 
-    var countFrequency = (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefFrequency);
-    _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Frequency, countFrequency);
+    var colS = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefStar;
+    var countStar = (int)System.Math.Ceiling(colS);
+    for (int i = 0; i < countStar; i++)
+    {
+      var node = GridHelper.GetRandomNodeWithHiddenChar();
+      await _levelManager.AddEntity(node.arrKey, TypeEntity.Star, true);
+    }
 
-    var countStar = (int)System.Math.Ceiling((countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefStar);
-    _stateManager.dataGame.activeLevel.hints.Add(TypeEntity.Star, countStar);
+    var colF = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefFrequency;
+    var countFrequency = System.Math.Round(colF);
+    for (int i = 0; i < countFrequency; i++)
+    {
+      var node = GridHelper.GetRandomNodeWithHiddenChar();
+      await _levelManager.AddEntity(node.arrKey, TypeEntity.Frequency, true);
+    }
 
-    // _stateManager.dataGame.hint += _stateManager.dataGame.activeLevel.hintLevel;
-    // _stateManager.dataGame.star += _stateManager.dataGame.activeLevel.starLevel;
+    var colL = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefLighting;
+    var countLighting = System.Math.Round(colL);
+    for (int i = 0; i < countLighting; i++)
+    {
+      var node = GridHelper.GetRandomNodeWithHiddenChar();
+      await _levelManager.AddEntity(node.arrKey, TypeEntity.Lighting, true);
+    }
+
+    var colB = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefBomb;
+    var countBomb = System.Math.Round(colB);
+    for (int i = 0; i < countBomb; i++)
+    {
+      var node = GridHelper.GetRandomNodeWithHiddenChar();
+      await _levelManager.AddEntity(node.arrKey, TypeEntity.Bomb, true);
+    }
+
+    Debug.Log($"colS={colS}|colF={colF}|colL={colL}|colB={colB}");
+    Debug.Log($"countStar={countStar}|countFrequency={countFrequency}|countLighting={countLighting}|countBomb={countBomb}");
   }
 
 
@@ -602,6 +639,8 @@ public class ManagerHiddenWords : MonoBehaviour
     OpenChars.Clear();
 
     Entities.Clear();
+
+    EntitiesRuntime.Clear();
 
     AllowPotentialWords.Clear();
 

@@ -383,7 +383,7 @@ MonoBehaviour:
       m_Items:
       - rid: 366248018379538446
   - m_Id: 6780731931131904
-    m_Localized: Russian Dictionary
+    m_Localized: Russian Words
     m_Metadata:
       m_Items: []
   - m_Id: 604976465477632
@@ -439,13 +439,13 @@ MonoBehaviour:
 
       It works as follows:
       If a word was found on the field, it is replenished by the number of letters
-      in this word; if a word was found that is not on the field, it is replenished
+      in this word, if a word was found that is not on the field, it is replenished
       by 1.
 
 
 
       If a letter is opened with a hint, it does not count towards
-      this score.'
+      this score (unless the save hint effect is active).'
     m_Metadata:
       m_Items: []
   - m_Id: 1095655025180672
@@ -456,6 +456,89 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 366248018379538446
+  - m_Id: 1385593616629760
+    m_Localized: No connect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1315961916522496
+    m_Localized: 'This bonus removes the penalty for suggesting letters.
+
+
+
+      When
+      this bonus works, all existing rewards (coins and points for bonuses) are credited
+      for the prompted letters.
+
+
+
+      This bonus is applied automatically. Validity
+      - 1 round.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1041446275809280
+    m_Localized: 'The test word is not in the dictionary. An attempt is counted as
+      an error.
+
+
+
+      If the number of consecutive errors exceeds the limit set
+      by the game difficulty level, all points for bonuses and tips are reset to
+      zero.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 995663333720064
+    m_Localized: 'If a bonus word was found and it is not on the field - this action
+      adds 1 point to the bonus generator.
+
+
+
+      When the generator reaches the
+      limit, a random bonus is created!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 995098834927616
+    m_Localized: 'If a word was found that can be formed, but it is not a bonus -
+      this action adds 1 point to the bonus generator.
+
+
+
+      When the generator
+      reaches the limit, a random bonus is created!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 993418810654720
+    m_Localized: 'If a bonus word was found that is on the field - each letter of
+      this word adds 1 point to the bonus generator.
+
+
+
+      When the generator
+      reaches the limit, a random bonus is created!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 919386207715328
+    m_Localized: Generates bonuses when filled. Filled by searching for words. Each
+      word adds 1 point to this generator, and if the word is bonus and is on the
+      field, then each letter of this word adds 1 point to the generator.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 919320084512768
+    m_Localized: Bonus generator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1302359725735936
+    m_Localized: Bonus from the generator
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1302415187017728
+    m_Localized: The bonus generator has reached its limit and is generating a random
+      bonus - {name}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1481997978599424
+    m_Localized: Do you want to open this letter by watching ads?
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

@@ -77,7 +77,7 @@ public class ButtonLighting : BaseButton
 
     List<GridNode> nodesForEffect = potentialNodes[nodeStartEffect];
 
-    var newEntity = await _levelManager.AddEntity(nodeStartEffect.arrKey, TypeEntity.Lighting);
+    var newEntity = await _levelManager.AddEntity(nodeStartEffect.arrKey, TypeEntity.Lighting, false);
 
     nodeStartEffect.SetHint();
 

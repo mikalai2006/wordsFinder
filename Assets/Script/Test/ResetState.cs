@@ -12,14 +12,14 @@ public class ResetState : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.LeftControl))
     {
       ctrl = true;
-      Debug.Log("Reset state");
+      Debug.Log("Press Ctrl");
     }
 
-    if (Input.GetKeyDown(KeyCode.Print) && ctrl && _gameManager.LevelManager == null)
+    if (Input.GetKeyDown(KeyCode.F9) && ctrl && _gameManager.LevelManager == null)
     {
       await _gameManager.StateManager.Reset();
 
-      _gameManager.DataManager.Save();
+      _gameManager.DataManager.Save(true);
       Debug.Log("Reset state");
       ctrl = false;
     }

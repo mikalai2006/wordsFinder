@@ -74,9 +74,9 @@ public class StateManager : MonoBehaviour
       playerSetting = _gameManager.GameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
     }
 
-    _gameManager.PlayerSetting = playerSetting;
-
     stateGame = _stateGame;
+
+    // _gameManager.SetPlayerSetting(playerSetting);
 
     await SetActiveDataGame();
 
@@ -89,7 +89,10 @@ public class StateManager : MonoBehaviour
     if (localeStateGameItem != null)
     {
       // Debug.Log($"{name} ::: Set localeStateGameItem for [{LocalizationSettings.SelectedLocale.Identifier.Code}]");
+
       stateGame.activeDataGame = dataGame = localeStateGameItem.dataGame;
+      var playerSetting = _gameManager.GameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
+      _gameManager.SetPlayerSetting(playerSetting);
     }
     else
     {
@@ -99,7 +102,7 @@ public class StateManager : MonoBehaviour
   }
 
 
-  public void RefreshData(bool save = true)
+  public void RefreshData(bool saveDb)
   {
     var managerHiddenWords = _levelManager.ManagerHiddenWords;
 
@@ -130,7 +133,7 @@ public class StateManager : MonoBehaviour
       : managerHiddenWords.HiddenWords.Keys.ToList();
     dataGame.activeLevel.countOpenChars = managerHiddenWords.OpenWords.Select(t => t.Key.Length).Sum();
 
-    _gameManager.DataManager.Save();
+    _gameManager.DataManager.Save(saveDb);
     OnChangeState.Invoke(stateGame);
   }
 
@@ -141,7 +144,7 @@ public class StateManager : MonoBehaviour
 
     dataGame.activeLevel.coins += quantity;
 
-    RefreshData();
+    RefreshData(false);
   }
 
 
@@ -153,7 +156,7 @@ public class StateManager : MonoBehaviour
     stateGame.coins += quantity;
 
     // RefreshData();
-    _gameManager.DataManager.Save();
+    _gameManager.DataManager.Save(true);
     OnChangeState?.Invoke(stateGame);
   }
 
@@ -165,14 +168,14 @@ public class StateManager : MonoBehaviour
     dataGame.activeLevel.bonusCount.wordInOrder += 1;
     dataGame.activeLevel.bonusCount.errorNullBonus = 0;
 
-    RefreshData();
+    RefreshData(false);
   }
 
   public void IncrementRate(int count)
   {
     dataGame.rate += count;
 
-    RefreshData();
+    RefreshData(false);
   }
 
   public void OpenAllowWord(string word)
@@ -185,7 +188,7 @@ public class StateManager : MonoBehaviour
     // statePerk.countWordInOrder += 1;
     // statePerk.countErrorForNullBonus = 0;
 
-    RefreshData();
+    RefreshData(false);
   }
 
 
@@ -236,7 +239,7 @@ public class StateManager : MonoBehaviour
       UseHint(1, TypeEntity.Lighting);
     }
 
-    RefreshData();
+    RefreshData(false);
   }
 
   public void OpenCharHiddenWord(char _char)
@@ -260,7 +263,7 @@ public class StateManager : MonoBehaviour
       OnGenerateBonus?.Invoke();
     }
 
-    RefreshData();
+    RefreshData(false);
     // OpenCharAllowWord(_char);
   }
 
@@ -283,7 +286,7 @@ public class StateManager : MonoBehaviour
       dataGame.activeLevel.bonusCount.charLighting = 0;
       dataGame.activeLevel.bonusCount.errorNullBonus = 0;
     }
-    RefreshData();
+    RefreshData(false);
   }
 
 
@@ -401,7 +404,7 @@ public class StateManager : MonoBehaviour
 
     dataGame.rank = allPlayerSettings[indexPlayerSetting].idPlayerSetting;
 
-    _gameManager.PlayerSetting = allPlayerSettings[indexPlayerSetting];
+    _gameManager.SetPlayerSetting(allPlayerSettings[indexPlayerSetting]);
 
     return result;
   }
@@ -481,7 +484,7 @@ public class StateManager : MonoBehaviour
 
     stateGame.coins -= item.cost;
     // if (_levelManager != null)
-    _gameManager.DataManager.Save();
+    _gameManager.DataManager.Save(true);
     OnChangeState?.Invoke(stateGame);
   }
   public void BuyHintByForAdv(ShopAdvBuyItem<TypeEntity> item)
@@ -494,7 +497,7 @@ public class StateManager : MonoBehaviour
 
     dataGame.hints[item.typeItem] = item.count + currentCount;
 
-    _gameManager.DataManager.Save();
+    _gameManager.DataManager.Save(true);
 
     OnChangeState?.Invoke(stateGame);
   }
@@ -513,7 +516,7 @@ public class StateManager : MonoBehaviour
     stateGame.coins -= item.cost;
     // if (_levelManager != null)
     UseBonus(item.count, item.entity.typeBonus);
-    _gameManager.DataManager.Save();
+    _gameManager.DataManager.Save(true);
     // OnChangeState?.Invoke(stateGame);
   }
 
@@ -523,7 +526,7 @@ public class StateManager : MonoBehaviour
 
     UseBonus(item.count, item.typeItem);
 
-    _gameManager.DataManager.Save();
+    _gameManager.DataManager.Save(true);
   }
 
   public void SetLastTime()

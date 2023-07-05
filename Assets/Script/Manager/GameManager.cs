@@ -7,7 +7,6 @@ using Loader;
 using System.Linq;
 using UnityEngine.Localization.Settings;
 using Cysharp.Threading.Tasks;
-using UnityEngine.Localization;
 
 public class GameManager : StaticInstance<GameManager>
 {
@@ -34,10 +33,13 @@ public class GameManager : StaticInstance<GameManager>
   public ResourceSystem ResourceSystem { get; internal set; }
 
   public LevelManager LevelManager { get; private set; }
-  [HideInInspector] public GamePlayerSetting PlayerSetting;
+  [HideInInspector] public GamePlayerSetting PlayerSetting { get; private set; }
 
   public SceneInstance environment { get; private set; }
   public InputManager InputManager { get; private set; }
+
+  [SerializeField] private ProgressManager _progressManager;
+  public ProgressManager Progress => _progressManager;
 
   protected override void Awake()
   {
@@ -223,6 +225,15 @@ public class GameManager : StaticInstance<GameManager>
     Debug.Log($"Init key playpref as {code}");
   }
 
+  public void SetPlayerSetting(GamePlayerSetting playerSetting)
+  {
+    Debug.Log($"Set player info {playerSetting.idPlayerSetting}");
+    PlayerSetting = playerSetting;
+
+    Progress.Refresh();
+
+    Debug.LogWarning(Progress.ToString());
+  }
 }
 
 [Serializable]

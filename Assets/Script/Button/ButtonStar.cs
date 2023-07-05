@@ -97,7 +97,7 @@ public class ButtonStar : BaseButton
       return;
     }
 
-    var newEntity = await _levelManager.AddEntity(node.arrKey, TypeEntity.Star);
+    var newEntity = await _levelManager.AddEntity(node.arrKey, TypeEntity.Star, false);
 
     node.SetHint();
 

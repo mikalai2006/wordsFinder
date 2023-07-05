@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 [System.Flags]
 public enum StateNode
@@ -13,6 +10,7 @@ public enum StateNode
   Char = 1 << 5,
   Word = 1 << 6,
   Hint = 1 << 7,
+  Bonus = 1 << 8,
 }
 
 
@@ -30,6 +28,7 @@ public class GridNode
   public HiddenCharMB OccupiedChar;
   public HiddenWordMB OccupiedWord;
   public BaseEntity OccupiedEntity;
+  public BaseEntity BonusEntity;
 
   public GridNode TopNode => _gridHelper.GetNode(x, y + 1);
   public GridNode BottomNode => _gridHelper.GetNode(x, y - 1);
@@ -80,6 +79,19 @@ public class GridNode
     return this;
   }
 
+  public GridNode SetBonusEntity(BaseEntity _entity)
+  {
+    BonusEntity = _entity;
+    if (_entity == null)
+    {
+      StateNode &= ~StateNode.Bonus;
+    }
+    else
+    {
+      StateNode |= StateNode.Bonus;
+    }
+    return this;
+  }
 
   public void SetHint(bool status = true)
   {

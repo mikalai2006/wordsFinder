@@ -27,7 +27,7 @@ public class ButtonDirectory : BaseButton
   {
     base.ChangeTheme();
 
-    spriteBg.color = _gameManager.Theme.colorPrimary;
+    spriteBg.color = _gameManager.Theme.entityColor;
   }
 
   public override void SetValue(StateGame state)

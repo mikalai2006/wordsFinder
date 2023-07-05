@@ -24,7 +24,7 @@ public class ButtonShuffle : BaseButton
 
   public override void ChangeTheme()
   {
-    spriteBg.color = _gameManager.Theme.colorPrimary;
+    spriteBg.color = _gameManager.Theme.entityColor;
   }
 
   public override async void OnPointerDown(PointerEventData eventData)
@@ -63,7 +63,7 @@ public class ButtonShuffle : BaseButton
 
     await UniTask.WhenAll(tasks);
     // GameManager.Instance.DataManager.Save();
-    _stateManager.RefreshData();
+    _stateManager.RefreshData(true);
   }
 
 

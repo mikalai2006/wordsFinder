@@ -125,12 +125,14 @@ public class DialogLevel : MonoBehaviour
     OnShowDialog?.Invoke();
     _gameManager.ChangeState(GameState.StartEffect);
 
+    _gameManager.Progress.Refresh();
+
     _processCompletionSource = new();
     _result = new();
 
     SetDefault();
     _buttonNext.onClick.AddListener(CloseDialogEndRound);
-    SetProgressValue(_stateManager.stateGame.activeDataGame.rate, 0.1f);
+    SetProgressValue(_gameManager.Progress.currentRate, 0.1f);
 
     _textHeader.text = await Helpers.GetLocalizedPluralString(
       "roundresult",
@@ -201,7 +203,7 @@ public class DialogLevel : MonoBehaviour
 
             AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.calculateCoin);
 
-            SetProgressValue(_stateManager.stateGame.activeDataGame.rate + _stateManager.stateGame.activeDataGame.activeLevel.openWords.Count, _gameSetting.timeGeneralAnimation);
+            SetProgressValue(_gameManager.Progress.currentRate + _stateManager.stateGame.activeDataGame.activeLevel.openWords.Count, _gameSetting.timeGeneralAnimation);
 
           });
       }
@@ -384,22 +386,22 @@ public class DialogLevel : MonoBehaviour
         countHints += valueHint;
       }
 
-      var textMessageHints = await Helpers.GetLocalizedPluralString(
-          "givestarthints",
-          new Dictionary<string, object> {
-          {"count", countHints}
-          }
-        );
-      if (countHints == 0)
-      {
-        textMessageHints = await Helpers.GetLocalizedPluralString(
-          "givestarthints_no",
-          new Dictionary<string, object> {
-          {"count", countHints}
-          }
-        );
-      }
-      _textMessageSmall.text = string.Format("{0}\r\n{1}",
+      // var textMessageHints = await Helpers.GetLocalizedPluralString(
+      //     "givestarthints",
+      //     new Dictionary<string, object> {
+      //     {"count", countHints}
+      //     }
+      //   );
+      // if (countHints == 0)
+      // {
+      //   textMessageHints = await Helpers.GetLocalizedPluralString(
+      //     "givestarthints_no",
+      //     new Dictionary<string, object> {
+      //     {"count", countHints}
+      //     }
+      //   );
+      // }
+      _textMessageSmall.text = string.Format("{0}",
         // await Helpers.GetLocaledString("policyround"),
         await Helpers.GetLocalizedPluralString(
           "roundconditdesc",
@@ -407,8 +409,7 @@ public class DialogLevel : MonoBehaviour
           {"count", _stateManager.dataGame.activeLevel.countNeedWords},
           {"count2", _levelManager.ManagerHiddenWords.AllowPotentialWords.Count}
           }
-        ),
-        textMessageHints
+        )
       );
     }
     else
@@ -586,10 +587,11 @@ public class DialogLevel : MonoBehaviour
 
   private void SetProgressValue(int value, float delay)
   {
+
     float width = 0;
     if (value > 0)
     {
-      width = ((value) * 100f / _gameManager.PlayerSetting.countFindWordsForUp) * (maxWidthProgress / 100f);
+      width = ((value) * 100f / _gameManager.Progress.totalNeedWords) * (maxWidthProgress / 100f);
     }
 
     RectTransform progressRect = _progressImageBar.GetComponent<RectTransform>();
@@ -599,14 +601,26 @@ public class DialogLevel : MonoBehaviour
       progressRect.DOSizeDelta(new Vector3(width, progressRect.rect.height), delay).OnComplete(async () =>
       {
         string nameStatus = await Helpers.GetLocaledString(_gameManager.PlayerSetting.text.title);
-        int countNeedOpenWords = _gameManager.PlayerSetting.countFindWordsForUp - _gameManager.StateManager.stateGame.activeDataGame.rate;
-        int procent = 100 - Mathf.RoundToInt(countNeedOpenWords * 100f / (float)_gameManager.PlayerSetting.countFindWordsForUp);
 
-        _progressText.text = await Helpers.GetLocalizedPluralString("foundwords_dialog", new Dictionary<string, object>() {
-          { "name", nameStatus},
-          { "count", countNeedOpenWords},
-          { "procent", procent}
+
+        // int countNeedOpenWords =  _gameManager.PlayerSetting.countFindWordsForUp - _gameManager.StateManager.stateGame.activeDataGame.rate;
+        // int procent = 100 - Mathf.RoundToInt(countNeedOpenWords * 100f / (float)_gameManager.PlayerSetting.countFindWordsForUp);
+        var percent = _gameManager.Progress.GetPercent(_gameManager.Progress.currentRate + _stateManager.stateGame.activeDataGame.activeLevel.openWords.Count);
+
+        if (percent > 100f)
+        {
+          _progressText.text = await Helpers.GetLocalizedPluralString("completesection_dialog", new Dictionary<string, object>() {
+          { "name", nameStatus}
         });
+        }
+        else
+        {
+          _progressText.text = await Helpers.GetLocalizedPluralString("foundwords_dialog", new Dictionary<string, object>() {
+          { "name", nameStatus},
+          { "count", _gameManager.Progress.countNeedOpenWords - _stateManager.stateGame.activeDataGame.activeLevel.openWords.Count},
+          { "procent", percent}
+        });
+        }
 
       });
     }

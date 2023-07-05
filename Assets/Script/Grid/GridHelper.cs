@@ -165,6 +165,7 @@ public class GridHelper
         && !t.StateNode.HasFlag(StateNode.Open)
         && !t.StateNode.HasFlag(StateNode.Entity)
         && !t.StateNode.HasFlag(StateNode.Hint)
+        && !t.StateNode.HasFlag(StateNode.Bonus)
       )
       .OrderBy(t => UnityEngine.Random.value)
       .FirstOrDefault();
@@ -260,6 +261,7 @@ public class GridHelper
       t.StateNode.HasFlag(StateNode.Occupied)
       && !t.StateNode.HasFlag(StateNode.Open)
       && !t.StateNode.HasFlag(StateNode.Entity)
+      && !t.StateNode.HasFlag(StateNode.Bonus)
     ))
     {
       if (node != startNode && node.x == startNode.x)
@@ -286,7 +288,7 @@ public class GridHelper
         && !node.StateNode.HasFlag(StateNode.Open)
         && !node.StateNode.HasFlag(StateNode.Entity)
         && !node.StateNode.HasFlag(StateNode.Hint)
-        // && !node.StateNode.HasFlag(StateNode.Entity)
+        && !node.StateNode.HasFlag(StateNode.Bonus)
         )
       {
         result.Add(node);

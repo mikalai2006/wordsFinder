@@ -70,7 +70,7 @@ public class ButtonBomb : BaseButton
     List<GridNode> nodesForEffect = potentialNodes[nodeStartEffect];
     // nodesForEffect.Add(nodeStartEffect);
 
-    var newEntity = await _levelManager.AddEntity(nodeStartEffect.arrKey, TypeEntity.Bomb);
+    var newEntity = await _levelManager.AddEntity(nodeStartEffect.arrKey, TypeEntity.Bomb, false);
 
     nodeStartEffect.SetHint();
 

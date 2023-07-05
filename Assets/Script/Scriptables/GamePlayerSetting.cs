@@ -24,6 +24,10 @@ public class GamePlayerSetting : ScriptableObject
   [Range(0f, .3f)] public float coefFrequency;
   [Tooltip("Коэффициент начисления начального количества подсказок - случайная буква")]
   [Range(0f, .3f)] public float coefStar;
+  [Tooltip("Коэффициент начисления начального количества подсказок - бомба")]
+  [Range(0f, .2f)] public float coefBomb;
+  [Tooltip("Коэффициент начисления начального количества подсказок - молния")]
+  [Range(0f, .2f)] public float coefLighting;
   // [Tooltip("Максимальное количество символов на поле")]
   // [Range(0, 1f)] public float coefHiddenChar;
 

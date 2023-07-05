@@ -159,12 +159,17 @@ public static class Helpers
 
     if (string.IsNullOrEmpty(path)) return result;
 
+    if (Application.internetReachability == NetworkReachability.NotReachable) return result;
+
     UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(path);
     await webRequest.SendWebRequest();
 
-    if (webRequest.result == UnityWebRequest.Result.ConnectionError)
+    if (webRequest.result == UnityWebRequest.Result.ConnectionError
+      || webRequest.result == UnityWebRequest.Result.DataProcessingError
+      || webRequest.result == UnityWebRequest.Result.ProtocolError)
     {
       Debug.Log(webRequest.error);
+      return result;
     }
     else
     {

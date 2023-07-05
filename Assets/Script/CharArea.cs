@@ -22,7 +22,7 @@ public class CharArea : MonoBehaviour, IPointerMoveHandler
 
   public void OnPointerMove(PointerEventData eventData)
   {
-    if (_gameManager.InputManager.Dragging)
+    if (_gameManager != null && _gameManager.InputManager.Dragging)
     {
       DrawLine();
     }

@@ -153,8 +153,8 @@ public abstract class BaseBonus : MonoBehaviour, IPointerDownHandler
   public void SetDefault()
   {
     transform.localScale = initScale;
-    order.sortingOrder = 0;
-    canvasObject.sortingOrder = 0;
+    order.sortingOrder = 1;
+    canvasObject.sortingOrder = 1;
     // transform.localPosition = Vector3.zero;
   }
 

@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 
 public class Coin : BaseEntity
@@ -12,11 +13,11 @@ public class Coin : BaseEntity
   }
   #endregion
 
-  public override void Init(GridNode node, UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset)
+  public override void Init(GridNode node, UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset, bool asBonus)
   {
-    base.Init(node, asset);
+    base.Init(node, asset, asBonus);
 
-    node.SetOccupiedEntity(this);
+    // node.SetOccupiedEntity(this);
 
     SetColor(_gameManager.Theme.entityColor);
   }
@@ -60,5 +61,33 @@ public class Coin : BaseEntity
     // RunEffect();
 
     Debug.Log("TODO Run coin");
+  }
+
+
+  public override void Collect()
+  {
+    var positionFrom = initPosition;
+    Vector3 positionTo = _levelManager.ManagerHiddenWords.tilemap.WorldToCell(_levelManager.buttonFrequency.transform.position);
+    RunMoveEffect();
+
+    Vector3[] waypoints = {
+          positionFrom,
+          positionFrom - new Vector3(Random.Range(0.5f,1.5f), Random.Range(0.5f,2.5f)),
+          positionTo + new Vector3(Random.Range(0,1), Random.Range(0,1)),
+          positionTo,
+        };
+    transform
+      .DOLocalPath(waypoints, 1f, PathType.CatmullRom)
+      .From(true)
+      .SetEase(Ease.OutCubic)
+      .OnComplete(() =>
+      {
+        _stateManager.IncrementCoin(1);
+
+        Destroy(gameObject);
+
+        base.Collect();
+      });
+
   }
 }

@@ -22,6 +22,7 @@ public class TopSide : MonoBehaviour
   [SerializeField] public GameObject bonusObject;
   // [SerializeField] private TMPro.TextMeshProUGUI _coins;
   [SerializeField] private Image _imageGridBg;
+  [SerializeField] private Image _imageBonusesBg;
   public Dictionary<TypeBonus, BaseBonus> Bonuses = new();
   // public Vector3 spriteCoinPosition => _spriteCoin.gameObject.transform.position;
 
@@ -57,6 +58,7 @@ public class TopSide : MonoBehaviour
   private void ChangeTheme()
   {
     _imageGridBg.color = _gameManager.Theme.colorBgGrid;
+    _imageBonusesBg.color = _gameManager.Theme.colorBgGrid;
     // _statusText.color = _gameManager.Theme.colorPrimary;
     // _rate.color = _gameManager.Theme.colorPrimary;
     // _coins.color = _gameManager.Theme.colorPrimary;

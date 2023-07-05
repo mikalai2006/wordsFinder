@@ -52,6 +52,7 @@ public class GameTheme : ScriptableObject
   public Color entityColor;
   // public Color entityActiveColor;
   public Color colorDisable;
+  public Color entityColorAsBonus;
 
   [Space(5)]
   [Header("Hint")]

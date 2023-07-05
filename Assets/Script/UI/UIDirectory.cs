@@ -109,6 +109,17 @@ public class UIDirectory : UILocaleBase
 
     await Task.Yield();
 
+    if (Application.internetReachability == NetworkReachability.NotReachable)
+    {
+      var message = await Helpers.GetLocaledString("noconnect");
+      var dialog = new DialogProvider(new DataDialog()
+      {
+        message = message
+      });
+      await dialog.ShowAndHide();
+      return "";
+    }
+
     await webRequest.SendWebRequest();
 
     if (webRequest.result == UnityWebRequest.Result.ConnectionError)

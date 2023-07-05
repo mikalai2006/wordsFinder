@@ -140,6 +140,8 @@ public class UIGameBar : UILocaleBase
 
   private void RunAnimateCoin(Vector3 pos)
   {
+    if (_gameManager.LevelManager == null) return;
+
     // var positionObject = Camera.main.ScreenToWorldPoint(pos);
     // var pos3 = new Vector3(positionObject.x + 5, -positionObject.y, 0);
     // Debug.Log($"{positionObject}|||{pos}|||{pos3}");

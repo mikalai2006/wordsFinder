@@ -55,7 +55,7 @@ public class ButtonFrequency : BaseButton
     GridNode nodeStartEffect = nodesForEffect.ElementAt(Random.Range(0, nodesForEffect.Count - 1));
     nodesForEffect.Remove(nodeStartEffect);
 
-    var newEntity = await _levelManager.AddEntity(nodeStartEffect.arrKey, TypeEntity.Frequency);
+    var newEntity = await _levelManager.AddEntity(nodeStartEffect.arrKey, TypeEntity.Frequency, false);
 
     nodeStartEffect.SetHint();
 

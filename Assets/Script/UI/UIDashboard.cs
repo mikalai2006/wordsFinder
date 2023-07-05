@@ -32,6 +32,7 @@ public class UIDashboard : UILocaleBase
     UISettings.OnChangeLocale += RefreshMenu;
     GameManager.OnChangeTheme += RefreshMenu;
     StateManager.OnChangeState += SetValue;
+    DataManager.OnLoadLeaderBoard += DrawLeaderListBlok;
   }
 
   private void OnDestroy()
@@ -39,6 +40,7 @@ public class UIDashboard : UILocaleBase
     UISettings.OnChangeLocale -= RefreshMenu;
     GameManager.OnChangeTheme -= RefreshMenu;
     StateManager.OnChangeState -= SetValue;
+    DataManager.OnLoadLeaderBoard -= DrawLeaderListBlok;
   }
 
   public virtual void Start()
@@ -55,14 +57,14 @@ public class UIDashboard : UILocaleBase
       ClickExitButton();
     };
 
-    // DrawLeaderListBlok();
 
+#if UNITY_EDITOR
+    _gameManager.DataManager.GetLeaderBoard("{\"leaderboard\":{\"title\":[{\"lang\":\"ru\",\"value\":\"Лидеры по количеству слов\"}]},\"userRank\":25,\"entries\":[{\"rank\":24,\"score\":90,\"name\":\"Tamara Ivanovna Semenovatoreva\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"},{\"rank\":25,\"score\":80,\"name\":\"Mikalai P.2\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"},{\"rank\":26,\"score\":70,\"name\":\"Mikalai P.3\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"}]}");
+#endif
 #if ysdk
     GetLeaderBoard();
 #endif
-#if UNITY_EDITOR
-    _gameManager.DataManager.GetLeaderBoard("{\"leaderboard\":{\"title\":[{\"lang\":\"ru\",\"value\":\"Лидеры по количеству слов\"}]},\"userRank\":25,\"entries\":[{\"rank\":24,\"score\":90,\"name\":\"Mikalai P.\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"},{\"rank\":25,\"score\":80,\"name\":\"Mikalai P.2\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"},{\"rank\":26,\"score\":70,\"name\":\"Mikalai P.3\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"}]}");
-#endif
+    // await DrawLeaderListBlok();
 
     RefreshMenu();
 
@@ -75,7 +77,7 @@ public class UIDashboard : UILocaleBase
       ShowDailyDialog();
     }
 
-    base.Initialize(_uiDoc.rootVisualElement);
+    // base.Initialize(_uiDoc.rootVisualElement);
   }
 
   private void SetValue(StateGame state)
@@ -149,15 +151,15 @@ public class UIDashboard : UILocaleBase
 
     await DrawUserInfoBlok();
 
-#if ysdk && !UNITY_EDITOR
-    await DrawLeaderListBlok();
-#endif
+    // #if ysdk && !UNITY_EDITOR
+    //     await DrawLeaderListBlok();
+    // #endif
 
     base.Initialize(_uiDoc.rootVisualElement);
   }
 
 
-  private async UniTask DrawLeaderListBlok()
+  private async void DrawLeaderListBlok(LeaderBoard board)
   {
     LeaderBoard leaderBoard = _gameManager.DataManager.leaderBoard;
 
@@ -184,8 +186,9 @@ public class UIDashboard : UILocaleBase
     var _leaderList = _leaderBoard.Q<VisualElement>("LeaderList");
     _leaderList.Clear();
 
+    int countLeaderShow = leaderBoard.entries.Count > 5 ? 5 : leaderBoard.entries.Count;
 
-    for (int i = 0; i < leaderBoard.entries.Count; i++)
+    for (int i = 0; i < countLeaderShow; i++)
     {
       var blok = LeaderDoc.Instantiate();
 
@@ -215,7 +218,7 @@ public class UIDashboard : UILocaleBase
       _leaderList.Add(blok);
     }
 
-
+    base.Initialize(_leaderBoard);
   }
 
   private async UniTask DrawUserInfoBlok()
@@ -249,27 +252,24 @@ public class UIDashboard : UILocaleBase
     // var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
     // blok.Q<VisualElement>("CoinImg").style.backgroundImage = new StyleBackground(configCoin.sprite);
 
-
     var titleFile = _gameManager.GameSettings.wordFiles.Find(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code);
     nameFile.text = await Helpers.GetLocaledString(titleFile.text.title);
 
-    var percentFindWords = (dataGame.rate * 100 / _gameManager.PlayerSetting.countFindWordsForUp);
+    var playerSetting = _gameManager.PlayerSetting;
+    _gameManager.Progress.Refresh();
+
+    var percentFindWords = _gameManager.Progress.percent;
     progress.style.width = new StyleLength(new Length(percentFindWords, LengthUnit.Percent));
 
-    var playerSettings = _gameSetting.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
-
-    int countNeedOpenWords = _gameManager.PlayerSetting.countFindWordsForUp - _gameManager.StateManager.stateGame.activeDataGame.rate;
-    int procent = 100 - Mathf.RoundToInt(countNeedOpenWords * 100f / (float)_gameManager.PlayerSetting.countFindWordsForUp);
-
-    string nameStatus = await Helpers.GetLocaledString(playerSettings.text.title);
+    string nameStatus = await Helpers.GetLocaledString(playerSetting.text.title);
     status.text = nameStatus;
 
     var textCountWords = await Helpers.GetLocalizedPluralString(
           "foundwords_dialog",
            new Dictionary<string, object> {
             {"name", nameStatus},
-            {"count",  countNeedOpenWords},
-            {"procent",  procent},
+            {"count",  _gameManager.Progress.countNeedOpenWords},
+            {"procent",  percentFindWords},
           }
         );
     foundWords.text = string.Format("{0}", textCountWords);

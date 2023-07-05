@@ -98,7 +98,7 @@ public class ButtonFlask : BaseButton
       localizeObj = randEntity.text;
     }
 
-    if (!localizeObj.title.IsEmpty)
+    if (!localizeObj.title.IsEmpty && _gameManager.AppInfo.setting.dod)
     {
       // Show message
       _gameManager.InputManager.Disable();

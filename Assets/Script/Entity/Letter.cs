@@ -12,11 +12,11 @@ public class Letter : BaseEntity
   }
   #endregion
 
-  public override void Init(GridNode node, UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset)
+  public override void Init(GridNode node, UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> asset, bool asBonus)
   {
-    base.Init(node, asset);
+    base.Init(node, asset, asBonus);
 
-    node.SetOccupiedEntity(this);
+    // node.SetOccupiedEntity(this);
 
     SetColor(_gameManager.Theme.entityColor);
   }

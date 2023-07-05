@@ -27,6 +27,7 @@ public class StateGameItem
 public class DataGame
 {
   public int rate;
+  public string rank;
   // public int coins;
   public SerializableDictionary<TypeEntity, int> hints;
   public SerializableDictionary<TypeBonus, int> bonus;
@@ -34,7 +35,6 @@ public class DataGame
   public List<string> completed;
   [System.NonSerialized] public DataLevel activeLevel;
   public string lastWord;
-  public string rank;
 
   public DataGame()
   {

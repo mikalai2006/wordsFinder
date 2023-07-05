@@ -77,7 +77,7 @@ public class LevelManager : Singleton<LevelManager>
     if (currentLevel.openWords.Count == 0) await buttonShuffle.RefreshChars();
 
     // GameManager.Instance.DataManager.Save();
-    GameManager.Instance.StateManager.RefreshData(false);
+    _stateManager.RefreshData(true);
 
     // Show start info.
     _gameManager.InputManager.Disable();
@@ -135,9 +135,14 @@ public class LevelManager : Singleton<LevelManager>
       .Where(t => !activeLevel.openWords.Contains(t))
       .ElementAt(0);
 
+    List<CharMB> cacheChoosedSymbol = new();
+
     foreach (var _char in ranWordForHelp)
     {
-      var symb = _symbols.Find(t => t.charTextValue == _char);
+      var symb = _symbols.Find(t => t.charTextValue == _char && !cacheChoosedSymbol.Contains(t));
+
+      cacheChoosedSymbol.Add(symb);
+
       Pointer.transform
         .DOMove(symb.transform.position, duration)
         .OnUpdate(() =>
@@ -240,29 +245,29 @@ public class LevelManager : Singleton<LevelManager>
   }
 
 
-  public async UniTask<BaseEntity> AddEntity(Vector2Int pos, TypeEntity typeEntity)
+  public async UniTask<BaseEntity> AddEntity(Vector2Int pos, TypeEntity typeEntity, bool asBonus)
   {
     var node = ManagerHiddenWords.GridHelper.GetNode(pos);
     // pos == Vector2Int.zero
     //   ? ManagerHiddenWords.GridHelper.GetRandomNodeWithHiddenChar()
     //   : ManagerHiddenWords.GridHelper.GetNode(pos);
     var configsAllEntities = _gameManager.ResourceSystem.GetAllEntity();
-    GameEntity entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Star);
-    switch (typeEntity)
-    {
-      case TypeEntity.Bomb:
-        entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Bomb);
-        break;
-      case TypeEntity.Lighting:
-        entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Lighting);
-        break;
-      case TypeEntity.Coin:
-        entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Coin);
-        break;
-      case TypeEntity.Frequency:
-        entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Frequency);
-        break;
-    }
+    GameEntity entityConfig = configsAllEntities.Find(t => t.typeEntity == typeEntity);
+    // switch (typeEntity)
+    // {
+    //   case TypeEntity.Bomb:
+    //     entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Bomb);
+    //     break;
+    //   case TypeEntity.Lighting:
+    //     entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Lighting);
+    //     break;
+    //   case TypeEntity.Coin:
+    //     entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Coin);
+    //     break;
+    //   case TypeEntity.Frequency:
+    //     entityConfig = configsAllEntities.Find(t => t.typeEntity == TypeEntity.Frequency);
+    //     break;
+    // }
 
     var asset = Addressables.InstantiateAsync(
       entityConfig.prefab,
@@ -273,18 +278,53 @@ public class LevelManager : Singleton<LevelManager>
     var newObj = await asset.Task;
 
     var newEntity = newObj.GetComponent<BaseEntity>();
-    newEntity.Init(node, asset);
+    newEntity.Init(node, asset, asBonus);
     //node.StateNode |= StateNode.Entity;
-    if (!ManagerHiddenWords.Entities.ContainsKey(node.arrKey))
+    if (asBonus)
     {
-      ManagerHiddenWords.Entities.Add(node.arrKey, typeEntity);
+      if (!ManagerHiddenWords.Entities.ContainsKey(node.arrKey))
+      {
+        ManagerHiddenWords.Entities.Add(node.arrKey, typeEntity);
+      }
+    }
+    else
+    {
+      if (!ManagerHiddenWords.EntitiesRuntime.ContainsKey(node.arrKey))
+      {
+        ManagerHiddenWords.EntitiesRuntime.Add(node.arrKey, typeEntity);
+      }
     }
 
     // GameManager.Instance.DataManager.Save();
-    _stateManager.RefreshData();
+    _stateManager.RefreshData(false);
 
     return newEntity;
   }
+
+
+  public void RemoveEntity(BaseEntity entity)
+  {
+    if (ManagerHiddenWords.Entities.ContainsKey(entity.OccupiedNode.arrKey))
+    {
+      if (entity.OccupiedNode.StateNode.HasFlag(StateNode.Bonus))
+      {
+        ManagerHiddenWords.Entities.Remove(entity.OccupiedNode.arrKey);
+        entity.OccupiedNode.SetBonusEntity(null);
+      }
+    }
+
+    if (ManagerHiddenWords.EntitiesRuntime.ContainsKey(entity.OccupiedNode.arrKey))
+    {
+      if (entity.OccupiedNode.StateNode.HasFlag(StateNode.Entity))
+      {
+        ManagerHiddenWords.EntitiesRuntime.Remove(entity.OccupiedNode.arrKey);
+        entity.OccupiedNode.SetOccupiedEntity(null);
+      }
+    }
+    // GameManager.Instance.DataManager.Save();
+    _stateManager.RefreshData(false);
+  }
+
 
   public async UniTask<GameObject> CreateCoin(Vector2 pos, Vector3 positionTo, int quantity = 1)
   {
