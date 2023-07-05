@@ -269,7 +269,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4186970411663360
     m_Localized: No hidden letters found to apply this effect. All letters on the
-      field are open!
+      field are open or busy with bonuses!
     m_Metadata:
       m_Items: []
   - m_Id: 4495698834915328
@@ -456,10 +456,6 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 366248018379538446
-  - m_Id: 1385593616629760
-    m_Localized: No connect
-    m_Metadata:
-      m_Items: []
   - m_Id: 1315961916522496
     m_Localized: 'This bonus removes the penalty for suggesting letters.
 
@@ -539,10 +535,19 @@ MonoBehaviour:
     m_Localized: Do you want to open this letter by watching ads?
     m_Metadata:
       m_Items: []
+  - m_Id: 1663601170612224
+    m_Localized: You have successfully completed section {name}!
+    m_Metadata:
+      m_Items:
+      - rid: 366248018379538446
+  - m_Id: 1699857803935744
+    m_Localized: The request returned an error! Apologize!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 366248018379538446
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 008012091f860d00008052e12f620d0000801274d0f80f000080926f011210000080d2e208cc12000080d2b0f4ce120000809224e64215000080d2dde1cd170000805298f9f21700008052808bf917000080922a82fc1700008012baef150200008052d5248e05000080d2ebf1590b000080521d7c300c00008012a39a300c00008092ea35400c000080925ecd430c00008052a5fc410d00008052dfaf610d000080520f392602000080d2b5f0d80300008092107ee40300
+        m_Entries: 008012091f860d00008052e12f620d0000801274d0f80f000080926f011210000080d2e208cc12000080d2b0f4ce120000809224e64215000080d2dde1cd170000805298f9f21700008052808bf917000080922a82fc1700008012baef150200008052d5248e05000080d2ebf1590b000080521d7c300c00008012a39a300c00008092ea35400c000080925ecd430c00008052a5fc410d00008052dfaf610d000080520f392602000080d2b5f0d80300008092107ee403000080d25409e90500

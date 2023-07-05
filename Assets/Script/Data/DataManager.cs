@@ -18,6 +18,7 @@ public class DataManager : Singleton<DataManager>
 
   public static event System.Action<int> OnAddCoins;
   public static event System.Action<StateGame> OnLoadData;
+  public static event System.Action OnOpenCharExtern;
   public static event System.Action<ShopAdvBuyItem<TypeEntity>> OnAddHintExtern;
   public static event System.Action<ShopAdvBuyItem<TypeBonus>> OnAddBonusExtern;
   public static event System.Action<UserInfo> OnLoadUserInfo;
@@ -99,6 +100,10 @@ public class DataManager : Singleton<DataManager>
     OnAddBonusExtern?.Invoke(value);
   }
 
+  public void OpenChar()
+  {
+    OnOpenCharExtern?.Invoke();
+  }
 
   public void SetUserInfo(string stringUserInfo)
   {

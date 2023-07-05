@@ -44,6 +44,17 @@ public class InputManager
       _input.InputActions.Click.canceled -= value;
     }
   }
+  public event Action<InputAction.CallbackContext> ClickChar
+  {
+    add
+    {
+      _input.InputActions.Click.performed += value;
+    }
+    remove
+    {
+      _input.InputActions.Click.performed -= value;
+    }
+  }
 
   public Vector2 clickPosition()
   {

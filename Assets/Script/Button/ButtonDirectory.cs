@@ -11,8 +11,8 @@ public class ButtonDirectory : BaseButton
     spriteBg.sprite = _gameSetting.spriteDirectory;
     spriteMask.sprite = _gameSetting.spriteDirectory;
 
-    interactible = false;
-    isShowCounter = false;
+    // interactible = false;
+    // isShowCounter = false;
 
     StateManager.OnChangeState += SetValue;
   }
@@ -28,6 +28,11 @@ public class ButtonDirectory : BaseButton
     base.ChangeTheme();
 
     spriteBg.color = _gameManager.Theme.entityColor;
+  }
+
+  public override void RunHint()
+  {
+    _gameManager.ChangeState(GameState.StopEffect);
   }
 
   public override void SetValue(StateGame state)

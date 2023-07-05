@@ -1,11 +1,16 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class HiddenCharMB : MonoBehaviour, IPointerDownHandler
+public class HiddenCharMB : MonoBehaviour //, IPointerDownHandler
 {
+  [DllImport("__Internal")]
+  private static extern void OpenCharExtern();
   [SerializeField] private TMPro.TextMeshProUGUI _charText;
   public char charTextValue;
   private GameManager _gameManager => GameManager.Instance;
@@ -13,11 +18,30 @@ public class HiddenCharMB : MonoBehaviour, IPointerDownHandler
   private StateManager _stateManager => GameManager.Instance.StateManager;
   private GameSetting _gameSetting => GameManager.Instance.GameSettings;
   [SerializeField] private Image _image;
+  private Vector3 _initScale;
   [SerializeField] private RectTransform _canvas;
   public GridNode OccupiedNode;
+  private InputManager _inputManager;
+  private Camera _camera;
+
+  private void OnEnable()
+  {
+    _inputManager = new InputManager();
+    _inputManager.ClickChar += OnClick;
+  }
+
+  private void OnDisable()
+  {
+    _inputManager.ClickChar -= OnClick;
+  }
 
   public void Awake()
   {
+
+    _camera = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<Camera>();
+
+    _initScale = transform.localScale;
+
     SetDefault();
 
     GameManager.OnChangeTheme += ChangeTheme;
@@ -242,25 +266,52 @@ public class HiddenCharMB : MonoBehaviour, IPointerDownHandler
   }
 
 
-  public async void OnPointerDown(PointerEventData eventData)
+  // public async void OnPointerDown(PointerEventData eventData)
+  public async void OnClick(InputAction.CallbackContext context)
   {
-    // Show message
-    _gameManager.InputManager.Disable();
+    var rayHit = Physics2D.GetRayIntersection(_camera.ScreenPointToRay(_inputManager.clickPosition()));
+    if (!rayHit.collider) return;
 
-    var message = await Helpers.GetLocaledString("openletterbyads");
-    var dialogConfirm = new DialogProvider(new DataDialog()
+    if (rayHit.collider.gameObject == gameObject)
     {
-      message = message,
-      showCancelButton = true,
-    });
+      // Show message
+      _gameManager.InputManager.Disable();
 
-    var result = await dialogConfirm.ShowAndHide();
-    if (result.isOk)
-    {
-      // TODO run ads.
+      transform
+        .DOPunchScale(new Vector3(.2f, .2f, 0), _gameSetting.timeGeneralAnimation)
+        .SetEase(Ease.OutBack)
+        .OnComplete(() =>
+        {
+          transform.localScale = _initScale;
 
+          // if (!interactible) pointer.enabled = true;
+        });
+
+      var message = await Helpers.GetLocaledString("openletterbyads");
+      var dialogConfirm = new DialogProvider(new DataDialog()
+      {
+        message = message,
+        showCancelButton = true,
+      });
+
+      var result = await dialogConfirm.ShowAndHide();
+      if (result.isOk)
+      {
+        // Open char by ads.
+        OpenCharExtern();
+
+        DataManager.OnOpenCharExtern += OpenByAds;
+
+      }
+      _gameManager.InputManager.Enable();
     }
-    _gameManager.InputManager.Enable();
+  }
+
+  private void OpenByAds()
+  {
+    Open(true);
+
+    DataManager.OnOpenCharExtern -= OpenByAds;
   }
 
 

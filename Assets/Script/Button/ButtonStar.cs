@@ -94,6 +94,7 @@ public class ButtonStar : BaseButton
       _gameManager.InputManager.Disable();
       await dialog.ShowAndHide();
       _gameManager.InputManager.Enable();
+      _gameManager.ChangeState(GameState.StopEffect);
       return;
     }
 

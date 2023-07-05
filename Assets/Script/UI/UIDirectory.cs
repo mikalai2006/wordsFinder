@@ -107,11 +107,11 @@ public class UIDirectory : UILocaleBase
     // webRequest.SetRequestHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     // webRequest.SetRequestHeader("Access-Control-Allow-Origin", "*");
 
-    await Task.Yield();
+    await UniTask.Yield();
 
     if (Application.internetReachability == NetworkReachability.NotReachable)
     {
-      var message = await Helpers.GetLocaledString("noconnect");
+      var message = await Helpers.GetLocaledString("disconnect");
       var dialog = new DialogProvider(new DataDialog()
       {
         message = message
@@ -120,22 +120,10 @@ public class UIDirectory : UILocaleBase
       return "";
     }
 
-    await webRequest.SendWebRequest();
-
-    if (webRequest.result == UnityWebRequest.Result.ConnectionError)
+    try
     {
-      var message = await Helpers.GetLocaledString("disconnect");
-      var dialog = new DialogProvider(new DataDialog()
-      {
-        message = message,
-        showCancelButton = false
-      });
-      await dialog.ShowAndHide();
+      await webRequest.SendWebRequest();
 
-      return webRequest.error;
-    }
-    else
-    {
       var responseText = JsonUtility.FromJson<APIDirectoryResponse>(webRequest.downloadHandler.text);
 
       if (!string.IsNullOrEmpty(responseText.extract))
@@ -161,6 +149,25 @@ public class UIDirectory : UILocaleBase
       }
 
       return webRequest.downloadHandler.text;
+
+    }
+    catch (System.Exception error)
+    {
+      if (webRequest.result == UnityWebRequest.Result.ConnectionError
+            || webRequest.result == UnityWebRequest.Result.DataProcessingError
+            || webRequest.result == UnityWebRequest.Result.ProtocolError)
+      {
+        var message = await Helpers.GetLocaledString("request_error");
+        var dialog = new DialogProvider(new DataDialog()
+        {
+          message = message,
+          showCancelButton = false
+        });
+        await dialog.ShowAndHide();
+
+        return webRequest.error;
+      }
+      return webRequest.downloadHandler.error;
     }
   }
 

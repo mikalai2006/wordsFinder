@@ -592,32 +592,47 @@ public class ManagerHiddenWords : MonoBehaviour
       await _levelManager.AddEntity(node.arrKey, TypeEntity.Star, true);
     }
 
-    var colF = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefFrequency;
-    var countFrequency = System.Math.Round(colF);
-    for (int i = 0; i < countFrequency; i++)
+    int countB;
+    _stateManager.dataGame.hints.TryGetValue(TypeEntity.Bomb, out countB);
+    if (countB < 10)
     {
-      var node = GridHelper.GetRandomNodeWithHiddenChar();
-      await _levelManager.AddEntity(node.arrKey, TypeEntity.Frequency, true);
+      var colB = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefBomb;
+      var countBomb = System.Math.Round(colB);
+      for (int i = 0; i < countBomb; i++)
+      {
+        var node = GridHelper.GetRandomNodeWithHiddenChar();
+        await _levelManager.AddEntity(node.arrKey, TypeEntity.Bomb, true);
+      }
     }
 
-    var colL = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefLighting;
-    var countLighting = System.Math.Round(colL);
-    for (int i = 0; i < countLighting; i++)
+    int countL;
+    _stateManager.dataGame.hints.TryGetValue(TypeEntity.Lighting, out countL);
+    if (countL < 10)
     {
-      var node = GridHelper.GetRandomNodeWithHiddenChar();
-      await _levelManager.AddEntity(node.arrKey, TypeEntity.Lighting, true);
+      var colL = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefLighting;
+      var countLighting = System.Math.Round(colL);
+      for (int i = 0; i < countLighting; i++)
+      {
+        var node = GridHelper.GetRandomNodeWithHiddenChar();
+        await _levelManager.AddEntity(node.arrKey, TypeEntity.Lighting, true);
+      }
     }
 
-    var colB = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefBomb;
-    var countBomb = System.Math.Round(colB);
-    for (int i = 0; i < countBomb; i++)
+    int countF;
+    _stateManager.dataGame.hints.TryGetValue(TypeEntity.Frequency, out countF);
+    if (countF < 10)
     {
-      var node = GridHelper.GetRandomNodeWithHiddenChar();
-      await _levelManager.AddEntity(node.arrKey, TypeEntity.Bomb, true);
+      var colF = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefFrequency;
+      var countFrequency = System.Math.Round(colF);
+      for (int i = 0; i < countFrequency; i++)
+      {
+        var node = GridHelper.GetRandomNodeWithHiddenChar();
+        await _levelManager.AddEntity(node.arrKey, TypeEntity.Frequency, true);
+      }
     }
 
-    Debug.Log($"colS={colS}|colF={colF}|colL={colL}|colB={colB}");
-    Debug.Log($"countStar={countStar}|countFrequency={countFrequency}|countLighting={countLighting}|countBomb={countBomb}");
+    // Debug.Log($"colS={colS}|colF={colF}|colL={colL}|colB={colB}");
+    // Debug.Log($"countStar={countStar}|countFrequency={countFrequency}|countLighting={countLighting}|countBomb={countBomb}");
   }
 
 

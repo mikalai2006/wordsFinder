@@ -77,6 +77,8 @@ public class ButtonFlask : BaseButton
   {
     int rand = UnityEngine.Random.Range(0, 100);
 
+    if (_gameManager.LevelManager.IsEndLevel()) return;
+
     Sprite sprite;
     TextLocalize localizeObj;
     if (rand <= 50)

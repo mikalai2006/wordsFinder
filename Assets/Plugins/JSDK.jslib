@@ -154,6 +154,28 @@ var plugin = {
       },
     });
   },
+  OpenCharExtern: function () {
+    console.log("OpenCharExtern");
+
+    ysdk.adv.showRewardedVideo({
+      callbacks: {
+        onOpen: () => {
+          console.log("Video ad open.");
+        },
+        onRewarded: () => {
+          console.log("Rewarded from open char!");
+
+          myGameInstance.SendMessage("DataManager", "OpenChar");
+        },
+        onClose: () => {
+          console.log("Video ad closed.");
+        },
+        onError: (e) => {
+          console.log("Error while open video ad:", e);
+        },
+      },
+    });
+  },
   AddBonusExtern: function (data) {
     var dataString = UTF8ToString(data);
     console.log("AddBonusExtern", dataString);

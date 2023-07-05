@@ -32,7 +32,7 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-  minRate: 50
+  minRate: 1000
   locale: {fileID: 11400000, guid: 64a3977be13583547bee7545b3c13f3f, type: 2}
   levelWords:
   - "\u0430\u0441\u043F\u0435\u043A\u0442"

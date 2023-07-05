@@ -33,7 +33,7 @@ MonoBehaviour:
       m_WaitForCompletion: 0
       m_LocalVariables: []
   coefDifficulty: 0.8
-  countFindWordsForUp: 20000
+  countFindWordsForUp: 50000
   maxLengthWord: 20
   maxFindWords: 50
   coefFrequency: 0.05
