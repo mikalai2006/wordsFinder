@@ -208,7 +208,7 @@ public class UIDashboard : UILocaleBase
       }
       else
       {
-        // ava.style.display = DisplayStyle.None;
+        ava.style.backgroundImage = new StyleBackground(_gameSetting.spriteUser);
       }
 
       var score = blok.Q<Label>("Score");
@@ -323,9 +323,6 @@ public class UIDashboard : UILocaleBase
 
     // load avatar
     string placeholder = _gameManager.AppInfo.UserInfo.photo;
-#if UNITY_EDITOR
-    placeholder = "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/CGIB4J3KPRTV5JCX6JLC6TAKLL6GYPN27SBYCQDUWEUW2QFCBB5ZNTCHKPVHHHKLTSBRYYIEMFB2C3CB37T4S7GIXKUP4KEL4CHGRPVOLHVSPIW77Z5TUSEOVQK5NDDSPJTVMAJAODQ4DXD6UEKJV4VLEUOPWOPU2Y664NQ5NIQUT2UBNRMVVWCQN52FYLVEI4DWLSZQ4FG6AZWBGKYTD5VJWXXAL46Z7B5XDCI=/islands-retina-medium";
-#endif
     var imgAva = blok.Q<VisualElement>("Ava");
     Texture2D avatarTexture = await Helpers.LoadTexture(placeholder);
     if (avatarTexture != null)
@@ -334,7 +331,7 @@ public class UIDashboard : UILocaleBase
     }
     else
     {
-      imgAva.style.display = DisplayStyle.None;
+      imgAva.style.backgroundImage = new StyleBackground(_gameSetting.spriteUser);
     }
 
     _userInfoBlok.Clear();

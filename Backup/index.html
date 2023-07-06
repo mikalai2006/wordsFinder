@@ -22,12 +22,32 @@
         initializeLib();
       });
 
+      function initPlayer() {
+        return ysdk.getPlayer({ scopes: true }).then((_player) => {
+          console.log("Player initialized");
+          player = _player;
+
+          return player;
+        });
+      }
+
       function initializeLib() {
-        ysdk
-          .getPlayer()
+        initPlayer()
           .then((_player) => {
-            console.log("Player initialized");
-            player = _player;
+            if (_player.getMode() === "lite") {
+              // Игрок не авторизован.
+              ysdk.auth
+                .openAuthDialog()
+                .then(() => {
+                  // Игрок успешно авторизован
+                  initPlayer().catch((err) => {
+                    // Ошибка при инициализации объекта Player.
+                  });
+                })
+                .catch(() => {
+                  // Игрок не авторизован.
+                });
+            }
           })
           .catch((err) => {
             // Ошибка при инициализации объекта Player.

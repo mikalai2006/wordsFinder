@@ -154,6 +154,7 @@ public class UIDirectory : UILocaleBase
     }
     catch (System.Exception error)
     {
+      Debug.Log(error);
       if (webRequest.result == UnityWebRequest.Result.ConnectionError
             || webRequest.result == UnityWebRequest.Result.DataProcessingError
             || webRequest.result == UnityWebRequest.Result.ProtocolError)

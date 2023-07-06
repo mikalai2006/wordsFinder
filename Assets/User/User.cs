@@ -53,6 +53,7 @@ namespace User
     // public string Id { get; set; }
     // public string Name { get; set; }
     // public string Lang { get; set; }
+    public string uid;
     public string name;
     public string photo;
     // public string userId { get; set; }

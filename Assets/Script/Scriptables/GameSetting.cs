@@ -56,6 +56,7 @@ public class GameSetting : ScriptableObject
   public Sprite spriteBuy;
   public Sprite spriteInfo;
   public Sprite spriteDouble;
+  public Sprite spriteUser;
 
   [Space(5)]
   [Header("System")]
@@ -85,6 +86,11 @@ public class GameSetting : ScriptableObject
   [Space(5)]
   [Header("Ads")]
   public int adsPerTime;
+
+  [Space(5)]
+  [Header("Rate")]
+  public int minRateForReview;
+  public int countCoinForReview;
 }
 
 [System.Serializable]

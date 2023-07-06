@@ -149,9 +149,7 @@ MonoBehaviour:
       m_Items:
       - rid: 366248018379538446
   - m_Id: 3431140439523328
-    m_Localized: 'Get
-
-      per view ads'
+    m_Localized: Would you like to receive bonus {name} by viewing ads?
     m_Metadata:
       m_Items:
       - rid: 366248018379538446
@@ -543,6 +541,22 @@ MonoBehaviour:
       - rid: 366248018379538446
   - m_Id: 1699857803935744
     m_Localized: The request returned an error! Apologize!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2019490872328192
+    m_Localized: The setting is active in the game - show windows to confirm actions.
+      If you want to perform actions without confirmation, uncheck the checkbox in
+      the settings so that all your actions are performed immediately after clicking,
+      without asking for confirmation.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2028775245250560
+    m_Localized: 'You can leave a review on the game and get a gift.
+
+
+
+      Want
+      to leave a review?'
     m_Metadata:
       m_Items: []
   references:

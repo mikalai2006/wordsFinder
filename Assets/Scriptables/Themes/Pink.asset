@@ -34,7 +34,7 @@ MonoBehaviour:
   bgImageCharChoose: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgColor: {r: 0.9098039, g: 0.84705883, b: 0.64705884, a: 1}
   colorBgGrid: {r: 0.8207547, g: 0.7699053, b: 0.6078231, a: 1}
-  colorLine: {r: 0.8980392, g: 0.3647059, b: 0.3019608, a: 0.6509804}
+  colorLine: {r: 0.8980392, g: 0.3647059, b: 0.3019608, a: 0.7490196}
   colorPrimary: {r: 0.42745098, g: 0.23921569, b: 0.16078432, a: 1}
   colorSecondary: {r: 0.69411767, g: 0.41960785, b: 0.2901961, a: 1}
   colorAccent: {r: 0.8980392, g: 0.3647059, b: 0.3019608, a: 1}

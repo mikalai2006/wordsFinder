@@ -155,6 +155,7 @@ public static class Helpers
 
   public static async UniTask<Texture2D> LoadTexture(string path)
   {
+    Debug.Log($"Load {path}");
     Texture2D result = null;
 
     if (string.IsNullOrEmpty(path)) return result;
@@ -162,20 +163,33 @@ public static class Helpers
     if (Application.internetReachability == NetworkReachability.NotReachable) return result;
 
     UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(path);
-    await webRequest.SendWebRequest();
 
-    if (webRequest.result == UnityWebRequest.Result.ConnectionError
-      || webRequest.result == UnityWebRequest.Result.DataProcessingError
-      || webRequest.result == UnityWebRequest.Result.ProtocolError)
+    try
     {
-      Debug.Log(webRequest.error);
-      return result;
-    }
-    else
-    {
+      await webRequest.SendWebRequest();
+
       Texture2D texture = ((DownloadHandlerTexture)webRequest.downloadHandler).texture;
       result = texture;
     }
+    catch (System.Exception error)
+    {
+      Debug.Log(error);
+      return result;
+    }
+
+
+    // if (webRequest.result == UnityWebRequest.Result.ConnectionError
+    //   || webRequest.result == UnityWebRequest.Result.DataProcessingError
+    //   || webRequest.result == UnityWebRequest.Result.ProtocolError)
+    // {
+    //   Debug.Log(webRequest.error);
+    //   return result;
+    // }
+    // else
+    // {
+    //   Texture2D texture = ((DownloadHandlerTexture)webRequest.downloadHandler).texture;
+    //   result = texture;
+    // }
 
     return result;
   }

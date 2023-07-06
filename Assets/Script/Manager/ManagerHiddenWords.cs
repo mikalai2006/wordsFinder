@@ -552,10 +552,12 @@ public class ManagerHiddenWords : MonoBehaviour
         }
       }
 
+      _levelManager.InitLevel(newConfigWord);
+
 #if ysdk
+      await _gameManager.AdManager.ShowDialogAddRateGame();
       GetLeaderBoard();
 #endif
-      _levelManager.InitLevel(newConfigWord);
 
       _gameManager.AdManager.ShowAdvFullScr();
 

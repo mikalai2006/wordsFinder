@@ -203,21 +203,18 @@ public class UIGameBar : UILocaleBase
     _cogImg.style.backgroundImage = new StyleBackground(base._gameSetting.spriteCog);
     _cogImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
 
-    // load avatar
-    string placeholder = _gameManager.AppInfo.UserInfo.photo;
-#if UNITY_EDITOR
-    placeholder = "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/CGIB4J3KPRTV5JCX6JLC6TAKLL6GYPN27SBYCQDUWEUW2QFCBB5ZNTCHKPVHHHKLTSBRYYIEMFB2C3CB37T4S7GIXKUP4KEL4CHGRPVOLHVSPIW77Z5TUSEOVQK5NDDSPJTVMAJAODQ4DXD6UEKJV4VLEUOPWOPU2Y664NQ5NIQUT2UBNRMVVWCQN52FYLVEI4DWLSZQ4FG6AZWBGKYTD5VJWXXAL46Z7B5XDCI=/islands-retina-medium";
-#endif
-
-    Texture2D avatarTexture = await Helpers.LoadTexture(placeholder);
-    if (avatarTexture != null)
-    {
-      _avaImg.style.backgroundImage = new StyleBackground(avatarTexture);
-    }
-    else
-    {
-      _avaImg.style.display = DisplayStyle.None;
-    }
+    //     // load avatar
+    //     string placeholder = _gameManager.AppInfo.UserInfo.photo;
+    //     Texture2D avatarTexture = await Helpers.LoadTexture(placeholder);
+    //     if (avatarTexture != null)
+    //     {
+    //       _avaImg.style.backgroundImage = new StyleBackground(avatarTexture);
+    //     }
+    //     else
+    //     {
+    // {
+    //   _avaImg.style.backgroundImage = new StyleBackground(_gameSetting.spriteUser);
+    // }
 
     _userCoinImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);
     _userRateImg.style.unityBackgroundImageTintColor = new StyleColor(_gameManager.Theme.colorSecondary);

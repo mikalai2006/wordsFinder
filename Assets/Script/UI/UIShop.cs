@@ -178,23 +178,40 @@ public class UIShop : UILocaleBase
       buttonForAdv.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSetting.spriteAdv);
       buttonForAdv.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
         = new StyleColor(_gameManager.Theme.entityColor);
-      buttonForAdv.Q<Label>("Text").text = await Helpers.GetLocalizedPluralString(
-        "buyadv",
-         new Dictionary<string, object> {
-            {"count", item.count}
-        }
-      );
-      buttonForAdv.clickable.clicked += () =>
+      // buttonForAdv.Q<Label>("Text").text = await Helpers.GetLocalizedPluralString(
+      //   "buyadv",
+      //    new Dictionary<string, object> {
+      //       {"count", item.count}
+      //   }
+      // );
+      buttonForAdv.clickable.clicked += async () =>
         {
-          // TODO Buy for adv.
+          // Buy for adv.
           AudioManager.Instance.Click();
 
-          var addedHint = new ShopAdvBuyItem<TypeEntity>()
+          var messageConfirm = await Helpers.GetLocalizedPluralString(
+            "buyadv",
+            new Dictionary<string, string> {
+                {"name", title}
+            }
+          );
+          var dialogConfirm = new DialogProvider(new DataDialog()
           {
-            typeItem = item.entity.typeEntity,
-            count = item.count,
-          };
-          _gameManager.AdManager.AddHintByAdv(addedHint);
+            // title = title,
+            message = messageConfirm,
+            showCancelButton = true
+          });
+
+          var result = await dialogConfirm.ShowAndHide();
+          if (result.isOk)
+          {
+            var addedHint = new ShopAdvBuyItem<TypeEntity>()
+            {
+              typeItem = item.entity.typeEntity,
+              count = item.count,
+            };
+            _gameManager.AdManager.AddHintByAdv(addedHint);
+          }
         };
 
       _listItems.Add(blokItem);
@@ -294,23 +311,39 @@ public class UIShop : UILocaleBase
       buttonForAdv.Q<VisualElement>("Img").style.backgroundImage = new StyleBackground(_gameSetting.spriteAdv);
       buttonForAdv.Q<VisualElement>("Img").style.unityBackgroundImageTintColor
         = new StyleColor(_gameManager.Theme.entityColor);
-      buttonForAdv.Q<Label>("Text").text = await Helpers.GetLocalizedPluralString(
-        "buyadv",
-         new Dictionary<string, object> {
-            {"count", item.count}
-        }
-      );
-      buttonForAdv.clickable.clicked += () =>
+      // buttonForAdv.Q<Label>("Text").text = await Helpers.GetLocalizedPluralString(
+      //   "buyadv",
+      //    new Dictionary<string, object> {
+      //       {"count", item.count}
+      //   }
+      // );
+      buttonForAdv.clickable.clicked += async () =>
         {
           // Buy bonus for adv.
           AudioManager.Instance.Click();
-
-          var addedBonus = new ShopAdvBuyItem<TypeBonus>()
+          var messageConfirm = await Helpers.GetLocalizedPluralString(
+            "buyadv",
+            new Dictionary<string, string> {
+              {"name", title}
+            }
+          );
+          var dialogConfirm = new DialogProvider(new DataDialog()
           {
-            typeItem = item.entity.typeBonus,
-            count = item.count,
+            // title = title,
+            message = messageConfirm,
+            showCancelButton = true
+          });
+
+          var result = await dialogConfirm.ShowAndHide();
+          if (result.isOk)
+          {
+            var addedBonus = new ShopAdvBuyItem<TypeBonus>()
+            {
+              typeItem = item.entity.typeBonus,
+              count = item.count,
+            };
+            _gameManager.AdManager.AddBonusByAdv(addedBonus);
           };
-          _gameManager.AdManager.AddBonusByAdv(addedBonus);
         };
 
       _listItems.Add(blokItem);

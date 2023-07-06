@@ -30,6 +30,7 @@ var plugin = {
     const jsonUserInfo = {
       name: player.getName(),
       photo: player.getPhoto("medium"),
+      uid: player.getUniqueID(),
     };
 
     const stringUserInfo = JSON.stringify(jsonUserInfo);
@@ -210,6 +211,28 @@ var plugin = {
           // some action on error
         },
       },
+    });
+  },
+  GetCanReview: function () {
+    ysdk.feedback.canReview().then(({ value, reason }) => {
+      console.log("GetCanReview: ", value, reason);
+      myGameInstance.SendMessage("AdManager", "SetCanReview", value);
+    });
+  },
+  RateGame: function () {
+    ysdk.feedback.canReview().then(({ value, reason }) => {
+      if (value) {
+        ysdk.feedback.requestReview().then(({ feedbackSent }) => {
+          console.log(feedbackSent);
+          myGameInstance.SendMessage(
+            "AdManager",
+            "SetRateGame",
+            stringResponse
+          );
+        });
+      } else {
+        console.log(reason);
+      }
     });
   },
 };

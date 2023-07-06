@@ -435,6 +435,14 @@ MonoBehaviour:
     m_Key: request_error
     m_Metadata:
       m_Items: []
+  - m_Id: 2019490872328192
+    m_Key: help_dod_dialog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2028775245250560
+    m_Key: dialog_rategame_message
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
