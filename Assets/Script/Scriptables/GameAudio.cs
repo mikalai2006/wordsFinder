@@ -9,16 +9,14 @@ public class GameAudio : ScriptableObject
   public AudioClip removeChar;
   public AudioClip openHiddenChar;
   public AudioClip openHintChar;
-  public AudioClip openWord;
   public AudioClip existWord;
   public AudioClip noWord;
-  public AudioClip bgMusic;
-  public AudioClip addToColba;
+  public AudioClip addToFlask;
   public AudioClip addCoin;
   public AudioClip calculateCoin;
   public AudioClip clickButton;
-  public AudioClip runEffect;
 
+  public AudioClip openWord;
   [Header("Bonus")]
   public AudioClip addBonus;
 }

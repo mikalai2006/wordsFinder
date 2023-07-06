@@ -1,23 +1,23 @@
 var plugin = {
   Loaded: function () {},
   SaveExtern: function (data) {
-    console.group("SaveExtern");
     var dataString = UTF8ToString(data);
     var jsonUserData = JSON.parse(dataString);
 
     player.setData(jsonUserData);
 
-    console.log(jsonUserData);
-    console.groupEnd();
+    // console.group("SaveExtern");
+    // console.log(jsonUserData);
+    // console.groupEnd();
   },
   LoadExtern: function () {
     player.getData().then((jsonUserData) => {
       const stringUserData = JSON.stringify(jsonUserData);
 
-      console.group("LoadExtern");
-      console.log(jsonUserData);
-      console.log(stringUserData);
-      console.groupEnd();
+      // console.group("LoadExtern");
+      // console.log(jsonUserData);
+      // console.log(stringUserData);
+      // console.groupEnd();
 
       myGameInstance.SendMessage(
         "DataManager",
@@ -34,9 +34,9 @@ var plugin = {
 
     const stringUserInfo = JSON.stringify(jsonUserInfo);
 
-    console.group("GetUserInfoExtern");
-    console.log(jsonUserInfo);
-    console.groupEnd();
+    // console.group("GetUserInfoExtern");
+    // console.log(jsonUserInfo);
+    // console.groupEnd();
 
     myGameInstance.SendMessage("DataManager", "SetUserInfo", stringUserInfo);
   },
@@ -46,12 +46,12 @@ var plugin = {
     var buffer = _malloc(bufferSize);
     stringToUTF8(lang, buffer, bufferSize);
 
-    console.log("GetLang ", lang);
+    // console.log("GetLang ", lang);
 
     return buffer;
   },
   SetToLeaderBoard: function (value) {
-    console.log("SetToLeaderBoard", value);
+    // console.log("SetToLeaderBoard", value);
     ysdk.getLeaderboards().then((lb) => {
       ysdk
         .isAvailableMethod("leaderboards.setLeaderboardScore")
@@ -95,9 +95,9 @@ var plugin = {
           });
         }
 
-        console.group("GetLeaderBoard");
-        console.log(result);
-        console.groupEnd();
+        // console.group("GetLeaderBoard");
+        // console.log(result);
+        // console.groupEnd();
 
         const stringResult = JSON.stringify(result);
         myGameInstance.SendMessage(
@@ -109,82 +109,81 @@ var plugin = {
     });
   },
   AddCoinsExtern: function (value) {
-    console.log("AddCoinsExtern", value);
-
+    // console.log("AddCoinsExtern", value);
     ysdk.adv.showRewardedVideo({
       callbacks: {
-        onOpen: () => {
-          console.log("Video ad open.");
-        },
+        // onOpen: () => {
+        //   console.log("Video ad open.");
+        // },
         onRewarded: () => {
-          console.log("Rewarded add coin!");
+          // console.log("Rewarded add coin!");
           myGameInstance.SendMessage("DataManager", "AddCoins", value);
         },
-        onClose: () => {
-          console.log("Video ad closed.");
-        },
-        onError: (e) => {
-          console.log("Error while open video ad:", e);
-        },
+        // onClose: () => {
+        //   console.log("Video ad closed.");
+        // },
+        // onError: (e) => {
+        //   console.log("Error while open video ad:", e);
+        // },
       },
     });
   },
   AddHintExtern: function (data) {
     var dataString = UTF8ToString(data);
-    console.log("AddHintExtern", dataString);
+    // console.log("AddHintExtern", dataString);
 
     ysdk.adv.showRewardedVideo({
       callbacks: {
-        onOpen: () => {
-          console.log("Video ad open.");
-        },
+        // onOpen: () => {
+        //   console.log("Video ad open.");
+        // },
         onRewarded: () => {
-          console.log("Rewarded from hint!");
+          // console.log("Rewarded from hint!");
           var dataJson = JSON.parse(dataString);
           const stringResponse = JSON.stringify(dataJson);
 
           myGameInstance.SendMessage("DataManager", "AddHint", stringResponse);
         },
-        onClose: () => {
-          console.log("Video ad closed.");
-        },
-        onError: (e) => {
-          console.log("Error while open video ad:", e);
-        },
+        // onClose: () => {
+        //   console.log("Video ad closed.");
+        // },
+        // onError: (e) => {
+        //   console.log("Error while open video ad:", e);
+        // },
       },
     });
   },
   OpenCharExtern: function () {
-    console.log("OpenCharExtern");
+    // console.log("OpenCharExtern");
 
     ysdk.adv.showRewardedVideo({
       callbacks: {
-        onOpen: () => {
-          console.log("Video ad open.");
-        },
+        // onOpen: () => {
+        //   console.log("Video ad open.");
+        // },
         onRewarded: () => {
           console.log("Rewarded from open char!");
 
           myGameInstance.SendMessage("DataManager", "OpenChar");
         },
-        onClose: () => {
-          console.log("Video ad closed.");
-        },
-        onError: (e) => {
-          console.log("Error while open video ad:", e);
-        },
+        // onClose: () => {
+        //   console.log("Video ad closed.");
+        // },
+        // onError: (e) => {
+        //   console.log("Error while open video ad:", e);
+        // },
       },
     });
   },
   AddBonusExtern: function (data) {
     var dataString = UTF8ToString(data);
-    console.log("AddBonusExtern", dataString);
+    // console.log("AddBonusExtern", dataString);
 
     ysdk.adv.showRewardedVideo({
       callbacks: {
-        onOpen: () => {
-          console.log("Video ad open.");
-        },
+        // onOpen: () => {
+        //   console.log("Video ad open.");
+        // },
         onRewarded: () => {
           console.log("Rewarded from bonus!");
           var dataJson = JSON.parse(dataString);
@@ -192,12 +191,12 @@ var plugin = {
 
           myGameInstance.SendMessage("DataManager", "AddBonus", stringResponse);
         },
-        onClose: () => {
-          console.log("Video ad closed.");
-        },
-        onError: (e) => {
-          console.log("Error while open video ad:", e);
-        },
+        // onClose: () => {
+        //   console.log("Video ad closed.");
+        // },
+        // onError: (e) => {
+        //   console.log("Error while open video ad:", e);
+        // },
       },
     });
   },

@@ -42,7 +42,6 @@ public class UIShop : UILocaleBase
 
     ChangeTheme();
 
-    base.Initialize(_root);
   }
 
 
@@ -51,6 +50,9 @@ public class UIShop : UILocaleBase
     _root.Q<VisualElement>("ShopBlokWrapper").style.backgroundColor = new StyleColor(_gameManager.Theme.bgColor);
 
     FillItems();
+    DrawBalance();
+
+    base.Initialize(_root);
   }
 
 
@@ -59,7 +61,7 @@ public class UIShop : UILocaleBase
     _root.style.display = DisplayStyle.None;
   }
 
-  private async void FillItems()
+  private void DrawBalance()
   {
     var wrapperBalance = _root.Q<VisualElement>("WrapperBalance");
     wrapperBalance.Clear();
@@ -71,7 +73,12 @@ public class UIShop : UILocaleBase
     blokBalance.Q<Label>("Coin").text = string.Format("{0}", _gameManager.StateManager.stateGame.coins);
     wrapperBalance.Add(blokBalance);
 
+    base.Theming(wrapperBalance);
+  }
 
+  private async void FillItems()
+  {
+    var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
     _listItems.Clear();
 
     foreach (var item in _gameSetting.ShopItems)
@@ -91,7 +98,9 @@ public class UIShop : UILocaleBase
             {"count",  item.cost},
           }
         );
-      // blokItem.Q<Label>("Price").text = string.Format("{0} <size=12>{1}</size>", item.cost, textCost);
+      blokItem.Q<Label>("Price").text = string.Format("{0}", item.cost);
+      blokItem.Q<VisualElement>("CoinSmallImg").style.backgroundImage = new StyleBackground(configCoin.sprite);
+      blokItem.Q<VisualElement>("CoinSmallImg").style.unityBackgroundImageTintColor = _gameManager.Theme.colorSecondary;
 
       // var description = await Helpers.GetLocaledString(item.entity.text.description);
       // blokItem.Q<Label>("Description").text = string.Format(
@@ -208,6 +217,9 @@ public class UIShop : UILocaleBase
           }
         );
 
+      blokItem.Q<Label>("Price").text = string.Format("{0}", item.cost);
+      blokItem.Q<VisualElement>("CoinSmallImg").style.backgroundImage = new StyleBackground(configCoin.sprite);
+      blokItem.Q<VisualElement>("CoinSmallImg").style.unityBackgroundImageTintColor = _gameManager.Theme.colorSecondary;
       // var description = await Helpers.GetLocaledString(item.entity.text.description);
       // blokItem.Q<Label>("Description").text = string.Format(
       //   "{0}",
@@ -304,7 +316,6 @@ public class UIShop : UILocaleBase
       _listItems.Add(blokItem);
     }
 
-
   }
 
   private async UniTask BuyBonus(ShopItem<GameBonus> item)
@@ -361,6 +372,8 @@ public class UIShop : UILocaleBase
       await dialog.ShowAndHide();
     }
 
+    DrawBalance();
+
     _gameManager.InputManager.Enable();
   }
 
@@ -416,6 +429,7 @@ public class UIShop : UILocaleBase
       await dialog.ShowAndHide();
     }
 
+    DrawBalance();
     _gameManager.InputManager.Enable();
   }
 

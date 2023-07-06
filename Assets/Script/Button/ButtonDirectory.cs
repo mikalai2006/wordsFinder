@@ -11,7 +11,7 @@ public class ButtonDirectory : BaseButton
     spriteBg.sprite = _gameSetting.spriteDirectory;
     spriteMask.sprite = _gameSetting.spriteDirectory;
 
-    // interactible = false;
+    interactible = false;
     // isShowCounter = false;
 
     StateManager.OnChangeState += SetValue;

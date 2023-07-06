@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Audio: {fileID: 11400000, guid: 8f34d19db11906f4b8a97ad95ea85df1, type: 2}
   PrefabSymbol: {fileID: 7149879278780047571, guid: e7419d168977efa48a744d43a95bae4e, type: 3}
-  ThemeDefault: {fileID: 11400000, guid: 0f339b6dd6dd46244ae9c9d8e6d537ab, type: 2}
+  ThemeDefault: {fileID: 11400000, guid: 523cefe3a73243e47b0457cff73ee60b, type: 2}
   PlayerSetting:
   - {fileID: 11400000, guid: b57b9e953e14d084dbf1e284147084c7, type: 2}
   - {fileID: 11400000, guid: c74f5f99da2ab024b85faf3c9958078f, type: 2}
@@ -56,7 +56,7 @@ MonoBehaviour:
   ShopItems:
   - entity: {fileID: 11400000, guid: 2be5099a5ef97d84db2786c20dfcafde, type: 2}
     count: 1
-    cost: 200
+    cost: 100
   - entity: {fileID: 11400000, guid: 4029cdca5db16194890ed31906de574b, type: 2}
     count: 1
     cost: 500
@@ -69,10 +69,10 @@ MonoBehaviour:
   ShopItemsBonus:
   - entity: {fileID: 11400000, guid: 257080754fd05bf478e8de6f8b9b610b, type: 2}
     count: 1
-    cost: 0
+    cost: 300
   - entity: {fileID: 11400000, guid: a01ec9408590b6b4f8ff0abb0aa4f9a1, type: 2}
     count: 1
-    cost: 0
+    cost: 300
   noName:
     title:
       m_TableReference:
@@ -138,6 +138,7 @@ MonoBehaviour:
         m_LocalVariables: []
     locale: {fileID: 11400000, guid: f796f6838dd00ce4a8ab6567f20572b0, type: 2}
     file: {fileID: 4900000, guid: 7d6956f25003465479a81103aab1600d, type: 3}
+  adsPerTime: 2
   references:
     version: 2
     RefIds: []

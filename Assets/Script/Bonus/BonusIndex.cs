@@ -22,16 +22,16 @@ public class BonusIndex : BaseBonus
 
     if (value == 0) return;
 
-    SetValueProgressBar(state);
+    // SetValueProgressBar(state);
   }
 
-  public override void SetValueProgressBar(StateGame state)
-  {
-    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY;
+  // public override void SetValueProgressBar(StateGame state)
+  // {
+  //   var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY;
 
-    spriteProgress.transform
-      .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
-      .SetEase(Ease.OutBounce);
-  }
+  //   spriteProgress.transform
+  //     .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
+  //     .SetEase(Ease.OutBounce);
+  // }
 
 }

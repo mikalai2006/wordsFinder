@@ -47,7 +47,7 @@ public abstract class UILocaleBase : MonoBehaviour
     List<VisualElement> listDragEl = builderDrag.Class("unity-base-slider__dragger").ToList();
     foreach (var item in listDragEl)
     {
-      item.style.backgroundColor = _gameManager.Theme.colorPrimary;
+      item.style.backgroundColor = _gameManager.Theme.colorSecondary;
     }
 
     UQueryBuilder<VisualElement> builderInput = new UQueryBuilder<VisualElement>(_box);

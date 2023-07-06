@@ -25,7 +25,7 @@ public class AdManager : Singleton<LevelManager>
   {
     var diffDate = DateTime.Now - DateTime.Parse(lastTimeShowAdv);
 
-    if (diffDate.TotalMinutes > 5)
+    if (diffDate.TotalMinutes > (double)_gameSetting.adsPerTime)
     {
 #if ysdk
       ShowAdvFullScreen();

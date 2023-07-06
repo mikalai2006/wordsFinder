@@ -49,14 +49,15 @@ public class UIDirectory : UILocaleBase
     _root.Q<Label>("TotalText").text = textCountWords;
 
     ChangeTheme();
-
-    base.Initialize(_root);
   }
 
   private void ChangeTheme()
   {
     _root.Q<VisualElement>("DirectoryBlokWrapper").style.backgroundColor = new StyleColor(_gameManager.Theme.bgColor);
+
     FillItems();
+
+    base.Initialize(_root);
   }
 
   private void Hide()

@@ -24,22 +24,22 @@ public class BonusSaveHintLetter : BaseBonus
 
     if (value == 0) return;
 
-    SetValueProgressBar(state);
+    // SetValueProgressBar(state);
   }
 
-  public override void SetValueProgressBar(StateGame state)
-  {
-    var valueBonus = state.activeDataGame.bonus.Where(t => t.Key == configBonus.typeBonus);
-    if (valueBonus != null)
-    {
+  // public override void SetValueProgressBar(StateGame state)
+  // {
+  //   var valueBonus = state.activeDataGame.bonus.Where(t => t.Key == configBonus.typeBonus);
+  //   if (valueBonus != null)
+  //   {
 
-      var val = valueBonus.FirstOrDefault().Value;
-      var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)val / configBonus.value;
+  //     var val = valueBonus.FirstOrDefault().Value;
+  //     var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)val / configBonus.value;
 
-      spriteProgress.transform
-        .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
-        .SetEase(Ease.OutBounce);
-    }
-  }
+  //     spriteProgress.transform
+  //       .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
+  //       .SetEase(Ease.OutBounce);
+  //   }
+  // }
 
 }

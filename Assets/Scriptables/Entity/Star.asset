@@ -42,6 +42,8 @@ MonoBehaviour:
   activateEffect: {fileID: 0}
   MoveEffect: {fileID: 2774052391728124364, guid: f2cd3aa17054ce84f85ff5b1e7fdd2fd, type: 3}
   isUseGenerator: 1
+  soundRunEntity: {fileID: 8300000, guid: c73be4d75c3f1f24abfb7bfb9963d613, type: 3}
+  soundAddEntity: {fileID: 8300000, guid: d0b46ff8b8b20ad48a34379b7ca59dcc, type: 3}
   references:
     version: 2
     RefIds: []

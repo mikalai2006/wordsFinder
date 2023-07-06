@@ -80,6 +80,11 @@ public class GameSetting : ScriptableObject
   [Space(5)]
   [Header("Directory words")]
   public List<WordsFile> wordFiles;
+
+
+  [Space(5)]
+  [Header("Ads")]
+  public int adsPerTime;
 }
 
 [System.Serializable]

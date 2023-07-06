@@ -142,12 +142,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3431009346551808
-    m_Localized: Buy {count} for {cost} coin{cost:|s}
+    m_Localized: 'Get
+
+      for {cost} coin{cost:|s}'
     m_Metadata:
       m_Items:
       - rid: 366248018379538446
   - m_Id: 3431140439523328
-    m_Localized: Get {count} per view ads
+    m_Localized: 'Get
+
+      per view ads'
     m_Metadata:
       m_Items:
       - rid: 366248018379538446
@@ -449,10 +453,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1095655025180672
-    m_Localized: 'The <b>{name}</b> section is {procent}% complete,
-
-      {count}
-      word{count:|s} to be found'
+    m_Localized: The <b>{name}</b> section is {procent}% complete
     m_Metadata:
       m_Items:
       - rid: 366248018379538446

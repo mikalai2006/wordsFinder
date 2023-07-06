@@ -210,7 +210,7 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
       {
         if (isImmediatelyRun)
         {
-          _gameManager.audioManager.PlayClipEffect(_gameSetting.Audio.runEffect);
+          _gameManager.audioManager.PlayClipEffect(configEntity.soundRunEntity);
           this.nodesForCascade = nodesForEffect;
           await OccupiedNode.OccupiedChar.ShowCharAsHint(true);
         }
@@ -221,6 +221,8 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
 
   public virtual void Collect()
   {
+
+    _gameManager.audioManager.PlayClipEffect(configEntity.soundAddEntity);
 
     _levelManager.RemoveEntity(this);
   }

@@ -94,6 +94,8 @@ public class ButtonFlask : BaseButton
     {
       var allEntity = _gameManager.ResourceSystem.GetAllEntity().Where(t => t.isUseGenerator);
       var randEntity = allEntity.OrderBy(t => UnityEngine.Random.value).ElementAt(0);
+
+      _gameManager.audioManager.PlayClipEffect(randEntity.soundAddEntity);
       _gameManager.StateManager.UseHint(1, randEntity.typeEntity);
 
       sprite = randEntity.sprite;

@@ -274,6 +274,9 @@ public class HiddenCharMB : MonoBehaviour //, IPointerDownHandler
 
     if (rayHit.collider.gameObject == gameObject)
     {
+
+      if (OccupiedNode != null && OccupiedNode.StateNode.HasFlag(StateNode.Open)) return;
+
       // Show message
       _gameManager.InputManager.Disable();
 
@@ -309,7 +312,7 @@ public class HiddenCharMB : MonoBehaviour //, IPointerDownHandler
 
   private void OpenByAds()
   {
-    Open(true);
+    ShowCharAsHint(true).Forget();
 
     DataManager.OnOpenCharExtern -= OpenByAds;
   }

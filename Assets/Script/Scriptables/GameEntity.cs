@@ -12,6 +12,8 @@ public class GameEntity : ScriptableObject
   public ParticleSystem activateEffect;
   public ParticleSystem MoveEffect;
   public bool isUseGenerator;
+  public AudioClip soundRunEntity;
+  public AudioClip soundAddEntity;
 }
 
 

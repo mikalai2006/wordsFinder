@@ -375,7 +375,7 @@ public abstract class BaseButton : MonoBehaviour, IPointerDownHandler
     float duration = .2f;
     float startTime = Time.time;
 
-    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addToColba);
+    AudioManager.Instance.PlayClipEffect(GameManager.Instance.GameSettings.Audio.addToFlask);
     while (elapsedTime < duration)
     {
       float progress = (Time.time - startTime) / duration;

@@ -486,7 +486,7 @@ public class ManagerHiddenWords : MonoBehaviour
     Entities.Clear();
     EntitiesRuntime.Clear();
 
-    Helpers.DestroyChildren(tilemapEntities.transform);
+    // Helpers.DestroyChildren(tilemapEntities.transform);
     Helpers.DestroyChildren(tilemap.transform);
 
     HiddenWords.Clear();
@@ -530,8 +530,10 @@ public class ManagerHiddenWords : MonoBehaviour
     {
 
 #if ysdk
-      SetToLeaderBoard(_stateManager.dataGame.rate);
+      SetToLeaderBoard(_stateManager.stateGame.rate);
 #endif
+
+      await _levelManager.ShowHelp(Constants.Helps.HELP_DOD_DIALOG);
 
       // Check next level status player.
       await _levelManager.CheckNextLevelPlayer();
@@ -556,6 +558,8 @@ public class ManagerHiddenWords : MonoBehaviour
       _levelManager.InitLevel(newConfigWord);
 
       _gameManager.AdManager.ShowAdvFullScr();
+
+      Helpers.DestroyChildren(tilemapEntities.transform);
     }
 
     // _gameManager.InputManager.Enable();
@@ -661,7 +665,7 @@ public class ManagerHiddenWords : MonoBehaviour
 
     OpenNeedWords.Clear();
 
-    Helpers.DestroyChildren(tilemapEntities.transform);
+    // Helpers.DestroyChildren(tilemapEntities.transform);
     Helpers.DestroyChildren(tilemap.transform);
   }
 }
