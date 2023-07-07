@@ -42,6 +42,7 @@ namespace Loader
         if (langString != LocalizationSettings.SelectedLocale.Identifier.Code)
         {
           LocalizationSettings.SelectedLocale = needSetLocale;
+          Debug.Log($"needSetLocale={needSetLocale}");
         }
       }
 

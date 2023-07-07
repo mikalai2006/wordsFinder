@@ -52,6 +52,10 @@ public struct BonusCount
   public int charCoin;
   public int errorNullBonus;
   public int errorNullOrderWord;
+  public int maxStar;
+  public int maxBomb;
+  public int maxLighting;
+  public int maxFrequency;
   // public int needCreateCoin;
 }
 

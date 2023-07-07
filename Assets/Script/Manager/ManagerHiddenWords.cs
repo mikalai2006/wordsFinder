@@ -591,17 +591,22 @@ public class ManagerHiddenWords : MonoBehaviour
 
     _stateManager.dataGame.activeLevel.hints.Clear();
 
-    var colS = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefStar;
-    var countStar = (int)System.Math.Ceiling(colS);
-    for (int i = 0; i < countStar; i++)
+    int countS;
+    _stateManager.dataGame.hints.TryGetValue(TypeEntity.Star, out countS);
+    if (countS < _gameManager.PlayerSetting.bonusCount.maxStar)
     {
-      var node = GridHelper.GetRandomNodeWithHiddenChar();
-      await _levelManager.AddEntity(node.arrKey, TypeEntity.Star, true);
+      var colS = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefStar;
+      var countStar = (int)System.Math.Ceiling(colS);
+      for (int i = 0; i < countStar; i++)
+      {
+        var node = GridHelper.GetRandomNodeWithHiddenChar();
+        await _levelManager.AddEntity(node.arrKey, TypeEntity.Star, true);
+      }
     }
 
     int countB;
     _stateManager.dataGame.hints.TryGetValue(TypeEntity.Bomb, out countB);
-    if (countB < 10)
+    if (countB < _gameManager.PlayerSetting.bonusCount.maxBomb)
     {
       var colB = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefBomb;
       var countBomb = System.Math.Round(colB);
@@ -614,7 +619,7 @@ public class ManagerHiddenWords : MonoBehaviour
 
     int countL;
     _stateManager.dataGame.hints.TryGetValue(TypeEntity.Lighting, out countL);
-    if (countL < 10)
+    if (countL < _gameManager.PlayerSetting.bonusCount.maxLighting)
     {
       var colL = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefLighting;
       var countLighting = System.Math.Round(colL);
@@ -627,7 +632,7 @@ public class ManagerHiddenWords : MonoBehaviour
 
     int countF;
     _stateManager.dataGame.hints.TryGetValue(TypeEntity.Frequency, out countF);
-    if (countF < 10)
+    if (countF < _gameManager.PlayerSetting.bonusCount.maxFrequency)
     {
       var colF = (countNeedFindWords - countNeedFindWords * _gameManager.PlayerSetting.coefDifficulty) * _gameManager.PlayerSetting.coefFrequency;
       var countFrequency = System.Math.Round(colF);

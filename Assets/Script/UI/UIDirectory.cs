@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
 using UnityEngine.UIElements;
 
@@ -96,8 +97,17 @@ public class UIDirectory : UILocaleBase
 
   private async UniTask<string> GoRequest(string word)
   {
+    await LocalizationSettings.InitializationOperation.Task;
+
+    string langForRequest = LocalizationSettings.SelectedLocale.Identifier.Code;
+    if (string.IsNullOrEmpty(langForRequest))
+    {
+      langForRequest = "ru";
+    }
+
     string path = string.Format(
       _gameSetting.APIDirectory.pathExpression,
+      langForRequest,
       word
     );
     UnityWebRequest webRequest = UnityWebRequest.Get(path);

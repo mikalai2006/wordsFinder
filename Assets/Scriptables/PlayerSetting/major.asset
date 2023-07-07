@@ -51,6 +51,10 @@ MonoBehaviour:
     charCoin: 10
     errorNullBonus: 10
     errorNullOrderWord: 4
+    maxStar: 10
+    maxBomb: 6
+    maxLighting: 6
+    maxFrequency: 6
   references:
     version: 2
     RefIds: []
