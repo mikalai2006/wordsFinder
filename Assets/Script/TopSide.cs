@@ -23,7 +23,9 @@ public class TopSide : MonoBehaviour
   // [SerializeField] private TMPro.TextMeshProUGUI _coins;
   [SerializeField] private Image _imageGridBg;
   [SerializeField] private Image _imageBonusesBg;
+  [SerializeField] private List<BaseBonus> bonusObjects;
   public Dictionary<TypeBonus, BaseBonus> Bonuses = new();
+  // [SerializeField] private GridLayoutGroup layoutGroupBonus;
   // public Vector3 spriteCoinPosition => _spriteCoin.gameObject.transform.position;
 
   private void Awake()
@@ -41,10 +43,17 @@ public class TopSide : MonoBehaviour
 
 
     var configsAllEntities = _gameManager.ResourceSystem.GetAllBonus();
-    foreach (var item in configsAllEntities)
+    List<UniTask> tasks = new();
+    for (int i = 0; i < configsAllEntities.Count; i++)
     {
-      AddBonus(item.typeBonus).Forget();
+      var item = configsAllEntities[i];
+      tasks.Add(AddBonus(item.typeBonus));
     }
+    UniTask.WhenAll(tasks);
+    // foreach (var item in bonusObjects)
+    // {
+    //   Bonuses.Add(item.Config.typeBonus, item);
+    // }
 
     // StateManager.OnChangeState += SetValue;
     GameManager.OnChangeTheme += ChangeTheme;
@@ -80,7 +89,7 @@ public class TopSide : MonoBehaviour
       bonusObject.transform
       );
     var newObj = await asset.Task;
-    newObj.transform.localPosition = new Vector3(-Bonuses.Count / 2f + .5f, 0, 0);
+    // newObj.transform.localPosition = new Vector3(-Bonuses.Count / 2f + .5f, 0, 0);
 
     var newBonus = newObj.GetComponent<BaseBonus>();
 

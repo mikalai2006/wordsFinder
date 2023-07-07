@@ -155,7 +155,6 @@ public static class Helpers
 
   public static async UniTask<Texture2D> LoadTexture(string path)
   {
-    Debug.Log($"Load {path}");
     Texture2D result = null;
 
     if (string.IsNullOrEmpty(path)) return result;

@@ -53,11 +53,11 @@ public class GameManager : StaticInstance<GameManager>
 
   void Start()
   {
-    // #if UNITY_EDITOR
-    //     Debug.unityLogger.logEnabled = true;
-    // #else
-    //     Debug.unityLogger.logEnabled = false;
-    // #endif
+#if UNITY_EDITOR
+    Debug.unityLogger.logEnabled = true;
+#else
+    Debug.unityLogger.logEnabled = false;
+#endif
 
     // ChangeState(GameState.StartApp);
 

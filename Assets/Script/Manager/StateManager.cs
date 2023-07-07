@@ -36,7 +36,7 @@ public class StateManager : MonoBehaviour
     {
       // Debug.Log($"{name} ::: Init new gamedata for [{LocalizationSettings.SelectedLocale.Identifier.Code}]");
 
-      playerSetting = _gameManager.GameSettings.PlayerSetting
+      playerSetting = _gameManager.GameSettings.PlayerSettings
         .OrderBy(t => t.countFindWordsForUp)
         .First();
 
@@ -71,7 +71,7 @@ public class StateManager : MonoBehaviour
     else
     {
       dataGame = _stateGame.items.Find(t => t.lang == codeCurrentLang).dataGame;
-      playerSetting = _gameManager.GameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
+      playerSetting = _gameManager.GameSettings.PlayerSettings.Find(t => t.idPlayerSetting == dataGame.rank);
     }
 
     stateGame = _stateGame;
@@ -91,7 +91,7 @@ public class StateManager : MonoBehaviour
       // Debug.Log($"{name} ::: Set localeStateGameItem for [{LocalizationSettings.SelectedLocale.Identifier.Code}]");
 
       stateGame.activeDataGame = dataGame = localeStateGameItem.dataGame;
-      var playerSetting = _gameManager.GameSettings.PlayerSetting.Find(t => t.idPlayerSetting == dataGame.rank);
+      var playerSetting = _gameManager.GameSettings.PlayerSettings.Find(t => t.idPlayerSetting == dataGame.rank);
       _gameManager.SetPlayerSetting(playerSetting);
     }
     else
@@ -167,6 +167,13 @@ public class StateManager : MonoBehaviour
 
     dataGame.activeLevel.bonusCount.wordInOrder += 1;
     dataGame.activeLevel.bonusCount.errorNullBonus = 0;
+    dataGame.activeLevel.bonusCount.errorNullOrderWord = 0;
+
+    if (dataGame.activeLevel.bonusCount.wordInOrder >= _gameManager.PlayerSetting.bonusCount.wordInOrder)
+    {
+      dataGame.activeLevel.bonusCount.wordInOrder -= _gameManager.PlayerSetting.bonusCount.wordInOrder;
+      UseBonus(1, TypeBonus.Index);
+    }
 
     RefreshData(false);
   }
@@ -184,7 +191,13 @@ public class StateManager : MonoBehaviour
 
     dataGame.activeLevel.bonusCount.wordInOrder += 1;
     dataGame.activeLevel.bonusCount.errorNullBonus = 0;
+    dataGame.activeLevel.bonusCount.errorNullOrderWord = 0;
 
+    if (dataGame.activeLevel.bonusCount.wordInOrder >= _gameManager.PlayerSetting.bonusCount.wordInOrder)
+    {
+      dataGame.activeLevel.bonusCount.wordInOrder -= _gameManager.PlayerSetting.bonusCount.wordInOrder;
+      UseBonus(1, TypeBonus.Index);
+    }
     // statePerk.countWordInOrder += 1;
     // statePerk.countErrorForNullBonus = 0;
 
@@ -272,8 +285,12 @@ public class StateManager : MonoBehaviour
     if (word.Length > 1)
     {
       dataGame.activeLevel.bonusCount.errorNullBonus++;
+      dataGame.activeLevel.bonusCount.errorNullOrderWord++;
     }
-
+    if (dataGame.activeLevel.bonusCount.errorNullOrderWord == _gameManager.PlayerSetting.bonusCount.errorNullOrderWord)
+    {
+      dataGame.activeLevel.bonusCount.wordInOrder = 0;
+    }
     if (dataGame.activeLevel.bonusCount.errorNullBonus == _gameManager.PlayerSetting.bonusCount.errorNullBonus)
     {
       dataGame.activeLevel.bonusCount.wordInOrder = 0;
@@ -393,7 +410,7 @@ public class StateManager : MonoBehaviour
     if (dataGame.rate < countFindWordsForUp) return null;
 
 
-    var allPlayerSettings = _gameSetting.PlayerSetting.OrderBy(t => t.countFindWordsForUp).ToList();
+    var allPlayerSettings = _gameSetting.PlayerSettings.OrderBy(t => t.countFindWordsForUp).ToList();
 
     int indexPlayerSetting = allPlayerSettings.FindIndex(t => t.idPlayerSetting == _gameManager.PlayerSetting.idPlayerSetting);
 
@@ -456,6 +473,11 @@ public class StateManager : MonoBehaviour
     // await _levelManager.topSide.AddBonus(typeBonus);
 
     // RefreshData();
+    if (count > 0)
+    {
+      _gameManager.audioManager.PlayClipEffect(_gameSetting.Audio.addBonus);
+    }
+
     OnChangeState?.Invoke(stateGame);
   }
 

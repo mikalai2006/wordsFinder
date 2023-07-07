@@ -238,6 +238,10 @@
     color: rgb(255, 255, 255);
 }
 
+.text-wrap {
+    white-space: normal;
+}
+
 .header {
     background-color: rgba(0, 0, 0, 0.2);
     -unity-font-style: bold;

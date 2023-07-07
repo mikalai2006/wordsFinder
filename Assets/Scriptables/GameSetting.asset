@@ -15,7 +15,7 @@ MonoBehaviour:
   Audio: {fileID: 11400000, guid: 8f34d19db11906f4b8a97ad95ea85df1, type: 2}
   PrefabSymbol: {fileID: 7149879278780047571, guid: e7419d168977efa48a744d43a95bae4e, type: 3}
   ThemeDefault: {fileID: 11400000, guid: 523cefe3a73243e47b0457cff73ee60b, type: 2}
-  PlayerSetting:
+  PlayerSettings:
   - {fileID: 11400000, guid: b57b9e953e14d084dbf1e284147084c7, type: 2}
   - {fileID: 11400000, guid: c74f5f99da2ab024b85faf3c9958078f, type: 2}
   - {fileID: 11400000, guid: 4d273518aa34c7645bfda59536cd7088, type: 2}
@@ -40,6 +40,7 @@ MonoBehaviour:
   spriteBuy: {fileID: 21300000, guid: 3c7959c56fe59aa43a320d194c7962a3, type: 3}
   spriteInfo: {fileID: 21300000, guid: 4650a140dc17cae45bd840ee53efe598, type: 3}
   spriteDouble: {fileID: 21300000, guid: 2450c012d2d6c24468b89adeb1918e62, type: 3}
+  spriteUser: {fileID: 21300000, guid: d94185b46cb54c14f94d79544f773b22, type: 3}
   debounceTime: 1000
   timeDelayOverChar: 47
   GameLevels:
@@ -138,7 +139,9 @@ MonoBehaviour:
         m_LocalVariables: []
     locale: {fileID: 11400000, guid: f796f6838dd00ce4a8ab6567f20572b0, type: 2}
     file: {fileID: 4900000, guid: 7d6956f25003465479a81103aab1600d, type: 3}
-  adsPerTime: 2
+  adsPerTime: 1
+  minRateForReview: 0
+  countCoinForReview: 0
   references:
     version: 2
     RefIds: []

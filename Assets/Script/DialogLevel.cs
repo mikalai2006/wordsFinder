@@ -191,8 +191,8 @@ public class DialogLevel : MonoBehaviour
       if (indexBonus != null)
       {
         indexBonus.SetSortOrder(60);
-        indexBonus.gameObject.transform
-          .DOMove(spriteCoin.transform.localPosition + new Vector3(0.4f, 4f), duration)
+        indexBonus.bonusObject.gameObject.transform
+          .DOMove(spriteCoin.transform.position + new Vector3(0.3f, 0, 0), duration) // new Vector3(-2.9f, 6.13f, 0)
           .OnComplete(async () =>
           {
             for (int i = countCoinLevel; i <= _countTotalOfByIndex; i++)
@@ -291,6 +291,8 @@ public class DialogLevel : MonoBehaviour
 
   public async void CloseDialogEndRound()
   {
+    _gameManager.audioManager.Click();
+
     DataManager.OnAddCoins -= OnDoubleCoins;
 
     int valueIndexBonus = _stateManager.dataGame.bonus.Where(t => t.Key == TypeBonus.Index).FirstOrDefault().Value;
@@ -301,14 +303,13 @@ public class DialogLevel : MonoBehaviour
 
     if (bonusIndexObject != null)
     {
-      bonusIndexObject.SetDefault();
+      bonusIndexObject.SetDefaultWithAnimate();
     }
 
     _stateManager.UseBonus(-valueIndexBonus, TypeBonus.Index);
 
-    _gameManager.audioManager.Click();
-
     GoCoins();
+
     await UniTask.Delay(500);
 
     // _levelManager.buttonHint.gameObject.transform

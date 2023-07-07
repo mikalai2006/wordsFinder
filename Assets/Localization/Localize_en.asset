@@ -559,6 +559,11 @@ MonoBehaviour:
       to leave a review?'
     m_Metadata:
       m_Items: []
+  - m_Id: 2266024218099712
+    m_Localized: The main stage of the game has been successfully completed! You
+      can increase your ranking by completing random word search tasks.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

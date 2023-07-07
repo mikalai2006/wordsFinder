@@ -40,6 +40,8 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   value: 10
+  isAlways: 0
+  isMybeGenerate: 1
   references:
     version: 2
     RefIds: []

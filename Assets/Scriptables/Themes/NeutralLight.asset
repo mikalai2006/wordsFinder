@@ -39,7 +39,7 @@ MonoBehaviour:
   colorSecondary: {r: 0.4509804, g: 0.39607844, b: 0.2901961, a: 1}
   colorAccent: {r: 0.16078432, g: 0.14117648, b: 0.09411765, a: 1}
   entityColor: {r: 0.4245283, g: 0.38008273, b: 0.29436633, a: 1}
-  colorDisable: {r: 0.7411765, g: 0.64705884, b: 0.5137255, a: 1}
+  colorDisable: {r: 0.6415094, g: 0.5900676, b: 0.48718402, a: 1}
   entityColorAsBonus: {r: 0.8666667, g: 0.64705884, b: 0, a: 1}
   colorBgHint: {r: 0.6509434, g: 0.59055716, b: 0.46978462, a: 1}
   colorTextHint: {r: 0.32156864, g: 0.28235295, b: 0.22352943, a: 1}

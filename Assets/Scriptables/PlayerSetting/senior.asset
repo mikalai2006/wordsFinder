@@ -50,6 +50,7 @@ MonoBehaviour:
     charLighting: 120
     charCoin: 10
     errorNullBonus: 5
+    errorNullOrderWord: 2
   references:
     version: 2
     RefIds: []

@@ -443,6 +443,10 @@ MonoBehaviour:
     m_Key: dialog_rategame_message
     m_Metadata:
       m_Items: []
+  - m_Id: 2266024218099712
+    m_Key: endheadprogress
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -28,7 +28,7 @@ public class ProgressManager : MonoBehaviour
   public void Refresh()
   {
     var activeDataGame = _stateManager.stateGame.activeDataGame;
-    var allSettings = _gameSetting.PlayerSetting.OrderBy(t => t.countFindWordsForUp).ToList();
+    var allSettings = _gameSetting.PlayerSettings.OrderBy(t => t.countFindWordsForUp).ToList();
 
     int indexPlayerSetting = allSettings.FindIndex(t => t.idPlayerSetting == activeDataGame.rank);
 

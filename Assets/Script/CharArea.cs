@@ -6,7 +6,7 @@ public class CharArea : MonoBehaviour, IPointerMoveHandler
   private LevelManager _levelManager => GameManager.Instance.LevelManager;
   private GameSetting _gameSettings => GameManager.Instance.GameSettings;
   private GameManager _gameManager => GameManager.Instance;
-  [SerializeField] private BoxCollider2D _collider;
+  // [SerializeField] private CircleCollider2D _collider;
   private Camera _camera;
 
   private void Awake()

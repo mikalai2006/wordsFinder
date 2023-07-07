@@ -11,7 +11,7 @@ public class GameSetting : ScriptableObject
 
   public GameTheme ThemeDefault;
 
-  public List<GamePlayerSetting> PlayerSetting;
+  public List<GamePlayerSetting> PlayerSettings;
 
   [Space(5)]
   [Header("Game")]

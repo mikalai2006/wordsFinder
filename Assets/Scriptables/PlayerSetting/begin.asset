@@ -42,14 +42,15 @@ MonoBehaviour:
   coefLighting: 0.05
   bonusCount:
     charInOrder: 30
-    wordInOrder: 10
+    wordInOrder: 6
     charBonus: 50
     charStar: 20
     charHint: 40
     charBomb: 60
     charLighting: 80
     charCoin: 10
-    errorNullBonus: 25
+    errorNullBonus: 10
+    errorNullOrderWord: 6
   references:
     version: 2
     RefIds: []

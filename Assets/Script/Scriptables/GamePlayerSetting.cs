@@ -51,6 +51,7 @@ public struct BonusCount
   public int charLighting;
   public int charCoin;
   public int errorNullBonus;
+  public int errorNullOrderWord;
   // public int needCreateCoin;
 }
 

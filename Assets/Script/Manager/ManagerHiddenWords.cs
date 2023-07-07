@@ -509,6 +509,7 @@ public class ManagerHiddenWords : MonoBehaviour
   {
     _gameManager.InputManager.Disable();
 
+    await UniTask.Delay(1000);
     // _levelManager.buttonBomb.Hide();
     // _levelManager.buttonHint.Hide();
     // _levelManager.buttonLighting.Hide();

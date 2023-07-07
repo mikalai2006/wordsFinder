@@ -11,6 +11,14 @@ public class BonusSaveHintLetter : BaseBonus
     // order.sortingOrder = 25;
 
     base.Awake();
+
+    StateManager.OnChangeState += SetValue;
+  }
+  protected override void OnDestroy()
+  {
+    StateManager.OnChangeState -= SetValue;
+
+    base.OnDestroy();
   }
   #endregion
 

@@ -59,7 +59,7 @@ public class UIDashboard : UILocaleBase
 
 
 #if UNITY_EDITOR
-    _gameManager.DataManager.GetLeaderBoard("{\"leaderboard\":{\"title\":[{\"lang\":\"ru\",\"value\":\"Лидеры по количеству слов\"}]},\"userRank\":25,\"entries\":[{\"rank\":24,\"score\":90,\"name\":\"Tamara Ivanovna Semenovatoreva\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"},{\"rank\":25,\"score\":80,\"name\":\"Mikalai P.2\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"},{\"rank\":26,\"score\":70,\"name\":\"Mikalai P.3\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"}]}");
+    _gameManager.DataManager.GetLeaderBoard("{\"leaderboard\":{\"title\":[{\"lang\":\"ru\",\"value\":\"Лидеры по количеству слов\"}]},\"userRank\":25,\"entries\":[{\"rank\":24,\"score\":90,\"name\":\"Tamara Ivanovna Semenovatoreva\",\"lang\":\"ru\",\"photo\":\"\"},{\"rank\":25,\"score\":80,\"name\":\"Mikalai P.2\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"},{\"rank\":26,\"score\":70,\"name\":\"Mikalai P.3\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"}]}");
 #endif
 #if ysdk
     GetLeaderBoard();
@@ -209,6 +209,7 @@ public class UIDashboard : UILocaleBase
       else
       {
         ava.style.backgroundImage = new StyleBackground(_gameSetting.spriteUser);
+        ava.style.unityBackgroundImageTintColor = _gameManager.Theme.colorSecondary;
       }
 
       var score = blok.Q<Label>("Score");
@@ -232,47 +233,69 @@ public class UIDashboard : UILocaleBase
 
     var blok = UserInfoDoc.Instantiate();
 
-    var progress = blok.Q<VisualElement>("ProgressBar");
-    progress.style.backgroundColor = new StyleColor(_gameManager.Theme.colorAccent);
-
-    var nameFile = blok.Q<Label>("NameFile");
-    var status = blok.Q<Label>("Status");
-    var foundWords = blok.Q<Label>("FoundWords");
-
-    // blok.Q<Label>("Rate").text = string.Format("{0}", stateGame.rate);
-    // blok.Q<VisualElement>("RateImg").style.backgroundImage = new StyleBackground(_gameSettings.spriteRate);
-
-    // var textCoin = await Helpers.GetLocalizedPluralString(
-    //       "coin",
-    //        new Dictionary<string, object> {
-    //         {"count",  stateGame.coins},
-    //       }
-    //     );
-    // blok.Q<Label>("Coin").text = string.Format("{0} <size=12>{1}</size>", dataGame.activeLevel.coins, textCoin);
-    // var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
-    // blok.Q<VisualElement>("CoinImg").style.backgroundImage = new StyleBackground(configCoin.sprite);
-
-    var titleFile = _gameManager.GameSettings.wordFiles.Find(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code);
-    nameFile.text = await Helpers.GetLocaledString(titleFile.text.title);
+    var progressBlok = blok.Q<VisualElement>("ProgressBlok");
 
     var playerSetting = _gameManager.PlayerSetting;
     _gameManager.Progress.Refresh();
 
-    var percentFindWords = _gameManager.Progress.percent;
-    progress.style.width = new StyleLength(new Length(percentFindWords, LengthUnit.Percent));
+    var nameFile = blok.Q<Label>("NameFile");
+    var titleFile = _gameManager.GameSettings.wordFiles.Find(t => t.locale.Identifier.Code == LocalizationSettings.SelectedLocale.Identifier.Code);
+    nameFile.text = await Helpers.GetLocaledString(titleFile.text.title);
 
-    string nameStatus = await Helpers.GetLocaledString(playerSetting.text.title);
-    status.text = nameStatus;
 
-    var textCountWords = await Helpers.GetLocalizedPluralString(
-          "foundwords_dialog",
-           new Dictionary<string, object> {
+    var allPlayerSetting = _gameSetting.PlayerSettings.OrderBy(t => -t.countFindWordsForUp).First();
+
+    if (_gameManager.StateManager.stateGame.rate >= allPlayerSetting.countFindWordsForUp)
+    {
+      progressBlok.Clear();
+      Label newLabel = new Label()
+      {
+        text = await Helpers.GetLocaledString("endheadprogress"),
+      };
+      newLabel.AddToClassList("text-primary");
+      newLabel.AddToClassList("text-wrap");
+      newLabel.AddToClassList("text-xs");
+      progressBlok.Add(newLabel);
+    }
+    else
+    {
+
+      var progress = blok.Q<VisualElement>("ProgressBar");
+      progress.style.backgroundColor = new StyleColor(_gameManager.Theme.colorAccent);
+
+      var status = blok.Q<Label>("Status");
+      var foundWords = blok.Q<Label>("FoundWords");
+
+      var percentFindWords = _gameManager.Progress.percent;
+      progress.style.width = new StyleLength(new Length(percentFindWords, LengthUnit.Percent));
+
+      string nameStatus = await Helpers.GetLocaledString(playerSetting.text.title);
+      status.text = nameStatus;
+
+      var textCountWords = await Helpers.GetLocalizedPluralString(
+            "foundwords_dialog",
+             new Dictionary<string, object> {
             {"name", nameStatus},
             {"count",  _gameManager.Progress.countNeedOpenWords},
             {"procent",  percentFindWords},
-          }
-        );
-    foundWords.text = string.Format("{0}", textCountWords);
+            }
+          );
+      foundWords.text = string.Format("{0}", textCountWords);
+
+      // blok.Q<Label>("Rate").text = string.Format("{0}", stateGame.rate);
+      // blok.Q<VisualElement>("RateImg").style.backgroundImage = new StyleBackground(_gameSettings.spriteRate);
+
+      // var textCoin = await Helpers.GetLocalizedPluralString(
+      //       "coin",
+      //        new Dictionary<string, object> {
+      //         {"count",  stateGame.coins},
+      //       }
+      //     );
+      // blok.Q<Label>("Coin").text = string.Format("{0} <size=12>{1}</size>", dataGame.activeLevel.coins, textCoin);
+      // var configCoin = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+      // blok.Q<VisualElement>("CoinImg").style.backgroundImage = new StyleBackground(configCoin.sprite);
+
+    }
 
 
     var _newGameButton = blok.Q<Button>("NewGameBtn");
@@ -332,6 +355,7 @@ public class UIDashboard : UILocaleBase
     else
     {
       imgAva.style.backgroundImage = new StyleBackground(_gameSetting.spriteUser);
+      imgAva.style.unityBackgroundImageTintColor = _gameManager.Theme.colorSecondary;
     }
 
     _userInfoBlok.Clear();

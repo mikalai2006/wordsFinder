@@ -8,23 +8,15 @@
         <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-grow: 0;">
             <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
                 <ui:Label tabindex="-1" text="Слова \r\nрусского языка" display-tooltip-when-elided="true" name="NameFile" class="m-0 text-lg" style="-unity-text-align: upper-center; -unity-font-style: bold; padding-bottom: 10px; white-space: normal;" />
-                <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: center; justify-content: center; display: none;">
-                    <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: center; margin-bottom: 10px; align-items: center;">
-                        <ui:VisualElement name="RateImg" style="background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/128/CoinN128.png?fileID=2800000&amp;guid=0d7fbaa06b460124595e8bbb89f88339&amp;type=3#CoinN128&apos;); width: 20px; height: 20px;" />
-                        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="Rate" class="text-primary font-bold p-0 m-0" />
+                <ui:VisualElement name="ProgressBlok" style="background-color: rgba(0, 0, 0, 0); display: flex; flex-grow: 1;">
+                    <ui:Label tabindex="-1" text="#actualprogress" display-tooltip-when-elided="true" class="m-0 p-0 text-secondary text-xss" style="-unity-text-align: upper-center;" />
+                    <ui:Label tabindex="-1" text="Major2" display-tooltip-when-elided="true" name="Status" class="m-0 p-0 text-md text-secondary" style="-unity-font-style: bold; -unity-text-align: upper-center; margin-bottom: 5px; display: none;" />
+                    <ui:Label tabindex="-1" text="Found 1212 words. Found 1212 words. Found 1212 words." display-tooltip-when-elided="true" name="FoundWords" class="m-0 p-0 text-secondary text-xs" style="-unity-text-align: upper-center; white-space: normal;" />
+                    <ui:VisualElement style="margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px;">
+                        <ui:VisualElement name="ProgressBarBox" class="level_blok_progress_wrap" style="height: 10px; background-color: rgba(0, 0, 0, 0.33); border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; position: relative;">
+                            <ui:VisualElement name="ProgressBar" class="level_blok_progress_bar" style="width: 75px;" />
+                        </ui:VisualElement>
                     </ui:VisualElement>
-                    <ui:VisualElement style="background-color: rgba(0, 0, 0, 0); flex-direction: row; justify-content: center; margin-bottom: 10px; align-items: center; padding-left: 10px;">
-                        <ui:VisualElement name="CoinImg" style="background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Sprites/128/CoinN128.png?fileID=2800000&amp;guid=0d7fbaa06b460124595e8bbb89f88339&amp;type=3#CoinN128&apos;); width: 20px; height: 20px;" />
-                        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="Coin" class="text-primary font-bold p-0 m-0" />
-                    </ui:VisualElement>
-                </ui:VisualElement>
-                <ui:Label tabindex="-1" text="#actualprogress" display-tooltip-when-elided="true" class="m-0 p-0 text-secondary text-xss" style="-unity-text-align: upper-center;" />
-                <ui:Label tabindex="-1" text="Major2" display-tooltip-when-elided="true" name="Status" class="m-0 p-0 text-md text-secondary" style="-unity-font-style: bold; -unity-text-align: upper-center; margin-bottom: 5px; display: none;" />
-                <ui:Label tabindex="-1" text="Found 1212 words. Found 1212 words. Found 1212 words." display-tooltip-when-elided="true" name="FoundWords" class="m-0 p-0 text-secondary text-xs" style="-unity-text-align: upper-center; white-space: normal;" />
-            </ui:VisualElement>
-            <ui:VisualElement style="margin-left: 3px; margin-right: 3px; margin-top: 3px; margin-bottom: 3px;">
-                <ui:VisualElement name="ProgressBarBox" class="level_blok_progress_wrap" style="height: 10px; background-color: rgba(0, 0, 0, 0.33); border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; position: relative;">
-                    <ui:VisualElement name="ProgressBar" class="level_blok_progress_bar" style="width: 75px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

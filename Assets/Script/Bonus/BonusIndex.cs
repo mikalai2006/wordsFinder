@@ -9,6 +9,14 @@ public class BonusIndex : BaseBonus
     configBonus = _gameManager.ResourceSystem.GetAllBonus().Find(t => t.typeBonus == TypeBonus.Index);
 
     base.Awake();
+
+    StateManager.OnChangeState += SetValue;
+  }
+  protected override void OnDestroy()
+  {
+    StateManager.OnChangeState -= SetValue;
+
+    base.OnDestroy();
   }
   #endregion
 
@@ -20,18 +28,22 @@ public class BonusIndex : BaseBonus
 
     base.SetValue(state);
 
-    if (value == 0) return;
+    // if (value == 0) return;
 
-    // SetValueProgressBar(state);
+    SetValueProgressBar(state);
   }
 
-  // public override void SetValueProgressBar(StateGame state)
-  // {
-  //   var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY;
+  public override void SetValueProgressBar(StateGame state)
+  {
+    // base.SetValueProgressBar(state);
+    var maxValue = _gameManager.PlayerSetting.bonusCount.wordInOrder;
+    var currentValue = state.activeDataGame.activeLevel.bonusCount.wordInOrder;
 
-  //   spriteProgress.transform
-  //     .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
-  //     .SetEase(Ease.OutBounce);
-  // }
+    var newPosition = (progressBasePositionY + 1.2f) + progressBasePositionY - progressBasePositionY * (float)currentValue / maxValue;
+
+    spriteProgress.transform
+      .DOLocalMoveY(newPosition, _gameSetting.timeGeneralAnimation * 2)
+      .SetEase(Ease.OutBounce);
+  }
 
 }

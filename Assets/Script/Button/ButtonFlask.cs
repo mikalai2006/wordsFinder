@@ -83,7 +83,7 @@ public class ButtonFlask : BaseButton
     TextLocalize localizeObj;
     if (rand <= 50)
     {
-      var allBonuses = _gameManager.ResourceSystem.GetAllBonus();
+      var allBonuses = _gameManager.ResourceSystem.GetAllBonus().Where(t => t.isMybeGenerate);
       var randBonus = allBonuses.OrderBy(t => UnityEngine.Random.value).ElementAt(0);
       _gameManager.StateManager.UseBonus(1, randBonus.typeBonus);
 

@@ -11,6 +11,7 @@ public class GameBonus : ScriptableObject
   [SerializeField] public AssetReferenceGameObject prefab;
   public int value;
   public bool isAlways;
+  public bool isMybeGenerate;
   // public ParticleSystem activateEffect;
   // public ParticleSystem MoveEffect;
 }

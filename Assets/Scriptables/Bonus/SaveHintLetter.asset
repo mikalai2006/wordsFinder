@@ -41,6 +41,7 @@ MonoBehaviour:
     m_EditorAssetChanged: 0
   value: 1
   isAlways: 0
+  isMybeGenerate: 1
   references:
     version: 2
     RefIds: []
