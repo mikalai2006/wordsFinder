@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ab369d9f7c175498a033c6688b4df2, type: 3}
   m_Name: Pink
   m_EditorClassIdentifier: 
+  bgImage: {fileID: 21300000, guid: 1ef56c8ecc9969149863c430b99bd6c5, type: 3}
   bgHiddenWord: {r: 0.69411767, g: 0.41960785, b: 0.2901961, a: 1}
   bgOpentHiddenWord: {r: 0.8196079, g: 0.7686275, b: 0.60784316, a: 1}
   textOpentHiddenWord: {r: 0.69411767, g: 0.41960785, b: 0.2901961, a: 1}
@@ -27,13 +28,14 @@ MonoBehaviour:
   bgNotFoundWord: {r: 0.9245283, g: 0.5140829, b: 0.3794055, a: 1}
   textNotFoundWord: {r: 0.3584906, g: 0.08215409, b: 0.045656823, a: 1}
   colorTextChar: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 1}
-  bgColorChar: {r: 0, g: 0, b: 0, a: 0.050980393}
+  bgColorChar: {r: 0.8679245, g: 0.80242074, b: 0.59362763, a: 0}
   colorTextChooseChar: {r: 0, g: 0, b: 0, a: 1}
   bgColorChooseChar: {r: 0.9098039, g: 0.74509805, b: 0.50980395, a: 1}
   bgImageChar: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgImageCharChoose: {fileID: 21300000, guid: fa408dd91870427418a486a26bcbd33d, type: 3}
   bgColor: {r: 0.9098039, g: 0.84705883, b: 0.64705884, a: 1}
   colorBgGrid: {r: 0.8207547, g: 0.7699053, b: 0.6078231, a: 1}
+  colorBgControl: {r: 0, g: 0, b: 0, a: 0}
   colorLine: {r: 0.8980392, g: 0.3647059, b: 0.3019608, a: 0.7490196}
   colorPrimary: {r: 0.42745098, g: 0.23921569, b: 0.16078432, a: 1}
   colorSecondary: {r: 0.69411767, g: 0.41960785, b: 0.2901961, a: 1}
@@ -43,6 +45,8 @@ MonoBehaviour:
   entityColorAsBonus: {r: 1, g: 0.88374794, b: 0, a: 1}
   colorBgHint: {r: 0.7924528, g: 0.7415716, b: 0.57938766, a: 1}
   colorTextHint: {r: 0.427451, g: 0.2392157, b: 0.16078432, a: 1}
-  colorBgButton: {r: 0.69411767, g: 0.41960788, b: 0.2901961, a: 0}
   colorBgInput: {r: 0.7254902, g: 0.6745098, b: 0.5137255, a: 1}
   colorTextInput: {r: 0.42745098, g: 0.23921569, b: 0.16078432, a: 1}
+  colorBgTopSide: {r: 0, g: 0, b: 0, a: 0}
+  colorBgButton: {r: 0.8666667, g: 0.8039216, b: 0.5921569, a: 1}
+  colorBgDialog: {r: 0.9339623, g: 0.8866198, b: 0.73571557, a: 1}

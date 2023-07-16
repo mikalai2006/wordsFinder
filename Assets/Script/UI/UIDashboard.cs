@@ -152,7 +152,7 @@ public class UIDashboard : UILocaleBase
     await DrawUserInfoBlok();
 
 #if ysdk
-        await DrawLeaderListBlok();
+    DrawLeaderListBlok(_gameManager.DataManager.leaderBoard);
 #endif
 
     base.Initialize(_uiDoc.rootVisualElement);
