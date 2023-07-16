@@ -66,8 +66,8 @@ public class TopSide : MonoBehaviour
 
   private void ChangeTheme()
   {
-    _imageGridBg.color = _gameManager.Theme.colorBgGrid;
-    _imageBonusesBg.color = _gameManager.Theme.colorBgGrid;
+    _imageGridBg.color = _gameManager.Theme.colorBgControl;
+    _imageBonusesBg.color = _gameManager.Theme.colorBgControl;
     // _statusText.color = _gameManager.Theme.colorPrimary;
     // _rate.color = _gameManager.Theme.colorPrimary;
     // _coins.color = _gameManager.Theme.colorPrimary;

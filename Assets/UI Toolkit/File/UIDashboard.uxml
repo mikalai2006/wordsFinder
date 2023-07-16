@@ -4,7 +4,7 @@
     <ui:VisualElement name="MenuBlok" class="font" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); margin-top: 50px;">
         <ui:VisualElement style="align-items: center; justify-content: center; flex-grow: 1;">
             <ui:VisualElement name="AppName" style="padding-bottom: 20px;">
-                <ui:Label tabindex="-1" text="#appname" display-tooltip-when-elided="true" class="text-primary text-lg font-bold" />
+                <ui:Label tabindex="-1" text="#appname" display-tooltip-when-elided="true" name="AppNameText" class="text-primary text-lg font-bold" style="text-shadow: 2px 1px 0 rgb(0, 0, 0); font-size: 40px;" />
             </ui:VisualElement>
             <ui:VisualElement name="UserInfoBlok" style="background-color: rgba(0, 0, 0, 0); margin-bottom: 15px; align-self: center; width: 300px;" />
             <ui:VisualElement name="LeaderBoard" class="b-rounded p-1" style="background-color: rgba(0, 0, 0, 0.05); width: 300px;">

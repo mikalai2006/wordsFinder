@@ -59,7 +59,7 @@ public class UIDashboard : UILocaleBase
 
 
 #if UNITY_EDITOR
-    _gameManager.DataManager.GetLeaderBoard("{\"leaderboard\":{\"title\":[{\"lang\":\"ru\",\"value\":\"Лидеры по количеству слов\"}]},\"userRank\":25,\"entries\":[{\"rank\":24,\"score\":90,\"name\":\"Tamara Ivanovna Semenovatoreva\",\"lang\":\"ru\",\"photo\":\"\"},{\"rank\":25,\"score\":80,\"name\":\"Mikalai P.2\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"},{\"rank\":26,\"score\":70,\"name\":\"Mikalai P.3\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"}]}");
+    _gameManager.DataManager.GetLeaderBoard("{\"leaderboard\":{\"title\":[{\"lang\":\"ru\",\"value\":\"Лидеры по количеству слов\"}]},\"userRank\":25,\"entries\":[{\"rank\":24,\"score\":90,\"name\":\"Tamara Ivanovna Semenovatoreva\",\"lang\":\"ru\",\"photo\":\"\"},{\"rank\":25,\"score\":80,\"name\":\"Mikalai P.2\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"},{\"rank\":26,\"score\":70,\"name\":\"\",\"lang\":\"ru\",\"photo\":\"https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/66VOVRVF2GJAXS5VWT3X54YATTEZAJLGXTPIXJTG3465T5HXLNQFMZIOJ7WYALX2PEC2DIAHLM6FC7ABRLOA27IRF55DP6DXJU7JDS4IFW63KJWT4IFLT2I26N44GVCAAX6FGHPPVKQY65KZZOXXYODUUKJMK2Y25M2VUDFYRPJDR3TS4JVBUOZNWFE2QNABMFRQEVLJRRIODYNB2JKIIK76YMZEEA3VQHV3M6Q=/islands-retina-medium\"}]}");
 #endif
 #if ysdk
     GetLeaderBoard();
@@ -151,11 +151,14 @@ public class UIDashboard : UILocaleBase
 
     await DrawUserInfoBlok();
 
-    // #if ysdk && !UNITY_EDITOR
-    //     await DrawLeaderListBlok();
-    // #endif
+#if ysdk
+        await DrawLeaderListBlok();
+#endif
 
     base.Initialize(_uiDoc.rootVisualElement);
+    _userInfoBlok.Q<VisualElement>("UserInfoWrapper").style.backgroundColor = _gameManager.Theme.colorBgDialog;
+    _leaderBoard.style.backgroundColor = new StyleColor(_gameManager.Theme.colorBgDialog);
+    _uiDoc.rootVisualElement.Q<Label>("AppNameText").style.color = new StyleColor(_gameManager.Theme.colorAccent);
   }
 
 
@@ -198,7 +201,12 @@ public class UIDashboard : UILocaleBase
       rank.text = leader.rank.ToString();
 
       var name = blok.Q<Label>("Name");
-      name.text = leader.name;
+      string nameText = leader.name;
+      if (string.IsNullOrEmpty(nameText))
+      {
+        nameText = await Helpers.GetLocaledString("noname");
+      }
+      name.text = nameText;
 
       var ava = blok.Q<VisualElement>("Ava");
       Texture2D avatarTexture = await Helpers.LoadTexture(leader.photo);
@@ -360,7 +368,7 @@ public class UIDashboard : UILocaleBase
 
     _userInfoBlok.Clear();
     _userInfoBlok.Add(blok);
-    base.Initialize(_userInfoBlok);
+    // base.Initialize(_userInfoBlok);
 
     nameFile.style.color = new StyleColor(_gameManager.Theme.colorAccent);
   }
