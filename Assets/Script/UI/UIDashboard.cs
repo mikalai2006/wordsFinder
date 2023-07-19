@@ -151,9 +151,9 @@ public class UIDashboard : UILocaleBase
 
     await DrawUserInfoBlok();
 
-#if ysdk
-    DrawLeaderListBlok(_gameManager.DataManager.leaderBoard);
-#endif
+    // #if ysdk
+    //     DrawLeaderListBlok(_gameManager.DataManager.leaderBoard);
+    // #endif
 
     base.Initialize(_uiDoc.rootVisualElement);
     _userInfoBlok.Q<VisualElement>("UserInfoWrapper").style.backgroundColor = _gameManager.Theme.colorBgDialog;

@@ -411,10 +411,10 @@ MonoBehaviour:
     m_Localized: 'Found a bonus word that is not on the field, which gives a coin
       for this word and +1 point to all hints.
 
-      
 
-      When hints reach
-      the maximum number of points, a hint of a specific type will be added.'
+
+      When hints reach the maximum
+      number of points, a hint of a specific type will be added.'
     m_Metadata:
       m_Items: []
   - m_Id: 670107916468224
@@ -452,61 +452,63 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1095655025180672
-    m_Localized: The <b>{name}</b> section is {procent}% complete
+    m_Localized: 'The <b>{name}</b> section
+
+      is {procent}% complete'
     m_Metadata:
       m_Items:
       - rid: 366248018379538446
   - m_Id: 1315961916522496
     m_Localized: 'This bonus removes the penalty for suggesting letters.
 
-      
+
 
       When
       this bonus works, then all existing rewards (coins and points for bonuses)
       are credited for the prompted letters.
 
-      
 
-      This bonus is applied
-      automatically. Validity - 1 round.'
+
+      This bonus is applied automatically.
+      Validity - 1 round.'
     m_Metadata:
       m_Items: []
   - m_Id: 1041446275809280
     m_Localized: 'The test word is not in the dictionary. An attempt is counted as
       an error.
 
-      
 
-      If the number of consecutive errors exceeds the
-      limit set by the game difficulty level, all points for bonuses and tips are
-      reset to zero.'
+
+      If the number of consecutive errors exceeds the limit set
+      by the game difficulty level, all points for bonuses and tips are reset to
+      zero.'
     m_Metadata:
       m_Items: []
   - m_Id: 995663333720064
     m_Localized: 'If a bonus word was found and it is not on the field - this action
       adds 1 point to the bonus generator.
 
-      
 
-      When the generator reaches
-      the limit, a random bonus is created!'
+
+      When the generator reaches the
+      limit, a random bonus is created!'
     m_Metadata:
       m_Items: []
   - m_Id: 995098834927616
     m_Localized: 'If a word was found that can be formed, but it is not a bonus -
       this action adds 1 point to the bonus generator.
 
-      
 
-      When the
-      generator reaches the limit, a random bonus is created!'
+
+      When the generator
+      reaches the limit, a random bonus is created!'
     m_Metadata:
       m_Items: []
   - m_Id: 993418810654720
     m_Localized: 'If a bonus word was found that is on the field - each letter of
       this word adds 1 point to the bonus generator.
 
-      
+
 
       When the generator
       reaches the limit, a random bonus is created!'
@@ -541,7 +543,7 @@ MonoBehaviour:
       m_Items:
       - rid: 366248018379538446
   - m_Id: 1699857803935744
-    m_Localized: The request returned an error! Apologize!
+    m_Localized: Having trouble getting a definition! Apologize!
     m_Metadata:
       m_Items: []
   - m_Id: 2019490872328192

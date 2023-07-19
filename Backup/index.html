@@ -22,36 +22,13 @@
         initializeLib();
       });
 
-      function initPlayer() {
-        return ysdk.getPlayer({ scopes: true }).then((_player) => {
+      function initializeLib() {
+        ysdk.getPlayer().then((_player) => {
           console.log("Player initialized");
           player = _player;
 
           return player;
         });
-      }
-
-      function initializeLib() {
-        initPlayer()
-          .then((_player) => {
-            // if (_player.getMode() === "lite") {
-            //   // Игрок не авторизован.
-            //   ysdk.auth
-            //     .openAuthDialog()
-            //     .then(() => {
-            //       // Игрок успешно авторизован
-            //       initPlayer().catch((err) => {
-            //         // Ошибка при инициализации объекта Player.
-            //       });
-            //     })
-            //     .catch(() => {
-            //       // Игрок не авторизован.
-            //     });
-            // }
-          })
-          .catch((err) => {
-            // Ошибка при инициализации объекта Player.
-          });
 
         ysdk.getLeaderboards().then((_lb) => (lb = _lb));
       }
@@ -109,15 +86,15 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/Builds.loader.js";
+      var loaderUrl = buildUrl + "/webgl.loader.js";
       var config = {
-        dataUrl: buildUrl + "/Builds.data",
-        frameworkUrl: buildUrl + "/Builds.framework.js",
-        codeUrl: buildUrl + "/Builds.wasm",
+        dataUrl: buildUrl + "/webgl.data",
+        frameworkUrl: buildUrl + "/webgl.framework.js",
+        codeUrl: buildUrl + "/webgl.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "mikalai2006",
         productName: "WordsFinder",
-        productVersion: "1.0",
+        productVersion: "1.0.0.0",
         showBanner: unityShowBanner,
       };
 
@@ -139,16 +116,16 @@
 
       loadingBar.style.display = "block";
 
+      var myGameInstance = null;
       var script = document.createElement("script");
       script.src = loaderUrl;
-      var myGameInstance = null;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         })
           .then((unityInstance) => {
-            loadingBar.style.display = "none";
             myGameInstance = unityInstance;
+            loadingBar.style.display = "none";
           })
           .catch((message) => {
             alert(message);

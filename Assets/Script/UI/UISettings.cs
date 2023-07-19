@@ -171,16 +171,16 @@ public class UISettings : UILocaleBase
     }
 
 
-    // Theme.
-    var allThemes = _gameManager.ResourceSystem.GetAllTheme();
-    _dropdownTheme.choices.Clear();
-    for (int i = 0; i < allThemes.Count; i++)
-    {
-      GameTheme theme = allThemes[i];
-      _dropdownTheme.choices.Add(theme.name);
-    }
-    _dropdownTheme.value = userSettings.theme;
-    _dropdownTheme.RegisterValueChangedCallback(ChangeTheme);
+    // // Theme.
+    // var allThemes = _gameManager.ResourceSystem.GetAllTheme();
+    // _dropdownTheme.choices.Clear();
+    // for (int i = 0; i < allThemes.Count; i++)
+    // {
+    //   GameTheme theme = allThemes[i];
+    //   _dropdownTheme.choices.Add(theme.name);
+    // }
+    // _dropdownTheme.value = userSettings.theme;
+    // _dropdownTheme.RegisterValueChangedCallback(ChangeTheme);
 
     // DoDialog.
     _doDialog.value = userSettings.dod;

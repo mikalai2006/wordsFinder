@@ -137,6 +137,8 @@ public class UIDirectory : UILocaleBase
 
       var responseText = JsonUtility.FromJson<APIDirectoryResponse>(webRequest.downloadHandler.text);
 
+      Debug.Log(webRequest.downloadHandler.text);
+
       if (!string.IsNullOrEmpty(responseText.extract))
       {
         var message = Helpers.StripHTML(responseText.extract);

@@ -133,32 +133,32 @@ public class BaseEntity : MonoBehaviour, IPointerDownHandler
     Destroy(_CachedSystem.gameObject, 2f);
   }
 
-  public void RunActivateEffect()
-  {
-    var _CachedSystem = GameObject.Instantiate(
-      configEntity.activateEffect,
-      transform.position,
-      Quaternion.identity,
-      transform
-    );
+  // public void RunActivateEffect()
+  // {
+  //   var _CachedSystem = GameObject.Instantiate(
+  //     configEntity.activateEffect,
+  //     transform.position,
+  //     Quaternion.identity,
+  //     transform
+  //   );
 
-    var main = _CachedSystem.main;
-    main.startSize = new ParticleSystem.MinMaxCurve(0.05f, _levelManager.ManagerHiddenWords.scaleGrid / 2);
+  //   var main = _CachedSystem.main;
+  //   main.startSize = new ParticleSystem.MinMaxCurve(0.05f, _levelManager.ManagerHiddenWords.scaleGrid / 2);
 
-    var col = _CachedSystem.colorOverLifetime;
-    col.enabled = true;
+  //   var col = _CachedSystem.colorOverLifetime;
+  //   col.enabled = true;
 
-    Gradient grad = new Gradient();
-    grad.SetKeys(new GradientColorKey[] {
-      new GradientColorKey(_gameManager.Theme.bgFindAllowWord, 1.0f),
-      new GradientColorKey(_gameManager.Theme.bgHiddenWord, 0.0f)
-      }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
-    });
+  //   Gradient grad = new Gradient();
+  //   grad.SetKeys(new GradientColorKey[] {
+  //     new GradientColorKey(_gameManager.Theme.bgFindAllowWord, 1.0f),
+  //     new GradientColorKey(_gameManager.Theme.bgHiddenWord, 0.0f)
+  //     }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
+  //   });
 
-    col.color = grad;
-    _CachedSystem.Play();
-    Destroy(_CachedSystem.gameObject, 2f);
-  }
+  //   col.color = grad;
+  //   _CachedSystem.Play();
+  //   Destroy(_CachedSystem.gameObject, 2f);
+  // }
 
   public void RunMoveEffect()
   {

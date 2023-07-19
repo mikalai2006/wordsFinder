@@ -51,15 +51,15 @@ public class UIGameBar : UILocaleBase
   {
     if (state.activeDataGame.activeLevel != null)
     {
-      if (_letterCount.text != state.activeDataGame.activeLevel.coins.ToString())
-      {
-        RunAnimateCoin(new Vector3(3, 9.2f));
-      }
+      // if (_letterCount.text != state.activeDataGame.activeLevel.coins.ToString())
+      // {
+      //   RunAnimateCoin(new Vector3(3, 9.2f));
+      // }
 
-      if (_userCoin.text != state.coins.ToString())
-      {
-        RunAnimateCoin(new Vector3(-3, 9.2f)); // _userCoinImg.worldTransform.GetPosition()
-      }
+      // if (_userCoin.text != state.coins.ToString())
+      // {
+      //   RunAnimateCoin(new Vector3(-3, 9.2f)); // _userCoinImg.worldTransform.GetPosition()
+      // }
 
       _letterCount.text = string.Format("{0}", state.activeDataGame.activeLevel.coins);
       _userCoin.text = string.Format("{0}", state.coins);
@@ -138,38 +138,38 @@ public class UIGameBar : UILocaleBase
     base.Initialize(_uiDoc.rootVisualElement);
   }
 
-  private void RunAnimateCoin(Vector3 pos)
-  {
-    if (_gameManager.LevelManager == null) return;
+  // private void RunAnimateCoin(Vector3 pos)
+  // {
+  //   if (_gameManager.LevelManager == null) return;
 
-    // var positionObject = Camera.main.ScreenToWorldPoint(pos);
-    // var pos3 = new Vector3(positionObject.x + 5, -positionObject.y, 0);
-    // Debug.Log($"{positionObject}|||{pos}|||{pos3}");
-    var configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
-    var _CachedSystem = GameObject.Instantiate(
-      configEntity.activateEffect,
-      pos,
-      Quaternion.identity
-    );
+  //   // var positionObject = Camera.main.ScreenToWorldPoint(pos);
+  //   // var pos3 = new Vector3(positionObject.x + 5, -positionObject.y, 0);
+  //   // Debug.Log($"{positionObject}|||{pos}|||{pos3}");
+  //   var configEntity = _gameManager.ResourceSystem.GetAllEntity().Find(t => t.typeEntity == TypeEntity.Coin);
+  //   var _CachedSystem = GameObject.Instantiate(
+  //     configEntity.activateEffect,
+  //     pos,
+  //     Quaternion.identity
+  //   );
 
-    var main = _CachedSystem.main;
-    main.startSize = new ParticleSystem.MinMaxCurve(0.05f, _gameManager.LevelManager.ManagerHiddenWords.scaleGrid / 2);
+  //   var main = _CachedSystem.main;
+  //   main.startSize = new ParticleSystem.MinMaxCurve(0.05f, _gameManager.LevelManager.ManagerHiddenWords.scaleGrid / 2);
 
-    var col = _CachedSystem.colorOverLifetime;
-    col.enabled = true;
+  //   var col = _CachedSystem.colorOverLifetime;
+  //   col.enabled = true;
 
-    Gradient grad = new Gradient();
-    grad.SetKeys(new GradientColorKey[] {
-      new GradientColorKey(_gameManager.Theme.bgFindAllowWord, 1.0f),
-      new GradientColorKey(_gameManager.Theme.bgHiddenWord, 0.0f)
-      }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
-    });
+  //   Gradient grad = new Gradient();
+  //   grad.SetKeys(new GradientColorKey[] {
+  //     new GradientColorKey(_gameManager.Theme.bgFindAllowWord, 1.0f),
+  //     new GradientColorKey(_gameManager.Theme.bgHiddenWord, 0.0f)
+  //     }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)
+  //   });
 
-    col.color = grad;
-    _CachedSystem.Play();
+  //   col.color = grad;
+  //   _CachedSystem.Play();
 
-    Destroy(_CachedSystem, .5f);
-  }
+  //   Destroy(_CachedSystem, .5f);
+  // }
 
 
   private async void ShowInfoLetter()

@@ -392,6 +392,8 @@ public class UIShop : UILocaleBase
 
       _gameManager.StateManager.BuyBonus(item);
 
+      ChangeTheme();
+
       var message = await Helpers.GetLocalizedPluralString("successgetbonus", new Dictionary<string, int>() {
       {"count", item.count}
     });
@@ -448,6 +450,8 @@ public class UIShop : UILocaleBase
     if (resultConfirm.isOk)
     {
       _gameManager.StateManager.BuyHint(item);
+
+      ChangeTheme();
 
       var message = await Helpers.GetLocalizedPluralString("successbuy", new Dictionary<string, int>() {
             {"count", item.count}

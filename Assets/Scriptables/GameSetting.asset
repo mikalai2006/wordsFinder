@@ -95,7 +95,7 @@ MonoBehaviour:
       m_LocalVariables: []
   APIDirectory:
     token: 
-    pathExpression: https://{0}.wikipedia.org/api/rest_v1/page/summary/{1}?origin=*
+    pathExpression: https://{0}.wikipedia.org/api/rest_v1/page/summary/{1}?origin=*&blfilterredir=redirects
   wordFiles:
   - text:
       title:

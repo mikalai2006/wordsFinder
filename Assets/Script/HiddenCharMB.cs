@@ -200,10 +200,10 @@ public class HiddenCharMB : MonoBehaviour //, IPointerDownHandler
 
   public void Open(bool runEffect)
   {
-    if (runEffect)
-    {
-      RunOpenEffect();
-    }
+    // if (runEffect)
+    // {
+    //   RunOpenEffect();
+    // }
 
     // Remove open char.
     if (
