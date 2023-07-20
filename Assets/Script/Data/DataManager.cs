@@ -21,7 +21,7 @@ public class DataManager : Singleton<DataManager>
   public static event System.Action<ShopAdvBuyItem<TypeEntity>> OnAddHintExtern;
   public static event System.Action<ShopAdvBuyItem<TypeBonus>> OnAddBonusExtern;
   public static event System.Action<UserInfo> OnLoadUserInfo;
-  public static event System.Action<LeaderBoard> OnLoadLeaderBoard;
+  public static event System.Action OnLoadLeaderBoard;
   public LeaderBoard leaderBoard { get; private set; }
 
   [Header("File Storage Config")]
@@ -118,7 +118,7 @@ public class DataManager : Singleton<DataManager>
     LeaderBoard leaderBoard = JsonUtility.FromJson<LeaderBoard>(stringLeaderBoard);
     // Debug.Log($"{name}::: YSDK ::: GetLeaderBoard {stringLeaderBoard}");
     this.leaderBoard = leaderBoard;
-    OnLoadLeaderBoard?.Invoke(leaderBoard);
+    OnLoadLeaderBoard?.Invoke();
   }
 
   public void Save(bool saveDb)

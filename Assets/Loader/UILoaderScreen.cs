@@ -147,12 +147,12 @@ public class UILoaderScreen : MonoBehaviour
   {
     while (_progressFill < _targetProgress)
     {
+      await UniTask.DelayFrame(1);
       _progressFill += Time.deltaTime * _barSpeed;
       // Debug.Log($"Value=[{progressBarText.text}]{_progressFill}/{_barSpeed}");
       SetProgressValue(_progressFill);
-      await UniTask.DelayFrame(1);
     }
-    await UniTask.Yield(); //  TimeSpan.FromSeconds(0.15f));
+    // await UniTask.Yield(); //  TimeSpan.FromSeconds(0.15f));
   }
 
   //public void InitNewGame()

@@ -41,7 +41,7 @@ public class LevelManager : Singleton<LevelManager>
     Pointer.SetActive(false);
   }
 
-  public async void InitLevel(string wordConfig)
+  public async UniTask InitLevel(string wordConfig)
   {
     _gameManager.InputManager.Disable();
 

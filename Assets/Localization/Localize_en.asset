@@ -94,7 +94,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1596861162094592
-    m_Localized: Looking for words
+    m_Localized: 'Looking
+
+      for words'
     m_Metadata:
       m_Items: []
   - m_Id: 2874372776951808
